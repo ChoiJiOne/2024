@@ -1,5 +1,11 @@
 #pragma once
 
+#if defined(DEBUG_MODE) || defined(RELEASE_MODE) || defined(DEVELOPMENT_MODE)
+#define _CRTDBG_MAP_ALLOC
+#include <cstdlib>
+#include <crtdbg.h>
+#endif
+
 #include <functional>
 #include <windows.h>
 
