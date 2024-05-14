@@ -10,6 +10,9 @@
 ## [FileModule](./FileModule/)
 - 파일 및 디렉토리 관련 기능을 제공하는 모듈입니다.
 
+## [GameModule](./GameModule/)
+- 게임 관련 기능을 제공하는 모듈입니다.
+
 ## [MathModule](./MathModule/)
 - 수학 관련 기능을 제공하는 모듈입니다.
 
