@@ -49,14 +49,14 @@ public:
 	 */
 	enum class Errors
 	{
-		OK = 0x00, // 에러가 없습니다.
-		FAILED = 0x01, // 일반적인 에러입니다.
-		ERR_WIN = 0x02, // Windows 에러입니다.
-		ERR_WGL = 0x03, // Windows GL 에러입니다.
-		ERR_GL = 0x04, // OpenGL 에러입니다.
+		OK            = 0x00, // 에러가 없습니다.
+		FAILED        = 0x01, // 일반적인 에러입니다.
+		ERR_WIN       = 0x02, // Windows 에러입니다.
+		ERR_WGL       = 0x03, // Windows GL 에러입니다.
+		ERR_GL        = 0x04, // OpenGL 에러입니다.
 		ERR_PREV_INIT = 0x05, // 이전에 초기화를 수행했습니다.
-		ERR_NOT_INIT = 0x06, // 초기화가 수행되지 않았습니다.
-		ERR_IMGUI = 0x07, // IMGUI 관련 에러입니다.
+		ERR_NOT_INIT  = 0x06, // 초기화가 수행되지 않았습니다.
+		ERR_IMGUI     = 0x07, // IMGUI 관련 에러입니다.
 	};
 
 
