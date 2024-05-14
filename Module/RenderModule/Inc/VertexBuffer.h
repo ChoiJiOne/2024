@@ -24,7 +24,7 @@ public:
 
 public:
 	/**
-	 * @brief 셰이더에서 사용 가능한 정점 버퍼를 생성합니다.
+	 * @brief 정점 버퍼를 생성합니다.
 	 *
 	 * @param byteSize 정점 버퍼의 바이트 크기입니다.
 	 * @param usage 정점 버퍼의 사용 형식입니다.
@@ -33,7 +33,7 @@ public:
 
 
 	/**
-	 * @brief 셰이더에서 사용 가능한 정점 버퍼를 생성합니다.
+	 * @brief 정점 버퍼를 생성합니다.
 	 *
 	 * @param bufferPtr 초기화할 버퍼의 포인터입니다.
 	 * @param byteSize 정점 버퍼의 바이트 크기입니다.
@@ -43,7 +43,7 @@ public:
 
 
 	/**
-	 * @brief 셰이더에서 사용 가능한 정점 버퍼를 할당 해제합니다.
+	 * @brief 정점 버퍼를 할당 해제합니다.
 	 */
 	virtual ~VertexBuffer();
 
