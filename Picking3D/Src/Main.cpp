@@ -1,6 +1,8 @@
 #include <cstdint>
 #include <Windows.h>
 
+#include <imgui.h>
+
 #include "Assertion.h"
 #include "CrashModule.h"
 #include "GameModule.h"
@@ -37,6 +39,12 @@ int32_t WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstan
 	PlatformModule::RunLoop(
 		[&](float deltaSeconds)
 		{
+			ImGui::Begin("Control", nullptr, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);
+			ImGui::SetWindowPos(ImVec2(10.0f, 10.0f));
+			ImGui::SetWindowSize(ImVec2(400.0f, 200.0f));
+			camera->SetActive(!ImGui::IsWindowFocused());
+			ImGui::End();
+
 			camera->Tick(deltaSeconds);
 			renderer->SetView(camera->GetView());
 			renderer->SetProjection(camera->GetProjection());
