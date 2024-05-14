@@ -176,6 +176,18 @@ private:
 
 
 	/**
+	 * @brief X축 회전 각도의 최댓값입니다.
+	 */
+	float minPitch_ = 0.0f;
+
+
+	/**
+	 * @brief X축 회전 각도의 최솟값입니다.
+	 */
+	float maxPitch_ = 0.0f;
+
+
+	/**
 	 * @brief 카메라가 활성화되었는지 확인합니다.
 	 */
 	bool bIsActive_ = true;

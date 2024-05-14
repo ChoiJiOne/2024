@@ -20,6 +20,11 @@ Camera::Camera()
 	nearZ_ = 0.01f;
 	farZ_ = 100.0f;
 	projection_ = Mat4x4::Perspective(fov_, aspectRatio_, nearZ_, farZ_);
+
+	minPitch_ = -PiDiv2 + 0.1f;
+	maxPitch_ = +PiDiv2 - 0.1f;
+	
+	bIsInitialized_ = true;
 }
 
 Camera::~Camera()
@@ -53,7 +58,7 @@ void Camera::Tick(float deltaSeconds)
 		yaw_ += xoffset;
 		pitch_ += yoffset;
 
-		pitch_ = MathModule::Clamp<float>(pitch_, -PiDiv2 + 0.1f, +PiDiv2 - 0.1f);
+		pitch_ = MathModule::Clamp<float>(pitch_, minPitch_, maxPitch_);
 		bIsUpdateState = true;
 	}
 
