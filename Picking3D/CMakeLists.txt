@@ -22,6 +22,7 @@ target_link_libraries(
     AudioModule
     CrashModule
     FileModule
+    GameModule
     MathModule
     PlatformModule
     RenderModule
