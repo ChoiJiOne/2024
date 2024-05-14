@@ -205,7 +205,7 @@ public:
 	/**
 	 * @brief 리소스 매니저가 관리하는 리소스를 삭제합니다.
 	 *
-	 * @param resourceID 삭제할 리소스 ID입니다.
+	 * @param resource 삭제할 리소스 포인터입니다.
 	 */
 	static void DestroyResource(const IResource* resource)
 	{
