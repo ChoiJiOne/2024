@@ -1,32 +1,7 @@
 #pragma warning(push)
 #pragma warning(disable: 6031)
 
-#if defined(DEBUG_MODE)
-#ifndef CHECK
-#define CHECK(Expression)\
-{\
-	if (!(bool)(Expression))                                                                                            \
-	{                                                                                                                   \
-		__debugbreak();                                                                                                 \
-		ExitProcess(-1);                                                                                                \
-	}                                                                                                                   \
-}
-#endif
-#elif defined(RELEASE_MODE) || defined(DEVELOPMENT_MODE)
-#ifndef CHECK
-#define CHECK(Expression)\
-{\
-	if (!(bool)(Expression))                                                                                            \
-	{                                                                                                                   \
-		__debugbreak();                                                                                                 \
-	}                                                                                                                   \
-}
-#endif
-#else // defined(SHIPPING_MODE)
-#ifndef CHECK
-#define CHECK(Expression, ...) ((void)(Expression))
-#endif
-#endif
+#include "Assertion.h"
 
 #include "InputController.h"
 #include "PlatformModule.h"
