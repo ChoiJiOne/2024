@@ -5,8 +5,10 @@
 #include <cstdio>
 #include <cstring>
 #include <string>
-#include <windows.h>
 
+#if defined(_WIN32) || defined(_WIN64)
+#include <windows.h>
+#endif
 
 #if defined(DEBUG_MODE) || defined(RELEASE_MODE) || defined(DEVELOPMENT_MODE)
 /**
