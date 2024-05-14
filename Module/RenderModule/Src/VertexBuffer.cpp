@@ -58,30 +58,30 @@ void VertexBuffer::SetBufferData(const void* bufferPtr, uint32_t bufferSize)
 {
 	CHECK(bufferPtr != nullptr && bufferSize <= byteSize_);
 
-	Bind();
-
-	switch (usage_)
+	VertexBuffer::Bind();
 	{
-	case EUsage::Stream:
-		GL_FAILED(glBufferData(GL_ARRAY_BUFFER, bufferSize, bufferPtr, static_cast<GLenum>(usage_)));
-		break;
+		void* vertexBufferPtr = nullptr;
 
-	case EUsage::Static:
-		GL_FAILED(glBufferSubData(GL_ARRAY_BUFFER, 0, bufferSize, bufferPtr));
-		break;
+		switch (usage_)
+		{
+		case EUsage::Stream:
+			GL_FAILED(glBufferData(GL_ARRAY_BUFFER, bufferSize, bufferPtr, static_cast<GLenum>(usage_)));
+			break;
 
-	case EUsage::Dynamic:
-	{
-		void* vertexBufferPtr = glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY);
-		std::memcpy(vertexBufferPtr, bufferPtr, bufferSize);
-		GL_FAILED(glUnmapBuffer(GL_ARRAY_BUFFER));
+		case EUsage::Static:
+			GL_FAILED(glBufferSubData(GL_ARRAY_BUFFER, 0, bufferSize, bufferPtr));
+			break;
+
+		case EUsage::Dynamic:
+			vertexBufferPtr = glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY);
+			std::memcpy(vertexBufferPtr, bufferPtr, bufferSize);
+			GL_FAILED(glUnmapBuffer(GL_ARRAY_BUFFER));
+			break;
+
+		default:
+			ASSERT(false, "undefined buffer usage type");
+			break;
+		}
 	}
-	break;
-
-	default:
-		ASSERT(false, "undefined buffer usage type");
-		break;
-	}
-
-	Unbind();
+	VertexBuffer::Unbind();
 }
