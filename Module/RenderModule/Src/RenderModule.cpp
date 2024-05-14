@@ -16,7 +16,7 @@ Mat4x4 RenderModule::ortho;
 wchar_t RenderModule::lastErrorMessage[MAX_BUFFER_SIZE];
 uint32_t RenderModule::cacheSize = 0;
 std::array<std::unique_ptr<IResource>, RenderModule::MAX_RESOURCE_SIZE> RenderModule::cache;
-std::map<std::string, IResource*> RenderModule::globalResources;
+std::array<bool, RenderModule::MAX_RESOURCE_SIZE> RenderModule::usage;
 
 /**
  * @brief OpenGL의 버전입니다.

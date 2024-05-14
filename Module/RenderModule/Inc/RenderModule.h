@@ -183,7 +183,7 @@ public:
 		int32_t resourceID = -1;
 		for (uint32_t index = 0; index < cacheSize; ++index)
 		{
-			if (!cache[index])
+			if (!cache[index] && !usage[index])
 			{
 				resourceID = static_cast<int32_t>(index);
 				break;
@@ -195,7 +195,9 @@ public:
 			resourceID = cacheSize++;
 		}
 
+		usage[resourceID] = true;
 		cache[resourceID] = std::make_unique<TResource>(args...);
+		
 		return reinterpret_cast<TResource*>(cache[resourceID].get());
 	}
 
@@ -225,6 +227,7 @@ public:
 				cache[resourceID]->Release();
 			}
 
+			usage[resourceID] = false;
 			cache[resourceID].reset();
 		}
 	}
@@ -250,27 +253,6 @@ public:
 	 * @return 스크린 크기에 대응하는 투영 행렬을 반환합니다.
 	 */
 	static Mat4x4 GetScreenOrtho(float nearZ = -1.0f, float farZ = 1.0f);
-
-
-	/**
-	 * @brief 렌더 모듈 내에서 사용하는 전역 리소스를 얻습니다.
-	 * 
-	 * @param key 전역 리소스의 키 값입니다.
-	 * 
-	 * @return 전역 리소스의 키 값에 대응하는 리소스의 포인터를 반환합니다.
-	 */
-	template <typename TResource>
-	static TResource* GetGlobalResource(const std::string& key)
-	{
-		auto iter = globalResources.find(key);
-		if (iter == globalResources.end())
-		{
-			return nullptr;
-		}
-
-		TResource* resource = reinterpret_cast<TResource*>(iter->second);
-		return resource;
-	}
 
 
 	/**
@@ -394,7 +376,7 @@ private:
 	 */
 	static wchar_t lastErrorMessage[MAX_BUFFER_SIZE];
 
-
+	
 	/**
 	 * @brief 생성할 수 있는 최대 리소스 수입니다.
 	 */
@@ -414,7 +396,7 @@ private:
 
 
 	/**
-	 * @brief 내부에서만 사용할 전역 리소스 캐시입니다.
+	 * @brief 리소스의 사용 여부입니다.
 	 */
-	static std::map<std::string, IResource*> globalResources;
+	static std::array<bool, MAX_RESOURCE_SIZE> usage;
 };
