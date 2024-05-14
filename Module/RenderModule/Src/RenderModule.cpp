@@ -4,7 +4,7 @@
 #include <imgui.h>
 #include <imgui_impl_opengl3.h>
 
-#include "Assertion.h"
+#include "GLAssertion.h"
 #include "Shader.h"
 #include "RenderModule.h"
 
@@ -62,9 +62,6 @@ RenderModule::Errors RenderModule::Init(HWND windowHandle)
 		return Errors::ERR_IMGUI;
 	}
 
-	globalResources.insert({ "TileMapGenerator",    RenderModule::CreateResource<Shader>("Resource/Shader/TileMapGenerator.comp")    });
-	globalResources.insert({ "FireEffectGenerator", RenderModule::CreateResource<Shader>("Resource/Shader/FireEffectGenerator.comp") });
-	
 	bIsInit = true;
 	return Errors::OK;
 }

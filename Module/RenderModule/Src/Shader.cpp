@@ -4,7 +4,7 @@
 
 #include "FileModule.h"
 
-#include "Assertion.h"
+#include "GLAssertion.h"
 #include "Shader.h"
 
 Shader::Shader(const std::string& csPath)
