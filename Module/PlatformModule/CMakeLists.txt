@@ -16,7 +16,7 @@ file(GLOB_RECURSE MODULE_SOURCE_FILE "${MODULE_SOURCE}/*")
 add_library(${PROJECT_NAME} STATIC ${MODULE_INCLUDE_FILE} ${MODULE_SOURCE_FILE})
 
 target_include_directories(${PROJECT_NAME} PUBLIC ${MODULE_INCLUDE})
-target_link_libraries(${PROJECT_NAME} imgui)
+target_link_libraries(${PROJECT_NAME} imgui CrashModule)
 
 target_compile_definitions(
     ${PROJECT_NAME}
