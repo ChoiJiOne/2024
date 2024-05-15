@@ -112,3 +112,94 @@ struct AABB
 	 */
 	Vec3f extents;
 };
+
+
+/**
+ * @brief 경계 구(Sphere)입니다.
+ */
+struct Sphere
+{
+	/**
+	 * @brief 경계 구의 기본 생성자입니다.
+	 */
+	Sphere() = default;
+
+
+	/**
+	 * @brief 경계 구의 생성자입니다.
+	 *
+	 * @param cc 경계 구의 중심 좌표입니다.
+	 * @param rr 경계 구의 반지름 길이입니다.
+	 */
+	Sphere(const Vec3f & cc, float rr)
+		: center(cc)
+		, radius(rr) {}
+
+
+	/**
+	 * @brief 경계 구의 복사 생성자입니다.
+	 *
+	 * @param instance 내부 프로퍼티를 복사할 인스턴스입니다.
+	 */
+	Sphere(Sphere&& instance) noexcept
+		: center(instance.center)
+		, radius(instance.radius) {}
+
+
+	/**
+	 * @brief 경계 구의 복사 생성자입니다.
+	 *
+	 * @param instance 내부 프로퍼티를 복사할 인스턴스입니다.
+	 */
+	Sphere(const Sphere& instance) noexcept
+		: center(instance.center)
+		, radius(instance.radius) {}
+
+
+	/**
+	 * @brief 경계 구의 대입 연산자입니다.
+	 *
+	 * @param instance 내부 프로퍼티를 복사할 인스턴스입니다.
+	 *
+	 * @return 대입한 객체의 참조자를 반환합니다.
+	 */
+	Sphere& operator=(Sphere&& instance) noexcept
+	{
+		if (this == &instance) return *this;
+
+		center = instance.center;
+		radius = instance.radius;
+
+		return *this;
+	}
+
+
+	/**
+	 * @brief 경계 구의 대입 연산자입니다.
+	 *
+	 * @param instance 내부 프로퍼티를 복사할 인스턴스입니다.
+	 *
+	 * @return 대입한 객체의 참조자를 반환합니다.
+	 */
+	Sphere& operator=(const Sphere& instance) noexcept
+	{
+		if (this == &instance) return *this;
+
+		center = instance.center;
+		radius = instance.radius;
+
+		return *this;
+	}
+
+
+	/**
+	 * @brief 경계 구의 중심 좌표입니다.
+	 */
+	Vec3f center;
+
+
+	/**
+	 * @brief 경계 구의 반지름 길이입니다.
+	 */
+	float radius;
+};
