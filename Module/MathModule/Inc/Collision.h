@@ -102,6 +102,32 @@ struct AABB
 
 
 	/**
+	 * @brief 경계 영역 내의 가장 가까운 점을 찾습니다.
+	 * 
+	 * @param aabb 가까운 점을 찾을 경계 영역입니다.
+	 * @param position 가까운 점입니다.
+	 * 
+	 * @return 경계 영역 내의 가장 가까운 점을 반환합니다.
+	 */
+	static Vec3f Closest(const AABB& aabb, const Vec3f& position)
+	{
+		Vec3f minPos = AABB::GetMin(aabb);
+		Vec3f maxPos = AABB::GetMax(aabb);
+
+		Vec3f closest = position;
+		closest.x = (closest.x < minPos.x) ? minPos.x : closest.x;
+		closest.y = (closest.y < minPos.y) ? minPos.y : closest.y;
+		closest.z = (closest.z < minPos.z) ? minPos.z : closest.z;
+
+		closest.x = (closest.x > maxPos.x) ? maxPos.x : closest.x;
+		closest.y = (closest.y > maxPos.y) ? maxPos.y : closest.y;
+		closest.z = (closest.z > maxPos.z) ? maxPos.z : closest.z;
+
+		return closest;
+	}
+
+
+	/**
 	 * @brief 경계 축 정렬 상자의 중심 좌표입니다.
 	 */
 	Vec3f center;
