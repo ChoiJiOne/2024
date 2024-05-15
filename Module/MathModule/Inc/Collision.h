@@ -269,4 +269,22 @@ public:
 
 		return lengthSq <= (sumRadius * sumRadius);
 	}
+
+
+	/**
+	 * @brief 경계 구와 AABB 사이의 충돌 여부를 검사합니다.
+	 * 
+	 * @param sphere 충돌 여부를 검사할 경계 구입니다.
+	 * @param aabb 충돌 여부를 검사할 AABB입니다.
+	 * 
+	 * @return 경계 구와 AABB 사이의 충돌이 감지되면 true, 그렇지 않으면 false를 반환합니다.
+	 */
+	static bool SphereToAABB(const Sphere& sphere, const AABB& aabb)
+	{
+		Vec3f closest = AABB::Closest(aabb, sphere.center);
+		float distSq = Vec3f::LengthSq(sphere.center - closest);
+		float radiusSq = sphere.radius * sphere.radius;
+
+		return distSq <= radiusSq;
+	}
 };
