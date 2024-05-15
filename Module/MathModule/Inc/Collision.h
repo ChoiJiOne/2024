@@ -219,6 +219,21 @@ struct Sphere
 
 
 	/**
+	 * @brief 경계 영역 내의 가장 가까운 점을 찾습니다.
+	 *
+	 * @param sphere 가까운 점을 찾을 경계 영역입니다.
+	 * @param position 가까운 점입니다.
+	 *
+	 * @return 경계 영역 내의 가장 가까운 점을 반환합니다.
+	 */
+	static Vec3f Closest(const Sphere& sphere, const Vec3f& position)
+	{
+		Vec3f direction = Vec3f::Normalize(position - sphere.center);
+		return sphere.center + direction * sphere.radius;
+	}
+
+
+	/**
 	 * @brief 경계 구의 중심 좌표입니다.
 	 */
 	Vec3f center;
