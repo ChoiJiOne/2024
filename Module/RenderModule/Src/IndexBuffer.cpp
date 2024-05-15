@@ -10,6 +10,7 @@ IndexBuffer::IndexBuffer(const void* bufferPtr, uint32_t indexCount)
 
 	GL_FAILED(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBufferID_));
 	GL_FAILED(glBufferData(GL_ELEMENT_ARRAY_BUFFER, indexBufferSize, bufferPtr, GL_STATIC_DRAW));
+	GL_FAILED(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0));
 
 	bIsInitialized_ = true;
 }
