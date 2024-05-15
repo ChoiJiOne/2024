@@ -203,3 +203,29 @@ struct Sphere
 	 */
 	float radius;
 };
+
+
+/**
+ * @brief 충돌 처리를 수행합니다.
+ * 
+ * @note 이 클래스의 모든 멤버 변수와 메서드는 정적(static) 타입입니다.
+ */
+class Collision
+{
+public:
+	/**
+	 * @brief 경계 구와 경계 구 사이의 충돌 여부를 검사합니다.
+	 * 
+	 * @param sphere0 충동 여부를 검사할 경계 구입니다.
+	 * @param sphere1 충돌 처리를 검사할 또 다른 구입니다.
+	 * 
+	 * @return 경계 구와 경계 구 사이의 충돌이 감지되면 true, 그렇지 않으면 false를 반환합니다.
+	 */
+	static bool SphereToSphere(const Sphere& sphere0, const Sphere& sphere1)
+	{
+		float lengthSq = Vec3f::LengthSq(sphere0.center - sphere1.center);
+		float sumRadius = (sphere0.radius + sphere1.radius);
+
+		return lengthSq <= (sumRadius * sumRadius);
+	}
+};
