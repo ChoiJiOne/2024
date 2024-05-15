@@ -6,8 +6,9 @@
 IndexBuffer::IndexBuffer(const void* bufferPtr, uint32_t indexCount)
 	: indexCount_(indexCount)
 {
-	uint32_t indexBufferSize = indexCount_ * static_cast<uint32_t>(sizeof(uint32_t));
+	uint32_t indexBufferSize = indexCount_ * sizeof(uint32_t);
 
+	GL_FAILED(glGenBuffers(1, &indexBufferID_));
 	GL_FAILED(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBufferID_));
 	GL_FAILED(glBufferData(GL_ELEMENT_ARRAY_BUFFER, indexBufferSize, bufferPtr, GL_STATIC_DRAW));
 	GL_FAILED(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0));
