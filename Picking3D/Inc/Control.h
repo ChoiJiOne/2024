@@ -84,7 +84,13 @@ private:
 	/**
 	 * @brief 퍼포먼스 측정을 위한 FPS 값 목록입니다.
 	 */
-	std::array<float, MAX_FPS_CACHE_SIZE> calculateFPSs_;
+	std::array<float, MAX_FPS_CACHE_SIZE> calculateFPSs_ = {0.0f,};
+
+
+	/**
+	 * @brief FPS의 평균값입니다.
+	 */
+	float averageFPS_ = 0.0f;
 
 
 	/**
