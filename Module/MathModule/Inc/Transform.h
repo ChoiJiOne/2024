@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Mat4x4.h"
+#include "Mat.h"
 #include "Quat.h"
-#include "Vec3.h"
+#include "Vec.h"
 
 
 /**
