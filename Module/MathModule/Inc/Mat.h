@@ -2084,3 +2084,99 @@ struct Mat4x4
 		float data[16];
 	};
 };
+
+
+/**
+ * @brief 2차원 벡터와 2x2행렬을 곱합니다.
+ * 
+ * @param v 곱셈을 수행할 2차원 벡터입니다.
+ * @param m 곱셈을 수행할 2x2 행렬입니다.
+ */
+static inline Vec2f operator*(const Vec2f& v, const Mat2x2& m)
+{
+	return Vec2f(
+		v.x * m.e00 + v.y * m.e10,
+		v.x * m.e01 + v.y * m.e11
+	);
+}
+
+
+/**
+ * @brief 2차원 벡터와 2x2행렬을 곱합니다.
+ *
+ * @param m 곱셈을 수행할 2x2 행렬입니다.
+ * @param v 곱셈을 수행할 2차원 벡터입니다.
+ */
+static inline Vec2f operator*(const Mat2x2& m, const Vec2f& v)
+{
+	return Vec2f(
+		m.e00 * v.x + m.e01 * v.y,
+		m.e10 * v.x + m.e11 * v.y
+	);
+}
+
+
+/**
+ * @brief 3차원 벡터와 3x3행렬을 곱합니다.
+ *
+ * @param v 곱셈을 수행할 3차원 벡터입니다.
+ * @param m 곱셈을 수행할 3x3 행렬입니다.
+ */
+static inline Vec3f operator*(const Vec3f& v, const Mat3x3& m)
+{
+	return Vec3f(
+		v.x * m.e00 + v.y * m.e10 + v.z * m.e20,
+		v.x * m.e01 + v.y * m.e11 + v.z * m.e21,
+		v.x * m.e02 + v.y * m.e12 + v.z * m.e22
+	);
+}
+
+
+/**
+ * @brief 3차원 벡터와 3x3행렬을 곱합니다.
+ * 
+ * @param m 곱셈을 수행할 3x3 행렬입니다.
+ * @param v 곱셈을 수행할 3차원 벡터입니다.
+ */
+static inline Vec3f operator*(const Mat3x3& m, const Vec3f& v)
+{
+	return Vec3f(
+		m.e00 * v.x + m.e01 * v.y + m.e02 * v.z,
+		m.e10 * v.x + m.e11 * v.y + m.e12 * v.z,
+		m.e20 * v.x + m.e21 * v.y + m.e22 * v.z
+	);
+}
+
+
+/**
+ * @brief 4차원 벡터와 4x4행렬을 곱합니다.
+ *
+ * @param v 곱셈을 수행할 4차원 벡터입니다.
+ * @param m 곱셈을 수행할 4x4 행렬입니다.
+ */
+static inline Vec4f operator*(const Vec4f& v, const Mat4x4& m)
+{
+	return Vec4f(
+		v.x * m.e00 + v.y * m.e10 + v.z * m.e20 + v.w * m.e30,
+		v.x * m.e01 + v.y * m.e11 + v.z * m.e21 + v.w * m.e31,
+		v.x * m.e02 + v.y * m.e12 + v.z * m.e22 + v.w * m.e32,
+		v.x * m.e03 + v.y * m.e13 + v.z * m.e23 + v.w * m.e33
+	);
+}
+
+
+/**
+ * @brief 4차원 벡터와 4x4행렬을 곱합니다.
+ *
+ * @param m 곱셈을 수행할 4x4 행렬입니다.
+ * @param v 곱셈을 수행할 4차원 벡터입니다.
+ */
+static inline Vec4f operator*(const Mat4x4& m, const Vec4f& v)
+{
+	return Vec4f(
+		m.e00 * v.x + m.e01 * v.y + m.e02 * v.z + m.e03 * v.w,
+		m.e10 * v.x + m.e11 * v.y + m.e12 * v.z + m.e13 * v.w,
+		m.e20 * v.x + m.e21 * v.y + m.e22 * v.z + m.e23 * v.w,
+		m.e30 * v.x + m.e31 * v.y + m.e32 * v.z + m.e33 * v.w
+	);
+}
