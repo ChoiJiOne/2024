@@ -15,7 +15,7 @@
 #endif
 
 #include "Vec.h"
-#include "Mat4x4.h"
+#include "Mat.h"
 
 #include "IResource.h"
 
