@@ -1,5 +1,6 @@
 #pragma once
 
+#include "MathModule.h"
 #include "Vec3.h"
 
 
@@ -411,5 +412,29 @@ public:
 		}
 
 		return true;
+	}
+
+
+	/**
+	 * @brief 경계 구와 광선이 충돌하는지 확인합니다.
+	 * 
+	 * @param ray 경계 구와 충돌하는지 확인할 광선입니다.
+	 * @param sphere 광선과 충돌하는지 확인할 경계 구입니다.
+	 * 
+	 * @return 경계 구와 광선이 충돌한다면 true, 그렇지 않으면 false를 반환합니다.
+	 */
+	static bool Raycast(const Ray& ray, const Sphere& sphere)
+	{
+		Vec3f e = sphere.center - ray.origin;
+		
+		float r2 = sphere.radius * sphere.radius;
+		float e2 = Vec3f::Dot(e, e);
+		float a = Vec3f::Dot(e, ray.direction);
+		float a2 = a * a;
+		float b2 = e2 - a2;
+		float f = MathModule::Sqrt(MathModule::Abs(r2) - b2);
+		float t = a - f;
+
+		return r2 - (e2 - a2) >= 0.0f;
 	}
 };
