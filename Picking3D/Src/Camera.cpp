@@ -153,18 +153,10 @@ Vec3f Camera::Unproject(const Vec3f& viewportPosition, const Vec2f& viewportOrig
 	ndcSpace.z = MathModule::Clamp<float>(ndcSpace.z, 0.0f, 1.0f);
 
 	Mat4x4 projectInv = Mat4x4::Inverse(projection);
-	Vec4f eyeSpace;
-	eyeSpace.x = ndcSpace.x * projectInv.e00 + ndcSpace.y * projectInv.e10 + ndcSpace.z * projectInv.e20 + ndcSpace.w * projectInv.e30;
-	eyeSpace.y = ndcSpace.x * projectInv.e01 + ndcSpace.y * projectInv.e11 + ndcSpace.z * projectInv.e21 + ndcSpace.w * projectInv.e31;
-	eyeSpace.z = ndcSpace.x * projectInv.e02 + ndcSpace.y * projectInv.e12 + ndcSpace.z * projectInv.e22 + ndcSpace.w * projectInv.e32;
-	eyeSpace.w = ndcSpace.x * projectInv.e03 + ndcSpace.y * projectInv.e13 + ndcSpace.z * projectInv.e23 + ndcSpace.w * projectInv.e33;
+	Vec4f eyeSpace = ndcSpace * projectInv;
 
 	Mat4x4 viewInv = Mat4x4::Inverse(view);
-	Vec4f worldSpace;
-	worldSpace.x = eyeSpace.x * viewInv.e00 + eyeSpace.y * viewInv.e10 + eyeSpace.z * viewInv.e20 + eyeSpace.w * viewInv.e30;
-	worldSpace.y = eyeSpace.x * viewInv.e01 + eyeSpace.y * viewInv.e11 + eyeSpace.z * viewInv.e21 + eyeSpace.w * viewInv.e31;
-	worldSpace.z = eyeSpace.x * viewInv.e02 + eyeSpace.y * viewInv.e12 + eyeSpace.z * viewInv.e22 + eyeSpace.w * viewInv.e32;
-	worldSpace.w = eyeSpace.x * viewInv.e03 + eyeSpace.y * viewInv.e13 + eyeSpace.z * viewInv.e23 + eyeSpace.w * viewInv.e33;
+	Vec4f worldSpace = eyeSpace * viewInv;
 
 	if (!MathModule::NearZero(worldSpace.w))
 	{
