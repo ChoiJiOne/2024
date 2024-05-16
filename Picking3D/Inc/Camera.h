@@ -2,6 +2,7 @@
 
 #include "Collision.h"
 #include "Mat4x4.h"
+#include "Vec2.h"
 #include "Vec3.h"
 
 #include "IEntity.h"
@@ -91,6 +92,26 @@ public:
 
 
 private:
+	/**
+	 * @brief 카메라의 회전 상태를 업데이트합니다.
+	 * 
+	 * @param deltaSeconds 초단위 델타 시간 값입니다.
+	 * 
+	 * @return 업데이트가 되었다면 true, 그렇지 않으면 false를 반환합니다.
+	 */
+	bool UpdateRotateState(float deltaSeconds);
+
+
+	/**
+	 * @brief 카메라의 이동 상태를 업데이트합니다.
+	 * 
+	 * @param deltaSeconds 초단위 델타 시간 값입니다.
+	 * 
+	 * @return 업데이트가 되었다면 true, 그렇지 않으면 false를 반환합니다.
+	 */
+	bool UpdateMoveState(float deltaSeconds);
+
+
 	/**
 	 * @brief 카메라의 상태를 업데이트합니다.
 	 */

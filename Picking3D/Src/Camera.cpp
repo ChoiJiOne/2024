@@ -23,6 +23,12 @@ Camera::Camera()
 
 	minPitch_ = -PiDiv2 + 0.1f;
 	maxPitch_ = +PiDiv2 - 0.1f;
+
+	CursorPos curr = InputController::GetCurrCursorPos();
+	Vec2f mousePos = Vec2f(static_cast<float>(curr.x), static_cast<float>(curr.y));
+	Vec2f viewportSize = Vec2f(static_cast<float>(screenWidth), static_cast<float>(screenHeight));
+
+	UpdateMouseRay(mousePos, Vec2f(0.0f, 0.0f), viewportSize, view_, projection_);
 	
 	bIsInitialized_ = true;
 }
@@ -42,6 +48,35 @@ void Camera::Tick(float deltaSeconds)
 		return;
 	}
 
+	bool bIsUpdateRotateState = UpdateRotateState(deltaSeconds);
+	bool bIsUpdateMoveState = UpdateMoveState(deltaSeconds);
+
+	if (bIsUpdateRotateState || bIsUpdateMoveState)
+	{
+		UpdateViewState();
+	}
+
+	int32_t width = 0;
+	int32_t height = 0;
+	RenderModule::GetScreenSize(width, height);
+
+	CursorPos curr = InputController::GetCurrCursorPos();
+	Vec2f mousePos = Vec2f(static_cast<float>(curr.x), static_cast<float>(curr.y));
+	Vec2f viewportSize = Vec2f(static_cast<float>(width), static_cast<float>(height));
+
+	UpdateMouseRay(mousePos, Vec2f(0.0f, 0.0f), viewportSize, view_, projection_);
+}
+
+void Camera::Release()
+{
+	if (bIsInitialized_)
+	{
+		bIsInitialized_ = false;
+	}
+}
+
+bool Camera::UpdateRotateState(float deltaSeconds)
+{
 	bool bIsUpdateState = false;
 
 	if (InputController::GetKeyPressState(EKey::KEY_LBUTTON) == EPressState::HELD)
@@ -61,6 +96,13 @@ void Camera::Tick(float deltaSeconds)
 		pitch_ = MathModule::Clamp<float>(pitch_, minPitch_, maxPitch_);
 		bIsUpdateState = true;
 	}
+
+	return bIsUpdateState;
+}
+
+bool Camera::UpdateMoveState(float deltaSeconds)
+{
+	bool bIsUpdateState = false;
 
 	if (InputController::GetKeyPressState(EKey::KEY_W) == EPressState::HELD)
 	{
@@ -86,29 +128,7 @@ void Camera::Tick(float deltaSeconds)
 		bIsUpdateState = true;
 	}
 
-	if (bIsUpdateState)
-	{
-		UpdateViewState();
-	}
-
-
-	int32_t width = 0;
-	int32_t height = 0;
-	RenderModule::GetScreenSize(width, height);
-
-	CursorPos curr = InputController::GetCurrCursorPos();
-	Vec2f mousePos = Vec2f(static_cast<float>(curr.x), static_cast<float>(curr.y));
-	Vec2f viewportSize = Vec2f(static_cast<float>(width), static_cast<float>(height));
-
-	UpdateMouseRay(mousePos, Vec2f(0.0f, 0.0f), viewportSize, view_, projection_);
-}
-
-void Camera::Release()
-{
-	if (bIsInitialized_)
-	{
-		bIsInitialized_ = false;
-	}
+	return bIsUpdateState;
 }
 
 void Camera::UpdateViewState()
