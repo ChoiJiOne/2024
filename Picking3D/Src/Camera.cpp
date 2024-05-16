@@ -147,26 +147,17 @@ void Camera::UpdateViewState()
 
 Vec3f Camera::Unproject(const Vec3f& viewportPosition, const Vec2f& viewportOrigin, const Vec2f& viewportSize, const Mat4x4& view, const Mat4x4& projection)
 {
-	float normalized[4] =
-	{
-		(viewportPosition.x - viewportOrigin.x) / viewportSize.x,
-		(viewportPosition.y - viewportOrigin.y) / viewportSize.y,
-		viewportPosition.z,
-		1.0f
-	};
-
-	float ndcSpace[4] = { normalized[0], normalized[1], normalized[2], normalized[3] };
-
-	ndcSpace[0] = ndcSpace[0] * 2.0f - 1.0f;
-	ndcSpace[1] = 1.0f - ndcSpace[1] * 2.0f;
-	ndcSpace[2] = MathModule::Clamp<float>(ndcSpace[2], 0.0f, 1.0f);
+	Vec4f ndcSpace((viewportPosition.x - viewportOrigin.x) / viewportSize.x, (viewportPosition.y - viewportOrigin.y) / viewportSize.y, viewportPosition.z, 1.0f);
+	ndcSpace.x = ndcSpace.x * 2.0f - 1.0f;
+	ndcSpace.y = 1.0f - ndcSpace.y * 2.0f;
+	ndcSpace.z = MathModule::Clamp<float>(ndcSpace.z, 0.0f, 1.0f);
 
 	Mat4x4 projectInv = Mat4x4::Inverse(projection);
 	Vec4f eyeSpace;
-	eyeSpace.x = ndcSpace[0] * projectInv.e00 + ndcSpace[1] * projectInv.e10 + ndcSpace[2] * projectInv.e20 + ndcSpace[3] * projectInv.e30;
-	eyeSpace.y = ndcSpace[0] * projectInv.e01 + ndcSpace[1] * projectInv.e11 + ndcSpace[2] * projectInv.e21 + ndcSpace[3] * projectInv.e31;
-	eyeSpace.z = ndcSpace[0] * projectInv.e02 + ndcSpace[1] * projectInv.e12 + ndcSpace[2] * projectInv.e22 + ndcSpace[3] * projectInv.e32;
-	eyeSpace.w = ndcSpace[0] * projectInv.e03 + ndcSpace[1] * projectInv.e13 + ndcSpace[2] * projectInv.e23 + ndcSpace[3] * projectInv.e33;
+	eyeSpace.x = ndcSpace.x * projectInv.e00 + ndcSpace.y * projectInv.e10 + ndcSpace.z * projectInv.e20 + ndcSpace.w * projectInv.e30;
+	eyeSpace.y = ndcSpace.x * projectInv.e01 + ndcSpace.y * projectInv.e11 + ndcSpace.z * projectInv.e21 + ndcSpace.w * projectInv.e31;
+	eyeSpace.z = ndcSpace.x * projectInv.e02 + ndcSpace.y * projectInv.e12 + ndcSpace.z * projectInv.e22 + ndcSpace.w * projectInv.e32;
+	eyeSpace.w = ndcSpace.x * projectInv.e03 + ndcSpace.y * projectInv.e13 + ndcSpace.z * projectInv.e23 + ndcSpace.w * projectInv.e33;
 
 	Mat4x4 viewInv = Mat4x4::Inverse(view);
 	Vec4f worldSpace;
