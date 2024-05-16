@@ -437,4 +437,36 @@ public:
 
 		return r2 - (e2 - a2) >= 0.0f;
 	}
+
+
+	/**
+	 * @brief AABB와 광선이 충돌하는지 확인합니다.
+	 * 
+	 * @param ray AABB와 충돌하는지 확인할 광선입니다.
+	 * @param aabb 광선과 충돌하는지 확인할 AABB입니다.
+	 *
+	 * @return AABB와 광선이 충돌한다면 true, 그렇지 않으면 false를 반환합니다.
+	 */
+	static bool Raycast(const Ray& ray, const AABB& aabb)
+	{
+		Vec3f minPos = AABB::GetMin(aabb);
+		Vec3f maxPos = AABB::GetMax(aabb);
+
+		Vec3f direction = ray.direction;
+		direction.x = MathModule::NearZero(direction.x) ? 0.00001f : direction.x;
+		direction.y = MathModule::NearZero(direction.y) ? 0.00001f : direction.y;
+		direction.z = MathModule::NearZero(direction.z) ? 0.00001f : direction.z;
+
+		float t1 = (minPos.x - ray.origin.x) / direction.x;
+		float t2 = (maxPos.x - ray.origin.x) / direction.x;
+		float t3 = (minPos.y - ray.origin.y) / direction.y;
+		float t4 = (maxPos.y - ray.origin.y) / direction.y;
+		float t5 = (minPos.z - ray.origin.z) / direction.z;
+		float t6 = (maxPos.z - ray.origin.z) / direction.z;
+
+		float tmin = MathModule::Max(MathModule::Max(MathModule::Min(t1, t2), MathModule::Min(t3, t4)), MathModule::Min(t5, t6));
+		float tmax = MathModule::Min(MathModule::Min(MathModule::Max(t1, t2), MathModule::Max(t3, t4)), MathModule::Max(t5, t6));
+
+		return !((tmax < 0.0f || tmin > tmax));
+	}
 };
