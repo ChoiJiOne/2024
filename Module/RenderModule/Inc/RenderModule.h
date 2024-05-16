@@ -14,9 +14,7 @@
 #error "not support platform"
 #endif
 
-#include "Vec2.h"
-#include "Vec3.h"
-#include "Vec4.h"
+#include "Vec.h"
 #include "Mat4x4.h"
 
 #include "IResource.h"

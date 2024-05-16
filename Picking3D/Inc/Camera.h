@@ -1,9 +1,8 @@
 #pragma once
 
 #include "Collision.h"
-#include "Mat4x4.h"
-#include "Vec2.h"
-#include "Vec3.h"
+#include "Mat.h"
+#include "Vec.h"
 
 #include "IEntity.h"
 
