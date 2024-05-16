@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Collision.h"
 #include "Mat4x4.h"
 #include "Vec3.h"
 
@@ -74,6 +75,14 @@ public:
 
 
 	/**
+	 * @brief 마우스 광선을 얻습니다.
+	 * 
+	 * @return 마우스 광선을 반환합니다.
+	 */
+	const Ray& GetMouseRay() const { return mouseRay_; }
+
+
+	/**
 	 * @brief 카메라 엔티티의 활성화 여부를 설정합니다.
 	 *
 	 * @param active 카메라 엔티티의 활성화 여부입니다.
@@ -85,7 +94,33 @@ private:
 	/**
 	 * @brief 카메라의 상태를 업데이트합니다.
 	 */
-	void UpdateState();
+	void UpdateViewState();
+
+
+	/**
+	 * @brief 뷰포트의 위치에 역투영된 값을 계산합니다.
+	 * 
+	 * @param viewportPosition 뷰포트 상의 위치입니다.
+	 * @param viewportOrigin 뷰포트의 위치입니다.
+	 * @param viewportSize 뷰포트의 크기입니다.
+	 * @param view 시야 행렬입니다.
+	 * @param projection 투영 행렬입니다.
+	 * 
+	 * @return 뷰포트의 위치에 역투영된 값을 반환합니다.
+	 */
+	Vec3f Unproject(const Vec3f& viewportPosition, const Vec2f& viewportOrigin, const Vec2f& viewportSize, const Mat4x4& view, const Mat4x4& projection);
+
+
+	/**
+	 * @brief 마우스 위치에 대응하는 광선을 업데이트합니다.
+	 * 
+	 * @param mousePos 현재 마우스의 위치입니다.
+	 * @param viewportOrigin 뷰포트의 위치입니다.
+	 * @param viewportSize 뷰포트의 크기입니다.
+	 * @param view 시야 행렬입니다.
+	 * @param projection 투영 행렬입니다.
+	 */
+	void UpdateMouseRay(const Vec2f& mousePos, const Vec2f& viewportOrigin, const Vec2f& viewportSize, const Mat4x4& view, const Mat4x4& projection);
 
 
 private:
@@ -191,4 +226,10 @@ private:
 	 * @brief 카메라가 활성화되었는지 확인합니다.
 	 */
 	bool bIsActive_ = true;
+
+
+	/**
+	 * @brief 마우스 위치에 대응하는 광선입니다.
+	 */
+	Ray mouseRay_;
 };
