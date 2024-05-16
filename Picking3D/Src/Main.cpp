@@ -21,8 +21,59 @@
 #include "Camera.h"
 #include "Control.h"
 
-#include <DirectXMath.h>
-#include <DirectXCollision.h>
+Vec3f Unproject(const Vec3f& viewportPosition, const Vec2f& viewportOrigin, const Vec2f& viewportSize, const Mat4x4& view, const Mat4x4& projection)
+{
+	float normalized[4] = 
+	{
+		(viewportPosition.x - viewportOrigin.x) / viewportSize.x,
+		(viewportPosition.y - viewportOrigin.y) / viewportSize.y,
+		viewportPosition.z,
+		1.0f
+	};
+
+	float ndcSpace[4] = { normalized[0], normalized[1], normalized[2], normalized[3] };
+
+	ndcSpace[0] = ndcSpace[0] * 2.0f - 1.0f;
+	ndcSpace[1] = 1.0f - ndcSpace[1] * 2.0f;
+	ndcSpace[2] = MathModule::Clamp<float>(ndcSpace[2], 0.0f, 1.0f);
+
+	Mat4x4 projectInv = Mat4x4::Inverse(projection);
+	Vec4f eyeSpace;
+	eyeSpace.x = ndcSpace[0] * projectInv.e00 + ndcSpace[1] * projectInv.e10 + ndcSpace[2] * projectInv.e20 + ndcSpace[3] * projectInv.e30;
+	eyeSpace.y = ndcSpace[0] * projectInv.e01 + ndcSpace[1] * projectInv.e11 + ndcSpace[2] * projectInv.e21 + ndcSpace[3] * projectInv.e31;
+	eyeSpace.z = ndcSpace[0] * projectInv.e02 + ndcSpace[1] * projectInv.e12 + ndcSpace[2] * projectInv.e22 + ndcSpace[3] * projectInv.e32;
+	eyeSpace.w = ndcSpace[0] * projectInv.e03 + ndcSpace[1] * projectInv.e13 + ndcSpace[2] * projectInv.e23 + ndcSpace[3] * projectInv.e33;
+
+	Mat4x4 viewInv = Mat4x4::Inverse(view);
+	Vec4f worldSpace;
+	worldSpace.x = eyeSpace.x * viewInv.e00 + eyeSpace.y * viewInv.e10 + eyeSpace.z * viewInv.e20 + eyeSpace.w * viewInv.e30;
+	worldSpace.y = eyeSpace.x * viewInv.e01 + eyeSpace.y * viewInv.e11 + eyeSpace.z * viewInv.e21 + eyeSpace.w * viewInv.e31;
+	worldSpace.z = eyeSpace.x * viewInv.e02 + eyeSpace.y * viewInv.e12 + eyeSpace.z * viewInv.e22 + eyeSpace.w * viewInv.e32;
+	worldSpace.w = eyeSpace.x * viewInv.e03 + eyeSpace.y * viewInv.e13 + eyeSpace.z * viewInv.e23 + eyeSpace.w * viewInv.e33;
+
+	if (!MathModule::NearZero(worldSpace.w))
+	{
+		worldSpace.x /= worldSpace.w;
+		worldSpace.y /= worldSpace.w;
+		worldSpace.z /= worldSpace.w;
+	}
+
+	return Vec3f(worldSpace.x, worldSpace.y, worldSpace.z);
+}
+
+Ray GetMouseRay(const Vec2f& mousePos, const Vec2f& viewportOrigin, const Vec2f& viewportSize, const Mat4x4& view, const Mat4x4& projection)
+{
+	Vec3f nearPosition(mousePos.x, mousePos.y, 0.0f);
+	Vec3f farPosition(mousePos.x, mousePos.y, 1.0f);
+
+	Vec3f pNear = Unproject(nearPosition, viewportOrigin, viewportSize, view, projection);
+	Vec3f pFar = Unproject(farPosition, viewportOrigin, viewportSize, view, projection);
+
+	Vec3f origin = pNear;
+	Vec3f direction = Vec3f::Normalize(pFar - pNear);
+
+	return Ray(origin, direction);
+}
 
 int32_t WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPWSTR pCmdLine, _In_ int32_t nCmdShow)
 {
@@ -57,12 +108,12 @@ int32_t WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstan
 
 	PlatformModule::SetEndLoopCallback([&]() { RenderModule::Uninit(); });
 	
-	std::vector<Sphere> spheres;
+	std::vector<AABB> aabbs;
 	for (float x = -3.0f; x <= 3.0f; x += 3.0f)
 	{
 		for (float z = -3.0f; z <= 3.0f; z += 3.0f)
 		{
-			spheres.push_back(Sphere(Vec3f(x, 0.0f, z), 0.3f));
+			aabbs.push_back(AABB(Vec3f(x, 0.0f, z), Vec3f(0.5f, 0.5f, 0.5f)));
 		}
 	}
 
@@ -77,70 +128,29 @@ int32_t WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstan
 			meshRenderer->SetView(camera->GetView());
 			meshRenderer->SetProjection(camera->GetProjection());
 
-			Ray ray;
-			{
-				int32_t screenWidth = 0;
-				int32_t screenHeight = 0;
-				RenderModule::GetScreenSize(screenWidth, screenHeight);
-				CursorPos pos = InputController::GetCurrCursorPos();
+			int32_t width = 0;
+			int32_t height = 0;
+			RenderModule::GetScreenSize(width, height);
 
-				// Step1. 3d Normalised Device Coordinates
-				float x = (2.0f * static_cast<float>(pos.x)) / static_cast<float>(screenWidth) - 1.0f;
-				float y = 1.0f - (2.0f * static_cast<float>(pos.y)) / static_cast<float>(screenHeight);
-				float z = 1.0f;
-				Vec3f direction(x, y, z);
+			CursorPos pos = InputController::GetCurrCursorPos();
 
-				// Step2. 4d Homogeneous Clip Coordinates
-				Vec4f rayClip = Vec4f(direction.x, direction.y, -1.0f, 1.0f);
-
-				// Step3. 4d Eye (Camera) Coordinates
-				Mat4x4 projectInv = Mat4x4::Inverse(camera->GetProjection());
-				Vec4f rayEye = Vec4f(
-					rayClip.x * projectInv.e00 + rayClip.y * projectInv.e10 + rayClip.z * projectInv.e20 + rayClip.w * projectInv.e30,
-					rayClip.x * projectInv.e01 + rayClip.y * projectInv.e11 + rayClip.z * projectInv.e21 + rayClip.w * projectInv.e31,
-					rayClip.x * projectInv.e02 + rayClip.y * projectInv.e12 + rayClip.z * projectInv.e22 + rayClip.w * projectInv.e32,
-					rayClip.x * projectInv.e03 + rayClip.y * projectInv.e13 + rayClip.z * projectInv.e23 + rayClip.w * projectInv.e33
-				);
-
-				rayEye = Vec4f(rayEye.x, rayEye.y, -1.0f, 1.0f);
-
-				// Step 4: 4d World Coordinates
-				Mat4x4 viewInv = Mat4x4::Inverse(camera->GetView());
-				Vec4f rayWorld4 = Vec4f(
-					rayEye.x * viewInv.e00 + rayEye.y * viewInv.e10 + rayEye.z * viewInv.e20 + rayEye.w * viewInv.e30,
-					rayEye.x * viewInv.e01 + rayEye.y * viewInv.e11 + rayEye.z * viewInv.e21 + rayEye.w * viewInv.e31,
-					rayEye.x * viewInv.e02 + rayEye.y * viewInv.e12 + rayEye.z * viewInv.e22 + rayEye.w * viewInv.e32,
-					rayEye.x * viewInv.e03 + rayEye.y * viewInv.e13 + rayEye.z * viewInv.e23 + rayEye.w * viewInv.e33
-				);
-
-				Vec3f rayWorld = Vec3f(rayWorld4.x, rayWorld4.y, rayWorld4.z);
-				rayWorld = Vec3f::Normalize(rayWorld);
-				ray.direction = rayWorld;
-
-				ImGui::Begin("Collision", nullptr, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);
-				ImGui::SetWindowPos(ImVec2(600.0f, 10.0f));
-				ImGui::SetWindowSize(ImVec2(400.0f, 200.0f));
-				ImGui::Text("direction : %f, %f, %f", direction.x, direction.y, direction.z);
-				ImGui::Text("ray eye : %f, %f, %f", rayEye.x, rayEye.y, rayEye.z);
-				ImGui::Text("ray world : %f, %f, %f", rayWorld.x, rayWorld.y, rayWorld.z);
-				ImGui::End();
-			}
+			Vec2f mousePos = Vec2f(static_cast<float>(pos.x), static_cast<float>(pos.y));
+			Vec2f viewportSize = Vec2f(static_cast<float>(width), static_cast<float>(height));
+			Ray ray = GetMouseRay(mousePos, Vec2f(0.0f, 0.0f), viewportSize, camera->GetView(), camera->GetProjection());
 
 			RenderModule::BeginFrame(0.0f, 0.0f, 0.0f, 1.0f);
 
 			geometryRenderer->DrawGrid3D(Vec3f(100.0f, 100.0f, 100.0f), 1.0f);
 			
-			ray.origin = camera->eyePosition_;
-
-			for (const auto& sphere : spheres)
+			for (const auto& aabb : aabbs)
 			{
-				if (Collision::Raycast(ray, sphere))
+				if (Collision::Raycast(ray, aabb))
 				{
-					geometryRenderer->DrawSphere3D(Mat4x4::Translation(sphere.center), sphere.radius, Vec4f(1.0f, 0.0f, 0.0f, 1.0f));
+					geometryRenderer->DrawCube3D(Mat4x4::Translation(aabb.center), aabb.extents, Vec4f(1.0f, 0.0f, 0.0f, 1.0f));
 				}
 				else
 				{
-					geometryRenderer->DrawSphere3D(Mat4x4::Translation(sphere.center), sphere.radius, Vec4f(0.0f, 0.0f, 1.0f, 1.0f));
+					geometryRenderer->DrawCube3D(Mat4x4::Translation(aabb.center), aabb.extents, Vec4f(0.0f, 0.0f, 1.0f, 1.0f));
 				}
 			}
 
