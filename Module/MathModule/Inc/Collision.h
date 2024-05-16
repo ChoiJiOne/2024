@@ -247,6 +247,98 @@ struct Sphere
 
 
 /**
+ * @brief 광선(Ray)입니다.
+ */
+struct Ray
+{
+	/**
+	 * @brief 광선의 기본 생성자입니다.
+	 */
+	Ray() = default;
+
+
+	/**
+	 * @brief 광선의 생성자입니다.
+	 *
+	 * @param o 광선의 위치입니다.
+	 * @param d 광선의 방향입니다.
+	 */
+	Ray(const Vec3f& o, const Vec3f& d)
+		: origin(o)
+		, direction(Vec3f::Normalize(d)) {}
+
+
+	/**
+	 * @brief 광선의 복사 생성자입니다.
+	 *
+	 * @param instance 내부 프로퍼티를 복사할 인스턴스입니다.
+	 */
+	Ray(Ray&& instance) noexcept
+		: origin(instance.origin)
+		, direction(instance.direction) {}
+
+
+	/**
+	 * @brief 광선의 복사 생성자입니다.
+	 *
+	 * @param instance 내부 프로퍼티를 복사할 인스턴스입니다.
+	 */
+	Ray(const Ray& instance) noexcept
+		: origin(instance.origin)
+		, direction(instance.direction) {}
+
+
+
+	/**
+	 * @brief 광선의 대입 연산자입니다.
+	 *
+	 * @param instance 내부 프로퍼티를 복사할 인스턴스입니다.
+	 *
+	 * @return 대입한 객체의 참조자를 반환합니다.
+	 */
+	Ray& operator=(Ray&& instance) noexcept
+	{
+		if (this == &instance) return *this;
+
+		origin = instance.origin;
+		direction = instance.direction;
+
+		return *this;
+	}
+
+
+	/**
+	 * @brief 광선의 대입 연산자입니다.
+	 *
+	 * @param instance 내부 프로퍼티를 복사할 인스턴스입니다.
+	 *
+	 * @return 대입한 객체의 참조자를 반환합니다.
+	 */
+	Ray& operator=(const Ray& instance) noexcept
+	{
+		if (this == &instance) return *this;
+
+		origin = instance.origin;
+		direction = instance.direction;
+
+		return *this;
+	}
+
+
+	/**
+	 * @brief 광선의 위치입니다.
+	 */
+	Vec3f origin;
+
+
+	/**
+	 * @brief 광선의 방향입니다.
+	 */
+	Vec3f direction;
+};
+
+
+/**
  * @brief 충돌 처리를 수행합니다.
  * 
  * @note 이 클래스의 모든 멤버 변수와 메서드는 정적(static) 타입입니다.
