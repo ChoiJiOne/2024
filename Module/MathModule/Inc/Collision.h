@@ -257,7 +257,7 @@ public:
 	/**
 	 * @brief 경계 구와 경계 구 사이의 충돌 여부를 검사합니다.
 	 * 
-	 * @param sphere0 충동 여부를 검사할 경계 구입니다.
+	 * @param sphere0 충돌 여부를 검사할 경계 구입니다.
 	 * @param sphere1 충돌 처리를 검사할 또 다른 구입니다.
 	 * 
 	 * @return 경계 구와 경계 구 사이의 충돌이 감지되면 true, 그렇지 않으면 false를 반환합니다.
@@ -286,5 +286,38 @@ public:
 		float radiusSq = sphere.radius * sphere.radius;
 
 		return distSq <= radiusSq;
+	}
+
+
+	/**
+	 * @brief AABB와 AABB 사이의 충돌 여부를 검사합니다.
+	 * 
+	 * @param aabb0 충돌 여부를 검사할 AABB입니다.
+	 * @param aabb1 충돌 여부를 검사할 또 다른 AABB입니다.
+	 */
+	static bool AABBToAABB(const AABB& aabb0, const AABB& aabb1)
+	{
+		Vec3f minPos0 = AABB::GetMin(aabb0);
+		Vec3f maxPos0 = AABB::GetMax(aabb0);
+
+		Vec3f minPos1 = AABB::GetMin(aabb1);
+		Vec3f maxPos1 = AABB::GetMax(aabb1);
+
+		if (minPos0.x > maxPos1.x || maxPos0.x < minPos1.x)
+		{
+			return false;
+		}
+
+		if (minPos0.y > maxPos1.y || maxPos0.y < minPos1.y)
+		{
+			return false;
+		}
+
+		if (minPos0.z > maxPos1.z || maxPos0.z < minPos1.z)
+		{
+			return false;
+		}
+
+		return true;
 	}
 };
