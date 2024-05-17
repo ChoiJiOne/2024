@@ -52,6 +52,23 @@ public:
 	virtual void Release();
 
 
+	/**
+	 * @brief 현재 선택 중인 구를 얻습니다.
+	 * 
+	 * @return 현재 선택 중인 구를 반환합니다.
+	 */
+	Sphere3D* GetPickSphere() { return pickSphere_; }
+
+
+private:
+	/**
+	 * @brief 선택된 구 엔티티를 얻습니다.
+	 * 
+	 * @return 선택된 구 엔티티의 포인터를 반환합니다.
+	 */
+	Sphere3D* GetPickingSphere3D();
+
+
 private:
 	/**
 	 * @brief 컨트롤 엔티티의 UI 위치입니다.
@@ -99,6 +116,12 @@ private:
 	 * @brief 컨트롤 엔티티의 대상이 되는 카메라입니다.
 	 */
 	Camera* camera_ = nullptr;
+
+
+	/**
+	 * @brief 현재 선택 중인 구 엔티티입니다.
+	 */
+	Sphere3D* pickSphere_ = nullptr;
 
 
 	/**

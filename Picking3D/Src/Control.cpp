@@ -1,5 +1,6 @@
 #include <algorithm>
 
+#include "InputController.h"
 #include "GameModule.h"
 
 #include "Camera.h"
@@ -9,7 +10,7 @@
 Control::Control(Camera* camera, std::list<Sphere3D*>& spheres)
 	: camera_(camera)
 	, location_(ImVec2(10.0f, 10.0f))
-	, size_(ImVec2(350.0f, 200.0f))
+	, size_(ImVec2(400.0f, 200.0f))
 	, flags_(ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse)
 	, spheres_(spheres)
 {
@@ -42,6 +43,7 @@ void Control::Tick(float deltaSeconds)
 	ImGui::Separator();
 
 	ImGui::Text("Sphere : %d", spheres_.size());
+	ImGui::SameLine();
 	if (ImGui::Button("Create"))
 	{
 		if (spheres_.size() < MAX_CREATE_ENTITY)
@@ -49,6 +51,30 @@ void Control::Tick(float deltaSeconds)
 			Sphere3D* sphere = GameModule::CreateEntity<Sphere3D>();
 			spheres_.push_back(sphere);
 		}
+	}
+	ImGui::Separator();
+
+	if (pickSphere_)
+	{
+		Transform& transform = pickSphere_->GetTransform();
+		Sphere& sphere = pickSphere_->GetBound();
+
+		ImGui::Text("Position");
+		ImGui::SameLine();
+		ImGui::SliderFloat3("##position", transform.position.data, -50.0f, 50.0f);
+		ImGui::SameLine();
+		if (ImGui::Button("Reset##position"))
+		{
+			transform.position = Vec3f(0.0f, 0.0f, 0.0f);
+		}
+
+		sphere.center = transform.position;
+	}
+
+	bool bIsWindowFocused = ImGui::IsWindowFocused();
+	if (!bIsWindowFocused && InputController::GetKeyPressState(EKey::KEY_LBUTTON) == EPressState::PRESSED)
+	{
+		pickSphere_ = GetPickingSphere3D();
 	}
 
 	camera_->SetActive(!ImGui::IsWindowFocused());
@@ -62,4 +88,20 @@ void Control::Release()
 	{
 		bIsInitialized_ = false;
 	}
+}
+
+Sphere3D* Control::GetPickingSphere3D()
+{
+	static Sphere3D* spheres[MAX_CREATE_ENTITY];
+	int32_t countPickSphere = 0;
+	
+	for (auto iter = spheres_.begin(); iter != spheres_.end(); ++iter)
+	{
+		if (Collision::Raycast(camera_->GetMouseRay(), (*iter)->GetBound()))
+		{
+			spheres[countPickSphere++] = *iter;
+		}
+	}
+
+	return countPickSphere ? spheres[0] : nullptr;
 }
