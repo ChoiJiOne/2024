@@ -13,6 +13,7 @@ class Control;
 class GeometryRenderer3D;
 class MeshRenderer;
 class Sphere3D;
+class Shader;
 
 
 /**
@@ -70,7 +71,7 @@ private:
 	 * @brief 그리기를 수행합니다.
 	 */
 	void Render();
-	
+
 
 private:
 	/**
@@ -83,6 +84,12 @@ private:
 	 * @brief 3D 메시를 렌더링하기 위한 렌더러입니다.
 	 */
 	MeshRenderer* meshRenderer_ = nullptr;
+
+
+	/**
+	 * @brief 3D 메시의 아웃라인을 그리는 렌더러입니다.
+	 */
+	Shader* outlineRenderer_ = nullptr;
 
 
 	/**
