@@ -83,6 +83,14 @@ public:
 
 	/**
 	 * @brief 구의 경계 영역을 얻습니다.
+	 *
+	 * @return 구의 경계 영역을 반환합니다.
+	 */
+	Sphere& GetBound() { return bound_; }
+
+
+	/**
+	 * @brief 구의 경계 영역을 얻습니다.
 	 * 
 	 * @return 구의 경계 영역을 반환합니다.
 	 */
