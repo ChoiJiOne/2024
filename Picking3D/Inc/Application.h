@@ -1,5 +1,7 @@
 #pragma once
 
+#include <list>
+
 #include "CrashModule.h"
 #include "GameModule.h"
 #include "PlatformModule.h"
@@ -10,6 +12,7 @@ class Camera;
 class Control;
 class GeometryRenderer3D;
 class MeshRenderer;
+class Sphere3D;
 
 
 /**
@@ -53,7 +56,7 @@ private:
 	 * @brief 렌더링 전 준비를 수행합니다.
 	 */
 	void PrepareForRendering();
-
+	
 
 private:
 	/**
@@ -78,4 +81,10 @@ private:
 	 * @brief 컨트롤 엔티티입니다.
 	 */
 	Control* control_ = nullptr;
+
+
+	/**
+	 * @brief 구 엔티티 목록입니다.
+	 */
+	std::list<Sphere3D*> spheres_;
 };

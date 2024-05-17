@@ -12,6 +12,7 @@
 #include "Application.h"
 #include "Camera.h"
 #include "Control.h"
+#include "Sphere3D.h"
 
 Application::Application()
 {
@@ -39,7 +40,7 @@ void Application::Init()
 	meshRenderer_ = RenderModule::CreateResource<MeshRenderer>();
 
 	camera_ = GameModule::CreateEntity<Camera>();
-	control_ = GameModule::CreateEntity<Control>(camera_);
+	control_ = GameModule::CreateEntity<Control>(camera_, spheres_);
 
 	geometryRenderer_->SetView(camera_->GetView());
 	geometryRenderer_->SetProjection(camera_->GetProjection());
@@ -55,11 +56,15 @@ void Application::Run()
 			control_->Tick(deltaSeconds);
 			camera_->Tick(deltaSeconds);
 
-			
 			PrepareForRendering();
 			RenderModule::BeginFrame(0.0f, 0.0f, 0.0f, 1.0f);
 
 			geometryRenderer_->DrawGrid3D(Vec3f(100.0f, 100.0f, 100.0f), 1.0f);
+
+			for (auto sphere : spheres_)
+			{
+				meshRenderer_->DrawMesh(sphere->GetMesh(), Transform::ToMat(sphere->GetTransform()), sphere->GetMaterial());
+			}
 
 			RenderModule::EndFrame();
 		}
