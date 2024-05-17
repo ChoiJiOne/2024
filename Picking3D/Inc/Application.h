@@ -53,9 +53,23 @@ public:
 
 private:
 	/**
+	 * @brief 업데이트를 수행합니다.
+	 * 
+	 * @param deltaSeconds 초단위 델타 시간값입니다.
+	 */
+	void Update(float deltaSeconds);
+
+
+	/**
 	 * @brief 렌더링 전 준비를 수행합니다.
 	 */
 	void PrepareForRendering();
+
+
+	/**
+	 * @brief 그리기를 수행합니다.
+	 */
+	void Render();
 	
 
 private:

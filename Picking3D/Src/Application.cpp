@@ -23,6 +23,7 @@ Application::Application()
 
 	RenderModule::SetVsyncMode(false);
 	RenderModule::SetDepthMode(true);
+	RenderModule::SetStencilMode(true);
 
 	PlatformModule::SetEndLoopCallback([&]() { RenderModule::Uninit(); });
 }
@@ -53,22 +54,16 @@ void Application::Run()
 	PlatformModule::RunLoop(
 		[&](float deltaSeconds)
 		{
-			control_->Tick(deltaSeconds);
-			camera_->Tick(deltaSeconds);
-
-			PrepareForRendering();
-			RenderModule::BeginFrame(0.0f, 0.0f, 0.0f, 1.0f);
-
-			geometryRenderer_->DrawGrid3D(Vec3f(100.0f, 100.0f, 100.0f), 1.0f);
-
-			for (auto sphere : spheres_)
-			{
-				meshRenderer_->DrawMesh(sphere->GetMesh(), Transform::ToMat(sphere->GetTransform()), sphere->GetMaterial());
-			}
-
-			RenderModule::EndFrame();
+			Update(deltaSeconds);
+			Render();
 		}
 	);
+}
+
+void Application::Update(float deltaSeconds)
+{
+	control_->Tick(deltaSeconds);
+	camera_->Tick(deltaSeconds);
 }
 
 void Application::PrepareForRendering()
@@ -78,4 +73,19 @@ void Application::PrepareForRendering()
 
 	meshRenderer_->SetView(camera_->GetView());
 	meshRenderer_->SetProjection(camera_->GetProjection());
+}
+
+void Application::Render()
+{
+	PrepareForRendering();
+	RenderModule::BeginFrame(0.0f, 0.0f, 0.0f, 1.0f);
+
+	geometryRenderer_->DrawGrid3D(Vec3f(100.0f, 100.0f, 100.0f), 1.0f);
+
+	for (auto sphere : spheres_)
+	{
+		meshRenderer_->DrawMesh(sphere->GetMesh(), Transform::ToMat(sphere->GetTransform()), sphere->GetMaterial());
+	}
+
+	RenderModule::EndFrame();
 }
