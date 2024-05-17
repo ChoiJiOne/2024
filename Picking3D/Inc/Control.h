@@ -1,13 +1,14 @@
 #pragma once
 
 #include <array>
+#include <list>
 
 #include <imgui.h>
 
 #include "IEntity.h"
 
-
 class Camera;
+class Sphere3D;
 
 
 /**
@@ -20,8 +21,9 @@ public:
 	 * @brief 각종 속성을 제어하는 컨트롤 엔티티의 생성자입니다.
 	 * 
 	 * @param camera 카메라 엔티티의 포인터입니다.
+	 * @param spheres 구 엔티티 목록입니다.
 	 */
-	Control(Camera* camera);
+	Control(Camera* camera, std::list<Sphere3D*>& spheres);
 
 
 	/**
@@ -97,5 +99,17 @@ private:
 	 * @brief 컨트롤 엔티티의 대상이 되는 카메라입니다.
 	 */
 	Camera* camera_ = nullptr;
+
+
+	/**
+	 * @brief 생성할 수 있는 최대 엔티티의 수입니다.
+	 */
+	static const uint32_t MAX_CREATE_ENTITY = 200;
+
+
+	/**
+	 * @brief 구 엔티티 목록입니다.
+	 */
+	std::list<Sphere3D*>& spheres_;
 };
 
