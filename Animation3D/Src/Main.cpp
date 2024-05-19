@@ -10,6 +10,17 @@
 #include "PlatformModule.h"
 #include "RenderModule.h"
 
+void RunApplication()
+{
+	PlatformModule::RunLoop(
+		[&](float deltaSeconds)
+		{
+			RenderModule::BeginFrame(0.0f, 0.0f, 0.0f, 1.0f);
+			RenderModule::EndFrame();
+		}
+	);
+}
+
 int32_t WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPWSTR pCmdLine, _In_ int32_t nCmdShow)
 {
 #if defined(DEBUG_MODE) || defined(RELEASE_MODE) || defined(DEVELOPMENT_MODE)
@@ -23,13 +34,7 @@ int32_t WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstan
 
 	PlatformModule::SetEndLoopCallback([&]() { RenderModule::Uninit(); });
 
-	PlatformModule::RunLoop(
-		[&](float deltaSeconds)
-		{
-			RenderModule::BeginFrame(0.0f, 0.0f, 0.0f, 1.0f);
-			RenderModule::EndFrame();
-		}
-	);
+	RunApplication();
 
 	GameModule::Uninit();
 	PlatformModule::Uninit();
