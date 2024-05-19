@@ -2,6 +2,8 @@
 
 /**
  * @brief 애니메이션 곡선 보간 유형입니다.
+ * 
+ * @see https://gabormakesgames.com/blog_animation_pose.html
  */
 enum class EInterpolation
 {
