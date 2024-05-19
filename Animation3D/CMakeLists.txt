@@ -19,6 +19,7 @@ target_include_directories(${PROJECT_NAME} PUBLIC ${PROJECT_INCLUDE_PATH})
 target_link_libraries(
     ${PROJECT_NAME} 
     PUBLIC 
+    AnimationModule
     AudioModule
     CrashModule
     FileModule
