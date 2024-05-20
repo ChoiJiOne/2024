@@ -187,12 +187,13 @@ struct Quat
 	Quat operator*(Quat&& q) const
 	{
 		return Quat(
-			+x * q.w + y * q.z - z * q.y + w * q.x,
-			-x * q.z + y * q.w + z * q.x + w * q.y,
-			+x * q.y - y * q.x + z * q.w + w * q.z,
-			-x * q.x - y * q.y - z * q.z + w * q.w
+			+q.x * w + q.y * z - q.z * y + q.w * x,
+			-q.x * z + q.y * w + q.z * x + q.w * y,
+			+q.x * y - q.y * x + q.z * w + q.w * z,
+			-q.x * x - q.y * y - q.z * z + q.w * w
 		);
 	}
+
 
 	/**
 	 * @brief ÄõÅÍ´Ï¾ð °ö¼À ¿¬»êÀ» ¼öÇàÇÕ´Ï´Ù.
@@ -204,10 +205,10 @@ struct Quat
 	Quat operator*(const Quat& q) const
 	{
 		return Quat(
-			+x * q.w + y * q.z - z * q.y + w * q.x,
-			-x * q.z + y * q.w + z * q.x + w * q.y,
-			+x * q.y - y * q.x + z * q.w + w * q.z,
-			-x * q.x - y * q.y - z * q.z + w * q.w
+			+q.x * w + q.y * z - q.z * y + q.w * x,
+			-q.x * z + q.y * w + q.z * x + q.w * y,
+			+q.x * y - q.y * x + q.z * w + q.w * z,
+			-q.x * x - q.y * y - q.z * z + q.w * w
 		);
 	}
 
