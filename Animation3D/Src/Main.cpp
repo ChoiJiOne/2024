@@ -10,8 +10,12 @@
 #include "PlatformModule.h"
 #include "RenderModule.h"
 
+#include "GLTFLoader.h"
+
 void RunApplication()
 {
+	cgltf_data* data = GLTFLoader::Load("Resource/Model/Kachujin.gltf");
+
 	PlatformModule::RunLoop(
 		[&](float deltaSeconds)
 		{
@@ -19,6 +23,8 @@ void RunApplication()
 			RenderModule::EndFrame();
 		}
 	);
+
+	GLTFLoader::Free(data);
 }
 
 int32_t WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPWSTR pCmdLine, _In_ int32_t nCmdShow)
