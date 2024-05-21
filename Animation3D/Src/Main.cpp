@@ -9,22 +9,33 @@
 #include "GameModule.h"
 #include "PlatformModule.h"
 #include "RenderModule.h"
-
+#include "GeometryRenderer3D.h"
 #include "GLTFLoader.h"
+#include "Camera.h"
 
 void RunApplication()
 {
-	cgltf_data* data = GLTFLoader::Load("Resource/Model/Kachujin.gltf");
+	Camera* camera = GameModule::CreateEntity<Camera>();
+
+	GeometryRenderer3D* geometryRenderer = RenderModule::CreateResource<GeometryRenderer3D>();
+	geometryRenderer->SetView(camera->GetView());
+	geometryRenderer->SetProjection(camera->GetProjection());
 
 	PlatformModule::RunLoop(
 		[&](float deltaSeconds)
 		{
+			camera->Tick(deltaSeconds);
+
+			geometryRenderer->SetView(camera->GetView());
+			geometryRenderer->SetProjection(camera->GetProjection());
+
 			RenderModule::BeginFrame(0.0f, 0.0f, 0.0f, 1.0f);
+
+			geometryRenderer->DrawGrid3D(Vec3f(100.0f, 100.0f, 100.0f), 1.0f);
+
 			RenderModule::EndFrame();
 		}
 	);
-
-	GLTFLoader::Free(data);
 }
 
 int32_t WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPWSTR pCmdLine, _In_ int32_t nCmdShow)
@@ -39,6 +50,9 @@ int32_t WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstan
 	GameModule::Init();
 
 	PlatformModule::SetEndLoopCallback([&]() { RenderModule::Uninit(); });
+
+	RenderModule::SetAlphaBlendMode(true);
+	RenderModule::SetDepthMode(true);
 
 	RunApplication();
 
