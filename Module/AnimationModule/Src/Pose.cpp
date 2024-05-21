@@ -167,3 +167,41 @@ void Pose::SetParent(uint32_t index, int32_t parent)
 {
 	parents_[index] = parent;
 }
+
+bool Pose::IsInHierarchy(Pose& pose, uint32_t parent, uint32_t search)
+{
+	if (search == parent)
+	{
+		return true;
+	}
+
+	int32_t p = pose.GetParent(search);
+
+	while (p >= 0)
+	{
+		if (p == static_cast<int32_t>(parent))
+		{
+			return true;
+		}
+
+		p = pose.GetParent(p);
+	}
+
+	return false;
+}
+
+void Pose::Blend(Pose& output, Pose& start, Pose& end, float t, int32_t blendRoot)
+{
+	for (uint32_t index = 0; index < output.GetJointSize(); ++index)
+	{
+		if (blendRoot >= 0)
+		{
+			if (!IsInHierarchy(output, static_cast<uint32_t>(blendRoot), index))
+			{
+				continue;
+			}
+		}
+
+		output.SetLocalTransform(index, Transform::Mix(start.GetLocalTransform(index), end.GetLocalTransform(index), t));
+	}
+}
