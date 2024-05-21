@@ -662,3 +662,197 @@ struct VertexPositionNormalUv3D
 	 */
 	Vec2f uv;
 };
+
+
+/**
+ * @brief 3D 위치, 법선, 텍스처 좌표, 스키닝 정보를 가진 정점입니다.
+ */
+struct VertexPositionNormalUvSkin3D
+{
+	/**
+	 * @brief 3D 위치, 법선, 텍스처 좌표, 스키닝 정보를 가진 정점의 디폴트 생성자입니다.
+	 */
+	VertexPositionNormalUvSkin3D() noexcept
+		: position(0.0f, 0.0f, 0.0f)
+		, normal(0.0f, 0.0f, 0.0f)
+		, uv(0.0f, 0.0f)
+		, weight(0.0f, 0.0f, 0.0f, 0.0f)
+		, joints(0, 0, 0, 0) {}
+
+
+	/**
+	 * @brief 3D 위치, 법선, 텍스처 좌표, 스키닝 정보를 가진 정점의 생성자입니다.
+	 *
+	 * @param p 정점의 위치입니다.
+	 * @param n 정점의 법선 벡터입니다.
+	 * @param tex 정점의 텍스처 좌표입니다.
+	 * @param w 정점의 가중치입니다.
+	 * @param j 정점의 뼈대 인덱스입니다.
+	 */
+	VertexPositionNormalUvSkin3D(Vec3f&& p, Vec3f&& n, Vec2f&& tex, Vec4f&& w, Vec4i&& j) noexcept
+		: position(p)
+		, normal(n)
+		, uv(tex)
+		, weight(w)
+		, joints(j) {}
+
+
+	/**
+	 * @brief 3D 위치, 법선, 텍스처 좌표, 스키닝 정보를 가진 정점의 생성자입니다.
+	 *
+	 * @param p 정점의 위치입니다.
+	 * @param n 정점의 법선 벡터입니다.
+	 * @param tex 정점의 텍스처 좌표입니다.
+	 * @param w 정점의 가중치입니다.
+	 * @param j 정점의 뼈대 인덱스입니다.
+	 */
+	VertexPositionNormalUvSkin3D(const Vec3f& p, const Vec3f& n, const Vec2f& tex, const Vec4f& w, const Vec4i& j) noexcept
+		: position(p)
+		, normal(n)
+		, uv(tex)
+		, weight(w)
+		, joints(j) {}
+
+
+	/**
+	 * @brief 3D 위치, 법선, 텍스처 좌표, 스키닝 정보를 가진 정점의 생성자입니다.
+	 *
+	 * @param px 정점 위치의 X좌표입니다.
+	 * @param py 정점 위치의 Y좌표입니다.
+	 * @param pz 정점 위치의 Z좌표입니다.
+	 * @param nx 정점 법선 벡터의 X성분입니다.
+	 * @param ny 정점 법선 벡터의 Y성분입니다.
+	 * @param nz 정점 법선 벡터의 Z성분입니다.
+	 * @param u 정점 텍스처 좌표의 U성분입니다.
+	 * @param v 정점 텍스처 좌표의 V성분입니다.
+	 * @param wx 정점 가중치의 X성분입니다.
+	 * @param wy 정점 가중치의 Y성분입니다.
+	 * @param wz 정점 가중치의 Z성분입니다.
+	 * @param ww 정점 가중치의 W성분입니다.
+	 * @param jx 정점 뼈대 인덱스의 X성분입니다.
+	 * @param jy 정점 뼈대 인덱스의 Y성분입니다.
+	 * @param jz 정점 뼈대 인덱스의 Z성분입니다.
+	 * @param jw 정점 뼈대 인덱스의 W성분입니다.
+	 */
+	VertexPositionNormalUvSkin3D(
+		float px, float py, float pz,
+		float nx, float ny, float nz,
+		float u, float v,
+		float wx, float wy, float wz, float ww,
+		int32_t jx, int32_t jy, int32_t jz, int32_t jw
+	) noexcept
+		: position(px, py, pz)
+		, normal(nx, ny, nz)
+		, uv(u, v)
+		, weight(wx, wy, wz, ww)
+		, joints(jx, jy, jz, jw) {}
+
+
+	/**
+	 * @brief 3D 위치, 법선, 텍스처 좌표, 스키닝 정보를 가진 정점의 복사 생성자입니다.
+	 *
+	 * @param instance 복사를 수행할 3D 위치, 법선, 텍스처 좌표, 스키닝 정보를 가진 정점 인스턴스입니다.
+	 */
+	VertexPositionNormalUvSkin3D(VertexPositionNormalUvSkin3D&& instance) noexcept
+		: position(instance.position)
+		, normal(instance.normal)
+		, uv(instance.uv)
+		, weight(instance.weight)
+		, joints(instance.joints) {}
+
+
+	/**
+	 * @brief 3D 위치, 법선, 텍스처 좌표, 스키닝 정보를 가진 정점의 복사 생성자입니다.
+	 *
+	 * @param instance 복사를 수행할 3D 위치, 법선, 텍스처 좌표, 스키닝 정보를 가진 정점 인스턴스입니다.
+	 */
+	VertexPositionNormalUvSkin3D(const VertexPositionNormalUvSkin3D& instance) noexcept
+		: position(instance.position)
+		, normal(instance.normal)
+		, uv(instance.uv)
+		, weight(instance.weight)
+		, joints(instance.joints) {}
+
+
+	/**
+	 * @brief 3D 위치, 법선, 텍스처 좌표, 스키닝 정보를 가진 정점의 대입 연산자입니다.
+	 *
+	 * @param instance 복사를 수행할 3D 위치, 법선, 텍스처 좌표, 스키닝 정보를 가진 정점 인스턴스입니다.
+	 *
+	 * @return 대인한 객체의 참조자를 반환합니다.
+	 */
+	VertexPositionNormalUvSkin3D& operator=(VertexPositionNormalUvSkin3D&& instance) noexcept
+	{
+		if (this == &instance) return *this;
+
+		position = instance.position;
+		normal = instance.normal;
+		uv = instance.uv;
+		weight = instance.weight;
+		joints = instance.joints;
+
+		return *this;
+	}
+
+
+	/**
+	 * @brief 3D 위치, 법선, 텍스처 좌표, 스키닝 정보를 가진 정점의 대입 연산자입니다.
+	 *
+	 * @param instance 복사를 수행할 3D 위치, 법선, 텍스처 좌표, 스키닝 정보를 가진 정점 인스턴스입니다.
+	 *
+	 * @return 대인한 객체의 참조자를 반환합니다.
+	 */
+	VertexPositionNormalUvSkin3D& operator=(const VertexPositionNormalUvSkin3D& instance) noexcept
+	{
+		if (this == &instance) return *this;
+
+		position = instance.position;
+		normal = instance.normal;
+		uv = instance.uv;
+		weight = instance.weight;
+		joints = instance.joints;
+
+		return *this;
+	}
+
+
+	/**
+	 * @brief 정점의 바이트 보폭 값을 얻습니다.
+	 *
+	 * @return 정점의 파이트 보폭(Stride) 값을 반환합니다.
+	 */
+	static uint32_t GetStride()
+	{
+		return sizeof(VertexPositionNormalUvSkin3D);
+	}
+
+
+	/**
+	 * @brief 정점의 위치입니다.
+	 */
+	Vec3f position;
+
+
+	/**
+	 * @brief 정점의 법선 벡터입니다.
+	 */
+	Vec3f normal;
+
+
+	/**
+	 * @brief 정점의 텍스처 좌표입니다.
+	 */
+	Vec2f uv;
+
+
+	/**
+	 * @brief 정점의 가중치입니다.
+	 */
+	Vec4f weight;
+
+
+	/**
+	 * @brief 정점의 뼈대 인덱스입니다.
+	 */
+	Vec4i joints;
+};
