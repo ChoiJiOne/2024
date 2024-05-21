@@ -106,10 +106,22 @@ void Shader::SetUniform(const std::string& name, int32_t value)
 	GL_FAILED(glUniform1i(location, value));
 }
 
+void Shader::SetUniform(const std::string& name, const int32_t* bufferPtr, uint32_t count)
+{
+	int32_t location = GetUniformLocation(name);
+	GL_FAILED(glUniform1iv(location, count, bufferPtr));
+}
+
 void Shader::SetUniform(const std::string& name, float value)
 {
 	int32_t location = GetUniformLocation(name);
 	GL_FAILED(glUniform1f(location, value));
+}
+
+void Shader::SetUniform(const std::string& name, const float* bufferPtr, uint32_t count)
+{
+	int32_t location = GetUniformLocation(name);
+	GL_FAILED(glUniform1fv(location, count, bufferPtr));
 }
 
 void Shader::SetUniform(const std::string& name, const Vec2f& value)
@@ -118,6 +130,14 @@ void Shader::SetUniform(const std::string& name, const Vec2f& value)
 
 	const float* valuePtr = value.GetPtr();
 	GL_FAILED(glUniform2fv(location, 1, valuePtr));
+}
+
+void Shader::SetUniform(const std::string& name, const Vec2f* bufferPtr, uint32_t count)
+{
+	int32_t location = GetUniformLocation(name);
+
+	const float* valuePtr = reinterpret_cast<const float*>(bufferPtr);
+	GL_FAILED(glUniform2fv(location, count, valuePtr));
 }
 
 void Shader::SetUniform(const std::string& name, float x, float y)
@@ -134,6 +154,14 @@ void Shader::SetUniform(const std::string& name, const Vec2i& value)
 	GL_FAILED(glUniform2iv(location, 1, valuePtr));
 }
 
+void Shader::SetUniform(const std::string& name, const Vec2i* bufferPtr, uint32_t count)
+{
+	int32_t location = GetUniformLocation(name);
+
+	const int32_t* valuePtr = reinterpret_cast<const int32_t*>(bufferPtr);
+	GL_FAILED(glUniform2iv(location, count, valuePtr));
+}
+
 void Shader::SetUniform(const std::string& name, int32_t x, int32_t y)
 {
 	int32_t location = GetUniformLocation(name);
@@ -146,6 +174,14 @@ void Shader::SetUniform(const std::string& name, const Vec3f& value)
 
 	const float* valuePtr = value.GetPtr();
 	GL_FAILED(glUniform3fv(location, 1, valuePtr));
+}
+
+void Shader::SetUniform(const std::string& name, const Vec3f* bufferPtr, uint32_t count)
+{
+	int32_t location = GetUniformLocation(name);
+
+	const float* valuePtr = reinterpret_cast<const float*>(bufferPtr);
+	GL_FAILED(glUniform3fv(location, count, valuePtr));
 }
 
 void Shader::SetUniform(const std::string& name, float x, float y, float z)
@@ -162,6 +198,14 @@ void Shader::SetUniform(const std::string& name, const Vec3i& value)
 	GL_FAILED(glUniform3iv(location, 1, valuePtr));
 }
 
+void Shader::SetUniform(const std::string& name, const Vec3i* bufferPtr, uint32_t count)
+{
+	int32_t location = GetUniformLocation(name);
+
+	const int32_t* valuePtr = reinterpret_cast<const int32_t*>(bufferPtr);
+	GL_FAILED(glUniform3iv(location, count, valuePtr));
+}
+
 void Shader::SetUniform(const std::string& name, int32_t x, int32_t y, int32_t z)
 {
 	int32_t location = GetUniformLocation(name);
@@ -174,6 +218,14 @@ void Shader::SetUniform(const std::string& name, const Vec4f& value)
 
 	const float* valuePtr = value.GetPtr();
 	GL_FAILED(glUniform4fv(location, 1, valuePtr));
+}
+
+void Shader::SetUniform(const std::string& name, const Vec4f* bufferPtr, uint32_t count)
+{
+	int32_t location = GetUniformLocation(name);
+
+	const float* valuePtr = reinterpret_cast<const float*>(bufferPtr);
+	GL_FAILED(glUniform4fv(location, count, valuePtr));
 }
 
 void Shader::SetUniform(const std::string& name, float x, float y, float z, float w)
@@ -190,6 +242,14 @@ void Shader::SetUniform(const std::string& name, const Vec4i& value)
 	GL_FAILED(glUniform4iv(location, 1, valuePtr));
 }
 
+void Shader::SetUniform(const std::string& name, const Vec4i* bufferPtr, uint32_t count)
+{
+	int32_t location = GetUniformLocation(name);
+
+	const int32_t* valuePtr = reinterpret_cast<const int32_t*>(bufferPtr);
+	GL_FAILED(glUniform4iv(location, count, valuePtr));
+}
+
 void Shader::SetUniform(const std::string& name, int32_t x, int32_t y, int32_t z, int32_t w)
 {
 	int32_t location = GetUniformLocation(name);
@@ -202,16 +262,37 @@ void Shader::SetUniform(const std::string& name, const Mat2x2& value)
 	GL_FAILED(glUniformMatrix2fv(location, 1, GL_FALSE, value.GetPtr()));
 }
 
+void Shader::SetUniform(const std::string& name, const Mat2x2* bufferPtr, uint32_t count)
+{
+	int32_t location = GetUniformLocation(name);
+	const float* valuePtr = reinterpret_cast<const float*>(bufferPtr);
+	GL_FAILED(glUniformMatrix2fv(location, count, GL_FALSE, valuePtr));
+}
+
 void Shader::SetUniform(const std::string& name, const Mat3x3& value)
 {
 	int32_t location = GetUniformLocation(name);
 	GL_FAILED(glUniformMatrix3fv(location, 1, GL_FALSE, value.GetPtr()));
 }
 
+void Shader::SetUniform(const std::string& name, const Mat3x3* bufferPtr, uint32_t count)
+{
+	int32_t location = GetUniformLocation(name);
+	const float* valuePtr = reinterpret_cast<const float*>(bufferPtr);
+	GL_FAILED(glUniformMatrix3fv(location, count, GL_FALSE, valuePtr));
+}
+
 void Shader::SetUniform(const std::string& name, const Mat4x4& value)
 {
 	int32_t location = GetUniformLocation(name);
 	GL_FAILED(glUniformMatrix4fv(location, 1, GL_FALSE, value.GetPtr()));
+}
+
+void Shader::SetUniform(const std::string& name, const Mat4x4* bufferPtr, uint32_t count)
+{
+	int32_t location = GetUniformLocation(name);
+	const float* valuePtr = reinterpret_cast<const float*>(bufferPtr);
+	GL_FAILED(glUniformMatrix4fv(location, count, GL_FALSE, valuePtr));
 }
 
 int32_t Shader::GetUniformLocation(const std::string& name)

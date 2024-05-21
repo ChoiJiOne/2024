@@ -92,6 +92,16 @@ public:
 
 
 	/**
+	 * @brief 셰이더 내에 int 타입의 행렬 유니폼 변수를 설정합니다.
+	 *
+	 * @param name 유니폼 변수의 이름입니다.
+	 * @param bufferPtr 유니폼 변수의 설정 값 목록의 포인터입니다.
+	 * @param count 설정할 값의 수입니다.
+	 */
+	void SetUniform(const std::string& name, const int32_t* bufferPtr, uint32_t count);
+
+
+	/**
 	 * @brief 셰이더 내에 float 타입의 유니폼 변수를 설정합니다.
 	 *
 	 * @param name 유니폼 변수의 이름입니다.
@@ -101,12 +111,32 @@ public:
 
 
 	/**
+	 * @brief 셰이더 내에 float  타입의 행렬 유니폼 변수를 설정합니다.
+	 *
+	 * @param name 유니폼 변수의 이름입니다.
+	 * @param bufferPtr 유니폼 변수의 설정 값 목록의 포인터입니다.
+	 * @param count 설정할 값의 수입니다.
+	 */
+	void SetUniform(const std::string& name, const float* bufferPtr, uint32_t count);
+
+
+	/**
 	 * @brief 셰이더 내에 2차원 벡터 타입의 유니폼 변수를 설정합니다.
 	 *
 	 * @param name 유니폼 변수의 이름입니다.
 	 * @param value 유니폼 변수의 설정 값입니다.
 	 */
 	void SetUniform(const std::string& name, const Vec2f& value);
+
+
+	/**
+	 * @brief 셰이더 내에 2차원 벡터 타입의 행렬 유니폼 변수를 설정합니다.
+	 *
+	 * @param name 유니폼 변수의 이름입니다.
+	 * @param bufferPtr 유니폼 변수의 설정 값 목록의 포인터입니다.
+	 * @param count 설정할 값의 수입니다.
+	 */
+	void SetUniform(const std::string& name, const Vec2f* bufferPtr, uint32_t count);
 
 
 	/**
@@ -129,6 +159,16 @@ public:
 
 
 	/**
+	 * @brief 셰이더 내에 2차원 벡터 타입의 행렬 유니폼 변수를 설정합니다.
+	 *
+	 * @param name 유니폼 변수의 이름입니다.
+	 * @param bufferPtr 유니폼 변수의 설정 값 목록의 포인터입니다.
+	 * @param count 설정할 값의 수입니다.
+	 */
+	void SetUniform(const std::string& name, const Vec2i* bufferPtr, uint32_t count);
+
+
+	/**
 	 * @brief 셰이더 내에 2차원 벡터 타입의 유니폼 변수를 설정합니다.
 	 *
 	 * @param name 유니폼 변수의 이름입니다.
@@ -145,6 +185,16 @@ public:
 	 * @param value 유니폼 변수의 설정 값입니다.
 	 */
 	void SetUniform(const std::string& name, const Vec3f& value);
+
+
+	/**
+	 * @brief 셰이더 내에 3차원 벡터 타입의 행렬 유니폼 변수를 설정합니다.
+	 *
+	 * @param name 유니폼 변수의 이름입니다.
+	 * @param bufferPtr 유니폼 변수의 설정 값 목록의 포인터입니다.
+	 * @param count 설정할 값의 수입니다.
+	 */
+	void SetUniform(const std::string& name, const Vec3f* bufferPtr, uint32_t count);
 
 
 	/**
@@ -168,6 +218,16 @@ public:
 
 
 	/**
+	 * @brief 셰이더 내에 3차원 벡터 타입의 행렬 유니폼 변수를 설정합니다.
+	 *
+	 * @param name 유니폼 변수의 이름입니다.
+	 * @param bufferPtr 유니폼 변수의 설정 값 목록의 포인터입니다.
+	 * @param count 설정할 값의 수입니다.
+	 */
+	void SetUniform(const std::string& name, const Vec3i* bufferPtr, uint32_t count);
+
+
+	/**
 	 * @brief 셰이더 내에 3차원 벡터 타입의 유니폼 변수를 설정합니다.
 	 *
 	 * @param name 유니폼 변수의 이름입니다.
@@ -185,6 +245,16 @@ public:
 	 * @param value 유니폼 변수의 설정 값입니다.
 	 */
 	void SetUniform(const std::string& name, const Vec4f& value);
+
+
+	/**
+	 * @brief 셰이더 내에 4차원 벡터 타입의 행렬 유니폼 변수를 설정합니다.
+	 *
+	 * @param name 유니폼 변수의 이름입니다.
+	 * @param bufferPtr 유니폼 변수의 설정 값 목록의 포인터입니다.
+	 * @param count 설정할 값의 수입니다.
+	 */
+	void SetUniform(const std::string& name, const Vec4f* bufferPtr, uint32_t count);
 
 
 	/**
@@ -209,6 +279,16 @@ public:
 
 
 	/**
+	 * @brief 셰이더 내에 4차원 벡터 타입의 행렬 유니폼 변수를 설정합니다.
+	 *
+	 * @param name 유니폼 변수의 이름입니다.
+	 * @param bufferPtr 유니폼 변수의 설정 값 목록의 포인터입니다.
+	 * @param count 설정할 값의 수입니다.
+	 */
+	void SetUniform(const std::string& name, const Vec4i* bufferPtr, uint32_t count);
+
+
+	/**
 	 * @brief 셰이더 내에 4차원 벡터 타입의 유니폼 변수를 설정합니다.
 	 *
 	 * @param name 유니폼 변수의 이름입니다.
@@ -230,6 +310,16 @@ public:
 
 
 	/**
+	 * @brief 셰이더 내에 2x2 타입의 행렬 유니폼 변수를 설정합니다.
+	 *
+	 * @param name 유니폼 변수의 이름입니다.
+	 * @param bufferPtr 유니폼 변수의 설정 값 목록의 포인터입니다.
+	 * @param count 설정할 값의 수입니다.
+	 */
+	void SetUniform(const std::string& name, const Mat2x2* bufferPtr, uint32_t count);
+
+
+	/**
 	 * @brief 셰이더 내에 3x3 타입의 행렬 유니폼 변수를 설정합니다.
 	 *
 	 * @param name 유니폼 변수의 이름입니다.
@@ -239,12 +329,32 @@ public:
 
 
 	/**
+	 * @brief 셰이더 내에 3x3 타입의 행렬 유니폼 변수를 설정합니다.
+	 *
+	 * @param name 유니폼 변수의 이름입니다.
+	 * @param bufferPtr 유니폼 변수의 설정 값 목록의 포인터입니다.
+	 * @param count 설정할 값의 수입니다.
+	 */
+	void SetUniform(const std::string& name, const Mat3x3* bufferPtr, uint32_t count);
+
+
+	/**
 	 * @brief 셰이더 내에 4x4 타입의 행렬 유니폼 변수를 설정합니다.
 	 *
 	 * @param name 유니폼 변수의 이름입니다.
 	 * @param value 유니폼 변수의 설정 값입니다.
 	 */
 	void SetUniform(const std::string& name, const Mat4x4& value);
+
+
+	/**
+	 * @brief 셰이더 내에 4x4 타입의 행렬 유니폼 변수를 설정합니다.
+	 *
+	 * @param name 유니폼 변수의 이름입니다.
+	 * @param bufferPtr 유니폼 변수의 설정 값 목록의 포인터입니다.
+	 * @param count 설정할 값의 수입니다.
+	 */
+	void SetUniform(const std::string& name, const Mat4x4* bufferPtr, uint32_t count);
 
 
 protected:
