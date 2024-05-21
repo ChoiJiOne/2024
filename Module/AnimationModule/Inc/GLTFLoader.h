@@ -1,8 +1,11 @@
 #pragma once
 
 #include <string>
+#include <vector>
 
 #include <cgltf.h>
+
+#include "Vec.h"
 
 
 /**
@@ -12,6 +15,21 @@
  */
 class GLTFLoader
 {
+public:
+	/**
+	 * @brief GLTF 메시 데이터입니다.
+	 */
+	struct MeshData
+	{
+		std::vector<Vec3f> positions;
+		std::vector<Vec3f> normals;
+		std::vector<Vec2f> texCoords;
+		std::vector<Vec4f> weights;
+		std::vector<Vec4i> joints;
+		std::vector<uint32_t> indices;
+	};
+
+
 public:
 	/**
 	 * @brief GLTF 파일을 로딩합니다.
