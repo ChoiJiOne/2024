@@ -1,5 +1,6 @@
 #pragma warning(push)
 #pragma warning(disable: 26812)
+#pragma warning(disable: 26451)
 
 #include "Assertion.h"
 #include "MathModule.h"
