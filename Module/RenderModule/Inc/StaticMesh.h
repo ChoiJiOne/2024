@@ -11,7 +11,6 @@
 /**
  * @brief 정적 메시 리소스입니다.
  */
-template <typename VertexType>
 class StaticMesh : public IResource
 {
 public:
@@ -21,7 +20,7 @@ public:
 	 * @param vertices 메시의 정점 목록입니다.
 	 * @param indices 메시의 인덱스 목록입니다.
 	 */
-	explicit StaticMesh(const std::vector<VertexType>& vertices, const std::vector<uint32_t>& indices);
+	explicit StaticMesh(const std::vector<VertexPositionNormalUv3D>& vertices, const std::vector<uint32_t>& indices);
 
 
 	/**
@@ -69,14 +68,14 @@ public:
 	 *
 	 * @return 메시의 정점 목록 상수 참조자를 반환합니다.
 	 */
-	const std::vector<VertexType>& GetVertices() const { return vertices_; }
+	const std::vector<VertexPositionNormalUv3D>& GetVertices() const { return vertices_; }
 
 
 private:
 	/**
 	 * @brief 정점 목록입니다.
 	 */
-	std::vector<VertexType> vertices_;
+	std::vector<VertexPositionNormalUv3D> vertices_;
 
 
 	/**
