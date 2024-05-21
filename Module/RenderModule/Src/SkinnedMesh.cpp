@@ -6,6 +6,7 @@
 
 SkinnedMesh::SkinnedMesh(const std::vector<VertexPositionNormalUvSkin3D>& vertices, const std::vector<uint32_t>& indices, bool bIsUploadedToGPU)
 	: vertices_(vertices)
+	, skinnedVertices_(vertices)
 	, indices_(indices)
 	, bIsUploadedToGPU_(bIsUploadedToGPU)
 {
