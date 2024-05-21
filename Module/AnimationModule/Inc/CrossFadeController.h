@@ -14,6 +14,12 @@ class CrossFadeContoller
 {
 public:
 	/**
+	 * @brief 크로스 페이드 컨트롤러의 기본 생성자입니다.
+	 */
+	explicit CrossFadeContoller() {}
+
+
+	/**
 	 * @brief 크로스 페이드 컨트롤러의 생성자입니다.
 	 *
 	 * @param skeleton 컨트롤러의 대상이 되는 뼈대입니다.
@@ -40,13 +46,7 @@ public:
 	 */
 	virtual ~CrossFadeContoller() {}
 
-
-	/**
-	 * @brief 크로스 페이드 컨트롤러의 복사 생성자와 대입 연산자를 명시적으로 삭제합니다.
-	 */
-	DISALLOW_COPY_AND_ASSIGN(CrossFadeContoller);
-
-
+	
 	/**
 	 * @brief 애니메이션 플레이를 시작합니다.
 	 *
