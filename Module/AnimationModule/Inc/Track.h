@@ -97,6 +97,22 @@ public:
 	uint32_t Size() const { return static_cast<uint32_t>(keyframes_.size()); }
 
 
+	/**
+	 * @brief 키 프레임을 보간할 때의 유형을 얻습니다.
+	 * 
+	 * @return 키 프레임을 보간할 때의 유형 값을 반환합니다.
+	 */
+	const EInterpolation& GetInterpolation() const { return interpolation_; }
+
+
+	/**
+	 * @brief 키 프레임을 보간할 때의 유형을 설정합니다.
+	 * 
+	 * @param interpolation 설정할 키 프레임 보간 유형입니다.
+	 */
+	void SetInterpolation(const EInterpolation& interpolation) { interpolation_ = interpolation; }
+
+
 private:
 	/**
 	 * @brief 트랙 내의 키 프레임 목록입니다.
