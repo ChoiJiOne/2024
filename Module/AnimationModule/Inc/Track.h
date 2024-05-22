@@ -201,6 +201,17 @@ private:
 	T Hermite(float time, const T& point1, const T& slope1, const T& point2, const T& slope2);
 
 
+	/**
+	 * @brief 시간 값에 대한 키 프레임 인덱스를 얻습니다.
+	 * 
+	 * @param time 키 프레임 인덱스를 얻을 시간값입니다.
+	 * @param bIsLooping 트랙의 반복 여부입니다.
+	 * 
+	 * @return 키 프레임 인덱스 값을 반환합니다.
+	 */
+	int32_t FrameIndex(float time, bool bIsLooping);
+
+
 private:
 	/**
 	 * @brief 트랙 내의 키 프레임 목록입니다.
