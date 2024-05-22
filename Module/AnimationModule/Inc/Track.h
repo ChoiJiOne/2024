@@ -212,6 +212,15 @@ private:
 	int32_t FrameIndex(float time, bool bIsLooping);
 
 
+	/**
+	 * @brief 트랙 범위를 벗어난 시간 값을 유효한 값으로 조정합니다.
+	 * 
+	 * @param time 유효한 값으로 조정할 시간값입니다.
+	 * @param bIsLooping 트랙의 반복 여부입니다.
+	 */
+	float AdjustTimeToFitTrack(float time, bool bIsLooping);
+
+
 private:
 	/**
 	 * @brief 트랙 내의 키 프레임 목록입니다.
