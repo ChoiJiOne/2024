@@ -20,6 +20,34 @@ public:
 
 
 	/**
+	 * @brief 고수준 변형 트랙(Transform Track)의 복사 생성자입니다.
+	 * 
+	 * @param instance 복사할 인스턴스입니다.
+	 */
+	TransformTrack(TransformTrack&& instance) noexcept
+		: boneID_(instance.boneID_)
+		, position_(instance.position_)
+		, rotate_(instance.rotate_)
+		, scale_(instance.scale_) 
+	{
+		position_ = instance.position_;
+
+	}
+
+
+	/**
+	 * @brief 고수준 변형 트랙(Transform Track)의 복사 생성자입니다.
+	 *
+	 * @param instance 복사할 인스턴스입니다.
+	 */
+	TransformTrack(const TransformTrack& instance) noexcept
+		: boneID_(instance.boneID_)
+		, position_(instance.position_)
+		, rotate_(instance.rotate_)
+		, scale_(instance.scale_) {}
+
+
+	/**
 	 * @brief 고수준 변형 트랙(Transform Track)의 가상 소멸자입니다
 	 */
 	virtual ~TransformTrack() {}
