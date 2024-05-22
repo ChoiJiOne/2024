@@ -72,3 +72,25 @@ float TransformTrack::GetEndTime()
 
     return time;
 }
+
+Transform TransformTrack::Sample(const Transform& transform, float time, bool bIsLooping)
+{
+    Transform result = transform;
+
+    if (position_.Size() > 1)
+    {
+        result.position = position_.Sample(time, bIsLooping);
+    }
+
+    if (rotate_.Size() > 1)
+    {
+        result.rotate = rotate_.Sample(time, bIsLooping);
+    }
+
+    if (scale_.Size() > 1)
+    {
+        result.scale = scale_.Sample(time, bIsLooping);
+    }
+
+    return result;
+}

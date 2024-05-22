@@ -179,7 +179,19 @@ public:
 	 * @return 고수준 변형 트랙의 종료 시간을 반환합니다.
 	 */
 	float GetEndTime();
-	
+
+
+	/**
+	 * @brief 고수준 변형 트랙의 샘플링을 수행합니다.
+	 * 
+	 * @param transform 샘플링할 트랜스폼입니다.
+	 * @param time 트랙을 샘플링할 시간 값입니다.
+	 * @param bIsLooping 트랙의 반복 여부입니다.
+	 *
+	 * @return 샘플링된 트랜스폼 값을 반환합니다.
+	 */
+	Transform Sample(const Transform& transform, float time, bool bIsLooping);
+
 
 private:
 	/**
