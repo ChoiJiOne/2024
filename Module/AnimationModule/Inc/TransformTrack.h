@@ -163,6 +163,14 @@ public:
 	 * @return 고수준 변형 트랙이 유효하다면 true, 그렇지 않으면 false를 반환합니다.
 	 */
 	bool IsValid();
+
+
+	/**
+	 * @brief 고수준 변형 트랙의 시작 시간을 얻습니다.
+	 * 
+	 * @return 고수준 변형 트랙의 시작 시간을 반환합니다.
+	 */
+	float GetStartTime();
 	
 
 private:
