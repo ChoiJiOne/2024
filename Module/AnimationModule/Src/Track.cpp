@@ -67,3 +67,26 @@ Keyframe<N>& Track<T, N>::operator[](uint32_t index)
 	CHECK(0 <= index && index < N);
 	return keyframes_[index];
 }
+
+template<typename T, uint32_t N>
+T Track<T, N>::Sample(float time, bool bIsLooping)
+{
+	T sample;
+
+	switch (interpolation_)
+	{
+	case EInterpolation::CONSTANT:
+		sample = SampleConstant(time, bIsLooping);
+		break;
+
+	case EInterpolation::LINEAR:
+		sample = SampleLinear(time, bIsLooping);
+		break;
+
+	case EInterpolation::CUBIC:
+		sample = SampleCubic(time, bIsLooping);
+		break;
+	}
+
+	return sample;
+}
