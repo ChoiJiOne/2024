@@ -28,6 +28,21 @@ inline Quat Interpolation(const Quat& a, const Quat& b, float t)
 	return Quat::Normalize(result);
 }
 
+inline float AdjustHermiteResult(float value)
+{
+	return value; // nothing...
+}
+
+inline Vec3f AdjustHermiteResult(const Vec3f& value)
+{
+	return value; // nothing...
+}
+
+inline Quat AdjustHermiteResult(const Quat& value)
+{
+	return Quat::Normalize(value);
+}
+
 template<typename T, uint32_t N>
 Keyframe<N>& Track<T, N>::operator[](uint32_t index)
 {
