@@ -243,3 +243,8 @@ private:
 	 */
 	EInterpolation interpolation_ = EInterpolation::LINEAR;
 };
+
+
+using ScalarTrack = Track<float, 1>;
+using VectorTrack = Track<Vec3f, 3>;
+using QuaternionTrack = Track<Quat, 4>;
