@@ -128,3 +128,35 @@ T Track<T, N>::SampleLinear(float time, bool bIsLooping)
 
 	return Interpolation(start, end, t);
 }
+
+template<typename T, uint32_t N>
+T Track<T, N>::SampleCubic(float time, bool bIsLooping)
+{
+	int32_t currFrame = FrameIndex(time, bIsLooping);
+	if (currFrame < 0 || currFrame >= static_cast<int32_t>(keyframes_.size() - 1))
+	{
+		return T();
+	}
+
+	int32_t nextFrame = currFrame + 1;
+	float trackTime = AdjustTimeToFitTrack(time, bIsLooping);
+	float frameDelta = keyframes_[nextFrame].time - keyframes_[currFrame].time;
+	if (frameDelta <= 0.0f)
+	{
+		return T();
+	}
+
+	float t = (trackTime - keyframes_[currFrame].time) / frameDelta;
+
+	T point1 = Cast(&keyframes_[currFrame].value[0]);
+	T slope1;
+	std::memcpy(&slope1, keyframes_[currFrame].out, N * sizeof(float));
+	slope1 = slope1 * frameDelta;
+
+	T point2 = Cast(&keyframes_[nextFrame].value[0]);
+	T slope2;
+	std::memcpy(&slope2, keyframes_[nextFrame].in, N * sizeof(float));
+	slope2 = slope2 * frameDelta;
+
+	return Hermite(t, point1, slope1, point2, slope2);
+}
