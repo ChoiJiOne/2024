@@ -155,6 +155,14 @@ public:
 	 * @return 스케일 트랙의 상수 참조자를 반환합니다.
 	 */
 	const VectorTrack& GetScaleTrack() const { return scale_; }
+
+
+	/**
+	 * @brief 고수준 변형 트랙이 유효한지 확인합니다.
+	 * 
+	 * @return 고수준 변형 트랙이 유효하다면 true, 그렇지 않으면 false를 반환합니다.
+	 */
+	bool IsValid();
 	
 
 private:
