@@ -160,3 +160,25 @@ T Track<T, N>::SampleCubic(float time, bool bIsLooping)
 
 	return Hermite(t, point1, slope1, point2, slope2);
 }
+
+template<typename T, uint32_t N>
+T Track<T, N>::Hermite(float time, const T& point1, const T& slope1, const T& point2, const T& slope2)
+{
+	float t = time;
+	float tt = t * t;
+	float ttt = tt * t;
+
+	T p1 = point1;
+	T s1 = slope1;
+	T p2 = point2;
+	T s2 = slope2;
+	Neighborhood(p1, p2);
+
+	float h1 = 2.0f * ttt - 3.0f * tt + 1.0f;
+	float h2 = -2.0f * ttt + 3.0f * tt;
+	float h3 = ttt - 2.0f * tt + t;
+	float h4 = ttt - tt;
+
+	T result = p1 * h1 + p2 * h2 + s1 * h3 + s2 * h4;
+	return AdjustHermiteResult(result);
+}
