@@ -43,7 +43,43 @@ public:
 	 * @brief 애니메이션 트랙의 가상 소멸자입니다.
 	 */
 	virtual ~Track() {}
-	
+
+
+	/**
+	 * @brief 애니메이션 트랙의 대입 연산자입니다.
+	 * 
+	 * @param instance 대입 연산을 수행할 인스턴스입니다.
+	 * 
+	 * @return 대입 연산을 수행한 객체의 참조자를 반환합니다.
+	 */
+	Track& operator=(Track&& instance) noexcept
+	{
+		if (this == &instance) return *this;
+
+		keyframes_ = instance.keyframes_;
+		interpolation_ = instance.interpolation_;
+
+		return *this;
+	}
+
+
+	/**
+	 * @brief 애니메이션 트랙의 대입 연산자입니다.
+	 *
+	 * @param instance 대입 연산을 수행할 인스턴스입니다.
+	 *
+	 * @return 대입 연산을 수행한 객체의 참조자를 반환합니다.
+	 */
+	Track& operator=(const Track& instance) noexcept
+	{
+		if (this == &instance) return *this;
+
+		keyframes_ = instance.keyframes_;
+		interpolation_ = instance.interpolation_;
+
+		return *this;
+	}
+
 
 private:
 	/**
