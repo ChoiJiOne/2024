@@ -107,6 +107,22 @@ public:
 	 * @param boneID 설정할 뼈대 ID입니다.
 	 */
 	void SetBoneID(uint32_t boneID) { boneID_ = boneID; }
+
+
+	/**
+	 * @brief 위치 트랙의 참조자를 얻습니다.
+	 * 
+	 * @return 위치 트랙의 참조자를 반환합니다.
+	 */
+	VectorTrack& GetPositionTrack() { return position_; }
+
+
+	/**
+	 * @brief 위치 트랙의 상수 참조자를 얻습니다.
+	 *
+	 * @return 위치 트랙의 상수 참조자를 반환합니다.
+	 */
+	const VectorTrack& GetPositionTrack() const { return position_; }
 	
 
 private:
