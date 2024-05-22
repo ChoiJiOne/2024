@@ -123,6 +123,22 @@ public:
 	 * @return 위치 트랙의 상수 참조자를 반환합니다.
 	 */
 	const VectorTrack& GetPositionTrack() const { return position_; }
+
+
+	/**
+	 * @brief 회전 트랙의 참조자를 얻습니다.
+	 * 
+	 * @return 회전 트랙의 참조자를 반환합니다.
+	 */
+	QuaternionTrack& GetRotateTrack() { return rotate_; }
+
+
+	/**
+	 * @brief 회전 트랙의 상수 참조자를 얻습니다.
+	 *
+	 * @return 회전 트랙의 상수 참조자를 반환합니다.
+	 */
+	const QuaternionTrack& GetRotateTrack() const { return rotate_; }
 	
 
 private:
