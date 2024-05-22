@@ -89,6 +89,14 @@ public:
 	void Resize(uint32_t size) { keyframes_.resize(size); }
 
 
+	/**
+	 * @brief 키 프레임 목록의 크기를 얻습니다.
+	 * 
+	 * @return 키 프레임 목록의 크기를 반환합니다.
+	 */
+	uint32_t Size() const { return static_cast<uint32_t>(keyframes_.size()); }
+
+
 private:
 	/**
 	 * @brief 트랙 내의 키 프레임 목록입니다.
