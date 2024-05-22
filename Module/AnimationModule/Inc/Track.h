@@ -81,6 +81,14 @@ public:
 	}
 
 
+	/**
+	 * @brief 키 프레임 목록의 크기를 변경합니다.
+	 * 
+	 * @param size 변경할 키 프레임 목록의 크기입니다.
+	 */
+	void Resize(uint32_t size) { keyframes_.resize(size); }
+
+
 private:
 	/**
 	 * @brief 트랙 내의 키 프레임 목록입니다.
