@@ -51,6 +51,46 @@ public:
 	 * @brief 고수준 변형 트랙(Transform Track)의 가상 소멸자입니다
 	 */
 	virtual ~TransformTrack() {}
+
+
+	/**
+	 * @brief 고수준 변형 트랙의 대입 연산자입니다.
+	 *
+	 * @param instance 대입 연산을 수행할 인스턴스입니다.
+	 *
+	 * @return 대입 연산을 수행한 객체의 참조자를 반환합니다.
+	 */
+	TransformTrack& operator=(TransformTrack&& instance) noexcept
+	{
+		if (this == &instance) return *this;
+
+		boneID_ = instance.boneID_;
+		position_ = instance.position_;
+		rotate_ = instance.rotate_;
+		scale_ = instance.scale_;
+
+		return *this;
+	}
+
+
+	/**
+	 * @brief 고수준 변형 트랙의 대입 연산자입니다.
+	 *
+	 * @param instance 대입 연산을 수행할 인스턴스입니다.
+	 *
+	 * @return 대입 연산을 수행한 객체의 참조자를 반환합니다.
+	 */
+	TransformTrack& operator=(const TransformTrack& instance) noexcept
+	{
+		if (this == &instance) return *this;
+
+		boneID_ = instance.boneID_;
+		position_ = instance.position_;
+		rotate_ = instance.rotate_;
+		scale_ = instance.scale_;
+
+		return *this;
+	}
 	
 
 private:
