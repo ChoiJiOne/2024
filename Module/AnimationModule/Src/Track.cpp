@@ -90,3 +90,16 @@ T Track<T, N>::Sample(float time, bool bIsLooping)
 
 	return sample;
 }
+
+template<typename T, uint32_t N>
+T Track<T, N>::SampleConstant(float time, bool bIsLooping)
+{
+	int32_t index = FrameIndex(time, bIsLooping);
+
+	if (index < 0 || index >= static_cast<int32_t>(keyframes_.size()))
+	{
+		return T();
+	}
+
+	return Cast(&keyframes_[index].value[0]);
+}
