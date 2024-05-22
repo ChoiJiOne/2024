@@ -182,3 +182,51 @@ T Track<T, N>::Hermite(float time, const T& point1, const T& slope1, const T& po
 	T result = p1 * h1 + p2 * h2 + s1 * h3 + s2 * h4;
 	return AdjustHermiteResult(result);
 }
+
+template<typename T, uint32_t N>
+int32_t Track<T, N>::FrameIndex(float time, bool bIsLooping)
+{
+	uint32_t size = static_cast<uint32_t>(keyframes_.size());
+
+	if (size <= 1)
+	{
+		return -1;
+	}
+
+	if (bIsLooping)
+	{
+		float startTime = keyframes_[0].time;
+		float endTime = keyframes_[size - 1].time;
+		float duration = endTime - startTime;
+
+		time = std::fmodf(time - startTime, endTime - startTime);
+		if (time < 0.0f)
+		{
+			time += (endTime - startTime);
+		}
+
+		time += startTime;
+	}
+	else
+	{
+		if (time <= keyframes_[0].time)
+		{
+			return 0;
+		}
+
+		if (time >= keyframes_[size - 2].time)
+		{
+			return static_cast<int32_t>(size - 2);
+		}
+	}
+
+	for (int32_t index = static_cast<int32_t>(size) - 1; index >= 0; --index)
+	{
+		if (time >= keyframes_[index].time)
+		{
+			return index;
+		}
+	}
+
+	return -1;
+}
