@@ -155,6 +155,40 @@ public:
 
 private:
 	/**
+	 * @brief 상수 샘플링을 수행합니다.
+	 * 
+	 * @param time 트랙을 샘플링할 시간 값입니다.
+	 * @param bIsLooping 트랙의 반복 여부입니다.
+	 * 
+	 * @return 샘플링된 값을 반환합니다.
+	 */
+	T SampleConstant(float time, bool bIsLooping);
+
+
+	/**
+	 * @brief 선형 샘플링을 수행합니다.
+	 *
+	 * @param time 트랙을 샘플링할 시간 값입니다.
+	 * @param bIsLooping 트랙의 반복 여부입니다.
+	 *
+	 * @return 샘플링된 값을 반환합니다.
+	 */
+	T SampleLinear(float time, bool bIsLooping);
+
+
+	/**
+	 * @brief 삼차(Cubic) 샘플링을 수행합니다.
+	 *
+	 * @param time 트랙을 샘플링할 시간 값입니다.
+	 * @param bIsLooping 트랙의 반복 여부입니다.
+	 *
+	 * @return 샘플링된 값을 반환합니다.
+	 */
+	T SampleCubic(float time, bool bIsLooping);
+
+
+private:
+	/**
 	 * @brief 트랙 내의 키 프레임 목록입니다.
 	 */
 	std::vector<Keyframe<N>> keyframes_;
