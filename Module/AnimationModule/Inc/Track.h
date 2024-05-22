@@ -187,6 +187,20 @@ private:
 	T SampleCubic(float time, bool bIsLooping);
 
 
+	/**
+	 * @brief 애미트 스플라인 계산을 수행합니다.
+	 * 
+	 * @param time 시간 값입니다.
+	 * @param point1 곡선의 첫 번째 지점입니다.
+	 * @param slope1 곡선의 첫 번째 기울기입니다.
+	 * @param point2 곡선의 두 번째 지점입니다.
+	 * @param slope2 곡선의 두 번째 기울기입니다.
+	 * 
+	 * @return 계산된 애미트 스플라인 값을 반환합니다.
+	 */
+	T Hermite(float time, const T& point1, const T& slope1, const T& point2, const T& slope2);
+
+
 private:
 	/**
 	 * @brief 트랙 내의 키 프레임 목록입니다.
