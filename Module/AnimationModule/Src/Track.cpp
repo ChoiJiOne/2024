@@ -103,3 +103,28 @@ T Track<T, N>::SampleConstant(float time, bool bIsLooping)
 
 	return Cast(&keyframes_[index].value[0]);
 }
+
+template<typename T, uint32_t N>
+T Track<T, N>::SampleLinear(float time, bool bIsLooping)
+{
+	int32_t currFrame = FrameIndex(time, bIsLooping);
+	if (currFrame < 0 || currFrame >= static_cast<int32_t>(keyframes_.size() - 1))
+	{
+		return T();
+	}
+
+	int32_t nextFrame = currFrame + 1;
+	float trackTime = AdjustTimeToFitTrack(time, bIsLooping);
+	float frameDelta = keyframes_[nextFrame].time - keyframes_[currFrame].time;
+	if (frameDelta <= 0.0f)
+	{
+		return T();
+	}
+
+	float t = (trackTime - keyframes_[currFrame].time) / frameDelta;
+
+	T start = Cast(&keyframes_[currFrame].value[0]);
+	T end = Cast(&keyframes_[nextFrame].value[0]);
+
+	return Interpolation(start, end, t);
+}
