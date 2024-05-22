@@ -142,6 +142,17 @@ public:
 	Keyframe<N>& operator[](uint32_t index);
 
 
+	/**
+	 * @brief 시간 값에 맞게 트랙을 샘플링합니다.
+	 * 
+	 * @param time 트랙을 샘플링할 시간 값입니다.
+	 * @param bIsLooping 트랙의 반복 여부입니다.
+	 * 
+	 * @return 샘플링된 값을 반환합니다.
+	 */
+	T Sample(float time, bool bIsLooping);
+
+
 private:
 	/**
 	 * @brief 트랙 내의 키 프레임 목록입니다.
