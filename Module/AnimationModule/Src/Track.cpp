@@ -230,3 +230,46 @@ int32_t Track<T, N>::FrameIndex(float time, bool bIsLooping)
 
 	return -1;
 }
+
+template<typename T, uint32_t N>
+float Track<T, N>::AdjustTimeToFitTrack(float time, bool bIsLooping)
+{
+	uint32_t size = static_cast<uint32_t>(keyframes_.size());
+	if (size <= 1)
+	{
+		return 0.0f;
+	}
+
+	float startTime = keyframes_[0].time;
+	float endTime = keyframes_[size - 1].time;
+	float duration = endTime - startTime;
+	if (duration <= 0.0f)
+	{
+		return 0.0f;
+	}
+
+	if (bIsLooping)
+	{
+		time = std::fmodf(time - startTime, endTime - startTime);
+		if (time < 0.0f)
+		{
+			time += (endTime - startTime);
+		}
+
+		time += startTime;
+	}
+	else
+	{
+		if (time <= keyframes_[0].time)
+		{
+			time = startTime;
+		}
+
+		if (time >= keyframes_[size - 1].time)
+		{
+			time = endTime;
+		}
+	}
+
+	return time;
+}
