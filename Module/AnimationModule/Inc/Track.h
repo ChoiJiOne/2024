@@ -2,6 +2,9 @@
 
 #include <vector>
 
+#include "Vec.h"
+#include "Quat.h"
+
 #include "Interpolation.h"
 #include "Keyframe.h"
 
@@ -127,6 +130,16 @@ public:
 	 * @return 키 프레임의 끝 시간 값을 반환합니다.
 	 */
 	float GetEndTime() const { return keyframes_.back().time; }
+
+
+	/**
+	 * @brief 인덱스로 키 프레임 목록을 참조합니다.
+	 * 
+	 * @param index 키 프레임 목록의 인덱스입니다.
+	 * 
+	 * @return 인덱스에 대응하는 키 프레임 값을 반환합니다.
+	 */
+	Keyframe<N>& operator[](uint32_t index);
 
 
 private:
