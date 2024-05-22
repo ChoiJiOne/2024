@@ -171,6 +171,14 @@ public:
 	 * @return 고수준 변형 트랙의 시작 시간을 반환합니다.
 	 */
 	float GetStartTime();
+
+
+	/**
+	 * @brief 고수준 변형 트랙의 종료 시간을 얻습니다.
+	 *
+	 * @return 고수준 변형 트랙의 종료 시간을 반환합니다.
+	 */
+	float GetEndTime();
 	
 
 private:
