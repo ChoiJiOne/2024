@@ -37,7 +37,7 @@ public:
 	 *
 	 * @param instance 복사할 인스턴스입니다.
 	 */
-	Track(const Track&& instance) noexcept 
+	Track(const Track& instance) noexcept 
 		: keyframes_(instance.keyframes_)
 		, interpolation_(instance.interpolation_) {}
 
