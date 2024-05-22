@@ -221,6 +221,16 @@ private:
 	float AdjustTimeToFitTrack(float time, bool bIsLooping);
 
 
+	/**
+	 * @brief 키 프레임 내부 배열을 템플릿된 타입으로 캐스팅합니다.
+	 * 
+	 * @param value 템플릿 타입으로 캐스팅할 키 프레임 배열 값입니다.
+	 * 
+	 * @return 캐스팅된 값을 반환합니다.
+	 */
+	T Cast(float* value);
+
+
 private:
 	/**
 	 * @brief 트랙 내의 키 프레임 목록입니다.
