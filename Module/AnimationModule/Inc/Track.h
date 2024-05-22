@@ -113,6 +113,22 @@ public:
 	void SetInterpolation(const EInterpolation& interpolation) { interpolation_ = interpolation; }
 
 
+	/**
+	 * @brief 키 프레임의 시작 시간을 얻습니다.
+	 * 
+	 * @return 키 프레임의 시작 시간 값을 반환합니다.
+	 */
+	float GetStartTime() const { return keyframes_.front().time; }
+
+
+	/**
+	 * @brief 키 프레임의 끝 시간을 얻습니다.
+	 * 
+	 * @return 키 프레임의 끝 시간 값을 반환합니다.
+	 */
+	float GetEndTime() const { return keyframes_.back().time; }
+
+
 private:
 	/**
 	 * @brief 트랙 내의 키 프레임 목록입니다.
