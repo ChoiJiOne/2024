@@ -91,13 +91,29 @@ public:
 
 		return *this;
 	}
+
+
+	/**
+	 * @brief 뼈대 ID를 얻습니다.
+	 * 
+	 * @return 뼈대 ID를 반환합니다.
+	 */
+	uint32_t GetBoneID() const { return boneID_; }
+
+
+	/**
+	 * @brief 뼈대 ID를 설정합니다.
+	 * 
+	 * @param boneID 설정할 뼈대 ID입니다.
+	 */
+	void SetBoneID(uint32_t boneID) { boneID_ = boneID; }
 	
 
 private:
 	/**
 	 * @brief 뼈대 ID입니다.
 	 */
-	uint32_t boneID_;
+	uint32_t boneID_ = 0;
 
 
 	/**
