@@ -1,4 +1,5 @@
 #include "Assertion.h"
+#include "MathModule.h"
 
 #include "Track.h"
 
@@ -199,7 +200,7 @@ int32_t Track<T, N>::FrameIndex(float time, bool bIsLooping)
 		float endTime = keyframes_[size - 1].time;
 		float duration = endTime - startTime;
 
-		time = std::fmodf(time - startTime, endTime - startTime);
+		time = MathModule::Fmod(time - startTime, endTime - startTime);
 		if (time < 0.0f)
 		{
 			time += (endTime - startTime);
@@ -250,7 +251,7 @@ float Track<T, N>::AdjustTimeToFitTrack(float time, bool bIsLooping)
 
 	if (bIsLooping)
 	{
-		time = std::fmodf(time - startTime, endTime - startTime);
+		time = MathModule::Fmod(time - startTime, endTime - startTime);
 		if (time < 0.0f)
 		{
 			time += (endTime - startTime);
@@ -272,4 +273,23 @@ float Track<T, N>::AdjustTimeToFitTrack(float time, bool bIsLooping)
 	}
 
 	return time;
+}
+
+template<>
+float Track<float, 1>::Cast(float* value)
+{
+	return value[0];
+}
+
+template<>
+Vec3f Track<Vec3f, 3>::Cast(float* value)
+{
+	return Vec3f(value[0], value[1], value[2]);
+}
+
+template<>
+Quat Track<Quat, 4>::Cast(float* value)
+{
+	Quat q = Quat(value[0], value[1], value[2], value[3]);
+	return Quat::Normalize(q);
 }
