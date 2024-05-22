@@ -43,6 +43,24 @@ inline Quat AdjustHermiteResult(const Quat& value)
 	return Quat::Normalize(value);
 }
 
+inline void Neighborhood(const float& a, float& b)
+{
+	// nothing...
+}
+
+inline void Neighborhood(const Vec3f& a, Vec3f& b)
+{
+	// nothing...
+}
+
+inline void Neighborhood(const Quat& a, Quat& b)
+{
+	if (Quat::Dot(a, b) < 0.0f)
+	{
+		b = -b;
+	}
+}
+
 template<typename T, uint32_t N>
 Keyframe<N>& Track<T, N>::operator[](uint32_t index)
 {
