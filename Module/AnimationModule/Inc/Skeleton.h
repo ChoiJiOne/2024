@@ -94,6 +94,13 @@ public:
 
 private:
 	/**
+	 * @brief 역 바인드 포즈 행렬 목록을 업데이트합니다.
+	 */
+	void UpdateInverseBindPose();
+
+
+private:
+	/**
 	 * @brief 뼈대의 Rest 포즈입니다.
 	 */
 	Pose restPose_;
