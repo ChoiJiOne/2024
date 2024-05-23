@@ -1,5 +1,13 @@
 #include "Skeleton.h"
 
+void Skeleton::SetProperties(const Pose& restPose, const Pose& bindPose, const std::vector<std::string>& jointNames)
+{
+	restPose_ = restPose;
+	bindPose_ = bindPose;
+	jointNames_ = jointNames;
+	UpdateInverseBindPose();
+}
+
 void Skeleton::UpdateInverseBindPose()
 {
 	uint32_t size = bindPose_.Size();

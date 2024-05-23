@@ -92,6 +92,16 @@ public:
 	std::vector<std::string>& GetJointNames() { return jointNames_; }
 
 
+	/**
+	 * @brief 내부 프로퍼티를 설정합니다.
+	 * 
+	 * @param restPose 휴식 포즈입니다.
+	 * @param bindPose 바인드 포즈입니다.
+	 * @param jointNames 관절(Bone) 이름 목록입니다.
+	 */
+	void SetProperties(const Pose& restPose, const Pose& bindPose, const std::vector<std::string>& jointNames);
+
+
 private:
 	/**
 	 * @brief 역 바인드 포즈 행렬 목록을 업데이트합니다.
