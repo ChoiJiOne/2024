@@ -93,6 +93,16 @@ public:
 
 
 	/**
+	 * @brief 인덱스에 대응하는 관절 이름을 얻습니다.
+	 * 
+	 * @param index 관절 이름 목록의 인덱스입니다.
+	 * 
+	 * @return 인덱스에 대응하는 관절 이름을 반환합니다.
+	 */
+	std::string& GetJointName(uint32_t index) { return jointNames_[index]; }
+
+
+	/**
 	 * @brief 내부 프로퍼티를 설정합니다.
 	 * 
 	 * @param restPose 휴식 포즈입니다.
