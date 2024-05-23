@@ -18,6 +18,17 @@ public:
 
 
 	/**
+	 * @brief 포즈 클래스의 생성자입니다.
+	 * 
+	 * @param numJoints 관절 변환 목록 크기입니다.
+	 */
+	Pose(uint32_t numJoints)
+	{
+		Resize(numJoints);
+	}
+
+
+	/**
 	 * @brief 포즈 클래스의 복사 생성자입니다.
 	 * 
 	 * @param instance 복사할 인스턴스입니다.
