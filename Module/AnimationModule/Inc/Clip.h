@@ -166,6 +166,14 @@ public:
 	 */
 	bool IsLooping() { return bIsLooping_; }
 
+
+	/**
+	 * @brief 클립의 반복 여부를 설정합니다.
+	 * 
+	 * @param bIsLooping 설정할 클립의 반복 여부입니다.
+	 */
+	void SetLooping(bool bIsLooping) { bIsLooping_ = bIsLooping; }
+
 	
 private:
 	/**
