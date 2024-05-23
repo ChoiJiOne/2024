@@ -200,7 +200,7 @@ public:
 	 * 
 	 * @return 인덱스에 대응하는 부모 뼈대 값을 반환합니다.
 	 */
-	int32_t GetParent(uint32_t index) { parents_[index]; }
+	int32_t GetParent(uint32_t index) { return parents_[index]; }
 
 
 	/**
