@@ -1,5 +1,59 @@
 #include "Pose.h"
 
+Pose& Pose::operator=(Pose&& instance) noexcept
+{
+	if (this == &instance) return *this;
+
+	if (parents_.size() != instance.parents_.size())
+	{
+		parents_.resize(instance.parents_.size());
+	}
+
+	if (joints_.size() != instance.joints_.size())
+	{
+		joints_.resize(instance.joints_.size());
+	}
+
+	if (parents_.size() != 0)
+	{
+		std::memcpy(parents_.data(), instance.parents_.data(), static_cast<uint32_t>(sizeof(int32_t)) * parents_.size());
+	}
+
+	if (joints_.size() != 0)
+	{
+		std::memcpy(joints_.data(), instance.joints_.data(), static_cast<uint32_t>(sizeof(Transform)) * joints_.size());
+	}
+
+	return *this;
+}
+
+Pose& Pose::operator=(const Pose& instance) noexcept
+{
+	if (this == &instance) return *this;
+
+	if (parents_.size() != instance.parents_.size())
+	{
+		parents_.resize(instance.parents_.size());
+	}
+
+	if (joints_.size() != instance.joints_.size())
+	{
+		joints_.resize(instance.joints_.size());
+	}
+
+	if (parents_.size() != 0)
+	{
+		std::memcpy(parents_.data(), instance.parents_.data(), static_cast<uint32_t>(sizeof(int32_t)) * parents_.size());
+	}
+
+	if (joints_.size() != 0)
+	{
+		std::memcpy(joints_.data(), instance.joints_.data(), static_cast<uint32_t>(sizeof(Transform)) * joints_.size());
+	}
+
+	return *this;
+}
+
 bool Pose::operator==(Pose&& instance) noexcept
 {
 	if (joints_.size() != instance.joints_.size())

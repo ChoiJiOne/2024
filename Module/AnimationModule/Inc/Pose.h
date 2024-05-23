@@ -61,15 +61,7 @@ public:
 	 * 
 	 * @return 대입 연산을 수행한 객체의 참조자를 반환합니다.
 	 */
-	Pose& operator=(Pose&& instance) noexcept
-	{
-		if (this == &instance) return *this;
-
-		joints_ = instance.joints_;
-		parents_ = instance.parents_;
-
-		return *this;
-	}
+	Pose& operator=(Pose&& instance) noexcept;
 
 
 	/**
@@ -79,15 +71,7 @@ public:
 	 *
 	 * @return 대입 연산을 수행한 객체의 참조자를 반환합니다.
 	 */
-	Pose& operator=(const Pose& instance) noexcept
-	{
-		if (this == &instance) return *this;
-
-		joints_ = instance.joints_;
-		parents_ = instance.parents_;
-
-		return *this;
-	}
+	Pose& operator=(const Pose& instance) noexcept;
 
 
 	/**
