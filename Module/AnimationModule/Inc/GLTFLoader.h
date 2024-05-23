@@ -10,6 +10,8 @@
 #include "Vec.h"
 
 #include "Clip.h"
+#include "Pose.h"
+#include "Skeleton.h"
 
 
 /**
@@ -68,6 +70,16 @@ public:
 	 * @return GLTF로부터 추출된 관절(Joint)의 이름 목록을 반환합니다.
 	 */
 	static std::vector<std::string> LoadJointNames(cgltf_data* data);
+
+
+	/**
+	 * @brief GLTF 데이터로부터 스켈레톤 정보를 로딩합니다.
+	 * 
+	 * @param data GLTF 데이터입니다.
+	 * 
+	 * @return GLTF로부터 추출된 스켈레톤을 반환합니다.
+	 */
+	static Skeleton LoadSkeleton(cgltf_data* data);
 
 
 	/**
