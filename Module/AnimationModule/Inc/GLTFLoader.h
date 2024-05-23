@@ -45,9 +45,19 @@ public:
 	 * 
 	 * @param data GLTF 데이터입니다.
 	 * 
-	 * @return GLTF로 부터 추출된 Rest 포즈를 반환합니다.
+	 * @return GLTF로부터 추출된 Rest 포즈를 반환합니다.
 	 */
 	Pose LoadRestPose(cgltf_data* data);
+
+
+	/**
+	 * @brief GLTF 데이터로부터 관절(Joint)의 이름 목록을 로딩합니다.
+	 * 
+	 * @param data GLTF 데이터입니다.
+	 * 
+	 * @return GLTF로부터 추출된 관절(Joint)의 이름 목록을 반환합니다.
+	 */
+	std::vector<std::string> LoadJointNames(cgltf_data* data);
 
 
 private:

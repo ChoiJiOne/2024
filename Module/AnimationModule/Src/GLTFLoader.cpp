@@ -107,6 +107,24 @@ Pose GLTFLoader::LoadRestPose(cgltf_data* data)
 	return restPose;
 }
 
+std::vector<std::string> GLTFLoader::LoadJointNames(cgltf_data* data)
+{
+	uint32_t numJoints = static_cast<uint32_t>(data->nodes_count);
+	std::vector<std::string> jointNames(numJoints, "EMPTY NODE");
+
+	for (uint32_t index = 0; index < numJoints; ++index)
+	{
+		cgltf_node* node = &(data->nodes[index]);
+
+		if (node->name)
+		{
+			jointNames[index] = node->name;
+		}
+	}
+
+	return jointNames;
+}
+
 Transform GLTFLoader::GetLocalTransform(cgltf_node* node)
 {
 	Transform transform;
