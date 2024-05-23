@@ -23,6 +23,21 @@ class GLTFLoader
 {
 public:
 	/**
+	 * @brief 메시 데이터입니다.
+	 */
+	struct MeshData
+	{
+		std::vector<Vec3f> position;
+		std::vector<Vec3f> normal;
+		std::vector<Vec2f> texcoords;
+		std::vector<Vec4f> weights;
+		std::vector<Vec4i> influences;
+		std::vector<uint32_t> indices;
+	};
+
+
+public:
+	/**
 	 * @brief GLTF 파일을 로딩합니다.
 	 * 
 	 * @param path GLTF 파일의 경로입니다.
