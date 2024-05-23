@@ -184,6 +184,17 @@ public:
 	 */
 	TransformTrack& operator[](uint32_t boneID);
 
+
+	/**
+	 * @brief 시간 값에 맞게 포즈 샘플링을 수행합니다.
+	 * 
+	 * @param outPose 샘플링을 수행할 포즈입니다.
+	 * @param time 샘플링을 수행할 시간값입니다.
+	 * 
+	 * @return 샘플링된 시간 값입니다.
+	 */
+	float Sample(Pose& outPose, float time);
+
 	
 private:
 	/**
