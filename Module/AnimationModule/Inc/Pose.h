@@ -185,6 +185,14 @@ public:
 	Transform operator[](uint32_t index);
 
 
+	/**
+	 * @brief 포즈 내의 변환을 행렬 목록으로 변환합니다.
+	 * 
+	 * @param outMatrixPalette 행렬 목록을 저장할 벡터입니다.
+	 */
+	void GetMatrixPalette(std::vector<Mat4x4>& outMatrixPalette);
+
+
 private:
 	/**
 	 * @brief 관절 변환 목록입니다.

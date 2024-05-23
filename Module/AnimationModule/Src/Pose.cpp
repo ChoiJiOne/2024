@@ -108,3 +108,18 @@ Transform Pose::operator[](uint32_t index)
 {
 	return GetGlobalTransform(index);
 }
+
+void Pose::GetMatrixPalette(std::vector<Mat4x4>& outMatrixPalette)
+{
+	uint32_t size = static_cast<uint32_t>(joints_.size());
+	if (outMatrixPalette.size() != size)
+	{
+		outMatrixPalette.resize(size);
+	}
+
+	for (uint32_t index = 0; index < size; ++index)
+	{
+		Transform transform = GetGlobalTransform(index);
+		outMatrixPalette[index] = Transform::ToMat(transform);
+	}
+}
