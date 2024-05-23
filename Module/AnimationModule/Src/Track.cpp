@@ -65,7 +65,6 @@ inline void Neighborhood(const Quat& a, Quat& b)
 template<typename T, uint32_t N>
 Keyframe<N>& Track<T, N>::operator[](uint32_t index)
 {
-	CHECK(0 <= index && index < N);
 	return keyframes_[index];
 }
 
