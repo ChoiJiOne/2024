@@ -91,3 +91,15 @@ void Pose::SetLocalTransform(uint32_t index, const Transform& transform)
 {
 	joints_[index] = transform;
 }
+
+Transform Pose::GetGlobalTransform(uint32_t index)
+{
+	Transform result = joints_[index];
+
+	for (int32_t parent = parents_[index]; parent >= 0; parent = parents_[parent])
+	{
+		result = Transform::Combine(joints_[parent], result);
+	}
+
+	return result;
+}

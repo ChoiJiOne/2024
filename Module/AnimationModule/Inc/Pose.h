@@ -165,6 +165,16 @@ public:
 	void SetLocalTransform(uint32_t index, const Transform& transform);
 
 
+	/**
+	 * @brief 인덱스에 대응하는 글로벌 관절 변환 값을 얻습니다.
+	 * 
+	 * @param index 관절 변환 값을 얻을 인덱스입니다.
+	 * 
+	 * @return 인덱스에 대응하는 글로벌 관절 변환 값을 반환합니다.
+	 */
+	Transform GetGlobalTransform(uint32_t index);
+
+
 private:
 	/**
 	 * @brief 관절 변환 목록입니다.
