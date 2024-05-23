@@ -30,3 +30,34 @@ TransformTrack& Clip::operator[](uint32_t boneID)
 	tracks_.back().SetBoneID(boneID);
 	return tracks_.back();
 }
+
+void Clip::RecalculateDuration()
+{
+	startTime_ = 0.0f;
+	endTime_ = 0.0f;
+
+	bool bIsStartSet = false;
+	bool bIsEndSet = false;
+
+	uint32_t trackSize = static_cast<uint32_t>(tracks_.size());
+	for (uint32_t index = 0; index < trackSize; ++index)
+	{
+		if (tracks_[index].IsValid())
+		{
+			float trackStartTime = tracks_[index].GetStartTime();
+			float trackEndTime = tracks_[index].GetEndTime();
+
+			if (trackStartTime < startTime_ || !bIsStartSet)
+			{
+				startTime_ = trackStartTime;
+				bIsStartSet = true;
+			}
+
+			if (trackEndTime > endTime_ || !bIsEndSet)
+			{
+				endTime_ = trackEndTime;
+				bIsEndSet = true;
+			}
+		}
+	}
+}

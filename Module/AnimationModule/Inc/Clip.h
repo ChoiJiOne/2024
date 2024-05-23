@@ -195,6 +195,12 @@ public:
 	 */
 	float Sample(Pose& outPose, float time);
 
+
+	/**
+	 * @brief 애니메이션 클립의 시작 시간과 종료 시간을 계산합니다.
+	 */
+	void RecalculateDuration();
+
 	
 private:
 	/**
