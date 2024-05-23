@@ -68,6 +68,14 @@ public:
 	Pose& GetBindPose() { return bindPose_; }
 
 
+	/**
+	 * @brief 휴식 포즈를 얻습니다.
+	 * 
+	 * @return 휴식 포즈의 참조자를 반환합니다.
+	 */
+	Pose& GetRestPose() { return restPose_; }
+
+
 private:
 	/**
 	 * @brief 뼈대의 Rest 포즈입니다.
