@@ -3,6 +3,7 @@
 #include <string>
 
 #include "TransformTrack.h"
+#include "Pose.h"
 
 
 /**
@@ -89,6 +90,25 @@ public:
 
 		return *this;
 	}
+
+
+	/**
+	 * @brief 인덱스에 대응하는 트랙의 뼈대 ID를 얻습니다.
+	 * 
+	 * @param index 트랙의 뼈대 ID를 얻을 인덱스입니다.
+	 * 
+	 * @return 인덱스에 대응하는 트랙의 뼈대 ID를 반환합니다.
+	 */
+	uint32_t GetBoneID(uint32_t index) { return tracks_[index].GetBoneID(); }
+
+
+	/**
+	 * @brief 인덱스에 대응하는 트랙의 뼈대 ID를 설정합니다.
+	 * 
+	 * @param index 설정할 트랙의 인덱스입니다.
+	 * @param boneID 설정할 뼈대 ID입니다.
+	 */
+	void SetBoneID(uint32_t index, uint32_t boneID) { tracks_[index].SetBoneID(boneID); }
 
 
 private:
