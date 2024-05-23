@@ -27,11 +27,11 @@ public:
 	 */
 	struct MeshData
 	{
-		std::vector<Vec3f> position;
-		std::vector<Vec3f> normal;
+		std::vector<Vec3f> positions;
+		std::vector<Vec3f> normals;
 		std::vector<Vec2f> texcoords;
 		std::vector<Vec4f> weights;
-		std::vector<Vec4i> influences;
+		std::vector<Vec4i> joints;
 		std::vector<uint32_t> indices;
 	};
 
@@ -149,4 +149,16 @@ private:
 	 */
 	template <typename T, uint32_t N>
 	static void TrackFromChannel(Track<T, N>& inOutTrack, const cgltf_animation_channel* channel);
+
+
+	/**
+	 * @brief GLTF로 부터 메시 데이터를 얻습니다.
+	 * 
+	 * @param outMesh GLTF 메시 데이터입니다.
+	 * @param attribute 정점의 속성입니다.
+	 * @param skin 스킨 정보입니다.
+	 * @param nodes 노드 목록입니다.
+	 * @param numNodes 노드 목록의 수입니다.
+	 */
+	static void GetMeshFromAttribute(MeshData& outMesh, cgltf_attribute* attribute, cgltf_skin* skin, cgltf_node* nodes, uint32_t numNodes);
 };

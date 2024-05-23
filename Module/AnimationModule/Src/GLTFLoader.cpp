@@ -288,4 +288,77 @@ void GLTFLoader::GetScalarValues(std::vector<float>& outScalars, uint32_t compon
 	}
 }
 
+void GLTFLoader::GetMeshFromAttribute(MeshData& outMesh, cgltf_attribute* attribute, cgltf_skin* skin, cgltf_node* nodes, uint32_t numNodes)
+{
+	cgltf_attribute_type type = attribute->type;
+	cgltf_accessor* accessor = attribute->data;
+
+	uint32_t component = 0;
+	if (accessor->type == cgltf_type_vec2)
+	{
+		component = 2;
+	}
+	else if (accessor->type == cgltf_type_vec3)
+	{
+		component = 3;
+	}
+	else if (accessor->type == cgltf_type_vec4)
+	{
+		component = 4;
+	}
+
+	std::vector<float> values;
+	GetScalarValues(values, component, accessor);
+
+	uint32_t accessorCount = static_cast<uint32_t>(accessor->count);
+	for (int32_t index = 0; index < accessorCount; ++index)
+	{
+		int32_t offset = index * component;
+
+		switch (type)
+		{
+		case cgltf_attribute_type_position:
+			outMesh.positions.push_back(Vec3f(values[offset + 0], values[offset + 1], values[offset + 2]));
+			break;
+
+		case cgltf_attribute_type_normal:
+		{
+			Vec3f normal = Vec3f(values[offset + 0], values[offset + 1], values[offset + 2]);
+			if (Vec3f::LengthSq(normal) < Epsilon)
+			{
+				normal = Vec3f(0.0f, 1.0f, 0.0f);
+			}
+			outMesh.normals.push_back(Vec3f::Normalize(normal));
+		}
+		break;
+
+		case cgltf_attribute_type_texcoord:
+			outMesh.texcoords.push_back(Vec2f(values[offset + 0], values[offset + 1]));
+			break;
+
+		case cgltf_attribute_type_weights:
+			outMesh.weights.push_back(Vec4f(values[offset + 0], values[offset + 1], values[offset + 2], values[offset + 3]));
+			break;
+
+		case cgltf_attribute_type_joints:
+		{
+			Vec4i joints(
+				static_cast<int32_t>(values[offset + 0] + 0.5f),
+				static_cast<int32_t>(values[offset + 1] + 0.5f),
+				static_cast<int32_t>(values[offset + 2] + 0.5f),
+				static_cast<int32_t>(values[offset + 3] + 0.5f)
+			);
+
+			joints.x = MathModule::Max(0, GetNodeIndex(skin->joints[joints.x], nodes, numNodes));
+			joints.y = MathModule::Max(0, GetNodeIndex(skin->joints[joints.y], nodes, numNodes));
+			joints.z = MathModule::Max(0, GetNodeIndex(skin->joints[joints.z], nodes, numNodes));
+			joints.w = MathModule::Max(0, GetNodeIndex(skin->joints[joints.w], nodes, numNodes));
+
+			outMesh.joints.push_back(joints);
+		}
+		break;
+		}
+	}
+}
+
 #pragma warning(pop)
