@@ -10,7 +10,7 @@
 template <typename T, uint32_t N>
 void GLTFLoader::TrackFromChannel(Track<T, N>& inOutTrack, const cgltf_animation_channel* channel)
 {
-	cgltf_animation_sampler sampler = channel->sampler;
+	cgltf_animation_sampler* sampler = channel->sampler;
 
 	EInterpolation interpolation = EInterpolation::CONSTANT;
 	if (channel->sampler->interpolation == cgltf_interpolation_type_linear)
@@ -37,7 +37,7 @@ void GLTFLoader::TrackFromChannel(Track<T, N>& inOutTrack, const cgltf_animation
 
 	for (uint32_t index = 0; index < numKeyframes; ++index)
 	{
-		Keyframe<T>& keyframe = inOutTrack[index];
+		Keyframe<N>& keyframe = inOutTrack[index];
 
 		int32_t baseIndex = index * numberOfValuesPerKeyframe;
 		int32_t offset = 0;
@@ -123,6 +123,47 @@ std::vector<std::string> GLTFLoader::LoadJointNames(cgltf_data* data)
 	}
 
 	return jointNames;
+}
+
+std::vector<Clip> GLTFLoader::LoadAnimationClips(cgltf_data* data)
+{
+	uint32_t numClips = static_cast<uint32_t>(data->animations_count);
+	uint32_t numNodes = static_cast<uint32_t>(data->nodes_count);
+
+	std::vector<Clip> clips(numClips);
+
+	for (uint32_t index = 0; index < numClips; ++index)
+	{
+		clips[index].SetName(data->animations[index].name);
+
+		uint32_t numChannels = static_cast<uint32_t>(data->animations[index].channels_count);
+		for(uint32_t ci = 0; ci < numChannels; ++ci)
+		{
+			cgltf_animation_channel* channel = &(data->animations[index].channels[ci]);
+			cgltf_node* target = channel->target_node;
+			int32_t nodeID = GetNodeIndex(target, data->nodes, numNodes);
+
+			if (channel->target_path == cgltf_animation_path_type_translation)
+			{
+				VectorTrack& track = clips[index][nodeID].GetPositionTrack();
+				TrackFromChannel<Vec3f, 3>(track, channel);
+			}
+			else if (channel->target_path == cgltf_animation_path_type_scale)
+			{
+				VectorTrack& track = clips[index][nodeID].GetScaleTrack();
+				TrackFromChannel<Vec3f, 3>(track, channel);
+			}
+			else if (channel->target_path == cgltf_animation_path_type_rotation)
+			{
+				QuaternionTrack& track = clips[index][nodeID].GetRotateTrack();
+				TrackFromChannel<Quat, 4>(track, channel);
+			}
+		}
+
+		clips[index].RecalculateDuration();
+	}
+
+	return clips;
 }
 
 Transform GLTFLoader::GetLocalTransform(cgltf_node* node)

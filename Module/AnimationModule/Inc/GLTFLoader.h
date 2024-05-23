@@ -60,6 +60,16 @@ public:
 	std::vector<std::string> LoadJointNames(cgltf_data* data);
 
 
+	/**
+	 * @brief GLTF 데이터로부터 애니메이션 클립 목록을 로딩합니다.
+	 * 
+	 * @param data GLTF 데이터입니다.
+	 * 
+	 * @return GLTF로부터 추출된 애니메이션 클립 목록을 반환합니다.
+	 */
+	std::vector<Clip> LoadAnimationClips(cgltf_data* data);
+
+
 private:
 	/**
 	 * @brief GLTF 노드로부터 로컬 트랜스폼을 얻습니다.
