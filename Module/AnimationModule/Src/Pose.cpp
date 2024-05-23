@@ -81,3 +81,13 @@ void Pose::Resize(uint32_t size)
 	parents_.resize(size);
 	joints_.resize(size);
 }
+
+Transform Pose::GetLocalTransform(uint32_t index)
+{
+	return joints_[index];
+}
+
+void Pose::SetLocalTransform(uint32_t index, const Transform& transform)
+{
+	joints_[index] = transform;
+}
