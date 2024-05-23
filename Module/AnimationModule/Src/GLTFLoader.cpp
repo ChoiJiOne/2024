@@ -34,4 +34,38 @@ void GLTFLoader::Free(cgltf_data* data)
 	}
 }
 
+Transform GLTFLoader::GetLocalTransform(cgltf_node* node)
+{
+	Transform transform;
+
+	if (node->has_matrix)
+	{
+		Mat4x4 m(
+			 node->matrix[0],  node->matrix[1],  node->matrix[2],  node->matrix[3],
+			 node->matrix[4],  node->matrix[5],  node->matrix[6],  node->matrix[7],
+			 node->matrix[8],  node->matrix[9], node->matrix[10], node->matrix[11],
+			node->matrix[12], node->matrix[13], node->matrix[14], node->matrix[15]
+		);
+
+		transform = Transform::ToTransform(m);
+	}
+
+	if (node->has_translation)
+	{
+		transform.position = Vec3f(node->translation[0], node->translation[1], node->translation[2]);
+	}
+
+	if (node->has_rotation)
+	{
+		transform.rotate = Quat(node->rotation[0], node->rotation[1], node->rotation[2], node->rotation[3]);
+	}
+
+	if (node->has_scale)
+	{
+		transform.scale = Vec3f(node->scale[0], node->scale[1], node->scale[2]);
+	}
+
+	return transform;
+}
+
 #pragma warning(pop)

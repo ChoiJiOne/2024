@@ -5,6 +5,8 @@
 
 #include <cgltf.h>
 
+#include "Mat.h"
+#include "Transform.h"
 #include "Vec.h"
 
 
@@ -34,4 +36,15 @@ public:
 	 * @param data 할당을 해제할 GLTF 데이터입니다.
 	 */
 	static void Free(cgltf_data* data);
+
+
+private:
+	/**
+	 * @brief GLTF 노드로부터 로컬 트랜스폼을 얻습니다.
+	 * 
+	 * @param node 로컬 트랜스폼을 얻을 GLTF 노드입니다.
+	 * 
+	 * @return GLTF 노드의 로컬 트랜스폼 값을 반환합니다.
+	 */
+	static Transform GetLocalTransform(cgltf_node* node);
 };
