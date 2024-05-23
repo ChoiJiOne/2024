@@ -140,7 +140,7 @@ public:
 	 * 
 	 * @return 클립의 지속 시간 값을 반환합니다.
 	 */
-	float GetDuration() { endTime_ - startTime_; }
+	float GetDuration() { return endTime_ - startTime_; }
 
 
 	/**
