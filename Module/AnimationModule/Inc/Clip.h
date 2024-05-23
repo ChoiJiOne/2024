@@ -201,6 +201,17 @@ public:
 	 */
 	void RecalculateDuration();
 
+
+private:
+	/**
+	 * @brief 시간 값을 범위 내로 조정합니다.
+	 * 
+	 * @param time 조정할 시간 값입니다.
+	 * 
+	 * @return 조정된 시간 값을 반환합니다.
+	 */
+	float AdjustTimeToFitRange(float time);
+
 	
 private:
 	/**

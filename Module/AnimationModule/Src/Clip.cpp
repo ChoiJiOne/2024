@@ -1,4 +1,5 @@
 #include "Assertion.h"
+#include "MathModule.h"
 
 #include "Clip.h"
 
@@ -31,6 +32,17 @@ TransformTrack& Clip::operator[](uint32_t boneID)
 	return tracks_.back();
 }
 
+float Clip::Sample(Pose& outPose, float time)
+{
+	if (GetDuration() == 0.0f)
+	{
+		return 0.0f;
+	}
+
+
+	return 0.0f;
+}
+
 void Clip::RecalculateDuration()
 {
 	startTime_ = 0.0f;
@@ -60,4 +72,38 @@ void Clip::RecalculateDuration()
 			}
 		}
 	}
+}
+
+float Clip::AdjustTimeToFitRange(float time)
+{
+	if (bIsLooping_)
+	{
+		float duration = endTime_ - startTime_;
+		if (duration <= 0.0f)
+		{
+			return 0.0f;
+		}
+
+		time = MathModule::Fmod(time - startTime_, endTime_ - startTime_);
+		if (time < 0.0f)
+		{
+			time += (endTime_ - startTime_);
+		}
+
+		time += startTime_;
+	}
+	else
+	{
+		if (time < startTime_)
+		{
+			time = startTime_;
+		}
+
+		if (time > endTime_)
+		{
+			time = endTime_;
+		}
+	}
+
+	return time;
 }
