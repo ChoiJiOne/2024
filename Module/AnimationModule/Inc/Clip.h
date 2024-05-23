@@ -49,6 +49,48 @@ public:
 	virtual ~Clip() {}
 
 
+	/**
+	 * @brief 클립의 대입 연산자입니다.
+	 * 
+	 * @param instance 대입 연산을 수행할 인스턴스입니다.
+	 * 
+	 * @return 대입 연산을 수행한 객체의 참조자를 반환합니다.
+	 */
+	Clip& operator=(Clip&& instance) noexcept
+	{
+		if (this == &instance) return *this;
+
+		tracks_ = instance.tracks_;
+		name_ = instance.name_;
+		startTime_ = instance.startTime_;
+		endTime_ = instance.endTime_;
+		bIsLooping_ = instance.bIsLooping_;
+
+		return *this;
+	}
+
+
+	/**
+	 * @brief 클립의 대입 연산자입니다.
+	 *
+	 * @param instance 대입 연산을 수행할 인스턴스입니다.
+	 *
+	 * @return 대입 연산을 수행한 객체의 참조자를 반환합니다.
+	 */
+	Clip& operator=(const Clip& instance) noexcept
+	{
+		if (this == &instance) return *this;
+
+		tracks_ = instance.tracks_;
+		name_ = instance.name_;
+		startTime_ = instance.startTime_;
+		endTime_ = instance.endTime_;
+		bIsLooping_ = instance.bIsLooping_;
+
+		return *this;
+	}
+
+
 private:
 	/**
 	 * @brief 클립 내의 트랜스폼 트랙입니다.
