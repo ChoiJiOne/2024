@@ -107,6 +107,61 @@ Pose GLTFLoader::LoadRestPose(cgltf_data* data)
 	return restPose;
 }
 
+Pose GLTFLoader::LoadBindPose(cgltf_data* data)
+{
+	Pose restPose = LoadRestPose(data);
+	uint32_t numJoints = restPose.Size();
+	std::vector<Transform> worldBindPose(numJoints);
+
+	for (uint32_t index = 0; index < numJoints; ++index)
+	{
+		worldBindPose[index] = restPose.GetGlobalTransform(index);
+	}
+
+	uint32_t numSkins = static_cast<uint32_t>(data->skins_count);
+	for (uint32_t index = 0; index < numSkins; ++index)
+	{
+		cgltf_skin* skin = &(data->skins[index]);
+		std::vector<float> invBindAccessor;
+		GetScalarValues(invBindAccessor, 16, skin->inverse_bind_matrices);
+
+		uint32_t countJoints = static_cast<uint32_t>(skin->joints_count);
+		for (uint32_t joint = 0; joint < countJoints; ++joint)
+		{
+			float* matrix = &(invBindAccessor[joint * 16]);
+			Mat4x4 invBindMatrix(
+				matrix[0],  matrix[1],  matrix[2],  matrix[3],
+				matrix[4],  matrix[5],  matrix[6],  matrix[7],
+				matrix[8],  matrix[9],  matrix[10], matrix[11],
+				matrix[12], matrix[13], matrix[14], matrix[15]
+			);
+
+			Mat4x4 bindMatrix = Mat4x4::Inverse(invBindMatrix);
+			Transform bindTransform = Transform::ToTransform(bindMatrix);
+
+			cgltf_node* jointNode = skin->joints[joint];
+			int32_t jointIndex = GetNodeIndex(jointNode, data->nodes, numJoints);
+			worldBindPose[jointIndex] = bindTransform;
+		}
+	}
+
+	Pose bindPose = restPose;
+	for (uint32_t index = 0; index < numJoints; ++index)
+	{
+		Transform current = worldBindPose[index];
+		int32_t p = bindPose.GetParent(index);
+		if (p >= 0)
+		{
+			Transform parent = worldBindPose[p];
+			current = Transform::Combine(Transform::Inverse(parent), current);
+		}
+
+		bindPose.SetLocalTransform(index, current);
+	}
+
+	return bindPose;
+}
+
 std::vector<std::string> GLTFLoader::LoadJointNames(cgltf_data* data)
 {
 	uint32_t numJoints = static_cast<uint32_t>(data->nodes_count);

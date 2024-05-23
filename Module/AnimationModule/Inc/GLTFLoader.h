@@ -51,6 +51,16 @@ public:
 
 
 	/**
+	 * @brief GLTF 데이터로부터 Bind 포즈를 로딩합니다.
+	 * 
+	 * @param data GLTF 데이터입니다.
+	 *
+	 * @return GLTF로부터 추출된 Bind 포즈를 반환합니다.
+	 */
+	static Pose LoadBindPose(cgltf_data* data);
+
+
+	/**
 	 * @brief GLTF 데이터로부터 관절(Joint)의 이름 목록을 로딩합니다.
 	 * 
 	 * @param data GLTF 데이터입니다.
