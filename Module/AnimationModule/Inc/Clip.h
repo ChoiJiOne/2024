@@ -142,6 +142,22 @@ public:
 	 */
 	float GetDuration() { endTime_ - startTime_; }
 
+
+	/**
+	 * @brief 클립의 시작 시간 값을 얻습니다.
+	 * 
+	 * @return 클립의 시작 시간 값을 반환합니다.
+	 */
+	float GetStartTime() { return startTime_; }
+
+
+	/**
+	 * @brief 클립의 종료 시간 값을 얻습니다.
+	 * 
+	 * @return 클립의 종료 시간 값을 반환합니다.
+	 */
+	float GetEndTime() { return endTime_; }
+
 	
 private:
 	/**
