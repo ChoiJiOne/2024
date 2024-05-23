@@ -40,6 +40,16 @@ public:
 	static void Free(cgltf_data* data);
 
 
+	/**
+	 * @brief GLTF 데이터로부터 Rest 포즈를 로딩합니다.
+	 * 
+	 * @param data GLTF 데이터입니다.
+	 * 
+	 * @return GLTF로 부터 추출된 Rest 포즈를 반환합니다.
+	 */
+	Pose LoadRestPose(cgltf_data* data);
+
+
 private:
 	/**
 	 * @brief GLTF 노드로부터 로컬 트랜스폼을 얻습니다.

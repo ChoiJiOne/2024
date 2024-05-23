@@ -88,6 +88,25 @@ void GLTFLoader::Free(cgltf_data* data)
 	}
 }
 
+Pose GLTFLoader::LoadRestPose(cgltf_data* data)
+{
+	uint32_t numJoints = static_cast<uint32_t>(data->nodes_count);
+	Pose restPose(numJoints);
+
+	for (uint32_t index = 0; index < numJoints; ++index)
+	{
+		cgltf_node* node = &(data->nodes[index]);
+
+		Transform transform = GetLocalTransform(node);
+		restPose.SetLocalTransform(index, transform);
+
+		int32_t parent = GetNodeIndex(node->parent, data->nodes, numJoints);
+		restPose.SetParent(index, parent);
+	}
+
+	return restPose;
+}
+
 Transform GLTFLoader::GetLocalTransform(cgltf_node* node)
 {
 	Transform transform;
