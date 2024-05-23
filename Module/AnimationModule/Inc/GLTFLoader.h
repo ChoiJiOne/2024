@@ -107,6 +107,16 @@ public:
 	static std::vector<Clip> LoadAnimationClips(cgltf_data* data);
 
 
+	/**
+	 * @brief GLTF 데이터로부터 메시 데이터를 로딩합니다.
+	 * 
+	 * @param data GLTF 데이터입니다.
+	 * 
+	 * @return GLTF로부터 추출된 메시 데이터 목록을 반환합니다.
+	 */
+	static std::vector<MeshData> LoadMeshData(cgltf_data* data);
+
+
 private:
 	/**
 	 * @brief GLTF 노드로부터 로컬 트랜스폼을 얻습니다.
