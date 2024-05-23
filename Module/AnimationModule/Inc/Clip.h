@@ -158,6 +158,14 @@ public:
 	 */
 	float GetEndTime() { return endTime_; }
 
+
+	/**
+	 * @brief 클립의 반복 여부를 얻습니다.
+	 * 
+	 * @return 클립의 반복된다면 true, 그렇지 않으면 false를 반환합니다.
+	 */
+	bool IsLooping() { return bIsLooping_; }
+
 	
 private:
 	/**
