@@ -79,6 +79,14 @@ public:
 	}
 
 
+	/**
+	 * @brief 포즈 내의 목록의 크기를 변경합니다.
+	 * 
+	 * @param size 변경할 크기입니다.
+	 */
+	void Resize(uint32_t size);
+
+
 private:
 	/**
 	 * @brief 관절 변환 목록입니다.
