@@ -47,7 +47,7 @@ public:
 	 * 
 	 * @return GLTF로부터 추출된 Rest 포즈를 반환합니다.
 	 */
-	Pose LoadRestPose(cgltf_data* data);
+	static Pose LoadRestPose(cgltf_data* data);
 
 
 	/**
@@ -57,7 +57,7 @@ public:
 	 * 
 	 * @return GLTF로부터 추출된 관절(Joint)의 이름 목록을 반환합니다.
 	 */
-	std::vector<std::string> LoadJointNames(cgltf_data* data);
+	static std::vector<std::string> LoadJointNames(cgltf_data* data);
 
 
 	/**
@@ -67,7 +67,7 @@ public:
 	 * 
 	 * @return GLTF로부터 추출된 애니메이션 클립 목록을 반환합니다.
 	 */
-	std::vector<Clip> LoadAnimationClips(cgltf_data* data);
+	static std::vector<Clip> LoadAnimationClips(cgltf_data* data);
 
 
 private:
