@@ -87,6 +87,14 @@ public:
 	void Resize(uint32_t size);
 
 
+	/**
+	 * @brief 포즈 내의 관절 변환 목록 크기를 얻습니다.
+	 * 
+	 * @return 포즈 내의 관절 변환 목록 크기를 반환합니다.
+	 */
+	uint32_t Size() const { return static_cast<uint32_t>(joints_.size()); }
+
+
 private:
 	/**
 	 * @brief 관절 변환 목록입니다.
