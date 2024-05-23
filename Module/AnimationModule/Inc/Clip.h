@@ -11,6 +11,42 @@
 class Clip
 {
 public:
+	/**
+	 * @brief 클립의 디폴트 생성자입니다.
+	 */
+	Clip() = default;
+
+
+	/**
+	 * @brief 클립의 복사 생성자입니다.
+	 * 
+	 * @param instance 복사할 인스턴스입니다.
+	 */
+	Clip(Clip&& instance) noexcept
+		: tracks_(instance.tracks_)
+		, name_(instance.name_)
+		, startTime_(instance.startTime_)
+		, endTime_(instance.endTime_)
+		, bIsLooping_(instance.bIsLooping_) {}
+
+
+	/**
+	 * @brief 클립의 복사 생성자입니다.
+	 *
+	 * @param instance 복사할 인스턴스입니다.
+	 */
+	Clip(const Clip& instance) noexcept
+		: tracks_(instance.tracks_)
+		, name_(instance.name_)
+		, startTime_(instance.startTime_)
+		, endTime_(instance.endTime_)
+		, bIsLooping_(instance.bIsLooping_) {}
+
+
+	/**
+	 * @brief 클립의 가상 소멸자입니다.
+	 */
+	virtual ~Clip() {}
 
 
 private:
@@ -23,7 +59,7 @@ private:
 	/**
 	 * @brief 클립의 이름입니다.
 	 */
-	std::string name_;
+	std::string name_ = "empty";
 
 
 	/**
@@ -41,5 +77,5 @@ private:
 	/**
 	 * @brief 클립의 반복 여부입니다.
 	 */
-	bool bIsLooping_ = false;
+	bool bIsLooping_ = true;
 };
