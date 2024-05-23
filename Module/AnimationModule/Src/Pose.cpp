@@ -103,3 +103,8 @@ Transform Pose::GetGlobalTransform(uint32_t index)
 
 	return result;
 }
+
+Transform Pose::operator[](uint32_t index)
+{
+	return GetGlobalTransform(index);
+}
