@@ -174,6 +174,16 @@ public:
 	 */
 	void SetLooping(bool bIsLooping) { bIsLooping_ = bIsLooping; }
 
+
+	/**
+	 * @brief 뼈대 ID 값에 대응하는 트랜스폼 트랙을 얻습니다.
+	 * 
+	 * @param boneID 트랜스폼 트랙을 얻을 뼈대 ID 값입니다.
+	 * 
+	 * @return 뼈대 ID 값에 대응하는 트랜스폼 트랙입니다.
+	 */
+	TransformTrack& operator[](uint32_t boneID);
+
 	
 private:
 	/**
