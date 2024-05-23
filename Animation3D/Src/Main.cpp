@@ -12,18 +12,29 @@
 #include "GeometryRenderer3D.h"
 #include "GLTFLoader.h"
 #include "Camera.h"
+#include "Pose.h"
 
 void RunApplication()
 {
+	cgltf_data* data = GLTFLoader::Load("Resource/Model/Kachujin.gltf");
+	Pose restPose = GLTFLoader::LoadRestPose(data);
+	Pose currentPose = restPose;
+	std::vector<Clip> clips = GLTFLoader::LoadAnimationClips(data);
+	GLTFLoader::Free(data);
+
 	Camera* camera = GameModule::CreateEntity<Camera>();
 
 	GeometryRenderer3D* geometryRenderer = RenderModule::CreateResource<GeometryRenderer3D>();
 	geometryRenderer->SetView(camera->GetView());
 	geometryRenderer->SetProjection(camera->GetProjection());
 
+	float playbackTime = 0.0f;
+
 	PlatformModule::RunLoop(
 		[&](float deltaSeconds)
 		{
+			playbackTime = clips[1].Sample(currentPose, playbackTime + deltaSeconds);
+
 			camera->Tick(deltaSeconds);
 
 			geometryRenderer->SetView(camera->GetView());
@@ -32,6 +43,18 @@ void RunApplication()
 			RenderModule::BeginFrame(0.0f, 0.0f, 0.0f, 1.0f);
 
 			geometryRenderer->DrawGrid3D(Vec3f(100.0f, 100.0f, 100.0f), 1.0f);
+
+			for (uint32_t index = 0; index < currentPose.Size(); ++index)
+			{
+				if (currentPose.GetParent(index) < 0)
+				{
+					continue;
+				}
+
+				Vec3f pos0 = currentPose.GetGlobalTransform(index).position;
+				Vec3f pos1 = currentPose.GetGlobalTransform(currentPose.GetParent(index)).position;
+				geometryRenderer->DrawLine3D(pos0, pos1, Vec4f(1.0f, 0.0f, 0.0f, 1.0f));
+			}
 
 			RenderModule::EndFrame();
 		}
