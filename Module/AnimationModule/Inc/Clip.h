@@ -135,6 +135,14 @@ public:
 	void SetName(const std::string& name) { name_ = name; }
 
 	
+	/**
+	 * @brief 클립의 지속 시간 값을 얻습니다.
+	 * 
+	 * @return 클립의 지속 시간 값을 반환합니다.
+	 */
+	float GetDuration() { endTime_ - startTime_; }
+
+	
 private:
 	/**
 	 * @brief 클립 내의 트랜스폼 트랙입니다.
