@@ -9,6 +9,8 @@
 #include "Transform.h"
 #include "Vec.h"
 
+#include "Clip.h"
+
 
 /**
  * @brief GLTF 파일과 파일 내의 데이터 로딩을 수행합니다.
@@ -69,4 +71,15 @@ private:
 	 * @param accessor 스칼라 데이터의 형식입니다.
 	 */
 	static void GetScalarValues(std::vector<float>& outScalars, uint32_t componentCount, const cgltf_accessor* accessor);
+
+
+
+	/**
+	 * @brief GLTF의 채널로부터 트랙 값을 얻습니다.
+	 * 
+	 * @param inOutTrack GLTF의 채널로부터 트랙 값을 저장할 참조자입니다. 
+	 * @param channel GLTF 애니메이션 채널입니다.
+	 */
+	template <typename T, uint32_t N>
+	static void TrackFromChannel(Track<T, N>& inOutTrack, const cgltf_animation_channel* channel);
 };

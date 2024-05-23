@@ -7,6 +7,60 @@
 
 #include "GLTFLoader.h"
 
+template <typename T, uint32_t N>
+void GLTFLoader::TrackFromChannel(Track<T, N>& inOutTrack, const cgltf_animation_channel* channel)
+{
+	cgltf_animation_sampler sampler = channel->sampler;
+
+	EInterpolation interpolation = EInterpolation::CONSTANT;
+	if (channel->sampler->interpolation == cgltf_interpolation_type_linear)
+	{
+		interpolation = EInterpolation::LINEAR;
+	}
+	else if (channel->sampler->interpolation == cgltf_interpolation_type_cubic_spline)
+	{
+		interpolation = EInterpolation::CUBIC;
+	}
+
+	bool isSamplerCubic = (interpolation == EInterpolation::CUBIC);
+	inOutTrack.SetInterpolation(interpolation);
+
+	std::vector<float> timelineFloats;
+	GetScalarValues(timelineFloats, 1, sampler->input);
+
+	std::vector<float> valueFloats;
+	GetScalarValues(valueFloats, N, sampler->output);
+
+	uint32_t numKeyframes = static_cast<uint32_t>(sampler->input->count);
+	uint32_t numberOfValuesPerKeyframe = valueFloats.size() / timelineFloats.size();
+	inOutTrack.Resize(numKeyframes);
+
+	for (uint32_t index = 0; index < numKeyframes; ++index)
+	{
+		Keyframe<T>& keyframe = inOutTrack[index];
+
+		int32_t baseIndex = index * numberOfValuesPerKeyframe;
+		int32_t offset = 0;
+
+		keyframe.time = timelineFloats[index];
+
+		for (int32_t component = 0; component < N; ++component)
+		{
+			keyframe.in[component] = isSamplerCubic ? valueFloats[baseIndex + offset++] : 0.0f;
+		}
+
+		for (int32_t component = 0; component < N; ++component)
+		{
+			keyframe.value[component] = valueFloats[baseIndex + offset++];
+		}
+
+		for (int32_t component = 0; component < N; ++component)
+		{
+			keyframe.out[component] = isSamplerCubic ? valueFloats[baseIndex + offset++] : 0.0f;
+		}
+	}
+}
+
 cgltf_data* GLTFLoader::Load(const std::string& path)
 {
 	cgltf_result result = cgltf_result_success;
