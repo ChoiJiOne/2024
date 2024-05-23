@@ -76,6 +76,14 @@ public:
 	Pose& GetRestPose() { return restPose_; }
 
 
+	/**
+	 * @brief 역 바인드 포즈 행렬을 얻습니다.
+	 * 
+	 * @return 역 바인드 포즈 행렬의 벡터 참조자를 반환합니다.
+	 */
+	std::vector<Mat4x4>& GetInvBindPose() { return invBindPose_; }
+
+
 private:
 	/**
 	 * @brief 뼈대의 Rest 포즈입니다.
