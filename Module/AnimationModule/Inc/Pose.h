@@ -193,6 +193,25 @@ public:
 	void GetMatrixPalette(std::vector<Mat4x4>& outMatrixPalette);
 
 
+	/**
+	 * @brief 인덱스에 대응하는 부모 뼈대 값을 얻습니다.
+	 * 
+	 * @param index 부모 뼈대 값을 얻을 인덱스 값입니다.
+	 * 
+	 * @return 인덱스에 대응하는 부모 뼈대 값을 반환합니다.
+	 */
+	int32_t GetParent(uint32_t index) { parents_[index]; }
+
+
+	/**
+	 * @brief 부모 뼈대 값을 설정합니다.
+	 * 
+	 * @param index 부모 뼈대 값을 설정할 인덱스입니다.
+	 * @param parent 설정할 부모 뼈대 값입니다.
+	 */
+	void SetParent(uint32_t index, int32_t parent) { parents_[index] = parent; }
+
+
 private:
 	/**
 	 * @brief 관절 변환 목록입니다.
