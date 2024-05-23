@@ -39,8 +39,18 @@ float Clip::Sample(Pose& outPose, float time)
 		return 0.0f;
 	}
 
+	time = AdjustTimeToFitRange(time);
 
-	return 0.0f;
+	uint32_t size = static_cast<uint32_t>(tracks_.size());
+	for (uint32_t index = 0; index < size; ++index)
+	{
+		uint32_t boneID = tracks_[index].GetBoneID();
+		Transform local = outPose.GetLocalTransform(boneID);
+		Transform animated = tracks_[index].Sample(local, time, bIsLooping_);
+		outPose.SetLocalTransform(boneID, animated);
+	}
+
+	return time;
 }
 
 void Clip::RecalculateDuration()
