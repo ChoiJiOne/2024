@@ -91,6 +91,26 @@ public:
 
 
 	/**
+	 * @brief 두 포즈가 서로 일치하는지 확인합니다.
+	 *
+	 * @param instance 일치하는지 확인할 인스턴스입니다.
+	 *
+	 * @return 두 포즈가 일치한다면 true, 그렇지 않으면 false입니다.
+	 */
+	bool operator==(Pose&& instance) noexcept;
+
+
+	/**
+	 * @brief 두 포즈가 서로 일치하는지 확인합니다.
+	 * 
+	 * @param instance 일치하는지 확인할 인스턴스입니다.
+	 * 
+	 * @return 두 포즈가 일치한다면 true, 그렇지 않으면 false입니다.
+	 */
+	bool operator==(const Pose& instance);
+
+
+	/**
 	 * @brief 포즈 내의 목록의 크기를 변경합니다.
 	 * 
 	 * @param size 변경할 크기입니다.
