@@ -21,6 +21,16 @@ public:
 
 
 	/**
+	 * @brief 스켈레톤(뼈대)의 생성자입니다.
+	 * 
+	 * @param restPose 휴식 포즈입니다.
+	 * @param bindPose 바인드 포즈입니다.
+	 * @param jointNames 관절(Bone) 이름 목록입니다.
+	 */
+	Skeleton(const Pose& restPose, const Pose& bindPose, const std::vector<std::string>& jointNames);
+
+
+	/**
 	 * @brief 스켈레톤(뼈대)의 복사 생성자입니다.
 	 * 
 	 * @param instance 복사할 인스턴스입니다.
