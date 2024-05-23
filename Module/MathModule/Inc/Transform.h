@@ -207,7 +207,7 @@ struct Transform
 		);
 
 		Mat4x4 invRotateScale = Quat::ToMat(Quat::Inverse(t.rotate));
-		Mat4x4 scaleKew = rotateScale * invRotateScale;
+		Mat4x4 scaleKew = invRotateScale * rotateScale;
 
 		t.scale = Vec3f(scaleKew.e00, scaleKew.e11, scaleKew.e22);
 
