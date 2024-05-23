@@ -66,6 +66,16 @@ bool Pose::operator==(const Pose& instance)
 	return true;
 }
 
+bool Pose::operator!=(Pose&& instance) noexcept
+{
+	return !(*this == instance);
+}
+
+bool Pose::operator!=(const Pose& instance)
+{
+	return !(*this == instance);
+}
+
 void Pose::Resize(uint32_t size)
 {
 	parents_.resize(size);
