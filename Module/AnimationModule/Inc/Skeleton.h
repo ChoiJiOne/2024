@@ -84,6 +84,14 @@ public:
 	std::vector<Mat4x4>& GetInvBindPose() { return invBindPose_; }
 
 
+	/**
+	 * @brief 관절(Bone) 이름 목록을 얻습니다.
+	 * 
+	 * @return 관절(Bone) 이름 목록의 벡터 참조자를 반환합니다.
+	 */
+	std::vector<std::string>& GetJointNames() { return jointNames_; }
+
+
 private:
 	/**
 	 * @brief 뼈대의 Rest 포즈입니다.
