@@ -11,6 +11,36 @@
 class Pose
 {
 public:
+	/**
+	 * @brief 포즈 클래스의 디폴트 생성자입니다.
+	 */
+	Pose() = default;
+
+
+	/**
+	 * @brief 포즈 클래스의 복사 생성자입니다.
+	 * 
+	 * @param instance 복사할 인스턴스입니다.
+	 */
+	Pose(Pose&& instance) noexcept
+		: joints_(instance.joints_)
+		, parents_(instance.parents_) {}
+
+
+	/**
+	 * @brief 포즈 클래스의 복사 생성자입니다.
+	 *
+	 * @param instance 복사할 인스턴스입니다.
+	 */
+	Pose(const Pose& instance) noexcept
+		: joints_(instance.joints_)
+		, parents_(instance.parents_) {}
+
+
+	/**
+	 * @brief 포즈 클래스의 가상 소멸자입니다.
+	 */
+	virtual ~Pose() {}
 
 
 private:
