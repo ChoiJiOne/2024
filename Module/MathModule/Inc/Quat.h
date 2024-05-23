@@ -607,7 +607,7 @@ struct Quat
 
 		Vec3f half = Vec3f::Normalize(start + end);
 		Vec3f axis = Vec3f::Cross(start, half);
-		return AxisRadian(axis, Vec3f::Dot(start, half));
+		return Quat(axis.x, axis.y, axis.z, Vec3f::Dot(start, half));
 	}
 
 
