@@ -68,4 +68,22 @@ Transform GLTFLoader::GetLocalTransform(cgltf_node* node)
 	return transform;
 }
 
+int32_t GLTFLoader::GetNodeIndex(cgltf_node* target, cgltf_node* nodes, uint32_t numModes)
+{
+	if (target == nullptr)
+	{
+		return -1;
+	}
+
+	for (uint32_t index = 0; index < numModes; ++index)
+	{
+		if (target == &nodes[index])
+		{
+			return static_cast<int32_t>(index);
+		}
+	}
+
+	return -1;
+}
+
 #pragma warning(pop)

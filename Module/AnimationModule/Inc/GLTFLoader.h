@@ -47,4 +47,16 @@ private:
 	 * @return GLTF 노드의 로컬 트랜스폼 값을 반환합니다.
 	 */
 	static Transform GetLocalTransform(cgltf_node* node);
+
+
+	/**
+	 * @brief GLTF 노드의 인덱스를 얻습니다.
+	 * 
+	 * @param target 인덱스를 얻을 타겟 노드입니다.
+	 * @param nodes 노드 목록입니다.
+	 * @param numNodes 노드 목록의 수입니다.
+	 * 
+	 * @return GLTF 노드의 인덱스 값을 반환합니다
+	 */
+	static int32_t GetNodeIndex(cgltf_node* target, cgltf_node* nodes, uint32_t numModes);
 };
