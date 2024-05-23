@@ -119,6 +119,22 @@ public:
 	uint32_t Size() const { return static_cast<uint32_t>(tracks_.size()); }
 
 
+	/**
+	 * @brief 클립의 이름을 얻습니다.
+	 * 
+	 * @return 클립의 이름 값을 반환합니다.
+	 */
+	const std::string& GetName() const { return name_; }
+
+
+	/**
+	 * @brief 클립의 이름을 설정합니다.
+	 * 
+	 * @param name 설정할 클립의 이름입니다.
+	 */
+	void SetName(const std::string& name) { name_ = name; }
+
+	
 private:
 	/**
 	 * @brief 클립 내의 트랜스폼 트랙입니다.
