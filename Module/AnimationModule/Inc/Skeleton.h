@@ -27,7 +27,10 @@ public:
 	 * @param bindPose 바인드 포즈입니다.
 	 * @param jointNames 관절(Bone) 이름 목록입니다.
 	 */
-	Skeleton(const Pose& restPose, const Pose& bindPose, const std::vector<std::string>& jointNames);
+	Skeleton(const Pose& restPose, const Pose& bindPose, const std::vector<std::string>& jointNames)
+	{
+		SetProperties(restPose, bindPose, jointNames);
+	}
 
 
 	/**
