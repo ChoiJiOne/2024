@@ -111,6 +111,14 @@ public:
 	void SetBoneID(uint32_t index, uint32_t boneID) { tracks_[index].SetBoneID(boneID); }
 
 
+	/**
+	 * @brief 트랙의 크기를 얻습니다.
+	 * 
+	 * @return 트랙의 크기를 반환합니다.
+	 */
+	uint32_t Size() const { return static_cast<uint32_t>(tracks_.size()); }
+
+
 private:
 	/**
 	 * @brief 클립 내의 트랜스폼 트랙입니다.
