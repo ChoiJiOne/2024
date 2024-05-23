@@ -29,12 +29,10 @@ void DrawWireframePose(GeometryRenderer3D* geometryRenderer, Pose& pose)
 	}
 }
 
-
 void RunApplication()
 {
-	cgltf_data* data = GLTFLoader::Load("Resource/Model/Michelle.gltf");
-	Pose restPose = GLTFLoader::LoadRestPose(data);
-	Pose currentPose = restPose;
+	cgltf_data* data = GLTFLoader::Load("Resource/Model/Kachujin.gltf");
+	Skeleton skeleton = GLTFLoader::LoadSkeleton(data);
 	std::vector<Clip> clips = GLTFLoader::LoadAnimationClips(data);
 	GLTFLoader::Free(data);
 
@@ -46,6 +44,8 @@ void RunApplication()
 
 	float playbackTime = 0.0f;
 
+	Pose currentPose = skeleton.GetRestPose();
+	
 	PlatformModule::RunLoop(
 		[&](float deltaSeconds)
 		{
