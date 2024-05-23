@@ -16,7 +16,7 @@
 
 void RunApplication()
 {
-	cgltf_data* data = GLTFLoader::Load("Resource/Model/Kachujin.gltf");
+	cgltf_data* data = GLTFLoader::Load("Resource/Model/Michelle.gltf");
 	Pose restPose = GLTFLoader::LoadRestPose(data);
 	Pose currentPose = restPose;
 	std::vector<Clip> clips = GLTFLoader::LoadAnimationClips(data);
@@ -33,7 +33,7 @@ void RunApplication()
 	PlatformModule::RunLoop(
 		[&](float deltaSeconds)
 		{
-			playbackTime = clips[1].Sample(currentPose, playbackTime + deltaSeconds);
+			playbackTime = clips[2].Sample(currentPose, playbackTime + deltaSeconds);
 
 			camera->Tick(deltaSeconds);
 
