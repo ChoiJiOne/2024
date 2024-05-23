@@ -86,4 +86,14 @@ int32_t GLTFLoader::GetNodeIndex(cgltf_node* target, cgltf_node* nodes, uint32_t
 	return -1;
 }
 
+void GLTFLoader::GetScalarValues(std::vector<float>& outScalars, uint32_t componentCount, const cgltf_accessor* accessor)
+{
+	outScalars.resize(accessor->count * componentCount);
+
+	for (cgltf_size index = 0; index < accessor->count; ++index)
+	{
+		cgltf_accessor_read_float(accessor, index, &outScalars[index * componentCount], componentCount);
+	}
+}
+
 #pragma warning(pop)

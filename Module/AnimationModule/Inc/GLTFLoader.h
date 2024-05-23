@@ -59,4 +59,14 @@ private:
 	 * @return GLTF 노드의 인덱스 값을 반환합니다
 	 */
 	static int32_t GetNodeIndex(cgltf_node* target, cgltf_node* nodes, uint32_t numModes);
+
+
+	/**
+	 * @brief GLTF의 스칼라 값을 얻습니다.
+	 * 
+	 * @param outScalars GLTF의 스칼라 값입니다.
+	 * @param componentCount 스칼라 값의 컴포넌트 수입니다.
+	 * @param accessor 스칼라 데이터의 형식입니다.
+	 */
+	static void GetScalarValues(std::vector<float>& outScalars, uint32_t componentCount, const cgltf_accessor* accessor);
 };
