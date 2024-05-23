@@ -60,6 +60,14 @@ public:
 	virtual ~Skeleton() {}
 
 
+	/**
+	 * @brief 바인드 포즈를 얻습니다.
+	 * 
+	 * @return 바인드 포즈의 참조자를 반환합니다.
+	 */
+	Pose& GetBindPose() { return bindPose_; }
+
+
 private:
 	/**
 	 * @brief 뼈대의 Rest 포즈입니다.
