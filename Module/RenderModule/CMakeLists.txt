@@ -24,6 +24,7 @@ target_link_libraries(
     glad
     imgui
     stb
+    AnimationModule
     CrashModule
     FileModule
     MathModule
