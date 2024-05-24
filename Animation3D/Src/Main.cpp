@@ -60,7 +60,7 @@ void RunApplication()
 			vertices[index].joints = mesh.joints[index];
 		}
 
-		meshes.push_back(RenderModule::CreateResource<SkinnedMesh>(vertices, indices));
+		meshes.push_back(RenderModule::CreateResource<SkinnedMesh>(vertices, indices, false));
 	}
 
 	// 매터리얼 로딩
@@ -77,6 +77,8 @@ void RunApplication()
 
 	Pose currentPose = skeleton.GetRestPose();
 	float playbackTime = 0.0f;
+
+	std::vector<Mat4x4> pose;
 
 	PlatformModule::RunLoop(
 		[&](float deltaSeconds)
@@ -99,10 +101,14 @@ void RunApplication()
 				meshRenderer->SetUniform("projection", camera->GetProjection());
 
 				material->Active(0);
-
 				for (const auto& mesh : meshes)
 				{
 					mesh->Skin(&skeleton, &currentPose);
+					currentPose.GetMatrixPalette(pose);
+					const std::vector<Mat4x4>& invBindPose = skeleton.GetInvBindPose();
+
+					meshRenderer->SetUniform("pose", pose.data(), pose.size());
+					meshRenderer->SetUniform("invBindPose", invBindPose.data(), invBindPose.size());
 
 					mesh->Bind();
 					RenderModule::ExecuteDrawIndex(mesh->GetIndexCount(), EDrawMode::Triangles);
@@ -111,8 +117,8 @@ void RunApplication()
 			}
 			meshRenderer->Unbind();
 
-			DrawWireframePose(geometryRenderer, skeleton.GetBindPose(), 2.0f);
-			DrawWireframePose(geometryRenderer, skeleton.GetRestPose(), -2.0f);
+			//DrawWireframePose(geometryRenderer, skeleton.GetBindPose(), 2.0f);
+			//DrawWireframePose(geometryRenderer, skeleton.GetRestPose(), -2.0f);
 
 			RenderModule::EndFrame();
 		}
