@@ -7,6 +7,9 @@
 #include "Vertex3D.h"
 #include "VertexBuffer.h"
 
+class Skeleton;
+class Pose;
+
 
 /**
  * @brief 스키닝 메시 리소스입니다.
@@ -69,11 +72,34 @@ public:
 	const std::vector<VertexPositionNormalUvSkin3D>& GetVertices() const { return vertices_; }
 
 
+	/**
+	 * @brief 메시의 스키닝된 정점 목록을 얻습니다.
+	 *
+	 * @return 메시의 정점 목록 상수 참조자를 반환합니다.
+	 */
+	const std::vector<VertexPositionNormalUvSkin3D>& GetSkinnedVertices() const { return skinnedVertices_; }
+
+
+	/**
+	 * @brief 메시 스키닝을 수행합니다.
+	 * 
+	 * @param skeleton 스키닝 수행 시 참조할 뼈대입니다. 
+	 * @param pose 스키닝 수행 시 참조할 포즈입니다.
+	 */
+	void Skin(Skeleton* skeleton, Pose* pose);
+
+
 private:
 	/**
 	 * @brief 정점 목록입니다.
 	 */
 	std::vector<VertexPositionNormalUvSkin3D> vertices_;
+
+
+	/**
+	 * @brief 스키닝된 정점 목록입니다.
+	 */
+	std::vector<VertexPositionNormalUvSkin3D> skinnedVertices_;
 
 
 	/**
@@ -102,4 +128,10 @@ private:
 	 * - https://registry.khronos.org/OpenGL-Refpages/gl4/html/glGenVertexArrays.xhtml
 	 */
 	uint32_t vertexArrayObject_ = 0;
+
+
+	/**
+	 * @brief 포즈 행렬 목록입니다.
+	 */
+	std::vector<Mat4x4> posePalette_;
 };
