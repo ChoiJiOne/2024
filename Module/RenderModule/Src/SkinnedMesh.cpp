@@ -7,12 +7,15 @@
 #include "RenderModule.h"
 #include "SkinnedMesh.h"
 
-SkinnedMesh::SkinnedMesh(const std::vector<VertexPositionNormalUvSkin3D>& vertices, const std::vector<uint32_t>& indices)
+SkinnedMesh::SkinnedMesh(const std::vector<VertexPositionNormalUvSkin3D>& vertices, const std::vector<uint32_t>& indices, bool bIsUploadGPU)
 	: vertices_(vertices)
 	, skinnedVertices_(vertices)
 	, indices_(indices)
+	, bIsUploadGPU_(bIsUploadGPU)
 {
-	vertexBuffer_ = RenderModule::CreateResource<VertexBuffer>(vertices_.data(), static_cast<uint32_t>(vertices_.size()) * VertexPositionNormalUvSkin3D::GetStride(), VertexBuffer::EUsage::Static);
+	VertexBuffer::EUsage usage = bIsUploadGPU_ ? VertexBuffer::EUsage::Dynamic : VertexBuffer::EUsage::Static;
+
+	vertexBuffer_ = RenderModule::CreateResource<VertexBuffer>(vertices_.data(), static_cast<uint32_t>(vertices_.size()) * VertexPositionNormalUvSkin3D::GetStride(), usage);
 	indexBuffer_ = RenderModule::CreateResource<IndexBuffer>(indices_.data(), static_cast<uint32_t>(indices_.size()));
 
 	GL_FAILED(glGenVertexArrays(1, &vertexArrayObject_));
@@ -107,8 +110,11 @@ void SkinnedMesh::Skin(Skeleton* skeleton, Pose* pose)
 		skinnedVertices_[index].normal = Vec3f(skinnedNormal.x, skinnedNormal.y, skinnedNormal.z);
 	}
 
-	const void* bufferPtr = skinnedVertices_.data();
-	uint32_t bufferSize = static_cast<uint32_t>(skinnedVertices_.size()) * VertexPositionNormalUvSkin3D::GetStride();
+	if (bIsUploadGPU_)
+	{
+		const void* bufferPtr = skinnedVertices_.data();
+		uint32_t bufferSize = static_cast<uint32_t>(skinnedVertices_.size()) * VertexPositionNormalUvSkin3D::GetStride();
 
-	vertexBuffer_->SetBufferData(bufferPtr, bufferSize);
+		vertexBuffer_->SetBufferData(bufferPtr, bufferSize);
+	}
 }

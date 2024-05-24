@@ -22,8 +22,9 @@ public:
 	 * 
 	 * @param vertices 메시의 정점 목록입니다.
 	 * @param indices 메시의 인덱스 목록입니다.
+	 * @param 스키닝된 정점 목록을 GPU로 전송할 지 여부입니다.
 	 */
-	explicit SkinnedMesh(const std::vector<VertexPositionNormalUvSkin3D>& vertices, const std::vector<uint32_t>& indices);
+	explicit SkinnedMesh(const std::vector<VertexPositionNormalUvSkin3D>& vertices, const std::vector<uint32_t>& indices, bool bIsUploadGPU);
 
 
 	/**
@@ -142,4 +143,10 @@ private:
 	 * @brief 포즈 행렬 목록입니다.
 	 */
 	std::vector<Mat4x4> posePalette_;
+
+
+	/**
+	 * @brief 스키닝된 정점 목록을 GPU로 전송할 지 여부입니다.
+	 */
+	bool bIsUploadGPU_ = false;
 };
