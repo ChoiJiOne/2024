@@ -2,8 +2,8 @@
 
 #include <vector>
 
+#include "IMesh.h"
 #include "IndexBuffer.h"
-#include "IResource.h"
 #include "Vertex3D.h"
 #include "VertexBuffer.h"
 
@@ -11,7 +11,7 @@
 /**
  * @brief 정적 메시 리소스입니다.
  */
-class StaticMesh : public IResource
+class StaticMesh : public IMesh
 {
 public:
 	/**
@@ -46,13 +46,13 @@ public:
 	/**
 	 * @brief 메시 리소스를 파이프라인에 바인딩합니다.
 	 */
-	void Bind();
+	virtual void Bind() override;
 
 
 	/**
 	 * @brief 바인딩된 메시 리소스를 바인딩 해제합니다.
 	 */
-	void Unbind();
+	virtual void Unbind() override;
 
 
 	/**
@@ -60,7 +60,15 @@ public:
 	 *
 	 * @return 메시의 인덱스 수를 반환합니다.
 	 */
-	uint32_t GetIndexCount() const { return static_cast<uint32_t>(indices_.size()); }
+	virtual uint32_t GetIndexCount() const override { return static_cast<uint32_t>(indices_.size()); }
+
+
+	/**
+	 * @brief 메시의 정점 수를 얻습니다.
+	 *
+	 * @return 메시의 정점 수를 반환합니다.
+	 */
+	virtual uint32_t GetVertexCount() const override { return static_cast<uint32_t>(vertices_.size()); }
 
 
 	/**
