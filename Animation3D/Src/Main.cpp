@@ -16,7 +16,7 @@
 #include "SkinnedMesh.h"
 #include "Checkboard.h"
 
-void DrawWireframePose(GeometryRenderer3D* geometryRenderer, Pose& pose)
+void DrawWireframePose(GeometryRenderer3D* geometryRenderer, Pose& pose, float bias)
 {
 	for (uint32_t index = 0; index < pose.Size(); ++index)
 	{
@@ -27,6 +27,8 @@ void DrawWireframePose(GeometryRenderer3D* geometryRenderer, Pose& pose)
 
 		Vec3f pos0 = pose.GetGlobalTransform(index).position;
 		Vec3f pos1 = pose.GetGlobalTransform(pose.GetParent(index)).position;
+		pos0.x += bias;
+		pos1.x += bias;
 		geometryRenderer->DrawLine3D(pos0, pos1, Vec4f(1.0f, 0.0f, 0.0f, 1.0f));
 	}
 }
@@ -34,7 +36,7 @@ void DrawWireframePose(GeometryRenderer3D* geometryRenderer, Pose& pose)
 void RunApplication()
 {
 	// GLTF 데이터 로딩...
-	cgltf_data* data = GLTFLoader::Load("Resource/Model/Kachujin.gltf");
+	cgltf_data* data = GLTFLoader::Load("Resource/Model/Michelle.gltf");
 	Skeleton skeleton = GLTFLoader::LoadSkeleton(data);
 	std::vector<Clip> clips = GLTFLoader::LoadAnimationClips(data);
 	std::vector<GLTFLoader::MeshData> meshData = GLTFLoader::LoadMeshData(data);
@@ -73,9 +75,14 @@ void RunApplication()
 
 	Shader* meshRenderer = RenderModule::CreateResource<Shader>("Resource/Shader/Mesh.vert", "Resource/Shader/Mesh.frag");
 
+	Pose currentPose = skeleton.GetRestPose();
+	float playbackTime = 0.0f;
+
 	PlatformModule::RunLoop(
 		[&](float deltaSeconds)
 		{
+			playbackTime = clips[2].Sample(currentPose, playbackTime + deltaSeconds);
+
 			camera->Tick(deltaSeconds);
 
 			geometryRenderer->SetView(camera->GetView());
@@ -95,12 +102,17 @@ void RunApplication()
 
 				for (const auto& mesh : meshes)
 				{
+					mesh->Skin(&skeleton, &currentPose);
+
 					mesh->Bind();
 					RenderModule::ExecuteDrawIndex(mesh->GetIndexCount(), EDrawMode::Triangles);
 					mesh->Unbind();
 				}
 			}
 			meshRenderer->Unbind();
+
+			DrawWireframePose(geometryRenderer, skeleton.GetBindPose(), 2.0f);
+			DrawWireframePose(geometryRenderer, skeleton.GetRestPose(), -2.0f);
 
 			RenderModule::EndFrame();
 		}
