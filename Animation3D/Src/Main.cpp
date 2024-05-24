@@ -13,6 +13,8 @@
 #include "GLTFLoader.h"
 #include "Camera.h"
 #include "Pose.h"
+#include "SkinnedMesh.h"
+#include "Checkboard.h"
 
 void DrawWireframePose(GeometryRenderer3D* geometryRenderer, Pose& pose)
 {
@@ -31,26 +33,49 @@ void DrawWireframePose(GeometryRenderer3D* geometryRenderer, Pose& pose)
 
 void RunApplication()
 {
+	// GLTF 데이터 로딩...
 	cgltf_data* data = GLTFLoader::Load("Resource/Model/Kachujin.gltf");
 	Skeleton skeleton = GLTFLoader::LoadSkeleton(data);
 	std::vector<Clip> clips = GLTFLoader::LoadAnimationClips(data);
+	std::vector<GLTFLoader::MeshData> meshData = GLTFLoader::LoadMeshData(data);
 	GLTFLoader::Free(data);
 
+	// 메시 리소스 로딩
+	std::vector<SkinnedMesh*> meshes;
+	for (const auto& mesh : meshData)
+	{
+		uint32_t size = mesh.positions.size();
+
+		std::vector<VertexPositionNormalUvSkin3D> vertices(size);
+		std::vector<uint32_t> indices = mesh.indices;
+
+		for (uint32_t index = 0; index < size; ++index)
+		{
+			vertices[index].position = mesh.positions[index];
+			vertices[index].normal = mesh.normals[index];
+			vertices[index].uv = mesh.texcoords[index];
+			vertices[index].weight = mesh.weights[index];
+			vertices[index].joints = mesh.joints[index];
+		}
+
+		meshes.push_back(RenderModule::CreateResource<SkinnedMesh>(vertices, indices));
+	}
+
+	// 매터리얼 로딩
+	Checkboard* material = RenderModule::CreateResource<Checkboard>(Checkboard::ESize::Size_1024x1024, Checkboard::ESize::Size_32x32, Vec4f(1.0f, 1.0f, 1.0f, 1.0f), Vec4f(1.0f, 0.0f, 0.0f, 1.0f));
+
+	// 카메라 엔티티 생성
 	Camera* camera = GameModule::CreateEntity<Camera>();
 
 	GeometryRenderer3D* geometryRenderer = RenderModule::CreateResource<GeometryRenderer3D>();
 	geometryRenderer->SetView(camera->GetView());
 	geometryRenderer->SetProjection(camera->GetProjection());
 
-	float playbackTime = 0.0f;
+	Shader* meshRenderer = RenderModule::CreateResource<Shader>("Resource/Shader/Mesh.vert", "Resource/Shader/Mesh.frag");
 
-	Pose currentPose = skeleton.GetRestPose();
-	
 	PlatformModule::RunLoop(
 		[&](float deltaSeconds)
 		{
-			playbackTime = clips[2].Sample(currentPose, playbackTime + deltaSeconds);
-
 			camera->Tick(deltaSeconds);
 
 			geometryRenderer->SetView(camera->GetView());
@@ -60,7 +85,22 @@ void RunApplication()
 
 			geometryRenderer->DrawGrid3D(Vec3f(100.0f, 100.0f, 100.0f), 1.0f);
 
-			DrawWireframePose(geometryRenderer, currentPose);
+			meshRenderer->Bind();
+			{
+				meshRenderer->SetUniform("world", Mat4x4::Identity());
+				meshRenderer->SetUniform("view", camera->GetView());
+				meshRenderer->SetUniform("projection", camera->GetProjection());
+
+				material->Active(0);
+
+				for (const auto& mesh : meshes)
+				{
+					mesh->Bind();
+					RenderModule::ExecuteDrawIndex(mesh->GetIndexCount(), EDrawMode::Triangles);
+					mesh->Unbind();
+				}
+			}
+			meshRenderer->Unbind();
 
 			RenderModule::EndFrame();
 		}
