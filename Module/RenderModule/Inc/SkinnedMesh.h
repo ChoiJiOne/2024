@@ -90,6 +90,14 @@ public:
 
 
 	/**
+	 * @brief 포즈 행렬 목록을 얻습니다.
+	 * 
+	 * @return 포즈 행렬 목록의 상수 참조자를 반환합니다.
+	 */
+	const std::vector<Mat4x4>& GetPosePalette() const { return posePalette_; }
+
+
+	/**
 	 * @brief 메시 스키닝을 수행합니다.
 	 * 
 	 * @param skeleton 스키닝 수행 시 참조할 뼈대입니다. 
