@@ -14,15 +14,15 @@ uniform mat4 world;
 uniform mat4 view;
 uniform mat4 projection;
 
-uniform mat4 pose[MAX_SIZE];
+uniform mat4 bindPose[MAX_SIZE];
 uniform mat4 invBindPose[MAX_SIZE];
 
 void main()
 {
-    mat4 m0 = (pose[inJoints.x] * invBindPose[inJoints.x]) * inWeights.x;
-    mat4 m1 = (pose[inJoints.y] * invBindPose[inJoints.y]) * inWeights.y;
-    mat4 m2 = (pose[inJoints.z] * invBindPose[inJoints.z]) * inWeights.z;
-    mat4 m3 = (pose[inJoints.w] * invBindPose[inJoints.w]) * inWeights.w;
+    mat4 m0 = (bindPose[inJoints.x] * invBindPose[inJoints.x]) * inWeights.x;
+    mat4 m1 = (bindPose[inJoints.y] * invBindPose[inJoints.y]) * inWeights.y;
+    mat4 m2 = (bindPose[inJoints.z] * invBindPose[inJoints.z]) * inWeights.z;
+    mat4 m3 = (bindPose[inJoints.w] * invBindPose[inJoints.w]) * inWeights.w;
 
     mat4 skin = m0 + m1 + m2 + m3;
     
