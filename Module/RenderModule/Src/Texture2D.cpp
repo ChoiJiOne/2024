@@ -12,13 +12,13 @@
 #define INTERNAL_FORMAT_RGB  3
 #define INTERNAL_FORMAT_RGBA 4
 
-Texture2D::Texture2D(const std::string& path)
+Texture2D::Texture2D(const std::string& path, bool bIsVerticallyFlip)
 {
 	int32_t width;
 	int32_t height;
 	int32_t channels;
 	std::vector<uint8_t> buffer;
-	ReadPixelBufferFromFile(path, width, height, channels, buffer);
+	ReadPixelBufferFromFile(path, width, height, channels, buffer, bIsVerticallyFlip);
 
 	GLenum format = 0xFFFF;
 	switch (channels)
