@@ -15,6 +15,8 @@
 #include "Pose.h"
 #include "SkinnedMesh.h"
 #include "Checkboard.h"
+#include "Texture2D.h"
+#include "MeshRenderer3D.h"
 
 void DrawWireframePose(GeometryRenderer3D* geometryRenderer, Pose& pose, float bias)
 {
@@ -36,7 +38,7 @@ void DrawWireframePose(GeometryRenderer3D* geometryRenderer, Pose& pose, float b
 void RunApplication()
 {
 	// GLTF 데이터 로딩...
-	cgltf_data* data = GLTFLoader::Load("Resource/Model/Michelle.gltf");
+	cgltf_data* data = GLTFLoader::Load("Resource/Model/Kachujin.gltf");
 	Skeleton skeleton = GLTFLoader::LoadSkeleton(data);
 	std::vector<Clip> clips = GLTFLoader::LoadAnimationClips(data);
 	std::vector<GLTFLoader::MeshData> meshData = GLTFLoader::LoadMeshData(data);
@@ -64,21 +66,17 @@ void RunApplication()
 	}
 
 	// 매터리얼 로딩
-	Checkboard* material = RenderModule::CreateResource<Checkboard>(Checkboard::ESize::Size_1024x1024, Checkboard::ESize::Size_32x32, Vec4f(1.0f, 1.0f, 1.0f, 1.0f), Vec4f(1.0f, 0.0f, 0.0f, 1.0f));
+	//Checkboard* material = RenderModule::CreateResource<Checkboard>(Checkboard::ESize::Size_1024x1024, Checkboard::ESize::Size_32x32, Vec4f(1.0f, 1.0f, 1.0f, 1.0f), Vec4f(1.0f, 0.0f, 0.0f, 1.0f));
+	Texture2D* material = RenderModule::CreateResource<Texture2D>("Resource/Texture/Kachujin.png", false);
 
 	// 카메라 엔티티 생성
 	Camera* camera = GameModule::CreateEntity<Camera>();
 
 	GeometryRenderer3D* geometryRenderer = RenderModule::CreateResource<GeometryRenderer3D>();
-	geometryRenderer->SetView(camera->GetView());
-	geometryRenderer->SetProjection(camera->GetProjection());
+	MeshRenderer3D* meshRenderer = RenderModule::CreateResource<MeshRenderer3D>();
 
-	Shader* meshRenderer = RenderModule::CreateResource<Shader>("Resource/Shader/Mesh.vert", "Resource/Shader/Mesh.frag");
-
-	Pose currentPose = skeleton.GetRestPose();
+	Pose currentPose = skeleton.GetBindPose();
 	float playbackTime = 0.0f;
-
-	std::vector<Mat4x4> pose;
 
 	PlatformModule::RunLoop(
 		[&](float deltaSeconds)
@@ -89,37 +87,22 @@ void RunApplication()
 
 			geometryRenderer->SetView(camera->GetView());
 			geometryRenderer->SetProjection(camera->GetProjection());
+			meshRenderer->SetView(camera->GetView());
+			meshRenderer->SetProjection(camera->GetProjection());
 
 			RenderModule::BeginFrame(0.0f, 0.0f, 0.0f, 1.0f);
 
 			geometryRenderer->DrawGrid3D(Vec3f(100.0f, 100.0f, 100.0f), 1.0f);
 
-			meshRenderer->Bind();
+			for (const auto& mesh : meshes)
 			{
-				meshRenderer->SetUniform("world", Mat4x4::Identity());
-				meshRenderer->SetUniform("view", camera->GetView());
-				meshRenderer->SetUniform("projection", camera->GetProjection());
+				mesh->Skin(&skeleton, &currentPose);
+				const std::vector<Mat4x4>& bindPose = mesh->GetPosePalette();
+				const std::vector<Mat4x4>& invBindPose = skeleton.GetInvBindPose();
 
-				material->Active(0);
-				for (const auto& mesh : meshes)
-				{
-					mesh->Skin(&skeleton, &currentPose);
-					currentPose.GetMatrixPalette(pose);
-					const std::vector<Mat4x4>& invBindPose = skeleton.GetInvBindPose();
-
-					meshRenderer->SetUniform("pose", pose.data(), pose.size());
-					meshRenderer->SetUniform("invBindPose", invBindPose.data(), invBindPose.size());
-
-					mesh->Bind();
-					RenderModule::ExecuteDrawIndex(mesh->GetIndexCount(), EDrawMode::Triangles);
-					mesh->Unbind();
-				}
+				meshRenderer->DrawSkinnedMesh3D(Mat4x4::Identity(), mesh, bindPose, invBindPose, material);
 			}
-			meshRenderer->Unbind();
-
-			//DrawWireframePose(geometryRenderer, skeleton.GetBindPose(), 2.0f);
-			//DrawWireframePose(geometryRenderer, skeleton.GetRestPose(), -2.0f);
-
+			
 			RenderModule::EndFrame();
 		}
 	);
