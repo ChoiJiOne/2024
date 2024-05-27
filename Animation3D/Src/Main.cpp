@@ -17,6 +17,7 @@
 #include "Checkboard.h"
 #include "Texture2D.h"
 #include "MeshRenderer3D.h"
+#include "CrossFadeController.h"
 
 void RunApplication()
 {
@@ -57,12 +58,29 @@ void RunApplication()
 	GeometryRenderer3D* geometryRenderer = RenderModule::CreateResource<GeometryRenderer3D>();
 	MeshRenderer3D* meshRenderer = RenderModule::CreateResource<MeshRenderer3D>();
 
-	float playbackTime = clips[2].GetStartTime();
+
+	CrossFadeController crossFadeController;
+	crossFadeController.SetSkeleton(skeleton);
+	crossFadeController.Play(clips.data());
+	crossFadeController.Update(0.0f);
+
+	float fadeTime = 3.0f;
+	int32_t currentClip = 0;
 
 	PlatformModule::RunLoop(
 		[&](float deltaSeconds)
 		{
-			playbackTime = clips[2].Sample(skeleton.GetRestPose(), playbackTime + deltaSeconds);
+			crossFadeController.Update(deltaSeconds);
+
+			fadeTime -= deltaSeconds;
+			if (fadeTime < 0.0f)
+			{
+				fadeTime = 3.0f;
+
+				currentClip = (currentClip + 1) % clips.size();
+
+				crossFadeController.FadeTo(&clips[currentClip], 0.5f);
+			}
 
 			camera->Tick(deltaSeconds);
 
@@ -77,9 +95,9 @@ void RunApplication()
 
 			for (const auto& mesh : meshes)
 			{
-				mesh->Skin(&skeleton, &skeleton.GetRestPose());
+				mesh->Skin(&crossFadeController.GetSkeleton(), &crossFadeController.GetCurrentPose());
 				const std::vector<Mat4x4>& bindPose = mesh->GetPosePalette();
-				const std::vector<Mat4x4>& invBindPose = skeleton.GetInvBindPose();
+				const std::vector<Mat4x4>& invBindPose = crossFadeController.GetSkeleton().GetInvBindPose();
 
 				meshRenderer->DrawSkinnedMesh3D(Mat4x4::Identity(), mesh, bindPose, invBindPose, material);
 			}
