@@ -63,6 +63,48 @@ public:
 	virtual ~CrossFadeTarget() {}
 
 
+	/**
+	 * @brief 크로스 페이드 타겟의 대입 연산자입니다.
+	 * 
+	 * @param instance 대입 연산을 수행할 인스턴스입니다.
+	 * 
+	 * @return 대입 연산을 수행한 객체의 참조자를 반환합니다.
+	 */
+	CrossFadeTarget& operator=(CrossFadeTarget&& instance) noexcept
+	{
+		if (this == &instance) return *this;
+
+		pose_ = instance.pose_;
+		clip_ = instance.clip_;
+		time_ = instance.time_;
+		duration_ = instance.duration_;
+		elapsed_ = instance.elapsed_;
+
+		return *this;
+	}
+
+
+	/**
+	 * @brief 크로스 페이드 타겟의 대입 연산자입니다.
+	 *
+	 * @param instance 대입 연산을 수행할 인스턴스입니다.
+	 *
+	 * @return 대입 연산을 수행한 객체의 참조자를 반환합니다.
+	 */
+	CrossFadeTarget& operator=(const CrossFadeTarget& instance) noexcept
+	{
+		if (this == &instance) return *this;
+
+		pose_ = instance.pose_;
+		clip_ = instance.clip_;
+		time_ = instance.time_;
+		duration_ = instance.duration_;
+		elapsed_ = instance.elapsed_;
+
+		return *this;
+	}
+
+
 private:
 	/**
 	 * @brief 애니메이션 패이딩 시 샘플링할 포즈입니다.
