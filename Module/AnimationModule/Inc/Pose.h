@@ -208,6 +208,18 @@ public:
 	static bool IsInHierarchy(Pose& pose, uint32_t parent, uint32_t search);
 
 
+	/**
+	 * @brief 두 포즈를 블랜딩합니다.
+	 * 
+	 * @param output 블랜딩된 포즈입니다.
+	 * @param start 블랜딩할 첫 번째 포즈(t=0 시 적용)입니다.
+	 * @param end 블랜딩할 두 번째 포즈(t=1 시 적용)입니다.
+	 * @param t 0과 1 사이의 블랜딩 값입니다.
+	 * @param blendRoot 루트 노드입니다.
+	 */
+	static void Blend(Pose& output, Pose& start, Pose& end, float t, int32_t blendRoot);
+
+
 private:
 	/**
 	 * @brief 관절 변환 목록입니다.

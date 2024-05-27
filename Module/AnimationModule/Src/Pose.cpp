@@ -197,3 +197,20 @@ bool Pose::IsInHierarchy(Pose& pose, uint32_t parent, uint32_t search)
 
 	return false;
 }
+
+void Pose::Blend(Pose& output, Pose& start, Pose& end, float t, int32_t blendRoot)
+{
+	uint32_t numJoints = output.Size();
+	for (uint32_t index = 0; index < numJoints; ++index)
+	{
+		if (blendRoot >= 0)
+		{
+			if (!IsInHierarchy(output, static_cast<uint32_t>(blendRoot), index))
+			{
+				continue;
+			}
+		}
+
+		output.SetLocalTransform(index, Transform::Mix(start.GetLocalTransform(index), end.GetLocalTransform(index), t));
+	}
+}
