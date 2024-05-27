@@ -105,6 +105,46 @@ public:
 	}
 
 
+	/**
+	 * @brief 애니메이션 패이딩 시 샘플링할 포즈를 얻습니다.
+	 * 
+	 * @return 애니메이션 패이딩 시 샘플링할 포즈를 반환합니다.
+	 */
+	Pose& GetPose() { return pose_; }
+
+
+	/**
+	 * @breif 현재의 애니메이션 클립을 얻습니다.
+	 * 
+	 * @return 현재의 애니메이션 클립 포인터를 반환합니다.
+	 */
+	Clip* GetClip() { return clip_; }
+
+
+	/**
+	 * @brief 누적 시간값을 얻습니다.
+	 * 
+	 * @return 누적 시간값을 반환합니다.
+	 */
+	float GetTime() const { return time_; }
+
+
+	/**
+	 * @brief 애니메이션 지속 시간 값을 얻습니다.
+	 * 
+	 * @return 애니메이션 지속 시간 값을 반환합니다.
+	 */
+	float GetDuration() const { return duration_; }
+
+
+	/**
+	 * @brief 애니메이션 플레이 경과 시간을 얻습니다.
+	 * 
+	 * @return 애니메이션 플레이 경과 시간 값을 반환합니다.
+	 */
+	float GetElapsed() const { return elapsed_; }
+
+
 private:
 	/**
 	 * @brief 애니메이션 패이딩 시 샘플링할 포즈입니다.
