@@ -27,6 +27,34 @@ public:
 
 
 	/**
+	 * @brief 크로스 페이드 컨트롤러의 복사 생성자입니다.
+	 * 
+	 * @param instance 복사할 인스턴스입니다.
+	 */
+	CrossFadeController(CrossFadeController&& instance) noexcept
+		: targets_(instance.targets_)
+		, clip_(instance.clip_)
+		, time_(instance.time_)
+		, pose_(instance.pose_)
+		, skeleton_(instance.skeleton_)
+		, bWasSetSkeleton_(instance.bWasSetSkeleton_) {}
+
+
+	/**
+	 * @brief 크로스 페이드 컨트롤러의 복사 생성자입니다.
+	 *
+	 * @param instance 복사할 인스턴스입니다.
+	 */
+	CrossFadeController(const CrossFadeController& instance) noexcept
+		: targets_(instance.targets_)
+		, clip_(instance.clip_)
+		, time_(instance.time_)
+		, pose_(instance.pose_)
+		, skeleton_(instance.skeleton_)
+		, bWasSetSkeleton_(instance.bWasSetSkeleton_) {}
+
+
+	/**
 	 * @brief 크로스 페이드 컨트롤러의 가상 소멸자입니다.
 	 */
 	virtual ~CrossFadeController() {}
