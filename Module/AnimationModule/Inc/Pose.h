@@ -196,6 +196,18 @@ public:
 	void SetParent(uint32_t index, int32_t parent) { parents_[index] = parent; }
 
 
+	/**
+	 * @brief 한 노드가 다른 노드의 계층 구조 내에 있는지 확인합니다.
+	 * 
+	 * @param pose 계층 구조를 나타내는 포즈입니다.
+	 * @param parent 계층 내의 다른 노드 인덱스입니다.
+	 * @param search 확인할 노드 인덱스입니다.
+	 * 
+	 * @return 한 노드가 다른 노드의 계층 구조 내에 있다면 true, 그렇지 않으면 false를 반환합니다.
+	 */
+	static bool IsInHierarchy(Pose& pose, uint32_t parent, uint32_t search);
+
+
 private:
 	/**
 	 * @brief 관절 변환 목록입니다.

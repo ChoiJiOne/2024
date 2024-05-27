@@ -177,3 +177,23 @@ void Pose::GetMatrixPalette(std::vector<Mat4x4>& outMatrixPalette)
 		outMatrixPalette[index] = Transform::ToMat(transform);
 	}
 }
+
+bool Pose::IsInHierarchy(Pose& pose, uint32_t parent, uint32_t search)
+{
+	if (search == parent)
+	{
+		return true;
+	}
+
+	int32_t p = pose.GetParent(search);
+	while (p >= 0)
+	{
+		if (p == static_cast<int32_t>(parent))
+		{
+			return true;
+		}
+		p = pose.GetParent(p);
+	}
+
+	return false;
+}
