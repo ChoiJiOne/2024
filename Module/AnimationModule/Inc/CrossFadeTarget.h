@@ -57,6 +57,12 @@ public:
 		, elapsed_(instance.elapsed_) {}
 
 
+	/**
+	 * @brief 크로스 페이드의 가상 소멸자입니다.
+	 */
+	virtual ~CrossFadeTarget() {}
+
+
 private:
 	/**
 	 * @brief 애니메이션 패이딩 시 샘플링할 포즈입니다.
