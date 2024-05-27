@@ -18,23 +18,6 @@
 #include "Texture2D.h"
 #include "MeshRenderer3D.h"
 
-void DrawWireframePose(GeometryRenderer3D* geometryRenderer, Pose& pose, float bias)
-{
-	for (uint32_t index = 0; index < pose.Size(); ++index)
-	{
-		if (pose.GetParent(index) < 0)
-		{
-			continue;
-		}
-
-		Vec3f pos0 = pose.GetGlobalTransform(index).position;
-		Vec3f pos1 = pose.GetGlobalTransform(pose.GetParent(index)).position;
-		pos0.x += bias;
-		pos1.x += bias;
-		geometryRenderer->DrawLine3D(pos0, pos1, Vec4f(1.0f, 0.0f, 0.0f, 1.0f));
-	}
-}
-
 void RunApplication()
 {
 	// GLTF 데이터 로딩...
@@ -66,7 +49,6 @@ void RunApplication()
 	}
 
 	// 매터리얼 로딩
-	//Checkboard* material = RenderModule::CreateResource<Checkboard>(Checkboard::ESize::Size_1024x1024, Checkboard::ESize::Size_32x32, Vec4f(1.0f, 1.0f, 1.0f, 1.0f), Vec4f(1.0f, 0.0f, 0.0f, 1.0f));
 	Texture2D* material = RenderModule::CreateResource<Texture2D>("Resource/Texture/Kachujin.png", false);
 
 	// 카메라 엔티티 생성
@@ -75,13 +57,12 @@ void RunApplication()
 	GeometryRenderer3D* geometryRenderer = RenderModule::CreateResource<GeometryRenderer3D>();
 	MeshRenderer3D* meshRenderer = RenderModule::CreateResource<MeshRenderer3D>();
 
-	Pose currentPose = skeleton.GetBindPose();
-	float playbackTime = 0.0f;
+	float playbackTime = clips[2].GetStartTime();
 
 	PlatformModule::RunLoop(
 		[&](float deltaSeconds)
 		{
-			playbackTime = clips[2].Sample(currentPose, playbackTime + deltaSeconds);
+			playbackTime = clips[2].Sample(skeleton.GetRestPose(), playbackTime + deltaSeconds);
 
 			camera->Tick(deltaSeconds);
 
@@ -96,7 +77,7 @@ void RunApplication()
 
 			for (const auto& mesh : meshes)
 			{
-				mesh->Skin(&skeleton, &currentPose);
+				mesh->Skin(&skeleton, &skeleton.GetRestPose());
 				const std::vector<Mat4x4>& bindPose = mesh->GetPosePalette();
 				const std::vector<Mat4x4>& invBindPose = skeleton.GetInvBindPose();
 
