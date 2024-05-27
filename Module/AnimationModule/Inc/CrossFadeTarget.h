@@ -7,9 +7,8 @@
 /**
  * @brief 애니메이션 패이딩 시 샘플링된 포즈의 상태 값입니다.
  */
-class CrossFadeTarget
+struct CrossFadeTarget
 {
-public:
 	/**
 	 * @brief 크로스 페이드 타겟의 기본 생성자입니다.
 	 */
@@ -19,16 +18,16 @@ public:
 	/**
 	 * @brief 크로스 페이드 타겟의 생성자입니다.
 	 * 
-	 * @param 크로스 페이드 타겟의 클립입니다.
-	 * @param 크로스 페이드 타겟의 포즈입니다.
-	 * @param 크로스 페이드 타겟의 애니메이션 지속 시간입니다.
+	 * @param targetClip 크로스 페이드 타겟의 클립입니다.
+	 * @param targetPose 크로스 페이드 타겟의 포즈입니다.
+	 * @param targetDuration 크로스 페이드 타겟의 애니메이션 지속 시간입니다.
 	 */
-	CrossFadeTarget(Clip* target, const Pose& pose, float duration)
-		: clip_(target)
-		, pose_(pose)
-		, time_(target->GetStartTime())
-		, duration_(duration)
-		, elapsed_(0.0f) {}
+	CrossFadeTarget(Clip* targetClip, const Pose& targetPose, float targetDuration)
+		: clip(targetClip)
+		, pose(targetPose)
+		, time(targetClip->GetStartTime())
+		, duration(targetDuration)
+		, elapsed(0.0f) {}
 
 
 	/**
@@ -37,11 +36,11 @@ public:
 	 * @param instance 복사할 인스턴스입니다.
 	 */
 	CrossFadeTarget(CrossFadeTarget&& instance) noexcept
-		: pose_(instance.pose_)
-		, clip_(instance.clip_)
-		, time_(instance.time_)
-		, duration_(instance.duration_)
-		, elapsed_(instance.elapsed_) {}
+		: pose(instance.pose)
+		, clip(instance.clip)
+		, time(instance.time)
+		, duration(instance.duration)
+		, elapsed(instance.elapsed) {}
 
 
 	/**
@@ -50,11 +49,11 @@ public:
 	 * @param instance 복사할 인스턴스입니다.
 	 */
 	CrossFadeTarget(const CrossFadeTarget& instance) noexcept
-		: pose_(instance.pose_)
-		, clip_(instance.clip_)
-		, time_(instance.time_)
-		, duration_(instance.duration_)
-		, elapsed_(instance.elapsed_) {}
+		: pose(instance.pose)
+		, clip(instance.clip)
+		, time(instance.time)
+		, duration(instance.duration)
+		, elapsed(instance.elapsed) {}
 
 
 	/**
@@ -74,11 +73,11 @@ public:
 	{
 		if (this == &instance) return *this;
 
-		pose_ = instance.pose_;
-		clip_ = instance.clip_;
-		time_ = instance.time_;
-		duration_ = instance.duration_;
-		elapsed_ = instance.elapsed_;
+		pose = instance.pose;
+		clip = instance.clip;
+		time = instance.time;
+		duration = instance.duration;
+		elapsed = instance.elapsed;
 
 		return *this;
 	}
@@ -95,83 +94,42 @@ public:
 	{
 		if (this == &instance) return *this;
 
-		pose_ = instance.pose_;
-		clip_ = instance.clip_;
-		time_ = instance.time_;
-		duration_ = instance.duration_;
-		elapsed_ = instance.elapsed_;
+		pose = instance.pose;
+		clip = instance.clip;
+		time = instance.time;
+		duration = instance.duration;
+		elapsed = instance.elapsed;
 
 		return *this;
 	}
 
 
 	/**
-	 * @brief 애니메이션 패이딩 시 샘플링할 포즈를 얻습니다.
-	 * 
-	 * @return 애니메이션 패이딩 시 샘플링할 포즈를 반환합니다.
-	 */
-	Pose& GetPose() { return pose_; }
-
-
-	/**
-	 * @breif 현재의 애니메이션 클립을 얻습니다.
-	 * 
-	 * @return 현재의 애니메이션 클립 포인터를 반환합니다.
-	 */
-	Clip* GetClip() { return clip_; }
-
-
-	/**
-	 * @brief 누적 시간값을 얻습니다.
-	 * 
-	 * @return 누적 시간값을 반환합니다.
-	 */
-	float GetTime() const { return time_; }
-
-
-	/**
-	 * @brief 애니메이션 지속 시간 값을 얻습니다.
-	 * 
-	 * @return 애니메이션 지속 시간 값을 반환합니다.
-	 */
-	float GetDuration() const { return duration_; }
-
-
-	/**
-	 * @brief 애니메이션 플레이 경과 시간을 얻습니다.
-	 * 
-	 * @return 애니메이션 플레이 경과 시간 값을 반환합니다.
-	 */
-	float GetElapsed() const { return elapsed_; }
-
-
-private:
-	/**
 	 * @brief 애니메이션 패이딩 시 샘플링할 포즈입니다.
 	 */
-	Pose pose_;
+	Pose pose;
 
 
 	/**
 	 * @brief 현재의 애니메이션 클립입니다.
 	 */
-	Clip* clip_ = nullptr;
+	Clip* clip = nullptr;
 
 
 	/**
 	 * @brief 누적 시간값입니다.
 	 */
-	float time_ = 0.0f;
+	float time = 0.0f;
 
 
 	/**
 	 * @brief 애니메이션 지속 시간입니다.
 	 */
-	float duration_ = 0.0f;
+	float duration = 0.0f;
 
 
 	/**
 	 * @brief 애니메이션 플레이 경과 시간입니다.
 	 */
-	float elapsed_ = 0.0f;
+	float elapsed = 0.0f;
 };
