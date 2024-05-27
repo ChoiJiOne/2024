@@ -131,9 +131,18 @@ public:
 	/**
 	 * @brief 활성화된 크로스 페이드를 삭제하고 클립 및 재생 시간을 재설정합니다.
 	 * 
-	 * @param clip 재설정할 클립입니다.
+	 * @param target 재설정할 클립입니다.
 	 */
-	void Play(Clip* clip);
+	void Play(Clip* target);
+
+
+	/**
+	 * @brief 애니메이션 클립과 지속 시간을 페이드 목록에 추가합니다.
+	 * 
+	 * @param target 페이드 목록에 추가할 애니메이션 클립입니다.
+	 * @param fadeTime 애니메이션 클립 페이드 시간입니다.
+	 */
+	void FadeTo(Clip* target, float fadeTime);
 
 
 private:
