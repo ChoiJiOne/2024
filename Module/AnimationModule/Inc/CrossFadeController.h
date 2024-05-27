@@ -32,6 +32,14 @@ public:
 	virtual ~CrossFadeController() {}
 
 
+	/**
+	 * @brief 크로스 페이드 컨트롤러의 뼈대를 설정합니다.
+	 * 
+	 * @param skeleton 설정할 스켈레톤(뼈대)입니다.
+	 */
+	void SetSkeleton(const Skeleton& skeleton);
+
+
 private:
 	/**
 	 * @brief 크로스 페이드 타겟 목록입니다.
