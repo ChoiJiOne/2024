@@ -145,6 +145,14 @@ public:
 	void FadeTo(Clip* target, float fadeTime);
 
 
+	/**
+	 * @brief 크로스 페이드 컨트롤러를 업데이트합니다.
+	 * 
+	 * @param deltaSeconds 초단위 델타 시간값입니다.
+	 */
+	void Update(float deltaSeconds);
+
+
 private:
 	/**
 	 * @brief 크로스 페이드 타겟 목록입니다.
