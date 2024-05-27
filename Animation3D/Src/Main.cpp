@@ -21,7 +21,7 @@
 void RunApplication()
 {
 	// GLTF 데이터 로딩...
-	cgltf_data* data = GLTFLoader::Load("Resource/Model/Kachujin.gltf");
+	cgltf_data* data = GLTFLoader::Load("Resource/Model/Michelle.gltf");
 	Skeleton skeleton = GLTFLoader::LoadSkeleton(data);
 	std::vector<Clip> clips = GLTFLoader::LoadAnimationClips(data);
 	std::vector<GLTFLoader::MeshData> meshData = GLTFLoader::LoadMeshData(data);
@@ -49,7 +49,7 @@ void RunApplication()
 	}
 
 	// 매터리얼 로딩
-	Texture2D* material = RenderModule::CreateResource<Texture2D>("Resource/Texture/Kachujin.png", false);
+	Texture2D* material = RenderModule::CreateResource<Texture2D>("Resource/Texture/Michelle.png", false);
 
 	// 카메라 엔티티 생성
 	Camera* camera = GameModule::CreateEntity<Camera>();
