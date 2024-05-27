@@ -113,6 +113,14 @@ public:
 
 
 	/**
+	 * @brief 현재 크로스 페이드 컨트롤러의 뼈대를 얻습니다.
+	 * 
+	 * @return 현재 크로스 페이드 컨트롤러의 뼈대를 반환합니다.
+	 */
+	Skeleton& GetSkeleton() { return skeleton_; }
+
+
+	/**
 	 * @brief 현재 포즈를 얻습니다.
 	 * 
 	 * @return 현재 포즈의 참조자를 반환합니다.
