@@ -12,3 +12,12 @@ void CrossFadeController::SetSkeleton(const Skeleton& skeleton)
 	pose_ = skeleton_.GetRestPose();
 	bWasSetSkeleton_ = true;
 }
+
+void CrossFadeController::Play(Clip* clip)
+{
+	targets_.clear();
+
+	clip_ = clip;
+	pose_ = skeleton_.GetRestPose();
+	time_ = clip_->GetStartTime();
+}

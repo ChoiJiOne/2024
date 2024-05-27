@@ -128,6 +128,14 @@ public:
 	Clip* GetCurrentClip() { return clip_; }
 
 
+	/**
+	 * @brief 활성화된 크로스 페이드를 삭제하고 클립 및 재생 시간을 재설정합니다.
+	 * 
+	 * @param clip 재설정할 클립입니다.
+	 */
+	void Play(Clip* clip);
+
+
 private:
 	/**
 	 * @brief 크로스 페이드 타겟 목록입니다.
