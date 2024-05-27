@@ -61,6 +61,50 @@ public:
 
 
 	/**
+	 * @brief 크로스 페이드 컨트롤러의 대입 연산자입니다.
+	 * 
+	 * @param instance 대입 연산을 수행할 인스턴스입니다.
+	 * 
+	 * @return 대입 연산을 수행한 객체의 참조자를 반환합니다.
+	 */
+	CrossFadeController& operator=(CrossFadeController&& instance) noexcept
+	{
+		if (this == &instance) return *this;
+
+		targets_ = instance.targets_;
+		clip_ = instance.clip_;
+		time_ = instance.time_;
+		pose_ = instance.pose_;
+		skeleton_ = instance.skeleton_;
+		bWasSetSkeleton_ = instance.bWasSetSkeleton_;
+
+		return *this;
+	}
+
+
+	/**
+	 * @brief 크로스 페이드 컨트롤러의 대입 연산자입니다.
+	 *
+	 * @param instance 대입 연산을 수행할 인스턴스입니다.
+	 *
+	 * @return 대입 연산을 수행한 객체의 참조자를 반환합니다.
+	 */
+	CrossFadeController& operator=(const CrossFadeController& instance) noexcept
+	{
+		if (this == &instance) return *this;
+
+		targets_ = instance.targets_;
+		clip_ = instance.clip_;
+		time_ = instance.time_;
+		pose_ = instance.pose_;
+		skeleton_ = instance.skeleton_;
+		bWasSetSkeleton_ = instance.bWasSetSkeleton_;
+
+		return *this;
+	}
+
+
+	/**
 	 * @brief 크로스 페이드 컨트롤러의 뼈대를 설정합니다.
 	 * 
 	 * @param skeleton 설정할 스켈레톤(뼈대)입니다.
