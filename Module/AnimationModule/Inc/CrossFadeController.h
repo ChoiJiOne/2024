@@ -112,6 +112,22 @@ public:
 	void SetSkeleton(const Skeleton& skeleton);
 
 
+	/**
+	 * @brief 현재 포즈를 얻습니다.
+	 * 
+	 * @return 현재 포즈의 참조자를 반환합니다.
+	 */
+	Pose& GetCurrentPose() { return pose_; }
+
+
+	/**
+	 * @brief 현재 클립을 얻습니다.
+	 * 
+	 * @return 현재 클립을 반환합니다.
+	 */
+	Clip* GetCurrentClip() { return clip_; }
+
+
 private:
 	/**
 	 * @brief 크로스 페이드 타겟 목록입니다.
