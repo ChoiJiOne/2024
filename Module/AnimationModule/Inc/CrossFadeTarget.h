@@ -31,6 +31,32 @@ public:
 		, elapsed_(0.0f) {}
 
 
+	/**
+	 * @brief 크로스 페이드 타겟의 복사 생성자입니다.
+	 * 
+	 * @param instance 복사할 인스턴스입니다.
+	 */
+	CrossFadeTarget(CrossFadeTarget&& instance) noexcept
+		: pose_(instance.pose_)
+		, clip_(instance.clip_)
+		, time_(instance.time_)
+		, duration_(instance.duration_)
+		, elapsed_(instance.elapsed_) {}
+
+
+	/**
+	 * @brief 크로스 페이드 타겟의 복사 생성자입니다.
+	 *
+	 * @param instance 복사할 인스턴스입니다.
+	 */
+	CrossFadeTarget(const CrossFadeTarget& instance) noexcept
+		: pose_(instance.pose_)
+		, clip_(instance.clip_)
+		, time_(instance.time_)
+		, duration_(instance.duration_)
+		, elapsed_(instance.elapsed_) {}
+
+
 private:
 	/**
 	 * @brief 애니메이션 패이딩 시 샘플링할 포즈입니다.
