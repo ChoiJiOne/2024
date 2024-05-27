@@ -64,6 +64,46 @@ public:
 
 
 	/**
+	 * @brief 스켈레톤(뼈대)의 대입 연산자입니다.
+	 * 
+	 * @param instance 대입 연산을 수행할 인스턴스입니다.
+	 * 
+	 * @return 대입 연산을 수행한 인스턴스의 참조자를 반환합니다.
+	 */
+	Skeleton& operator=(Skeleton&& instance) noexcept
+	{
+		if (this == &instance) return *this;
+
+		restPose_ = instance.restPose_;
+		bindPose_ = instance.bindPose_;
+		invBindPose_ = instance.invBindPose_;
+		jointNames_ = instance.jointNames_;
+
+		return *this;
+	}
+
+
+	/**
+	 * @brief 스켈레톤(뼈대)의 대입 연산자입니다.
+	 *
+	 * @param instance 대입 연산을 수행할 인스턴스입니다.
+	 *
+	 * @return 대입 연산을 수행한 인스턴스의 참조자를 반환합니다.
+	 */
+	Skeleton& operator=(const Skeleton& instance) noexcept
+	{
+		if (this == &instance) return *this;
+
+		restPose_ = instance.restPose_;
+		bindPose_ = instance.bindPose_;
+		invBindPose_ = instance.invBindPose_;
+		jointNames_ = instance.jointNames_;
+
+		return *this;
+	}
+
+
+	/**
 	 * @brief 바인드 포즈를 얻습니다.
 	 * 
 	 * @return 바인드 포즈의 참조자를 반환합니다.
