@@ -1,10 +1,14 @@
 #pragma once
 
+#include <imgui.h>
+
 #include "CrossFadeController.h"
 #include "IEntity.h"
 #include "ITexture2D.h"
 #include "Skeleton.h"
 #include "SkinnedMesh.h"
+
+class Camera;
 
 
 /**
@@ -15,8 +19,10 @@ class Character : public IEntity
 public:
 	/**
 	 * @brief 캐릭터 엔티티의 생성자입니다.
+	 * 
+	 * @param camera 카메라 엔티티입니다.
 	 */
-	Character();
+	Character(Camera* camera);
 
 
 	/**
@@ -71,6 +77,12 @@ public:
 
 private:
 	/**
+	 * @brief 카메라 엔티티입니다.
+	 */
+	Camera* camera_ = nullptr;
+
+
+	/**
 	 * @brief 스키닝 메시 리소스입니다.
 	 */
 	std::vector<SkinnedMesh*> meshes_;
@@ -83,10 +95,16 @@ private:
 
 
 	/**
+	 * @brief 현재 애니메이션 클립 인덱스입니다.
+	 */
+	uint32_t currentClip_ = 0;
+
+
+	/**
 	 * @brief 애니메이션 클립입니다.
 	 */
 	std::vector<Clip> clips_;
-
+	
 
 	/**
 	 * @brief 캐릭터 애니메이션의 뼈대입니다.
@@ -98,4 +116,22 @@ private:
 	 * @brief 클립의 부드러운 전환을 위한 크로스 페이드 컨트롤러입니다.
 	 */
 	CrossFadeController crossFadeController_;
+
+
+	/**
+	 * @brief 컨트롤 엔티티의 UI 위치입니다.
+	 */
+	ImVec2 location_;
+
+
+	/**
+	 * @brief 컨트롤 엔티티의 UI 크기입니다.
+	 */
+	ImVec2 size_;
+
+
+	/**
+	 * @brief 컨트롤 엔티티의 UI 옵션 플래그입니다.
+	 */
+	ImGuiWindowFlags flags_;
 };
