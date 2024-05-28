@@ -137,6 +137,14 @@ public:
 
 
 	/**
+	 * @brief 현재 플레이 시간 값을 얻습니다.
+	 * 
+	 * @return 현재 플레이 시간 값을 반환합니다.
+	 */
+	float GetTime() const { return time_; }
+
+
+	/**
 	 * @brief 활성화된 크로스 페이드를 삭제하고 클립 및 재생 시간을 재설정합니다.
 	 * 
 	 * @param target 재설정할 클립입니다.
