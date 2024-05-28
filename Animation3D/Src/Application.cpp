@@ -31,7 +31,7 @@ void Application::Init()
 	meshRenderer_ = RenderModule::CreateResource<MeshRenderer3D>();
 
 	camera_ = GameModule::CreateEntity<Camera>();
-	character_ = GameModule::CreateEntity<Character>();
+	character_ = GameModule::CreateEntity<Character>(camera_);
 }
 
 void Application::Run()
