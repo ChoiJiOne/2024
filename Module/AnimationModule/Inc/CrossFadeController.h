@@ -183,7 +183,7 @@ private:
 
 
 	/**
-	 * @brief 누적 시간 값입니다.
+	 * @brief 플레이 시간 값입니다.
 	 */
 	float time_ = 0.0f;
 
