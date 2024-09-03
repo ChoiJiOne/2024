@@ -13,4 +13,7 @@ public:
 	virtual void Startup() override;
 	virtual void Shutdown() override;
 	virtual void Run() override;
+
+private:
+	std::string resourceRootPath_;
 };
