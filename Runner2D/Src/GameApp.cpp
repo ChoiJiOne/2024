@@ -14,7 +14,9 @@ GameApp::~GameApp()
 
 void GameApp::Startup()
 {
-	resourceRootPath_ = "Runner2D\\Res";
+	resourceRootPath_ = "Runner2D\\Res\\";
+
+	LoadTextures();
 }
 
 void GameApp::Shutdown()
@@ -30,4 +32,10 @@ void GameApp::Run()
 			EndFrame();
 		}
 	);
+}
+
+void GameApp::LoadTextures()
+{
+	Texture2D* background = ResourceManager::Get().Create<Texture2D>(resourceRootPath_ + "Texture\\Background.png", Texture2D::Filter::NEAREST);
+	ResourceManager::Get().Register("Background", background);
 }
