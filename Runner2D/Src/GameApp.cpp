@@ -8,6 +8,7 @@
 
 #include "Background.h"
 #include "Camera.h"
+#include "Floor.h"
 #include "GameApp.h"
 
 GameApp::GameApp() : IApp("Runner2D", 100, 100, 800, 600, false, false)
@@ -26,6 +27,9 @@ void GameApp::Startup()
 	
 	Background* background = EntityManager::Get().Create<Background>(camera_);
 	entities_.push_back(background);
+
+	Floor* floor = EntityManager::Get().Create<Floor>(camera_);
+	entities_.push_back(floor);
 }
 
 void GameApp::Shutdown()
