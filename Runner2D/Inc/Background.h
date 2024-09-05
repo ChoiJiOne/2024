@@ -20,10 +20,14 @@ public:
 	virtual void Render() override;
 	virtual void Release() override;
 
+	bool CanMove() { return bCanMove_; }
+	void SetMovable(bool bCanMove) { bCanMove_ = bCanMove; }
+
 private:
 	Camera* camera_ = nullptr;
-	
 	Texture2D* texture_ = nullptr;
+	std::array<Rect2D, 2> rects_;
 
-	Rect2D rect_;
+	bool bCanMove_ = false;
+	float scrollSpeed_ = 100.0f;
 };
