@@ -9,6 +9,7 @@ Camera::Camera()
 
 	center_ = GameMath::Vec2f(0.0f);
 	ortho_ = CalculateOrtho(center_, width_, height_);
+	rect_ = Rect2D(center_, GameMath::Vec2f(width_, height_));
 
 	bIsInitialized_ = true;
 }
