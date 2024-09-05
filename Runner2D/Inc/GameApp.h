@@ -2,6 +2,9 @@
 
 #include "IApp.h"
 
+class Camera;
+class Entity2D;
+
 class GameApp : public IApp
 {
 public:
@@ -19,4 +22,8 @@ private:
 
 private:
 	std::string resourceRootPath_;
+
+	Camera* camera_ = nullptr;
+
+	std::vector<Entity2D*> entities_;
 };
