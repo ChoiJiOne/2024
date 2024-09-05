@@ -36,6 +36,9 @@ public:
 	void SetStatus(const EStatus& status) { status_ = status; }
 
 private:
+	void LoadAnimations();
+
+private:
 	Atlas2D* atlas_ = nullptr;
 
 	Rect2D spriteBound_;
