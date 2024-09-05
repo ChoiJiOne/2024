@@ -16,8 +16,7 @@ Player::Player()
 	collisionBound_.radius = 20.0f;
 	collisionBound_.center = GameMath::Vec2f(-200.0f, -200.0f + collisionBound_.radius);
 
-	std::vector<std::string> idle = { "Idle_1", "Idle_2", "Idle_3", "Idle_4", };
-	animation_ = ResourceManager::Get().Create<SpriteAnimation>(atlas_, idle, true, 0.5f);
+	LoadAnimations();
 
 	bIsInitialized_ = true;
 }
@@ -32,12 +31,12 @@ Player::~Player()
 
 void Player::Tick(float deltaSeconds)
 {
-	animation_->Update(deltaSeconds);
+	animations_.at(status_)->Update(deltaSeconds);
 }
 
 void Player::Render()
 {
-	RenderManager2D::Get().DrawSprite(atlas_, animation_->GetCurrentClip(), spriteBound_.center, spriteBound_.size.x, spriteBound_.size.y);
+	RenderManager2D::Get().DrawSprite(atlas_, animations_.at(status_)->GetCurrentClip(), spriteBound_.center, spriteBound_.size.x, spriteBound_.size.y);
 	RenderManager2D::Get().DrawCircleWireframe(collisionBound_.center, collisionBound_.radius, GameMath::Vec4f(1.0f, 0.0f, 0.0f, 1.0f));
 }
 
@@ -48,4 +47,17 @@ void Player::Release()
 	atlas_ = nullptr;
 
 	bIsInitialized_ = false;
+}
+
+void Player::LoadAnimations()
+{
+	std::vector<std::string> hurt = { "Hurt_1", "Hurt_2" };
+	std::vector<std::string> idle = { "Idle_1", "Idle_2", "Idle_3", "Idle_4", };
+	std::vector<std::string> jump = { "Jump_1", "Jump_2"};
+	std::vector<std::string> run = { "Run_1", "Run_2", "Run_3", "Run_4" , "Run_5" ,"Run_6" };
+
+	animations_.insert({ EStatus::HURT, ResourceManager::Get().Create<SpriteAnimation>(atlas_, hurt, true, 0.5f)  });
+	animations_.insert({ EStatus::IDLE, ResourceManager::Get().Create<SpriteAnimation>(atlas_, idle, true, 0.5f)  });
+	animations_.insert({ EStatus::JUMP, ResourceManager::Get().Create<SpriteAnimation>(atlas_, jump, false, 1.0f) });
+	animations_.insert({ EStatus::RUN,  ResourceManager::Get().Create<SpriteAnimation>(atlas_, run, true, 0.5f)   });
 }
