@@ -7,15 +7,17 @@
 #include "Background.h"
 #include "Camera.h"
 
+static const float OFFSET = 1.0f;
+
 Background::Background(Camera* camera)
 	: camera_(camera)
-	, bCanMove_(false)
+	, bCanMove_(true)
 {
 	atlas_ = ResourceManager::Get().GetByName<Atlas2D>("Atlas");
 	rects_ =
 	{ 
-		Rect2D(GameMath::Vec2f(-camera->GetWidth() * 0.5f, 0.0f), GameMath::Vec2f(camera->GetWidth(), camera->GetHeight())),
-		Rect2D(GameMath::Vec2f(+camera->GetWidth() * 0.5f, 0.0f), GameMath::Vec2f(camera->GetWidth(), camera->GetHeight())),
+		Rect2D(GameMath::Vec2f(-camera->GetWidth() * 0.5f + OFFSET, 0.0f), GameMath::Vec2f(camera->GetWidth(), camera->GetHeight())),
+		Rect2D(GameMath::Vec2f(+camera->GetWidth() * 0.5f - OFFSET, 0.0f), GameMath::Vec2f(camera->GetWidth(), camera->GetHeight())),
 	};
 	
 	bIsInitialized_ = true;
@@ -44,7 +46,7 @@ void Background::Tick(float deltaSeconds)
 	if (!rects_.front().Intersect(camera_->GetCollision()))
 	{
 		rects_.front() = rects_.back();
-		rects_.back().center.x = rects_.front().center.x + rects_.front().size.x;
+		rects_.back().center.x = rects_.front().center.x + rects_.front().size.x - OFFSET;
 	}
 }
 
