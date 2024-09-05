@@ -10,6 +10,15 @@ class SpriteAnimation;
 class Player : public Entity2D
 {
 public:
+	enum class EStatus
+	{
+		IDLE = 0x00,
+		RUN  = 0x01,
+		JUMP = 0x02,
+		HURT = 0x03,
+	};
+
+public:
 	Player();
 	virtual ~Player();
 
