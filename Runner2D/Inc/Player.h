@@ -1,5 +1,7 @@
 #pragma once
 
+#include <map>
+
 #include "Collision2D.h"
 
 #include "Entity2D.h"
@@ -30,11 +32,15 @@ public:
 
 	ICollision2D* GetCollision() { return &collisionBound_; }
 
+	const EStatus& GetStatus() const { return status_; }
+	void SetStatus(const EStatus& status) { status_ = status; }
+
 private:
 	Atlas2D* atlas_ = nullptr;
 
 	Rect2D spriteBound_;
 	Circle2D collisionBound_;
 
-	SpriteAnimation* animation_ = nullptr;
+	EStatus status_ = EStatus::IDLE;
+	std::map<EStatus, SpriteAnimation*> animations_;
 };
