@@ -18,7 +18,7 @@ public:
 	virtual void Run() override;
 
 private:
-	void LoadTextures();
+	void LoadResource();
 
 private:
 	std::string resourceRootPath_;
