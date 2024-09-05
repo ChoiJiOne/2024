@@ -9,7 +9,7 @@
 
 Floor::Floor(Camera* camera) 
 	: camera_(camera)
-	, bCanMove_(false)
+	, bCanMove_(true)
 {
 	atlas_ = ResourceManager::Get().GetByName<Atlas2D>("Floor");
 	floor_.size = GameMath::Vec2f(camera_->GetWidth(), 100.0f);
@@ -38,6 +38,16 @@ void Floor::Tick(float deltaSeconds)
 	for (auto& block : blocks_)
 	{
 		block.center.x -= deltaSeconds * scrollSpeed_;
+	}
+
+	if (!blocks_.front().Intersect(camera_->GetCollision()))
+	{
+		for (uint32_t index = 0; index < blocks_.size() - 1; ++index)
+		{
+			blocks_[index].center = blocks_[index + 1].center;
+		}
+
+		blocks_.back().center.x = blocks_[blocks_.size() - 2].center.x + blocks_.front().size.x;
 	}
 }
 
