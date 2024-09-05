@@ -4,9 +4,8 @@
 
 #include "Entity2D.h"
 
-class Texture2D;
-
 class Camera;
+class Texture2D;
 
 class Background : public Entity2D
 {
