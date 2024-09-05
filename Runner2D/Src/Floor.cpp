@@ -11,7 +11,7 @@ Floor::Floor(Camera* camera)
 	: camera_(camera)
 	, bCanMove_(true)
 {
-	atlas_ = ResourceManager::Get().GetByName<Atlas2D>("Floor");
+	atlas_ = ResourceManager::Get().GetByName<Atlas2D>("Atlas");
 	floor_.size = GameMath::Vec2f(camera_->GetWidth(), 100.0f);
 	floor_.center = GameMath::Vec2f(0.0f, (- camera_->GetHeight() + floor_.size.y) * 0.5f);
 
@@ -53,11 +53,11 @@ void Floor::Tick(float deltaSeconds)
 
 void Floor::Render()
 {
-	RenderManager2D::Get().DrawSprite(atlas_, "floor", floor_.center, floor_.size.x, floor_.size.y);
+	RenderManager2D::Get().DrawSprite(atlas_, "Floor", floor_.center, floor_.size.x, floor_.size.y);
 
 	for (const auto& block : blocks_)
 	{
-		RenderManager2D::Get().DrawSprite(atlas_, "block", block.center, block.size.x, block.size.y);
+		RenderManager2D::Get().DrawSprite(atlas_, "Block", block.center, block.size.x, block.size.y);
 	}
 }
 
