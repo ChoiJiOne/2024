@@ -1,4 +1,3 @@
 [submodule "GameMaker"]
 	path = GameMaker
 	url = https://github.com/ChoiJiOne/GameMaker.git
-	branch = 1.0
