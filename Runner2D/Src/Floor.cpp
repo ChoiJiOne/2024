@@ -9,11 +9,11 @@
 
 Floor::Floor(Camera* camera) 
 	: camera_(camera)
-	, bCanMove_(true)
+	, bCanMove_(false)
 {
 	atlas_ = ResourceManager::Get().GetByName<Atlas2D>("Atlas");
 	floor_.size = GameMath::Vec2f(camera_->GetWidth() + 2.0f, 100.0f);
-	floor_.center = GameMath::Vec2f(0.0f, (- camera_->GetHeight() + floor_.size.y) * 0.5f);
+	floor_.center = GameMath::Vec2f(0.0f, (-camera_->GetHeight() + floor_.size.y) * 0.5f);
 
 	ResetBlocks();
 

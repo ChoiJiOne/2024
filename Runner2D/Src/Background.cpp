@@ -9,7 +9,7 @@
 
 Background::Background(Camera* camera)
 	: camera_(camera)
-	, bCanMove_(true)
+	, bCanMove_(false)
 {
 	atlas_ = ResourceManager::Get().GetByName<Atlas2D>("Atlas");
 	rects_ =
