@@ -1,8 +1,8 @@
 #include "Assertion.h"
+#include "Atlas2D.h"
 #include "RenderManager2D.h"
 #include "ResourceManager.h"
 #include "IApp.h"
-#include "Texture2D.h"
 
 #include "Background.h"
 #include "Camera.h"
@@ -11,7 +11,7 @@ Background::Background(Camera* camera)
 	: camera_(camera)
 	, bCanMove_(true)
 {
-	texture_ = ResourceManager::Get().GetByName<Texture2D>("Background");
+	atlas_ = ResourceManager::Get().GetByName<Atlas2D>("Atlas");
 	rects_ =
 	{ 
 		Rect2D(GameMath::Vec2f(-camera->GetWidth() * 0.5f, 0.0f), GameMath::Vec2f(camera->GetWidth(), camera->GetHeight())),
@@ -52,7 +52,7 @@ void Background::Render()
 {
 	for (const auto& rect : rects_)
 	{
-		RenderManager2D::Get().DrawSprite(texture_, rect.center, rect.size.x, rect.size.y);
+		RenderManager2D::Get().DrawSprite(atlas_, "Background", rect.center, rect.size.x, rect.size.y);
 	}
 }
 
@@ -61,7 +61,7 @@ void Background::Release()
 	CHECK(bIsInitialized_);
 
 	camera_ = nullptr;
-	texture_ = nullptr;
+	atlas_ = nullptr;
 
 	bIsInitialized_ = false;
 }

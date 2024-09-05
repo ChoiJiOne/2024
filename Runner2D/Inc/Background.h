@@ -4,6 +4,7 @@
 
 #include "Entity2D.h"
 
+class Atlas2D;
 class Camera;
 class Texture2D;
 
@@ -24,7 +25,7 @@ public:
 
 private:
 	Camera* camera_ = nullptr;
-	Texture2D* texture_ = nullptr;
+	Atlas2D* atlas_ = nullptr;
 	std::array<Rect2D, 2> rects_;
 
 	bool bCanMove_ = false;
