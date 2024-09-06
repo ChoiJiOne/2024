@@ -72,6 +72,12 @@ void Player::Release()
 {
 	CHECK(bIsInitialized_);
 
+	for (auto& animation : animations_)
+	{
+		ResourceManager::Get().Destroy(animation.second);
+		animation.second = nullptr;
+	}
+
 	atlas_ = nullptr;
 
 	bIsInitialized_ = false;
