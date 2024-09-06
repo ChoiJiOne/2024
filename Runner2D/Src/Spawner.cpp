@@ -39,7 +39,7 @@ void Spawner::Tick(float deltaSeconds)
 		
 		Rect2D bound;
 		bound.size = boxSize_;
-		bound.center = spawnPosition_ + boxSize_ * 0.5f;
+		bound.center = spawnPosition_;
 
 		uint32_t count = GameMath::GenerateRandomInt(1, 3);
 		for (uint32_t index = 0; index < count; ++index)
