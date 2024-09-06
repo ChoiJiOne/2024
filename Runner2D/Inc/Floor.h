@@ -38,5 +38,4 @@ private:
 	std::array<Rect2D, MAX_BLOCK_SIZE> blocks_;
 	
 	bool bCanMove_ = false;
-	float scrollSpeed_ = 200.0f;
 };

@@ -44,7 +44,7 @@ void Floor::Tick(float deltaSeconds)
 	{
 		for (auto& block : blocks_)
 		{
-			block.center.x -= deltaSeconds * scrollSpeed_;
+			block.center.x -= deltaSeconds * player_->GetSpeed();
 		}
 
 		if (!blocks_.front().Intersect(camera_->GetCollision()))
