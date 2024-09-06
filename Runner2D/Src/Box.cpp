@@ -34,7 +34,7 @@ void Box::Tick(float deltaSeconds)
 		return;
 	}
 
-	bound_.center.x -= deltaSeconds * speed_;
+	bound_.center.x -= deltaSeconds * player_->GetSpeed();
 
 	if (!bound_.Intersect(camera_->GetCollision()) && bound_.center.x < 0.0f)
 	{

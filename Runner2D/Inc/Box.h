@@ -33,5 +33,4 @@ private:
 	Rect2D bound_;
 
 	bool bCanMove_ = false;
-	float speed_ = 200.0f;
 };
