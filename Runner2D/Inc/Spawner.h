@@ -9,6 +9,7 @@
 
 class Box;
 class Player;
+class Reward;
 
 class Spawner : public Entity2D
 {
@@ -30,12 +31,15 @@ private:
 	Player* player_ = nullptr;
 
 	std::list<Box*> boxes_;
+	std::list<Reward*> rewards_;
 
 	GameMath::Vec2f spawnPosition_;
 	GameMath::Vec2f boxSize_;
 
 	float spawnTime_ = 0.0f;
-
+	
 	std::function<bool(Box*, Box*)> boxSortEvent_;
 	std::function<bool(Box* box)> boxRemoveEvent_;
+	std::function<bool(Reward*, Reward*)> rewardSortEvent_;
+	std::function<bool(Reward* reward)> rewardRemoveEvent_;
 };
