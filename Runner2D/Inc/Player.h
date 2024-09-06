@@ -36,6 +36,8 @@ public:
 	const EStatus& GetStatus() const { return status_; }
 	void SetStatus(const EStatus& status) { status_ = status; }
 
+	float GetSpeed() const { return speed_; }
+
 private:
 	void LoadAnimations();
 
@@ -49,6 +51,7 @@ private:
 	Circle2D collisionBound_;
 	Circle2D originCollisionBound_;
 
+	float speed_ = 300.0f;
 	float jumpSpeed_ = 0.0f;
 
 	EStatus status_ = EStatus::IDLE;
