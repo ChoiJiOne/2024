@@ -7,11 +7,13 @@
 
 #include "Background.h"
 #include "Camera.h"
+#include "Player.h"
 
 static const float OFFSET = 1.0f;
 
 Background::Background()
-	: camera_(EntityManager::Get().GetByName<Camera>("Camera"))
+	: player_(EntityManager::Get().GetByName<Player>("Player"))
+	, camera_(EntityManager::Get().GetByName<Camera>("Camera"))
 	, bCanMove_(false)
 {
 	atlas_ = ResourceManager::Get().GetByName<Atlas2D>("Atlas");
@@ -36,18 +38,23 @@ void Background::Tick(float deltaSeconds)
 {
 	if (!bCanMove_)
 	{
+		bCanMove_ = GetMovable();
 		return;
 	}
 
-	for (auto& rect : rects_)
+	bCanMove_ = GetMovable();
+	if (bCanMove_)
 	{
-		rect.center.x -= deltaSeconds * scrollSpeed_;
-	}
+		for (auto& rect : rects_)
+		{
+			rect.center.x -= deltaSeconds * scrollSpeed_;
+		}
 
-	if (!rects_.front().Intersect(camera_->GetCollision()))
-	{
-		rects_.front() = rects_.back();
-		rects_.back().center.x = rects_.front().center.x + rects_.front().size.x - OFFSET;
+		if (!rects_.front().Intersect(camera_->GetCollision()))
+		{
+			rects_.front() = rects_.back();
+			rects_.back().center.x = rects_.front().center.x + rects_.front().size.x - OFFSET;
+		}
 	}
 }
 
@@ -67,4 +74,10 @@ void Background::Release()
 	atlas_ = nullptr;
 
 	bIsInitialized_ = false;
+}
+
+bool Background::GetMovable()
+{
+	Player::EStatus status = player_->GetStatus();
+	return status == Player::EStatus::JUMP || status == Player::EStatus::RUN;
 }

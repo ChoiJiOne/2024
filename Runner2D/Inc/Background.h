@@ -6,6 +6,7 @@
 
 class Atlas2D;
 class Camera;
+class Player;
 
 class Background : public Entity2D
 {
@@ -23,6 +24,10 @@ public:
 	void SetMovable(bool bCanMove) { bCanMove_ = bCanMove; }
 
 private:
+	bool GetMovable();
+
+private:
+	Player* player_ = nullptr;
 	Camera* camera_ = nullptr;
 	Atlas2D* atlas_ = nullptr;
 	std::array<Rect2D, 2> rects_;
