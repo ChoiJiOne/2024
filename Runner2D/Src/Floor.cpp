@@ -7,9 +7,11 @@
 
 #include "Camera.h"
 #include "Floor.h"
+#include "Player.h"
 
 Floor::Floor() 
-	: camera_(EntityManager::Get().GetByName<Camera>("Camera"))
+	: player_(EntityManager::Get().GetByName<Player>("Player"))
+	, camera_(EntityManager::Get().GetByName<Camera>("Camera"))
 	, bCanMove_(false)
 {
 	atlas_ = ResourceManager::Get().GetByName<Atlas2D>("Atlas");
@@ -33,22 +35,27 @@ void Floor::Tick(float deltaSeconds)
 {
 	if (!bCanMove_)
 	{
+		bCanMove_ = GetMovable();
 		return;
 	}
 
-	for (auto& block : blocks_)
+	bCanMove_ = GetMovable();
+	if (bCanMove_)
 	{
-		block.center.x -= deltaSeconds * scrollSpeed_;
-	}
-
-	if (!blocks_.front().Intersect(camera_->GetCollision()))
-	{
-		for (uint32_t index = 0; index < blocks_.size() - 1; ++index)
+		for (auto& block : blocks_)
 		{
-			blocks_[index].center = blocks_[index + 1].center;
+			block.center.x -= deltaSeconds * scrollSpeed_;
 		}
 
-		blocks_.back().center.x = blocks_[blocks_.size() - 2].center.x + blocks_.front().size.x;
+		if (!blocks_.front().Intersect(camera_->GetCollision()))
+		{
+			for (uint32_t index = 0; index < blocks_.size() - 1; ++index)
+			{
+				blocks_[index].center = blocks_[index + 1].center;
+			}
+
+			blocks_.back().center.x = blocks_[blocks_.size() - 2].center.x + blocks_.front().size.x;
+		}
 	}
 }
 
@@ -84,4 +91,10 @@ void Floor::ResetBlocks()
 
 		center.x += size.x;
 	}
+}
+
+bool Floor::GetMovable()
+{
+	Player::EStatus status = player_->GetStatus();
+	return status == Player::EStatus::JUMP || status == Player::EStatus::RUN;
 }

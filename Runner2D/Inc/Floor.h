@@ -6,6 +6,7 @@
 
 class Atlas2D;
 class Camera;
+class Player;
 
 class Floor : public Entity2D
 {
@@ -24,10 +25,12 @@ public:
 
 private:
 	void ResetBlocks();
+	bool GetMovable();
 
 private:
 	static const uint32_t MAX_BLOCK_SIZE = 21;
 
+	Player* player_ = nullptr;
 	Camera* camera_ = nullptr;
 	Atlas2D* atlas_ = nullptr;
 
