@@ -30,13 +30,14 @@ Spawner::~Spawner()
 
 void Spawner::Tick(float deltaSeconds)
 {
-	if (!IsActive())
+	Player::EStatus status = player_->GetStatus();
+	if (status == Player::EStatus::IDLE)
 	{
 		return;
 	}
 
 	spawnTime_ -= deltaSeconds;
-	if (spawnTime_ <= 0.0f)
+	if (status != Player::EStatus::HURT && spawnTime_ <= 0.0f)
 	{
 		spawnTime_ = GameMath::GenerateRandomFloat(1.5f, 3.0f);
 		
@@ -95,12 +96,6 @@ void Spawner::Release()
 	player_ = nullptr;
 
 	bIsInitialized_ = false;
-}
-
-bool Spawner::IsActive()
-{
-	Player::EStatus status = player_->GetStatus();
-	return status == Player::EStatus::RUN || status == Player::EStatus::JUMP;
 }
 
 void Spawner::Cleanup()

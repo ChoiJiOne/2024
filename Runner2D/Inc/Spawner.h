@@ -24,7 +24,6 @@ public:
 	virtual void Release() override;
 
 private:
-	bool IsActive();
 	void Cleanup();
 
 private:
