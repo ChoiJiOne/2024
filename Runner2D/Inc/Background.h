@@ -10,7 +10,7 @@ class Camera;
 class Background : public Entity2D
 {
 public:
-	Background(Camera* camera);
+	Background();
 	virtual ~Background();
 
 	DISALLOW_COPY_AND_ASSIGN(Background);

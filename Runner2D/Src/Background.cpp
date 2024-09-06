@@ -1,5 +1,6 @@
 #include "Assertion.h"
 #include "Atlas2D.h"
+#include "EntityManager.h"
 #include "RenderManager2D.h"
 #include "ResourceManager.h"
 #include "IApp.h"
@@ -9,15 +10,15 @@
 
 static const float OFFSET = 1.0f;
 
-Background::Background(Camera* camera)
-	: camera_(camera)
+Background::Background()
+	: camera_(EntityManager::Get().GetByName<Camera>("Camera"))
 	, bCanMove_(false)
 {
 	atlas_ = ResourceManager::Get().GetByName<Atlas2D>("Atlas");
 	rects_ =
 	{ 
-		Rect2D(GameMath::Vec2f(-camera->GetWidth() * 0.5f + OFFSET, 0.0f), GameMath::Vec2f(camera->GetWidth(), camera->GetHeight())),
-		Rect2D(GameMath::Vec2f(+camera->GetWidth() * 0.5f - OFFSET, 0.0f), GameMath::Vec2f(camera->GetWidth(), camera->GetHeight())),
+		Rect2D(GameMath::Vec2f(-camera_->GetWidth() * 0.5f + OFFSET, 0.0f), GameMath::Vec2f(camera_->GetWidth(), camera_->GetHeight())),
+		Rect2D(GameMath::Vec2f(+camera_->GetWidth() * 0.5f - OFFSET, 0.0f), GameMath::Vec2f(camera_->GetWidth(), camera_->GetHeight())),
 	};
 	
 	bIsInitialized_ = true;
