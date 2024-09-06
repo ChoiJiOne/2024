@@ -7,10 +7,12 @@
 #include "Texture2D.h"
 
 #include "Background.h"
+#include "Box.h"
 #include "Camera.h"
 #include "Floor.h"
 #include "GameApp.h"
 #include "Player.h"
+#include "Spawner.h"
 
 GameApp::GameApp() : IApp("Runner2D", 100, 100, 800, 600, false, false)
 {
@@ -30,11 +32,14 @@ void GameApp::Startup()
 	Player* player = EntityManager::Get().Create<Player>();
 	EntityManager::Get().Register("Player", player);
 
-	Background* background = EntityManager::Get().Create<Background>(camera);
+	Background* background = EntityManager::Get().Create<Background>();
 	EntityManager::Get().Register("Background", background);
 
-	Floor* floor = EntityManager::Get().Create<Floor>(camera);
+	Floor* floor = EntityManager::Get().Create<Floor>();
 	EntityManager::Get().Register("Floor", floor);
+
+	Spawner* spawner = EntityManager::Get().Create<Spawner>();
+	EntityManager::Get().Register("Spawner", spawner);
 
 	camera_ = camera;
 
@@ -44,12 +49,14 @@ void GameApp::Startup()
 		player,
 		background,
 		floor,
+		spawner,
 	};
 
 	renderEntities_ =
 	{
 		background,
 		floor,
+		spawner,
 		player,
 	};
 }
