@@ -29,31 +29,32 @@ Box::~Box()
 
 void Box::Tick(float deltaSeconds)
 {
-	if (!bCanMove_)
+	if (status_ == EStatus::DONE)
 	{
 		return;
 	}
-
-	bound_.center.x -= deltaSeconds * player_->GetSpeed();
+	
+	bCanMove_ = GetMovable();
+	if (bCanMove_)
+	{
+		bound_.center.x -= deltaSeconds * player_->GetSpeed();
+	}
 
 	if (!bound_.Intersect(camera_->GetCollision()) && bound_.center.x < 0.0f)
 	{
+		status_ = EStatus::DONE;
 		bCanMove_ = false;
 	}
 
 	if (bound_.Intersect(player_->GetCollision()))
 	{
+		bCanMove_ = false;
 		player_->SetStatus(Player::EStatus::HURT);
 	}
 }
 
 void Box::Render()
 {
-	if (!bCanMove_)
-	{
-		return;
-	}
-
 	RenderManager2D::Get().DrawSprite(atlas_, "Box", bound_.center, bound_.size.x, bound_.size.y);
 }
 
@@ -66,4 +67,10 @@ void Box::Release()
 	player_ = nullptr;
 
 	bIsInitialized_ = false;
+}
+
+bool Box::GetMovable()
+{
+	Player::EStatus status = player_->GetStatus();
+	return status == Player::EStatus::RUN || status == Player::EStatus::JUMP;
 }

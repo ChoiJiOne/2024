@@ -11,6 +11,13 @@ class Player;
 class Box : public Entity2D
 {
 public:
+	enum class EStatus
+	{
+		ACTIVE = 0x00,
+		DONE = 0x01,
+	};
+
+public:
 	Box(const Rect2D& bound);
 	virtual ~Box();
 
@@ -22,8 +29,14 @@ public:
 
 	Rect2D* GetCollision() { return &bound_; }
 
+	const EStatus& GetStatus() const { return status_; }
+	void SetStatus(const EStatus& status) { status_ = status; }
+	
 	bool CanMove() { return bCanMove_; }
 	void SetMovable(bool bCanMove) { bCanMove_ = bCanMove; }
+
+private:
+	bool GetMovable();
 
 private:
 	Player* player_ = nullptr;
@@ -32,5 +45,6 @@ private:
 
 	Rect2D bound_;
 
+	EStatus status_ = EStatus::ACTIVE;
 	bool bCanMove_ = false;
 };
