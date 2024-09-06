@@ -49,6 +49,11 @@ void Box::Tick(float deltaSeconds)
 
 void Box::Render()
 {
+	if (!bCanMove_)
+	{
+		return;
+	}
+
 	RenderManager2D::Get().DrawSprite(atlas_, "Box", bound_.center, bound_.size.x, bound_.size.y);
 }
 
@@ -58,6 +63,7 @@ void Box::Release()
 
 	atlas_ = nullptr;
 	camera_ = nullptr;
+	player_ = nullptr;
 
 	bIsInitialized_ = false;
 }
