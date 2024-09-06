@@ -24,15 +24,23 @@ void GameApp::Startup()
 {
 	LoadResource();
 
-	camera_ = EntityManager::Get().Create<Camera>();
+	Camera* camera = EntityManager::Get().Create<Camera>();
+	EntityManager::Get().Register("Camera", camera);
 
 	Player* player = EntityManager::Get().Create<Player>();
-	Background* background = EntityManager::Get().Create<Background>(camera_);
-	Floor* floor = EntityManager::Get().Create<Floor>(camera_);
+	EntityManager::Get().Register("Player", player);
+
+	Background* background = EntityManager::Get().Create<Background>(camera);
+	EntityManager::Get().Register("Background", background);
+
+	Floor* floor = EntityManager::Get().Create<Floor>(camera);
+	EntityManager::Get().Register("Floor", floor);
+
+	camera_ = camera;
 
 	updateEntities_ =
 	{
-		camera_,
+		camera,
 		player,
 		background,
 		floor,
