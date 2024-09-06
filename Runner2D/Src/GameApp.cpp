@@ -25,15 +25,25 @@ void GameApp::Startup()
 	LoadResource();
 
 	camera_ = EntityManager::Get().Create<Camera>();
-	
-	Background* background = EntityManager::Get().Create<Background>(camera_);
-	entities_.push_back(background);
 
 	Player* player = EntityManager::Get().Create<Player>();
-	entities_.push_back(player);
-
+	Background* background = EntityManager::Get().Create<Background>(camera_);
 	Floor* floor = EntityManager::Get().Create<Floor>(camera_);
-	entities_.push_back(floor);
+
+	updateEntities_ =
+	{
+		camera_,
+		player,
+		background,
+		floor,
+	};
+
+	renderEntities_ =
+	{
+		background,
+		floor,
+		player,
+	};
 }
 
 void GameApp::Shutdown()
@@ -47,8 +57,7 @@ void GameApp::Run()
 	RunLoop(
 		[&](float deltaSeconds)
 		{
-			camera_->Tick(deltaSeconds);
-			for (auto& entity : entities_)
+			for (auto& entity : updateEntities_)
 			{
 				entity->Tick(deltaSeconds);
 			}
@@ -56,7 +65,7 @@ void GameApp::Run()
 			BeginFrame(0.0f, 0.0f, 0.0f, 1.0f);
 			RenderManager2D::Get().Begin(camera_);
 			{
-				for (auto& entity : entities_)
+				for (auto& entity : renderEntities_)
 				{
 					entity->Render();
 				}

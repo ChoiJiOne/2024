@@ -1,6 +1,7 @@
 #pragma once
 
 #include "IApp.h"
+#include "IEntity.h"
 
 class Camera;
 class Entity2D;
@@ -25,5 +26,6 @@ private:
 
 	Camera* camera_ = nullptr;
 
-	std::vector<Entity2D*> entities_;
+	std::vector<IEntity*> updateEntities_;
+	std::vector<Entity2D*> renderEntities_;
 };
