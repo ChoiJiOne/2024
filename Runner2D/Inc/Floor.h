@@ -10,7 +10,7 @@ class Camera;
 class Floor : public Entity2D
 {
 public:
-	Floor(Camera* camera);
+	Floor();
 	virtual ~Floor();
 
 	DISALLOW_COPY_AND_ASSIGN(Floor);

@@ -1,5 +1,6 @@
 #include "Assertion.h"
 #include "Atlas2D.h"
+#include "EntityManager.h"
 #include "RenderManager2D.h"
 #include "ResourceManager.h"
 #include "IApp.h"
@@ -7,8 +8,8 @@
 #include "Camera.h"
 #include "Floor.h"
 
-Floor::Floor(Camera* camera) 
-	: camera_(camera)
+Floor::Floor() 
+	: camera_(EntityManager::Get().GetByName<Camera>("Camera"))
 	, bCanMove_(false)
 {
 	atlas_ = ResourceManager::Get().GetByName<Atlas2D>("Atlas");
