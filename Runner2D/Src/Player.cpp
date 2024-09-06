@@ -20,7 +20,7 @@ Player::Player()
 	collisionBound_.center = GameMath::Vec2f(-200.0f, -200.0f + collisionBound_.radius);
 	originCollisionBound_ = collisionBound_;
 
-	jumpSpeed_ = 300.0f;
+	jumpSpeed_ = 400.0f;
 
 	LoadAnimations();
 
@@ -66,7 +66,6 @@ void Player::Tick(float deltaSeconds)
 void Player::Render()
 {
 	RenderManager2D::Get().DrawSprite(atlas_, animations_.at(status_)->GetCurrentClip(), spriteBound_.center, spriteBound_.size.x, spriteBound_.size.y);
-	RenderManager2D::Get().DrawCircleWireframe(collisionBound_.center, collisionBound_.radius, GameMath::Vec4f(1.0f, 0.0f, 0.0f, 1.0f));
 }
 
 void Player::Release()
