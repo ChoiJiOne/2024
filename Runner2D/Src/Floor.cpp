@@ -75,6 +75,7 @@ void Floor::Release()
 
 	camera_ = nullptr;
 	atlas_ = nullptr;
+	player_ = nullptr;
 
 	bIsInitialized_ = false;
 }
