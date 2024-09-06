@@ -7,6 +7,7 @@
 #include "Entity2D.h"
 
 class Atlas2D;
+class IApp;
 class SpriteAnimation;
 
 class Player : public Entity2D
@@ -39,10 +40,16 @@ private:
 	void LoadAnimations();
 
 private:
+	IApp* app_ = nullptr;
+
 	Atlas2D* atlas_ = nullptr;
 
 	Rect2D spriteBound_;
+	Rect2D originSpriteBound_;
 	Circle2D collisionBound_;
+	Circle2D originCollisionBound_;
+
+	float jumpSpeed_ = 0.0f;
 
 	EStatus status_ = EStatus::IDLE;
 	std::map<EStatus, SpriteAnimation*> animations_;

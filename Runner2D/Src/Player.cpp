@@ -1,5 +1,6 @@
 #include "Assertion.h"
 #include "Atlas2D.h"
+#include "IApp.h"
 #include "RenderManager2D.h"
 #include "ResourceManager.h"
 
@@ -8,13 +9,18 @@
 
 Player::Player()
 {
+	app_ = IApp::Get();
 	atlas_ = ResourceManager::Get().GetByName<Atlas2D>("Atlas");
 
 	spriteBound_.size = GameMath::Vec2f(60.0f, 60.0f);
 	spriteBound_.center = GameMath::Vec2f(-200.0f, -200.0f + spriteBound_.size.y * 0.5f);
+	originSpriteBound_ = spriteBound_;
 
 	collisionBound_.radius = 20.0f;
 	collisionBound_.center = GameMath::Vec2f(-200.0f, -200.0f + collisionBound_.radius);
+	originCollisionBound_ = collisionBound_;
+
+	jumpSpeed_ = 300.0f;
 
 	LoadAnimations();
 
@@ -31,6 +37,29 @@ Player::~Player()
 
 void Player::Tick(float deltaSeconds)
 {
+	if (status_ == EStatus::IDLE || status_ == EStatus::RUN)
+	{
+		if (app_->GetKeyPress(Key::KEY_SPACE) == Press::PRESSED)
+		{
+			status_ = EStatus::JUMP;
+			animations_.at(status_)->Reset();
+		}
+	}
+
+	if (status_ == EStatus::JUMP)
+	{
+		float time = animations_.at(status_)->GetTime();
+		float animationTime = animations_.at(status_)->GetAnimationTime();
+
+		if (time >= animationTime)
+		{
+			status_ = EStatus::RUN;
+		}
+
+		collisionBound_.center.y = originCollisionBound_.center.y + (-jumpSpeed_ * time * (time - animationTime));
+		spriteBound_.center.y = originSpriteBound_.center.y + (-jumpSpeed_ * time * (time - animationTime));
+	}
+
 	animations_.at(status_)->Update(deltaSeconds);
 }
 
