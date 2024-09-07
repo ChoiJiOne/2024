@@ -13,6 +13,7 @@
 #include "Floor.h"
 #include "GameApp.h"
 #include "Player.h"
+#include "PlayerMessenger.h"
 #include "RewardViewer.h"
 #include "Spawner.h"
 
@@ -43,6 +44,9 @@ void GameApp::Startup()
 	Spawner* spawner = EntityManager::Get().Create<Spawner>();
 	EntityManager::Get().Register("Spawner", spawner);
 
+	PlayerMessenger* playerMessenger = EntityManager::Get().Create<PlayerMessenger>();
+	EntityManager::Get().Register("PlayerMessenger", playerMessenger);
+
 	RewardViewer* rewardViewer = EntityManager::Get().Create<RewardViewer>();
 	EntityManager::Get().Register("RewardViewer", rewardViewer);
 
@@ -55,6 +59,7 @@ void GameApp::Startup()
 		background,
 		floor,
 		spawner,
+		playerMessenger,
 		rewardViewer,
 	};
 
@@ -64,6 +69,7 @@ void GameApp::Startup()
 		floor,
 		spawner,
 		player,
+		playerMessenger,
 		rewardViewer,
 	};
 }
