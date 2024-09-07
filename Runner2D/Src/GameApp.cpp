@@ -16,6 +16,7 @@
 #include "PlayerMessenger.h"
 #include "RewardViewer.h"
 #include "Spawner.h"
+#include "Title.h"
 
 GameApp::GameApp() : IApp("Runner2D", 100, 100, 800, 600, false, false)
 {
@@ -50,6 +51,9 @@ void GameApp::Startup()
 	RewardViewer* rewardViewer = EntityManager::Get().Create<RewardViewer>();
 	EntityManager::Get().Register("RewardViewer", rewardViewer);
 
+	Title* title = EntityManager::Get().Create<Title>();
+	EntityManager::Get().Register("Title", title);
+
 	camera_ = camera;
 
 	updateEntities_ =
@@ -61,6 +65,7 @@ void GameApp::Startup()
 		spawner,
 		playerMessenger,
 		rewardViewer,
+		title,
 	};
 
 	renderEntities_ =
@@ -70,6 +75,7 @@ void GameApp::Startup()
 		spawner,
 		player,
 		playerMessenger,
+		title,
 		rewardViewer,
 	};
 }
