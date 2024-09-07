@@ -12,6 +12,14 @@ class TTFont;
 class Button : public Entity2D
 {
 public:
+	enum class Type
+	{
+		LEFT   = (1 << ((1) - 1)),
+		MIDDLE = (1 << ((2) - 1)),
+		RIGHT  = (1 << ((3) - 1)),
+	};
+
+public:
 	Button();
 	virtual ~Button();
 
