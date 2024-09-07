@@ -38,6 +38,12 @@ public:
 
 	float GetSpeed() const { return speed_; }
 
+	void PickupCherry(int32_t numCherry);
+	void PickupGem(int32_t numGem);
+
+	int32_t GetNumPickupCherry() const { return numPickupCherry_; }
+	int32_t GetNumPickupGem() const { return numPickupGem_; }
+
 private:
 	void LoadAnimations();
 
@@ -56,4 +62,7 @@ private:
 
 	EStatus status_ = EStatus::IDLE;
 	std::map<EStatus, SpriteAnimation*> animations_;
+
+	int32_t numPickupCherry_ = 0;
+	int32_t numPickupGem_ = 0;
 };

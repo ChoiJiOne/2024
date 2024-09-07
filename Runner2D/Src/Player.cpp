@@ -83,6 +83,16 @@ void Player::Release()
 	bIsInitialized_ = false;
 }
 
+void Player::PickupCherry(int32_t numCherry)
+{
+	numPickupCherry_ += numCherry;
+}
+
+void Player::PickupGem(int32_t numGem)
+{
+	numPickupGem_ += numGem;
+}
+
 void Player::LoadAnimations()
 {
 	std::vector<std::string> hurt = { "Hurt_1", "Hurt_2" };
