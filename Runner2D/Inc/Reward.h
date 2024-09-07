@@ -43,6 +43,8 @@ public:
 	bool CanMove() { return bCanMove_; }
 	void SetMovable(bool bCanMove) { bCanMove_ = bCanMove; }
 
+	static Type GetRandomType();
+
 private:
 	void LoadAnimations();
 	bool GetMovable();

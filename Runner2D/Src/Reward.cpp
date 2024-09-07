@@ -109,6 +109,14 @@ void Reward::Release()
 	bIsInitialized_ = false;
 }
 
+Reward::Type Reward::GetRandomType()
+{
+	return static_cast<Reward::Type>(GameMath::GenerateRandomInt(
+		static_cast<int32_t>(Type::CHERRY), 
+		static_cast<int32_t>(Type::GEM)
+	));
+}
+
 void Reward::LoadAnimations()
 {
 	switch (type_)
