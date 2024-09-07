@@ -1,5 +1,6 @@
 #include "Assertion.h"
 #include "Atlas2D.h"
+#include "Collision2D.h"
 #include "EntityManager.h"
 #include "GameUtils.h"
 #include "RenderManager2D.h"
@@ -31,6 +32,17 @@ void PlayerMessenger::Tick(float deltaSeconds)
 	{
 		return;
 	}
+
+	remainTime_ -= deltaSeconds;
+	if (remainTime_ <= 0.0f)
+	{
+		bIsDetectMessage_ = false;
+	}
+
+	CalcMessagePosFromPlayer();
+
+	float alpha = remainTime_ / messageTime_;
+	messageColor_.w = alpha;
 }
 
 void PlayerMessenger::Render()
@@ -39,6 +51,8 @@ void PlayerMessenger::Render()
 	{
 		return;
 	}
+
+	RenderManager2D::Get().DrawString(font_, message_, messagePos_, messageColor_);
 }
 
 void PlayerMessenger::Release()
@@ -49,4 +63,27 @@ void PlayerMessenger::Release()
 	player_ = nullptr;
 
 	bIsInitialized_ = false;
+}
+
+void PlayerMessenger::Send(const std::wstring& message, const GameMath::Vec4f& color, float time)
+{
+	message_ = message;
+	messageColor_ = color;
+	remainTime_ = time;
+	messageTime_ = time;
+
+	font_->MeasureText(message_, messageSize_.x, messageSize_.y);
+
+	CalcMessagePosFromPlayer();
+	
+	bIsDetectMessage_ = true;
+}
+
+void PlayerMessenger::CalcMessagePosFromPlayer()
+{
+	Circle2D* collision = reinterpret_cast<Circle2D*>(player_->GetCollision());
+	messagePos_ = collision->center;
+
+	messagePos_.x -= messageSize_.x * 0.5f;
+	messagePos_.y += (collision->radius + messageSize_.y + 10.0f);
 }
