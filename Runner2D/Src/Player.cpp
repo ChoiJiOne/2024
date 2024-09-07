@@ -1,10 +1,12 @@
 #include "Assertion.h"
 #include "Atlas2D.h"
+#include "EntityManager.h"
 #include "IApp.h"
 #include "RenderManager2D.h"
 #include "ResourceManager.h"
 
 #include "Player.h"
+#include "PlayerMessenger.h"
 #include "SpriteAnimation.h"
 
 Player::Player()
@@ -91,6 +93,9 @@ void Player::PickupCherry()
 void Player::PickupGem()
 {
 	numPickupGem_ += 1;
+
+	PlayerMessenger* playerMessenger = EntityManager::Get().GetByName<PlayerMessenger>("PlayerMessenger");
+	playerMessenger->Send(L"Speed Up!", GameMath::Vec4f(0.0f, 0.0f, 0.0f, 1.0f), 2.0f);
 }
 
 void Player::LoadAnimations()
