@@ -83,14 +83,14 @@ void Player::Release()
 	bIsInitialized_ = false;
 }
 
-void Player::PickupCherry(int32_t numCherry)
+void Player::PickupCherry()
 {
-	numPickupCherry_ += numCherry;
+	numPickupCherry_ += 1;
 }
 
-void Player::PickupGem(int32_t numGem)
+void Player::PickupGem()
 {
-	numPickupGem_ += numGem;
+	numPickupGem_ += 1;
 }
 
 void Player::LoadAnimations()

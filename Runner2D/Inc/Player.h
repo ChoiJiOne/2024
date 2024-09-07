@@ -38,8 +38,8 @@ public:
 
 	float GetSpeed() const { return speed_; }
 
-	void PickupCherry(int32_t numCherry);
-	void PickupGem(int32_t numGem);
+	void PickupCherry();
+	void PickupGem();
 
 	int32_t GetNumPickupCherry() const { return numPickupCherry_; }
 	int32_t GetNumPickupGem() const { return numPickupGem_; }
