@@ -13,6 +13,7 @@
 #include "Floor.h"
 #include "GameApp.h"
 #include "Player.h"
+#include "RewardViewer.h"
 #include "Spawner.h"
 
 GameApp::GameApp() : IApp("Runner2D", 100, 100, 800, 600, false, false)
@@ -42,6 +43,9 @@ void GameApp::Startup()
 	Spawner* spawner = EntityManager::Get().Create<Spawner>();
 	EntityManager::Get().Register("Spawner", spawner);
 
+	RewardViewer* rewardViewer = EntityManager::Get().Create<RewardViewer>();
+	EntityManager::Get().Register("RewardViewer", rewardViewer);
+
 	camera_ = camera;
 
 	updateEntities_ =
@@ -51,6 +55,7 @@ void GameApp::Startup()
 		background,
 		floor,
 		spawner,
+		rewardViewer,
 	};
 
 	renderEntities_ =
@@ -59,6 +64,7 @@ void GameApp::Startup()
 		floor,
 		spawner,
 		player,
+		rewardViewer,
 	};
 }
 
