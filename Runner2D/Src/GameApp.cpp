@@ -9,6 +9,7 @@
 
 #include "Background.h"
 #include "Box.h"
+#include "Button.h"
 #include "Camera.h"
 #include "Floor.h"
 #include "GameApp.h"
@@ -54,11 +55,26 @@ void GameApp::Startup()
 	Title* title = EntityManager::Get().Create<Title>();
 	EntityManager::Get().Register("Title", title);
 
+	Button::Layout layout;
+	layout.textColor = GameMath::Vec4f(0.0f, 0.0f, 0.0f, 1.0f);
+	layout.disableColor = GameMath::Vec4f(1.0f, 1.0f, 1.0f, 0.4f);
+	layout.enableColor = GameMath::Vec4f(1.0f, 1.0f, 1.0f, 0.6f);
+	layout.pressColor = GameMath::Vec4f(1.0f, 1.0f, 1.0f, 0.9f);
+	layout.releaseColor = GameMath::Vec4f(1.0f, 1.0f, 1.0f, 1.0f);
+	layout.center = GameMath::Vec2f(0.0f, -100.0f);
+	layout.size = GameMath::Vec2f(200.0f, 50.0f);
+	layout.mouse = Mouse::LEFT;
+	layout.font = ResourceManager::Get().GetByName<TTFont>("Font32");
+	layout.text = L"START!";
+	layout.side = 10.0f;
+	Button* startButton = EntityManager::Get().Create<Button>(layout, [&]() { OutputDebugString("HELLO!\n"); });
+	EntityManager::Get().Register("Button", startButton);
+
 	camera_ = camera;
 
 	StatusEntities readyEntities;
-	readyEntities.updateEntities = { camera, background, title, };
-	readyEntities.renderEntities = { background, title, };
+	readyEntities.updateEntities = { camera, background, startButton, title, };
+	readyEntities.renderEntities = { background, startButton, title, };
 	statusEntities_.insert({ EStatus::READY, readyEntities });
 
 	StatusEntities playEntities;
