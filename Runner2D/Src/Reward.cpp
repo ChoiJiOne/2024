@@ -55,6 +55,15 @@ void Reward::Tick(float deltaSeconds)
 	{
 		if (bound_.Intersect(player_->GetCollision()))
 		{
+			if (type_ == Type::CHERRY)
+			{
+				player_->PickupCherry();
+			}
+			else // type_ == Type::GEM
+			{
+				player_->PickupGem();
+			}
+
 			status_ = EStatus::PICKUP;
 
 			SpriteAnimation* anim = animations_.at(status_);
