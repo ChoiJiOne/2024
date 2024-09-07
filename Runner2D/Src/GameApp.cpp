@@ -118,4 +118,7 @@ void GameApp::LoadResource()
 		TTFont* font = ResourceManager::Get().Create<TTFont>(fontPath, 0, 9660, static_cast<float>(fontSize));
 		ResourceManager::Get().Register(GameUtils::PrintF("Font%d", fontSize), font);
 	}
+
+	TTFont* font = ResourceManager::Get().Create<TTFont>(fontPath, 0x00, 0x128, 128.0f);
+	ResourceManager::Get().Register("Font128", font);
 }
