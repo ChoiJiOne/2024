@@ -57,7 +57,7 @@ private:
 	Circle2D collisionBound_;
 	Circle2D originCollisionBound_;
 
-	float speed_ = 300.0f;
+	float speed_ = 0.0f;
 	float jumpSpeed_ = 0.0f;
 
 	EStatus status_ = EStatus::IDLE;

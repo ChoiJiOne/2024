@@ -9,6 +9,9 @@
 #include "PlayerMessenger.h"
 #include "SpriteAnimation.h"
 
+static const float MIN_SPEED = 300.0f;
+static const float MAX_SPEED = 600.0f;
+
 Player::Player()
 {
 	app_ = IApp::Get();
@@ -22,6 +25,7 @@ Player::Player()
 	collisionBound_.center = GameMath::Vec2f(-200.0f, -200.0f + collisionBound_.radius);
 	originCollisionBound_ = collisionBound_;
 
+	speed_ = MIN_SPEED;
 	jumpSpeed_ = 400.0f;
 
 	LoadAnimations();
@@ -94,8 +98,18 @@ void Player::PickupGem()
 {
 	numPickupGem_ += 1;
 
+	float messageTime = 2.0f;
+	std::wstring message = L"Speed Up!";
+
+	speed_ += 10.0f;
+	if (speed_ >= MAX_SPEED)
+	{
+		speed_ = MAX_SPEED;
+		message = L"Max Speed!";
+	}
+
 	PlayerMessenger* playerMessenger = EntityManager::Get().GetByName<PlayerMessenger>("PlayerMessenger");
-	playerMessenger->Send(L"Speed Up!", GameMath::Vec4f(0.0f, 0.0f, 0.0f, 1.0f), 2.0f);
+	playerMessenger->Send(message, GameMath::Vec4f(0.0f, 0.0f, 0.0f, 1.0f), messageTime);
 }
 
 void Player::LoadAnimations()
