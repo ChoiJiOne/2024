@@ -22,4 +22,6 @@ public:
 private:
 	Player* player_ = nullptr;
 	TTFont* font_ = nullptr;
+
+	bool bIsDetectMessage_ = false;
 };

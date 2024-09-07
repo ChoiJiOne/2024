@@ -27,10 +27,18 @@ PlayerMessenger::~PlayerMessenger()
 
 void PlayerMessenger::Tick(float deltaSeconds)
 {
+	if (!bIsDetectMessage_)
+	{
+		return;
+	}
 }
 
 void PlayerMessenger::Render()
 {
+	if (!bIsDetectMessage_)
+	{
+		return;
+	}
 }
 
 void PlayerMessenger::Release()
