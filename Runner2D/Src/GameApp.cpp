@@ -56,28 +56,15 @@ void GameApp::Startup()
 
 	camera_ = camera;
 
-	updateEntities_ =
-	{
-		camera,
-		player,
-		background,
-		floor,
-		spawner,
-		playerMessenger,
-		rewardViewer,
-		title,
-	};
+	StatusEntities readyEntities;
+	readyEntities.updateEntities = { camera, background, title, };
+	readyEntities.renderEntities = { background, title, };
+	statusEntities_.insert({ EStatus::READY, readyEntities });
 
-	renderEntities_ =
-	{
-		background,
-		floor,
-		spawner,
-		player,
-		playerMessenger,
-		title,
-		rewardViewer,
-	};
+	StatusEntities playEntities;
+	playEntities.updateEntities = { camera, player, floor, spawner, playerMessenger, rewardViewer, };
+	playEntities.renderEntities = { background, floor, spawner, player, playerMessenger, rewardViewer, };
+	statusEntities_.insert({ EStatus::PLAY, playEntities });
 }
 
 void GameApp::Shutdown()
@@ -91,7 +78,8 @@ void GameApp::Run()
 	RunLoop(
 		[&](float deltaSeconds)
 		{
-			for (auto& entity : updateEntities_)
+			StatusEntities& statusEntities = statusEntities_.at(status_);
+			for (auto& entity : statusEntities.updateEntities)
 			{
 				entity->Tick(deltaSeconds);
 			}
@@ -99,7 +87,7 @@ void GameApp::Run()
 			BeginFrame(0.0f, 0.0f, 0.0f, 1.0f);
 			RenderManager2D::Get().Begin(camera_);
 			{
-				for (auto& entity : renderEntities_)
+				for (auto& entity : statusEntities.renderEntities)
 				{
 					entity->Render();
 				}

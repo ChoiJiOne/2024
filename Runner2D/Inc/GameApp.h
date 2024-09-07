@@ -1,5 +1,7 @@
 #pragma once
 
+#include <map>
+
 #include "IApp.h"
 #include "IEntity.h"
 
@@ -17,7 +19,6 @@ public:
 		DONE  = 0x03,
 	};
 
-
 public:
 	GameApp();
 	virtual ~GameApp();
@@ -28,7 +29,16 @@ public:
 	virtual void Shutdown() override;
 	virtual void Run() override;
 
+	const EStatus& GetStatus() const { return status_; }
+	void SetStatus(const EStatus& status) { status_ = status; }
+
 private:
+	struct StatusEntities
+	{
+		std::vector<IEntity*> updateEntities;
+		std::vector<Entity2D*> renderEntities;
+	};
+
 	void LoadResource();
 
 private:
@@ -36,6 +46,6 @@ private:
 
 	Camera* camera_ = nullptr;
 
-	std::vector<IEntity*> updateEntities_;
-	std::vector<Entity2D*> renderEntities_;
+	EStatus status_ = EStatus::READY;
+	std::map<EStatus, StatusEntities> statusEntities_;
 };
