@@ -9,7 +9,7 @@
 Spawner::Spawner() 
 	: player_(EntityManager::Get().GetByName<Player>("Player"))
 {
-	boxSize_ = GameMath::Vec2f(40.0f, 40.0f);
+	boxSize_ = GameMath::Vec2f(50.0f, 50.0f);
 	spawnPosition_ = GameMath::Vec2f(+400.0f, -200.0f) + boxSize_ * 0.5f;
 
 	boxSortEvent_ = [](Box* l, Box* r)->bool { return l->GetCollision()->center.x > r->GetCollision()->center.x; };
