@@ -49,6 +49,7 @@ void Spawner::Tick(float deltaSeconds)
 		rewardBound.radius = 20.0f;
 
 		uint32_t count = GameMath::GenerateRandomInt(1, 3);
+		Reward::Type type = (count == 1) ? Reward::GetRandomType() : Reward::Type::CHERRY;
 		for (uint32_t index = 0; index < count; ++index)
 		{
 			boxBound.center.x = spawnPosition_.x + boxSize_.x * (0.5f + static_cast<float>(index));
@@ -56,7 +57,7 @@ void Spawner::Tick(float deltaSeconds)
 
 			rewardBound.center = boxBound.center;
 			rewardBound.center.y += 80.0f;
-			rewards_.push_back(EntityManager::Get().Create<Reward>(rewardBound, Reward::Type::CHERRY));
+			rewards_.push_back(EntityManager::Get().Create<Reward>(rewardBound, type));
 		}
 
 		boxes_.sort(boxSortEvent_);
