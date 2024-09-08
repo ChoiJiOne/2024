@@ -99,6 +99,31 @@ void Spawner::Release()
 	bIsInitialized_ = false;
 }
 
+void Spawner::Reset()
+{
+	for (auto& box : boxes_)
+	{
+		if (box && box->GetStatus() == Box::EStatus::DONE)
+		{
+			EntityManager::Get().Destroy(box);
+			box = nullptr;
+		}
+	}
+
+	for (auto& reward : rewards_)
+	{
+		if (reward && reward->GetStatus() == Reward::EStatus::DONE)
+		{
+			EntityManager::Get().Destroy(reward);
+			reward = nullptr;
+		}
+	}
+
+	boxes_ = std::list<Box*>();
+	rewards_ = std::list<Reward*>();
+	spawnTime_ = 0.0f;
+}
+
 void Spawner::Cleanup()
 {
 	for (auto& box : boxes_)
