@@ -11,6 +11,7 @@
 #include "Box.h"
 #include "Button.h"
 #include "Camera.h"
+#include "CountDowner.h"
 #include "Floor.h"
 #include "GameApp.h"
 #include "Player.h"
@@ -55,6 +56,9 @@ void GameApp::Startup()
 	Title* title = EntityManager::Get().Create<Title>();
 	EntityManager::Get().Register("Title", title);
 
+	CountDowner* countDowner = EntityManager::Get().Create<CountDowner>();
+	EntityManager::Get().Register("CountDowner", countDowner);
+
 	Button::Layout startButtonLayout;
 	startButtonLayout.textColor = GameMath::Vec4f(0.0f, 0.0f, 0.0f, 1.0f);
 	startButtonLayout.disableColor = GameMath::Vec4f(1.0f, 1.0f, 1.0f, 0.4f);
@@ -67,7 +71,13 @@ void GameApp::Startup()
 	startButtonLayout.font = ResourceManager::Get().GetByName<TTFont>("Font32");
 	startButtonLayout.text = L"START";
 	startButtonLayout.side = 10.0f;
-	Button* startButton = EntityManager::Get().Create<Button>(startButtonLayout, [&]() { status_ = EStatus::PLAY; });
+	Button* startButton = EntityManager::Get().Create<Button>(startButtonLayout, 
+		[&]() 
+		{ 
+			EntityManager::Get().GetByName<PlayerMessenger>("PlayerMessenger")->Send(L"PRESS SPACE KEY!", GameMath::Vec4f(0.0f, 0.0f, 0.0f, 1.0f), 6.0f);
+			EntityManager::Get().GetByName<CountDowner>("CountDowner")->Start();
+			status_ = EStatus::PLAY; 
+		});
 	EntityManager::Get().Register("StartButton", startButton);
 
 	Button::Layout quitButtonLayout;
@@ -93,8 +103,8 @@ void GameApp::Startup()
 	statusEntities_.insert({ EStatus::READY, readyEntities });
 
 	StatusEntities playEntities;
-	playEntities.updateEntities = { camera, player, floor, spawner, playerMessenger, rewardViewer, };
-	playEntities.renderEntities = { background, floor, spawner, player, playerMessenger, rewardViewer, };
+	playEntities.updateEntities = { camera, player, floor, spawner, playerMessenger, rewardViewer, countDowner, };
+	playEntities.renderEntities = { background, floor, spawner, player, playerMessenger, rewardViewer, countDowner, };
 	statusEntities_.insert({ EStatus::PLAY, playEntities });
 }
 
