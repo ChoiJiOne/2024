@@ -43,13 +43,10 @@ Player::~Player()
 
 void Player::Tick(float deltaSeconds)
 {
-	if (status_ == EStatus::IDLE || status_ == EStatus::RUN)
+	if (status_ == EStatus::RUN && app_->GetKeyPress(Key::KEY_SPACE) == Press::PRESSED)
 	{
-		if (app_->GetKeyPress(Key::KEY_SPACE) == Press::PRESSED)
-		{
-			status_ = EStatus::JUMP;
-			animations_.at(status_)->Reset();
-		}
+		status_ = EStatus::JUMP;
+		animations_.at(status_)->Reset();
 	}
 
 	if (status_ == EStatus::JUMP)
