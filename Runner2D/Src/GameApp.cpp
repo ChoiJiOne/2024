@@ -55,26 +55,41 @@ void GameApp::Startup()
 	Title* title = EntityManager::Get().Create<Title>();
 	EntityManager::Get().Register("Title", title);
 
-	Button::Layout layout;
-	layout.textColor = GameMath::Vec4f(0.0f, 0.0f, 0.0f, 1.0f);
-	layout.disableColor = GameMath::Vec4f(1.0f, 1.0f, 1.0f, 0.4f);
-	layout.enableColor = GameMath::Vec4f(1.0f, 1.0f, 1.0f, 0.6f);
-	layout.pressColor = GameMath::Vec4f(1.0f, 1.0f, 1.0f, 0.9f);
-	layout.releaseColor = GameMath::Vec4f(1.0f, 1.0f, 1.0f, 1.0f);
-	layout.center = GameMath::Vec2f(0.0f, -100.0f);
-	layout.size = GameMath::Vec2f(200.0f, 50.0f);
-	layout.mouse = Mouse::LEFT;
-	layout.font = ResourceManager::Get().GetByName<TTFont>("Font32");
-	layout.text = L"START!";
-	layout.side = 10.0f;
-	Button* startButton = EntityManager::Get().Create<Button>(layout, [&]() { OutputDebugString("HELLO!\n"); });
-	EntityManager::Get().Register("Button", startButton);
+	Button::Layout startButtonLayout;
+	startButtonLayout.textColor = GameMath::Vec4f(0.0f, 0.0f, 0.0f, 1.0f);
+	startButtonLayout.disableColor = GameMath::Vec4f(1.0f, 1.0f, 1.0f, 0.4f);
+	startButtonLayout.enableColor = GameMath::Vec4f(1.0f, 1.0f, 1.0f, 0.6f);
+	startButtonLayout.pressColor = GameMath::Vec4f(1.0f, 1.0f, 1.0f, 0.9f);
+	startButtonLayout.releaseColor = GameMath::Vec4f(1.0f, 1.0f, 1.0f, 1.0f);
+	startButtonLayout.center = GameMath::Vec2f(0.0f, -100.0f);
+	startButtonLayout.size = GameMath::Vec2f(200.0f, 50.0f);
+	startButtonLayout.mouse = Mouse::LEFT;
+	startButtonLayout.font = ResourceManager::Get().GetByName<TTFont>("Font32");
+	startButtonLayout.text = L"START";
+	startButtonLayout.side = 10.0f;
+	Button* startButton = EntityManager::Get().Create<Button>(startButtonLayout, [&]() { status_ = EStatus::PLAY; });
+	EntityManager::Get().Register("StartButton", startButton);
 
+	Button::Layout quitButtonLayout;
+	quitButtonLayout.textColor = GameMath::Vec4f(0.0f, 0.0f, 0.0f, 1.0f);
+	quitButtonLayout.disableColor = GameMath::Vec4f(1.0f, 1.0f, 1.0f, 0.4f);
+	quitButtonLayout.enableColor = GameMath::Vec4f(1.0f, 1.0f, 1.0f, 0.6f);
+	quitButtonLayout.pressColor = GameMath::Vec4f(1.0f, 1.0f, 1.0f, 0.9f);
+	quitButtonLayout.releaseColor = GameMath::Vec4f(1.0f, 1.0f, 1.0f, 1.0f);
+	quitButtonLayout.center = GameMath::Vec2f(0.0f, -180.0f);
+	quitButtonLayout.size = GameMath::Vec2f(200.0f, 50.0f);
+	quitButtonLayout.mouse = Mouse::LEFT;
+	quitButtonLayout.font = ResourceManager::Get().GetByName<TTFont>("Font32");
+	quitButtonLayout.text = L"QUIT";
+	quitButtonLayout.side = 10.0f;
+	Button* quitButton = EntityManager::Get().Create<Button>(quitButtonLayout, [&]() { bIsQuit_ = true; });
+	EntityManager::Get().Register("QuitButton", quitButton);
+	
 	camera_ = camera;
 
 	StatusEntities readyEntities;
-	readyEntities.updateEntities = { camera, background, startButton, title, };
-	readyEntities.renderEntities = { background, startButton, title, };
+	readyEntities.updateEntities = { camera, background, startButton, quitButton, title, };
+	readyEntities.renderEntities = { background, startButton, quitButton, title, };
 	statusEntities_.insert({ EStatus::READY, readyEntities });
 
 	StatusEntities playEntities;
