@@ -3,6 +3,7 @@
 #include "EntityManager.h"
 #include "RenderManager2D.h"
 #include "ResourceManager.h"
+#include "Sound.h"
 
 #include "Box.h"
 #include "Camera.h"
@@ -51,6 +52,14 @@ void Box::Tick(float deltaSeconds)
 	{
 		bCanMove_ = false;
 		player_->SetStatus(Player::EStatus::HURT);
+
+		Sound* sound = ResourceManager::Get().GetByName<Sound>("Done");
+		if (!sound->IsPlaying())
+		{
+			sound->Reset();
+			sound->SetLooping(false);
+			sound->Play();
+		}
 
 		GameApp* app = reinterpret_cast<GameApp*>(GameApp::Get());
 		app->SetStatus(GameApp::EStatus::DONE);
