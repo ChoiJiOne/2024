@@ -43,6 +43,11 @@ Player::~Player()
 
 void Player::Tick(float deltaSeconds)
 {
+	if (status_ == EStatus::STOP)
+	{
+		return;
+	}
+
 	if (status_ == EStatus::RUN && app_->GetKeyPress(Key::KEY_SPACE) == Press::PRESSED)
 	{
 		status_ = EStatus::JUMP;
@@ -68,6 +73,11 @@ void Player::Tick(float deltaSeconds)
 
 void Player::Render()
 {
+	if (status_ == EStatus::STOP)
+	{
+		return;
+	}
+
 	RenderManager2D::Get().DrawSprite(atlas_, animations_.at(status_)->GetCurrentClip(), spriteBound_.center, spriteBound_.size.x, spriteBound_.size.y);
 }
 
