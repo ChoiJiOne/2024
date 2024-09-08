@@ -133,6 +133,33 @@ void GameApp::Startup()
 			status_ = EStatus::PLAY; 
 		});
 	EntityManager::Get().Register("ResumeButton", resumeButton);
+
+	Button::Layout resetButtonLayout;
+	resetButtonLayout.textColor = GameMath::Vec4f(0.0f, 0.0f, 0.0f, 1.0f);
+	resetButtonLayout.disableColor = GameMath::Vec4f(1.0f, 1.0f, 1.0f, 0.4f);
+	resetButtonLayout.enableColor = GameMath::Vec4f(1.0f, 1.0f, 1.0f, 0.6f);
+	resetButtonLayout.pressColor = GameMath::Vec4f(1.0f, 1.0f, 1.0f, 0.9f);
+	resetButtonLayout.releaseColor = GameMath::Vec4f(1.0f, 1.0f, 1.0f, 1.0f);
+	resetButtonLayout.center = GameMath::Vec2f(0.0f, -100.0f);
+	resetButtonLayout.size = GameMath::Vec2f(200.0f, 50.0f);
+	resetButtonLayout.mouse = Mouse::LEFT;
+	resetButtonLayout.font = ResourceManager::Get().GetByName<TTFont>("Font32");
+	resetButtonLayout.text = L"RESET";
+	resetButtonLayout.side = 10.0f;
+	Button* resetButton = EntityManager::Get().Create<Button>(resetButtonLayout,
+		[&]()
+		{
+			Player* player = EntityManager::Get().GetByName<Player>("Player");
+			player->Reset();
+
+			Spawner* spawner = EntityManager::Get().GetByName<Spawner>("Spawner");
+			spawner->Reset();
+
+			EntityManager::Get().GetByName<PlayerMessenger>("PlayerMessenger")->Send(L"PRESS SPACE KEY!", GameMath::Vec4f(0.0f, 0.0f, 0.0f, 1.0f), 6.0f);
+			EntityManager::Get().GetByName<CountDowner>("CountDowner")->Start();
+			status_ = EStatus::PLAY;
+		});
+	EntityManager::Get().Register("ResetButton", resetButton);
 	
 	camera_ = camera;
 
@@ -150,6 +177,11 @@ void GameApp::Startup()
 	pauseEntities.updateEntities = { camera, background, resumeButton, quitButton, title };
 	pauseEntities.renderEntities = { background, resumeButton, quitButton, title, };
 	statusEntities_.insert({ EStatus::PAUSE, pauseEntities });
+
+	StatusEntities doneEntities;
+	doneEntities.updateEntities = { camera, player, floor, spawner, playerMessenger, rewardViewer, countDowner, background, resetButton, quitButton };
+	doneEntities.renderEntities = { background, floor, spawner, player, playerMessenger, rewardViewer, countDowner, resetButton, quitButton };
+	statusEntities_.insert({ EStatus::DONE, doneEntities });
 }
 
 void GameApp::Shutdown()
