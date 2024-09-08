@@ -45,6 +45,8 @@ public:
 	int32_t GetNumPickupCherry() const { return numPickupCherry_; }
 	int32_t GetNumPickupGem() const { return numPickupGem_; }
 
+	void Reset();
+
 private:
 	void LoadAnimations();
 

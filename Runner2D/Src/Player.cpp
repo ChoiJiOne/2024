@@ -119,6 +119,24 @@ void Player::PickupGem()
 	playerMessenger->Send(message, GameMath::Vec4f(0.0f, 0.0f, 0.0f, 1.0f), messageTime);
 }
 
+void Player::Reset()
+{
+	spriteBound_.size = GameMath::Vec2f(60.0f, 60.0f);
+	spriteBound_.center = GameMath::Vec2f(-200.0f, -200.0f + spriteBound_.size.y * 0.5f);
+	originSpriteBound_ = spriteBound_;
+
+	collisionBound_.radius = 20.0f;
+	collisionBound_.center = GameMath::Vec2f(-200.0f, -200.0f + collisionBound_.radius);
+	originCollisionBound_ = collisionBound_;
+
+	speed_ = MIN_SPEED;
+
+	status_ = EStatus::IDLE;
+
+	numPickupCherry_ = 0;
+	numPickupGem_ = 0;
+}
+
 void Player::LoadAnimations()
 {
 	std::vector<std::string> hurt = { "Hurt_1", "Hurt_2" };
