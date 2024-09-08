@@ -19,6 +19,7 @@ public:
 		RUN  = 0x01,
 		JUMP = 0x02,
 		HURT = 0x03,
+		STOP = 0x04,
 	};
 
 public:
