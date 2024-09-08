@@ -6,6 +6,7 @@
 
 #include "Box.h"
 #include "Camera.h"
+#include "GameApp.h"
 #include "Player.h"
 
 Box::Box(const Rect2D& bound)
@@ -50,6 +51,9 @@ void Box::Tick(float deltaSeconds)
 	{
 		bCanMove_ = false;
 		player_->SetStatus(Player::EStatus::HURT);
+
+		GameApp* app = reinterpret_cast<GameApp*>(GameApp::Get());
+		app->SetStatus(GameApp::EStatus::DONE);
 	}
 }
 
