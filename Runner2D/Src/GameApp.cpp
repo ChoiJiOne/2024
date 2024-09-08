@@ -14,6 +14,7 @@
 #include "CountDowner.h"
 #include "Floor.h"
 #include "GameApp.h"
+#include "GameOver.h"
 #include "Player.h"
 #include "PlayerMessenger.h"
 #include "RewardViewer.h"
@@ -75,6 +76,9 @@ void GameApp::Startup()
 
 	CountDowner* countDowner = EntityManager::Get().Create<CountDowner>();
 	EntityManager::Get().Register("CountDowner", countDowner);
+
+	GameOver* gameOver = EntityManager::Get().Create<GameOver>();
+	EntityManager::Get().Register("GameOver", gameOver);
 
 	Button::Layout startButtonLayout;
 	startButtonLayout.textColor = GameMath::Vec4f(0.0f, 0.0f, 0.0f, 1.0f);
@@ -179,8 +183,8 @@ void GameApp::Startup()
 	statusEntities_.insert({ EStatus::PAUSE, pauseEntities });
 
 	StatusEntities doneEntities;
-	doneEntities.updateEntities = { camera, player, floor, spawner, playerMessenger, rewardViewer, countDowner, background, resetButton, quitButton };
-	doneEntities.renderEntities = { background, floor, spawner, player, playerMessenger, rewardViewer, countDowner, resetButton, quitButton };
+	doneEntities.updateEntities = { camera, player, floor, spawner, playerMessenger, rewardViewer, countDowner, background, gameOver, resetButton, quitButton };
+	doneEntities.renderEntities = { background, floor, spawner, player, playerMessenger, rewardViewer, countDowner, gameOver, resetButton, quitButton };
 	statusEntities_.insert({ EStatus::DONE, doneEntities });
 }
 
