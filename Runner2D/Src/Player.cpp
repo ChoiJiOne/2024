@@ -4,6 +4,7 @@
 #include "IApp.h"
 #include "RenderManager2D.h"
 #include "ResourceManager.h"
+#include "Sound.h"
 
 #include "Player.h"
 #include "PlayerMessenger.h"
@@ -52,6 +53,10 @@ void Player::Tick(float deltaSeconds)
 	{
 		status_ = EStatus::JUMP;
 		animations_.at(status_)->Reset();
+
+		Sound* jumpSound = ResourceManager::Get().GetByName<Sound>("Jump");
+		jumpSound->Reset();
+		jumpSound->Play();
 	}
 
 	if (status_ == EStatus::JUMP)
