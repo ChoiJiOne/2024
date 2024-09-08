@@ -226,7 +226,7 @@ void GameApp::LoadResource()
 	std::array<int32_t, 4> fontSizes = { 16, 24, 32, 64 };
 	for (const auto& fontSize : fontSizes)
 	{
-		TTFont* font = ResourceManager::Get().Create<TTFont>(fontPath, 0, 9660, static_cast<float>(fontSize));
+		TTFont* font = ResourceManager::Get().Create<TTFont>(fontPath, 0x00, 0x128, static_cast<float>(fontSize));
 		ResourceManager::Get().Register(GameUtils::PrintF("Font%d", fontSize), font);
 	}
 
