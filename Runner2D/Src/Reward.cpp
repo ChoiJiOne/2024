@@ -3,6 +3,7 @@
 #include "EntityManager.h"
 #include "RenderManager2D.h"
 #include "ResourceManager.h"
+#include "Sound.h"
 
 #include "Camera.h"
 #include "Player.h"
@@ -55,12 +56,16 @@ void Reward::Tick(float deltaSeconds)
 	{
 		if (bound_.Intersect(player_->GetCollision()))
 		{
+			Sound* sound = nullptr;
+
 			if (type_ == Type::CHERRY)
 			{
+				sound = ResourceManager::Get().GetByName<Sound>("Reward");
 				player_->PickupCherry();
 			}
 			else // type_ == Type::GEM
 			{
+				sound = ResourceManager::Get().GetByName<Sound>("SpeedUp");
 				player_->PickupGem();
 			}
 
@@ -68,6 +73,9 @@ void Reward::Tick(float deltaSeconds)
 
 			SpriteAnimation* anim = animations_.at(status_);
 			anim->Reset();
+
+			sound->Reset();
+			sound->Play();
 		}
 	}
 	break;
