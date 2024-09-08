@@ -119,8 +119,8 @@ void Spawner::Reset()
 		}
 	}
 
-	boxes_ = std::list<Box*>();
-	rewards_ = std::list<Reward*>();
+	boxes_.clear();
+	rewards_.clear();
 	spawnTime_ = 0.0f;
 }
 
