@@ -4,6 +4,7 @@
 #include "EntityManager.h"
 #include "RenderManager2D.h"
 #include "ResourceManager.h"
+#include "Sound.h"
 #include "Texture2D.h"
 #include "TTFont.h"
 
@@ -97,7 +98,7 @@ void GameApp::Startup()
 		{ 
 			EntityManager::Get().GetByName<PlayerMessenger>("PlayerMessenger")->Send(L"PRESS SPACE KEY!", GameMath::Vec4f(0.0f, 0.0f, 0.0f, 1.0f), 6.0f);
 			EntityManager::Get().GetByName<CountDowner>("CountDowner")->Start();
-			status_ = EStatus::PLAY; 
+			status_ = EStatus::PLAY;
 		});
 	EntityManager::Get().Register("StartButton", startButton);
 
@@ -134,7 +135,7 @@ void GameApp::Startup()
 			Player* player = EntityManager::Get().GetByName<Player>("Player");
 			player->SetStatus(static_cast<Player::EStatus>(playerStatus_));
 
-			status_ = EStatus::PLAY; 
+			status_ = EStatus::PLAY;
 		});
 	EntityManager::Get().Register("ResumeButton", resumeButton);
 
@@ -236,4 +237,21 @@ void GameApp::LoadResource()
 
 	TTFont* font = ResourceManager::Get().Create<TTFont>(fontPath, 0x00, 0x128, 128.0f);
 	ResourceManager::Get().Register("Font128", font);
+
+	std::string soundPath = resourceRootPath_ + "Sound\\";
+	std::array<std::pair<std::string, std::string>, 6> soundPaths =
+	{
+		std::pair {"Button",  ".wav"},
+		std::pair {"Done",    ".wav"},
+		std::pair {"Jump",    ".mp3"},
+		std::pair {"Reward",  ".wav"},
+		std::pair {"SpeedUp", ".wav"},
+		std::pair {"Theme",   ".mp3"},
+	};
+
+	for (const auto& path : soundPaths)
+	{
+		Sound* sound = ResourceManager::Get().Create<Sound>(soundPath + path.first + path.second);
+		ResourceManager::Get().Register(path.first, sound);
+	}
 }
