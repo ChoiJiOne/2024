@@ -32,6 +32,23 @@ void GameApp::Startup()
 {
 	LoadResource();
 
+	auto pauseEvent = [&]() 
+		{
+			Player* player = EntityManager::Get().GetByName<Player>("Player");
+			Player::EStatus status = player->GetStatus();
+
+			if (status_ == EStatus::PLAY && (status != Player::EStatus::HURT))
+			{
+				playerStatus_ = static_cast<int32_t>(status);
+				player->SetStatus(Player::EStatus::STOP);
+
+				status_ = EStatus::PAUSE;
+			}
+		};
+
+	AddWindowEventAction(WindowEvent::FOCUS_LOST, pauseEvent, true);
+	AddWindowEventAction(WindowEvent::MOVED, pauseEvent, true);
+
 	Camera* camera = EntityManager::Get().Create<Camera>();
 	EntityManager::Get().Register("Camera", camera);
 
@@ -94,6 +111,28 @@ void GameApp::Startup()
 	quitButtonLayout.side = 10.0f;
 	Button* quitButton = EntityManager::Get().Create<Button>(quitButtonLayout, [&]() { bIsQuit_ = true; });
 	EntityManager::Get().Register("QuitButton", quitButton);
+
+	Button::Layout resumeButtonLayout;
+	resumeButtonLayout.textColor = GameMath::Vec4f(0.0f, 0.0f, 0.0f, 1.0f);
+	resumeButtonLayout.disableColor = GameMath::Vec4f(1.0f, 1.0f, 1.0f, 0.4f);
+	resumeButtonLayout.enableColor = GameMath::Vec4f(1.0f, 1.0f, 1.0f, 0.6f);
+	resumeButtonLayout.pressColor = GameMath::Vec4f(1.0f, 1.0f, 1.0f, 0.9f);
+	resumeButtonLayout.releaseColor = GameMath::Vec4f(1.0f, 1.0f, 1.0f, 1.0f);
+	resumeButtonLayout.center = GameMath::Vec2f(0.0f, -100.0f);
+	resumeButtonLayout.size = GameMath::Vec2f(200.0f, 50.0f);
+	resumeButtonLayout.mouse = Mouse::LEFT;
+	resumeButtonLayout.font = ResourceManager::Get().GetByName<TTFont>("Font32");
+	resumeButtonLayout.text = L"RESUME";
+	resumeButtonLayout.side = 10.0f;
+	Button* resumeButton = EntityManager::Get().Create<Button>(resumeButtonLayout, 
+		[&]() 
+		{
+			Player* player = EntityManager::Get().GetByName<Player>("Player");
+			player->SetStatus(static_cast<Player::EStatus>(playerStatus_));
+
+			status_ = EStatus::PLAY; 
+		});
+	EntityManager::Get().Register("ResumeButton", resumeButton);
 	
 	camera_ = camera;
 
@@ -103,9 +142,14 @@ void GameApp::Startup()
 	statusEntities_.insert({ EStatus::READY, readyEntities });
 
 	StatusEntities playEntities;
-	playEntities.updateEntities = { camera, player, floor, spawner, playerMessenger, rewardViewer, countDowner, };
+	playEntities.updateEntities = { camera, player, floor, spawner, playerMessenger, rewardViewer, countDowner, background, };
 	playEntities.renderEntities = { background, floor, spawner, player, playerMessenger, rewardViewer, countDowner, };
 	statusEntities_.insert({ EStatus::PLAY, playEntities });
+
+	StatusEntities pauseEntities;
+	pauseEntities.updateEntities = { camera, background, resumeButton, quitButton, title };
+	pauseEntities.renderEntities = { background, resumeButton, quitButton, title, };
+	statusEntities_.insert({ EStatus::PAUSE, pauseEntities });
 }
 
 void GameApp::Shutdown()

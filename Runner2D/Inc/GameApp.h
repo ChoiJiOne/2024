@@ -48,4 +48,6 @@ private:
 
 	EStatus status_ = EStatus::READY;
 	std::map<EStatus, StatusEntities> statusEntities_;
+
+	int32_t playerStatus_ = 0;
 };
