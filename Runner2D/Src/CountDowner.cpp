@@ -81,6 +81,7 @@ void CountDowner::Release()
 void CountDowner::Start()
 {
 	bIsStart_ = true;
+	time_ = 4.0f;
 	remainTime_ = static_cast<int32_t>(time_);
 
 	message_ = GameUtils::PrintF(L"%d", remainTime_);
