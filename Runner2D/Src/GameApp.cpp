@@ -99,6 +99,10 @@ void GameApp::Startup()
 			EntityManager::Get().GetByName<PlayerMessenger>("PlayerMessenger")->Send(L"PRESS SPACE KEY!", GameMath::Vec4f(0.0f, 0.0f, 0.0f, 1.0f), 6.0f);
 			EntityManager::Get().GetByName<CountDowner>("CountDowner")->Start();
 			status_ = EStatus::PLAY;
+
+			Sound* buttonSound = ResourceManager::Get().GetByName<Sound>("Button");
+			buttonSound->Reset();
+			buttonSound->Play();
 		});
 	EntityManager::Get().Register("StartButton", startButton);
 
@@ -136,6 +140,10 @@ void GameApp::Startup()
 			player->SetStatus(static_cast<Player::EStatus>(playerStatus_));
 
 			status_ = EStatus::PLAY;
+
+			Sound* buttonSound = ResourceManager::Get().GetByName<Sound>("Button");
+			buttonSound->Reset();
+			buttonSound->Play();
 		});
 	EntityManager::Get().Register("ResumeButton", resumeButton);
 
@@ -163,6 +171,10 @@ void GameApp::Startup()
 			EntityManager::Get().GetByName<PlayerMessenger>("PlayerMessenger")->Send(L"PRESS SPACE KEY!", GameMath::Vec4f(0.0f, 0.0f, 0.0f, 1.0f), 6.0f);
 			EntityManager::Get().GetByName<CountDowner>("CountDowner")->Start();
 			status_ = EStatus::PLAY;
+
+			Sound* buttonSound = ResourceManager::Get().GetByName<Sound>("Button");
+			buttonSound->Reset();
+			buttonSound->Play();
 		});
 	EntityManager::Get().Register("ResetButton", resetButton);
 	
