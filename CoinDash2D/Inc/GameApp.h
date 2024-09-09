@@ -2,6 +2,8 @@
 
 #include "IApp.h"
 
+class Camera;
+
 class GameApp : public IApp
 {
 public:
@@ -15,4 +17,5 @@ public:
 	virtual void Run() override;
 
 private:
+	Camera* camera_ = nullptr;
 };
