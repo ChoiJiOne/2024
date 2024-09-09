@@ -1,8 +1,12 @@
 #pragma once
 
+#include <vector>
+
 #include "IApp.h"
+#include "IEntity.h"
 
 class Camera;
+class Entity2D;
 
 class GameApp : public IApp
 {
@@ -18,4 +22,7 @@ public:
 
 private:
 	Camera* camera_ = nullptr;
+
+	std::vector<IEntity*> updateEntities_;
+	std::vector<Entity2D*> renderEntities_;
 };
