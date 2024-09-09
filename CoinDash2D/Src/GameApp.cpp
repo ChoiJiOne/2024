@@ -22,6 +22,7 @@ void GameApp::Startup()
 	ResourceManager::Get().Register("Atlas", atlas);
 
 	camera_ = EntityManager::Get().Create<Camera>();
+	EntityManager::Get().Register("Camera", camera_);
 }
 
 void GameApp::Shutdown()
