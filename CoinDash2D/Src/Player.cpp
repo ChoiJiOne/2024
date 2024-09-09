@@ -20,8 +20,11 @@ Player::Player()
 	std::vector<std::string> hurtClip = { "Hurt_1", "Hurt_2", };
 	anims_.insert({ Status::HURT, ResourceManager::Get().Create<SpriteAnim2D>(atlas, hurtClip, true, 0.5f) });
 	
-	bound_.center = GameMath::Vec2f();
-	bound_.size = GameMath::Vec2f(50.0f, 50.0f);
+	spriteBound_.center = GameMath::Vec2f();
+	spriteBound_.size = GameMath::Vec2f(50.0f, 50.0f);
+
+	collisionBound_.center = spriteBound_.center + GameMath::Vec2f(0.0f, -5.0f);
+	collisionBound_.size = GameMath::Vec2f(30.0f, 40.0f);
 
 	bIsInitialized_ = true;
 }
@@ -42,7 +45,8 @@ void Player::Tick(float deltaSeconds)
 void Player::Render()
 {
 	SpriteAnim2D* anim = anims_.at(status_);
-	RenderManager2D::Get().DrawSprite(anim->GetAtlas(), anim->GetCurrentClip(), bound_.center, bound_.size.x, bound_.size.y);
+	RenderManager2D::Get().DrawSprite(anim->GetAtlas(), anim->GetCurrentClip(), spriteBound_.center, spriteBound_.size.x, spriteBound_.size.y);
+	RenderManager2D::Get().DrawRectWireframe(collisionBound_.center, collisionBound_.size.x, collisionBound_.size.y, GameMath::Vec4f(1.0f, 0.0f, 0.0f, 1.0f));
 }
 
 void Player::Release()

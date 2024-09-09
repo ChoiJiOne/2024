@@ -31,5 +31,6 @@ private:
 	Status status_ = Status::RUN;
 	std::map<Status, SpriteAnim2D*> anims_;
 
-	Rect2D bound_;
+	Rect2D spriteBound_;
+	Rect2D collisionBound_;
 };
