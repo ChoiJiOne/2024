@@ -54,7 +54,10 @@ Player::~Player()
 
 void Player::Tick(float deltaSeconds)
 {
-	Move(deltaSeconds);
+	if (status_ != Status::HURT)
+	{
+		Move(deltaSeconds);
+	}
 
 	anims_.at(status_)->Update(deltaSeconds);
 }
