@@ -28,7 +28,7 @@ public:
 	virtual void Release() override;
 	
 private:
-	Status status_ = Status::RUN;
+	Status status_ = Status::IDLE;
 	std::map<Status, SpriteAnim2D*> anims_;
 
 	Rect2D spriteBound_;
