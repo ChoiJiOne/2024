@@ -19,11 +19,12 @@ public:
 	virtual void Render() override;
 	virtual void Release() override;
 
-	ICollision2D* GetBound() { return &bound_; }
+	ICollision2D* GetBound() { return &collisionBound_; }
 
 private:
 	Player* player_ = nullptr;
 	Atlas2D* atlas_ = nullptr;
 
-	Rect2D bound_;
+	Rect2D spriteBound_;
+	Rect2D collisionBound_;
 };

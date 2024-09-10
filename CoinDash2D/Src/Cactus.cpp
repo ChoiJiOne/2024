@@ -8,10 +8,13 @@
 #include "Player.h"
 
 Cactus::Cactus(const Rect2D& bound)
-	: bound_(bound)
+	: spriteBound_(bound)
 {
 	player_ = EntityManager::Get().GetByName<Player>("Player");
 	atlas_ = ResourceManager::Get().GetByName<Atlas2D>("Atlas");
+
+	collisionBound_ = spriteBound_;
+	collisionBound_.size.x -= 10.0f;
 
 	bIsInitialized_ = true;
 }
@@ -26,7 +29,7 @@ Cactus::~Cactus()
 
 void Cactus::Tick(float deltaSeconds)
 {
-	if (bound_.Intersect(player_->GetCollisionBound()))
+	if (collisionBound_.Intersect(player_->GetCollisionBound()))
 	{
 		player_->SetStatus(Player::Status::HURT);
 	}
@@ -34,7 +37,7 @@ void Cactus::Tick(float deltaSeconds)
 
 void Cactus::Render()
 {
-	RenderManager2D::Get().DrawSprite(atlas_, "Cactus", bound_.center, bound_.size.x, bound_.size.y);
+	RenderManager2D::Get().DrawSprite(atlas_, "Cactus", spriteBound_.center, spriteBound_.size.x, spriteBound_.size.y);
 }
 
 void Cactus::Release()
