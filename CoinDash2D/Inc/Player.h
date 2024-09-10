@@ -39,7 +39,7 @@ public:
 
 private:
 	void Move(float deltaSeconds);
-	void UpdatePowerUpBar();
+	void UpdatePowerUpBar(float deltaSeconds);
 	
 private:
 	IApp* app_ = nullptr;

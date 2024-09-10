@@ -67,20 +67,8 @@ void Player::Tick(float deltaSeconds)
 		return;
 	}
 
-	if (bIsPowerUp_)
-	{
-		powerUpTime_ -= deltaSeconds;
-
-		if (powerUpTime_ <= 0.0f)
-		{
-			powerUpTime_ = 0.0f;
-			bIsPowerUp_ = false;
-			speed_ = normalSpeed_;
-		}
-	}
-
 	Move(deltaSeconds);
-	UpdatePowerUpBar();
+	UpdatePowerUpBar(deltaSeconds);
 	anims_.at(status_)->Update(deltaSeconds);
 }
 
@@ -88,7 +76,7 @@ void Player::Render()
 {
 	SpriteAnim2D* anim = anims_.at(status_);
 	RenderManager2D::Get().DrawSprite(anim->GetAtlas(), anim->GetCurrentClip(), spriteBound_.center, spriteBound_.size.x, spriteBound_.size.y, 0.0f, bIsFlipH_);
-
+	
 	RenderManager2D::Get().DrawRect(powerUpBar_.center, powerUpBar_.size.x, powerUpBar_.size.y, powerUpBarColor_);
 	RenderManager2D::Get().DrawRect(remainBar_.center, remainBar_.size.x, remainBar_.size.y, remainBarColor_);
 }
@@ -159,8 +147,20 @@ void Player::Move(float deltaSeconds)
 	}
 }
 
-void Player::UpdatePowerUpBar()
+void Player::UpdatePowerUpBar(float deltaSeconds)
 {
+	if (bIsPowerUp_)
+	{
+		powerUpTime_ -= deltaSeconds;
+
+		if (powerUpTime_ <= 0.0f)
+		{
+			powerUpTime_ = 0.0f;
+			bIsPowerUp_ = false;
+			speed_ = normalSpeed_;
+		}
+	}
+
 	powerUpBar_.center = collisionBound_.center;
 	powerUpBar_.center.y += collisionBound_.size.y * 0.5f + 5.0f;
 
