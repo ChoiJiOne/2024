@@ -25,6 +25,7 @@ public:
 
 private:
 	void Cleanup();
+	void GenerateCoins();
 
 private:
 	Camera* camera_ = nullptr;

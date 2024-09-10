@@ -42,39 +42,7 @@ void CoinSpawner::Tick(float deltaSeconds)
 {
 	if (coins_.empty())
 	{
-		maxNumCoin_++;
-
-		for (int32_t count = 0; count < maxNumCoin_; ++count)
-		{
-			Circle2D bound;
-			bound.radius = 15.0f;
-
-			bool bCanCreateCoin = true;
-			do
-			{
-				bCanCreateCoin = true;
-
-				float x = GameMath::GenerateRandomFloat(MIN_X_POS, MAX_X_POS);
-				float y = GameMath::GenerateRandomFloat(MIN_Y_POS, MAX_Y_POS);
-				bound.center = GameMath::Vec2f(x, y);
-
-				if (bound.Intersect(player_->GetCollisionBound()))
-				{
-					bCanCreateCoin = false;
-				}
-
-				for (auto& cactus : cactus_)
-				{
-					if (bound.Intersect(cactus->GetBound()))
-					{
-						bCanCreateCoin = false;
-					}
-				}
-			} while (!bCanCreateCoin);
-
-			Coin* coin = EntityManager::Get().Create<Coin>(bound);
-			coins_.push_back(coin);
-		}
+		GenerateCoins();
 	}
 
 	for (auto& coin : coins_)
@@ -115,4 +83,41 @@ void CoinSpawner::Cleanup()
 	}
 
 	coins_.remove_if(coinRemoveEvent_);
+}
+
+void CoinSpawner::GenerateCoins()
+{
+	maxNumCoin_++;
+
+	for (int32_t count = 0; count < maxNumCoin_; ++count)
+	{
+		Circle2D bound;
+		bound.radius = 15.0f;
+
+		bool bCanCreateCoin = true;
+		do
+		{
+			bCanCreateCoin = true;
+
+			float x = GameMath::GenerateRandomFloat(MIN_X_POS, MAX_X_POS);
+			float y = GameMath::GenerateRandomFloat(MIN_Y_POS, MAX_Y_POS);
+			bound.center = GameMath::Vec2f(x, y);
+
+			if (bound.Intersect(player_->GetCollisionBound()))
+			{
+				bCanCreateCoin = false;
+			}
+
+			for (auto& cactus : cactus_)
+			{
+				if (bound.Intersect(cactus->GetBound()))
+				{
+					bCanCreateCoin = false;
+				}
+			}
+		} while (!bCanCreateCoin);
+
+		Coin* coin = EntityManager::Get().Create<Coin>(bound);
+		coins_.push_back(coin);
+	}
 }
