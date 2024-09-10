@@ -32,11 +32,21 @@ Coin::~Coin()
 
 void Coin::Tick(float deltaSeconds)
 {
+	if (status_ == Status::DONE)
+	{
+		return;
+	}
+	
 	anim_->Update(deltaSeconds);
 }
 
 void Coin::Render()
 {
+	if (status_ == Status::DONE)
+	{
+		return;
+	}
+
 	RenderManager2D::Get().DrawSprite(anim_->GetAtlas(), anim_->GetCurrentClip(), bound_.center, 2.0f * bound_.radius, 2.0f * bound_.radius);
 }
 
