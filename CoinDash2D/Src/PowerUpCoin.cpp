@@ -6,12 +6,25 @@
 #include "ResourceManager.h"
 #include "SpriteAnim2D.h"
 
+#include "Cactus.h"
 #include "Player.h"
 #include "PowerUpCoin.h"
+
+static const float MIN_X_POS = -240.0f;
+static const float MAX_X_POS = +240.0f;
+static const float MIN_Y_POS = -360.0f;
+static const float MAX_Y_POS = +360.0f;
 
 PowerUpCoin::PowerUpCoin()
 {
 	player_ = EntityManager::Get().GetByName<Player>("Player");
+	cactus_ =
+	{
+		EntityManager::Get().GetByName<Cactus>("Cactus0"),
+		EntityManager::Get().GetByName<Cactus>("Cactus1"),
+		EntityManager::Get().GetByName<Cactus>("Cactus2"),
+		EntityManager::Get().GetByName<Cactus>("Cactus3"),
+	};
 
 	Atlas2D* atlas = ResourceManager::Get().GetByName<Atlas2D>("Atlas");
 
@@ -29,7 +42,9 @@ PowerUpCoin::PowerUpCoin()
 	};
 	anim_ = ResourceManager::Get().Create<SpriteAnim2D>(atlas, clips, true, 1.0f);
 
-	bound_ = Circle2D(GameMath::Vec2f(0.0f, -100.0f), 20.0f);
+	bound_.radius = 20.0f;
+	
+	time_ = GameMath::GenerateRandomFloat(10.0f, 15.0f);
 
 	bIsInitialized_ = true;
 }
@@ -44,11 +59,58 @@ PowerUpCoin::~PowerUpCoin()
 
 void PowerUpCoin::Tick(float deltaSeconds)
 {
-	anim_->Update(deltaSeconds);
+	time_ -= deltaSeconds;
+	if (time_ <= 0.0f)
+	{
+		if (bIsActive_)
+		{
+			time_ = GameMath::GenerateRandomFloat(10.0f, 15.0f);
+		}
+		else
+		{
+			time_ = 5.0f;
+
+			bool bCanActive = true;
+			do
+			{
+				bCanActive = true;
+
+				float x = GameMath::GenerateRandomFloat(MIN_X_POS, MAX_X_POS);
+				float y = GameMath::GenerateRandomFloat(MIN_Y_POS, MAX_Y_POS);
+				bound_.center = GameMath::Vec2f(x, y);
+
+				if (bound_.Intersect(player_->GetCollisionBound()))
+				{
+					bCanActive = false;
+				}
+
+				for (auto& cactus : cactus_)
+				{
+					if (bound_.Intersect(cactus->GetBound()))
+					{
+						bCanActive = false;
+					}
+				}
+			} while (!bCanActive);
+		}
+
+		bIsActive_ = !bIsActive_;
+		return;
+	}
+
+	if (bIsActive_)
+	{
+		anim_->Update(deltaSeconds);
+	}
 }
 
 void PowerUpCoin::Render()
 {
+	if (!bIsActive_)
+	{
+		return;
+	}
+
 	float size = 2.0f * bound_.radius;
 	RenderManager2D::Get().DrawSprite(anim_->GetAtlas(), anim_->GetCurrentClip(), bound_.center, size, size);
 }
