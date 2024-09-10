@@ -8,6 +8,7 @@
 
 #include "Camera.h"
 #include "Player.h"
+#include "PlayerMessenger.h"
 
 static const std::map<Key, GameMath::Vec2f> KEY_DIRECTIONS =
 {
@@ -82,6 +83,14 @@ void Player::Release()
 	app_ = nullptr;
 
 	bIsInitialized_ = false;
+}
+
+void Player::PickupCoin()
+{
+	numCoin_++;
+
+	PlayerMessenger* messenger = EntityManager::Get().GetByName<PlayerMessenger>("PlayerMessenger");
+	messenger->Send(L"+1", messageColor_, 1.0f);
 }
 
 void Player::Move(float deltaSeconds)

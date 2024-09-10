@@ -34,6 +34,8 @@ public:
 
 	ICollision2D* GetCollisionBound() { return &collisionBound_; }
 
+	void PickupCoin();
+
 private:
 	void Move(float deltaSeconds);
 	
@@ -52,4 +54,7 @@ private:
 	float speed_ = 200.0f;
 
 	bool bIsFlipH_ = false;
+
+	int32_t numCoin_ = 0;
+	GameMath::Vec4f messageColor_ = GameMath::Vec4f(0.0f, 0.0f, 0.0f, 1.0f);
 };
