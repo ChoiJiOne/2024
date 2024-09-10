@@ -15,7 +15,7 @@ CountDowner::CountDowner()
 	player_ = EntityManager::Get().GetByName<Player>("Player");
 	font_ = ResourceManager::Get().GetByName<TTFont>("Font64");
 
-	time_ = 30.0f;
+	time_ = 31.0f;
 	textColor_ = GameMath::Vec4f(1.0f, 1.0f, 1.0f, 1.0f);
 	textShadowColor_ = GameMath::Vec4f(0.5f, 0.5f, 0.5f, 0.5f);
 
