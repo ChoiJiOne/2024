@@ -93,6 +93,12 @@ void Player::PickupCoin()
 	messenger->Send(L"+1", messageColor_, 1.0f);
 }
 
+void Player::PickupPowerUpCoin()
+{
+	PlayerMessenger* messenger = EntityManager::Get().GetByName<PlayerMessenger>("PlayerMessenger");
+	messenger->Send(L"PowerUp!", messageColor_, 2.0f);
+}
+
 void Player::Move(float deltaSeconds)
 {
 	bool bIsPress = false;

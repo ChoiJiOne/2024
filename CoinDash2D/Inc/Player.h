@@ -35,6 +35,7 @@ public:
 	ICollision2D* GetCollisionBound() { return &collisionBound_; }
 
 	void PickupCoin();
+	void PickupPowerUpCoin();
 
 private:
 	void Move(float deltaSeconds);
