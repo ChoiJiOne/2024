@@ -9,6 +9,8 @@
 
 Player::Player()
 {
+	app_ = IApp::Get();
+
 	Atlas2D* atlas = ResourceManager::Get().GetByName<Atlas2D>("Atlas");
 
 	std::vector<std::string> idleClips = { "Idle_1", "Idle_2", "Idle_3", "Idle_4", };
@@ -19,7 +21,7 @@ Player::Player()
 
 	std::vector<std::string> hurtClip = { "Hurt_1", "Hurt_2", };
 	anims_.insert({ Status::HURT, ResourceManager::Get().Create<SpriteAnim2D>(atlas, hurtClip, true, 0.5f) });
-	
+
 	spriteBound_.center = GameMath::Vec2f();
 	spriteBound_.size = GameMath::Vec2f(50.0f, 50.0f);
 
@@ -39,6 +41,32 @@ Player::~Player()
 
 void Player::Tick(float deltaSeconds)
 {
+	static std::map<Key, GameMath::Vec2f> directions =
+	{
+		{ Key::KEY_RIGHT, GameMath::Vec2f(+1.0f, +0.0f) },
+		{ Key::KEY_UP,    GameMath::Vec2f(+0.0f, +1.0f) },
+		{ Key::KEY_LEFT,  GameMath::Vec2f(-1.0f, +0.0f) },
+		{ Key::KEY_DOWN,  GameMath::Vec2f(+0.0f, -1.0f) },
+	};
+
+	direction_ = GameMath::Vec2f(0.0f, 0.0f);
+	for (const auto& direction : directions)
+	{
+		if (app_->GetKeyPress(direction.first) == Press::HELD)
+		{
+			direction_ += direction.second;
+		}
+	}
+
+	if (!GameMath::NearZero(GameMath::Vec2f::LengthSq(direction_)))
+	{
+		direction_ = GameMath::Vec2f::Normalize(direction_);
+
+		spriteBound_.center.x += direction_.x * deltaSeconds * speed_;
+		spriteBound_.center.y += direction_.y * deltaSeconds * speed_;
+		collisionBound_.center = spriteBound_.center + GameMath::Vec2f(0.0f, -5.0f);
+	}
+
 	anims_.at(status_)->Update(deltaSeconds);
 }
 
@@ -58,6 +86,8 @@ void Player::Release()
 		ResourceManager::Get().Destroy(anim.second);
 		anim.second = nullptr;
 	}
+
+	app_ = nullptr;
 
 	bIsInitialized_ = false;
 }

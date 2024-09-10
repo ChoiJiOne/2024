@@ -5,6 +5,7 @@
 #include "Collision2D.h"
 #include "Entity2D.h"
 
+class IApp;
 class SpriteAnim2D;
 
 class Player : public Entity2D
@@ -28,9 +29,14 @@ public:
 	virtual void Release() override;
 	
 private:
+	IApp* app_ = nullptr;
+
 	Status status_ = Status::IDLE;
 	std::map<Status, SpriteAnim2D*> anims_;
 
 	Rect2D spriteBound_;
 	Rect2D collisionBound_;
+
+	GameMath::Vec2f direction_;
+	float speed_ = 200.0f;
 };
