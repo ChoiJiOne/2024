@@ -4,6 +4,7 @@
 #include "RenderManager2D.h"
 #include "ResourceManager.h"
 #include "Texture2D.h"
+#include "TTFont.h"
 
 #include "Background.h"
 #include "Cactus.h"
@@ -23,6 +24,8 @@ GameApp::~GameApp()
 
 void GameApp::Startup()
 {
+	LoadResource();
+
 	camera_ = EntityManager::Get().Create<Camera>();
 	EntityManager::Get().Register("Camera", camera_);
 
@@ -101,6 +104,16 @@ void GameApp::Run()
 
 void GameApp::LoadResource()
 {
-	Atlas2D* atlas = ResourceManager::Get().Create<Atlas2D>("CoinDash2D\\Res\\Atlas\\Atlas.png", "CoinDash2D\\Res\\Atlas\\Atlas.json", Texture2D::Filter::NEAREST);
+	std::string resourcePath = "CoinDash2D\\Res\\";
+
+	Atlas2D* atlas = ResourceManager::Get().Create<Atlas2D>(resourcePath + "Atlas\\Atlas.png", resourcePath + "Atlas\\Atlas.json", Texture2D::Filter::NEAREST);
 	ResourceManager::Get().Register("Atlas", atlas);
+
+	std::string fontPath = resourcePath + "Font\\KenneyBold.ttf";
+	std::array<int32_t, 5> fontSizes = { 16, 24, 32, 64, 128 };
+	for (const auto& fontSize : fontSizes)
+	{
+		TTFont* font = ResourceManager::Get().Create<TTFont>(fontPath, 0x00, 0x128, static_cast<float>(fontSize));
+		ResourceManager::Get().Register(GameUtils::PrintF("Font%d", fontSize), font);
+	}
 }
