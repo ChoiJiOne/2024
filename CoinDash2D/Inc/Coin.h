@@ -8,6 +8,14 @@ class SpriteAnim2D;
 
 class Coin : public Entity2D
 {
+public: 
+	enum class Status
+	{
+		ACTIVE = 0x00,
+		PICKUP = 0x01,
+		DONE   = 0x02,
+	};
+
 public:
 	Coin(const Circle2D& bound);
 	virtual ~Coin();
