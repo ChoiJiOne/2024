@@ -50,8 +50,6 @@ void Player::Tick(float deltaSeconds)
 	};
 
 	bool bIsPress = false;
-
-	direction_ = GameMath::Vec2f(0.0f, 0.0f);
 	for (const auto& keyDirection : keyDirections)
 	{
 		if (app_->GetKeyPress(keyDirection.first) == Press::HELD)
@@ -61,8 +59,9 @@ void Player::Tick(float deltaSeconds)
 		}
 	}
 	status_ = (bIsPress) ? Status::RUN : Status::IDLE;
-
-	if (!GameMath::NearZero(GameMath::Vec2f::LengthSq(direction_)))
+	bIsFlipH_ = (direction_.x < 0.0f) ? true : false;
+	
+	if (bIsPress && !GameMath::NearZero(GameMath::Vec2f::LengthSq(direction_)))
 	{
 		direction_ = GameMath::Vec2f::Normalize(direction_);
 
@@ -77,7 +76,7 @@ void Player::Tick(float deltaSeconds)
 void Player::Render()
 {
 	SpriteAnim2D* anim = anims_.at(status_);
-	RenderManager2D::Get().DrawSprite(anim->GetAtlas(), anim->GetCurrentClip(), spriteBound_.center, spriteBound_.size.x, spriteBound_.size.y);
+	RenderManager2D::Get().DrawSprite(anim->GetAtlas(), anim->GetCurrentClip(), spriteBound_.center, spriteBound_.size.x, spriteBound_.size.y, 0.0f, bIsFlipH_);
 	RenderManager2D::Get().DrawRectWireframe(collisionBound_.center, collisionBound_.size.x, collisionBound_.size.y, GameMath::Vec4f(1.0f, 0.0f, 0.0f, 1.0f));
 }
 

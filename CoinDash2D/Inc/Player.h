@@ -39,4 +39,6 @@ private:
 
 	GameMath::Vec2f direction_;
 	float speed_ = 200.0f;
+
+	bool bIsFlipH_ = false;
 };
