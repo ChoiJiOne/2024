@@ -7,7 +7,7 @@
 
 #include "Background.h"
 #include "Camera.h"
-#include "Coin.h"
+#include "CoinSpawner.h"
 #include "Entity2D.h"
 #include "GameApp.h"
 #include "Player.h"
@@ -34,14 +34,14 @@ void GameApp::Startup()
 	Player* player = EntityManager::Get().Create<Player>();
 	EntityManager::Get().Register("Player", player);
 
-	Coin* coin = EntityManager::Get().Create<Coin>();
-
+	CoinSpawner* coinSpawner = EntityManager::Get().Create<CoinSpawner>();
+	EntityManager::Get().Register("CoinSpawner", coinSpawner);
 
 	updateEntities_ = 
 	{
 		camera_,
 		player,
-		coin,
+		coinSpawner,
 		background,
 	};
 
@@ -49,7 +49,7 @@ void GameApp::Startup()
 	{
 		background,
 		player,
-		coin,
+		coinSpawner,
 	};
 }
 
