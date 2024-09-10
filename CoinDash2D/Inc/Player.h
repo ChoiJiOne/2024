@@ -37,6 +37,8 @@ public:
 	void PickupCoin();
 	void PickupPowerUpCoin();
 
+	int32_t GetNumCoin() const { return numCoin_; }
+
 private:
 	void Move(float deltaSeconds);
 	void UpdatePowerUpBar(float deltaSeconds);
