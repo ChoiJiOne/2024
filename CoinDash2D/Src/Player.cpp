@@ -1,15 +1,18 @@
 #include "Assertion.h"
 #include "Atlas2D.h"
+#include "EntityManager.h"
 #include "IApp.h"
 #include "RenderManager2D.h"
 #include "ResourceManager.h"
 #include "SpriteAnim2D.h"
 
+#include "Camera.h"
 #include "Player.h"
 
 Player::Player()
 {
 	app_ = IApp::Get();
+	camera_ = EntityManager::Get().GetByName<Camera>("Camera");
 
 	Atlas2D* atlas = ResourceManager::Get().GetByName<Atlas2D>("Atlas");
 
@@ -22,11 +25,13 @@ Player::Player()
 	std::vector<std::string> hurtClip = { "Hurt_1", "Hurt_2", };
 	anims_.insert({ Status::HURT, ResourceManager::Get().Create<SpriteAnim2D>(atlas, hurtClip, true, 0.5f) });
 
-	spriteBound_.center = GameMath::Vec2f();
+	center_.center = GameMath::Vec2f();
+
+	spriteBound_.center = center_.center;
 	spriteBound_.size = GameMath::Vec2f(50.0f, 50.0f);
 
-	collisionBound_.center = spriteBound_.center + GameMath::Vec2f(0.0f, -5.0f);
-	collisionBound_.size = GameMath::Vec2f(30.0f, 40.0f);
+	collisionBound_.center = center_.center + GameMath::Vec2f(0.0f, -7.0f);
+	collisionBound_.size = GameMath::Vec2f(30.0f, 36.0f);
 
 	bIsInitialized_ = true;
 }
@@ -65,9 +70,18 @@ void Player::Tick(float deltaSeconds)
 	{
 		direction_ = GameMath::Vec2f::Normalize(direction_);
 
-		spriteBound_.center.x += direction_.x * deltaSeconds * speed_;
-		spriteBound_.center.y += direction_.y * deltaSeconds * speed_;
-		collisionBound_.center = spriteBound_.center + GameMath::Vec2f(0.0f, -5.0f);
+		GameMath::Vec2f center = center_.center;
+		center_.center += direction_ * deltaSeconds * speed_;
+
+		if (center_.Intersect(camera_->GetCollision()))
+		{
+			spriteBound_.center = center_.center;
+			collisionBound_.center = center_.center + GameMath::Vec2f(0.0f, -7.0f);
+		}
+		else
+		{
+			center_.center = center;
+		}
 	}
 
 	anims_.at(status_)->Update(deltaSeconds);

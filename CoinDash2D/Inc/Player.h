@@ -5,6 +5,7 @@
 #include "Collision2D.h"
 #include "Entity2D.h"
 
+class Camera;
 class IApp;
 class SpriteAnim2D;
 
@@ -30,10 +31,12 @@ public:
 	
 private:
 	IApp* app_ = nullptr;
-
+	Camera* camera_ = nullptr;
+	
 	Status status_ = Status::IDLE;
 	std::map<Status, SpriteAnim2D*> anims_;
 
+	Point2D center_;
 	Rect2D spriteBound_;
 	Rect2D collisionBound_;
 
