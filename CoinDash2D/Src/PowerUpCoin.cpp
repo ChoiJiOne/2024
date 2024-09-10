@@ -61,6 +61,13 @@ PowerUpCoin::~PowerUpCoin()
 
 void PowerUpCoin::Tick(float deltaSeconds)
 {
+	Player::Status status = player_->GetStatus();
+	if (status == Player::Status::HURT)
+	{
+		bIsActive_ = false;
+		return;
+	}
+
 	time_ -= deltaSeconds;
 	if (time_ <= 0.0f)
 	{
