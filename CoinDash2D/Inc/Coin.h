@@ -25,6 +25,9 @@ public:
 	virtual void Tick(float deltaSeconds) override;
 	virtual void Render() override;
 	virtual void Release() override;
+
+	const Status& GetStatus() const { return status_; }
+	void SetStatus(const Status& status) { status_ = status; }
 	
 private:
 	Player* player_ = nullptr;
@@ -32,4 +35,5 @@ private:
 	SpriteAnim2D* anim_ = nullptr;
 
 	Circle2D bound_;
+	Status status_ = Status::ACTIVE;
 };
