@@ -4,8 +4,9 @@
 #include "Cactus.h"
 #include "Camera.h"
 #include "Coin.h"
-#include "Player.h"
 #include "CoinSpawner.h"
+#include "CountDowner.h"
+#include "Player.h"
 
 static const float MIN_X_POS = -240.0f;
 static const float MAX_X_POS = +240.0f;
@@ -27,6 +28,8 @@ CoinSpawner::CoinSpawner()
 	maxNumCoin_ = 4;
 	coinRemoveEvent_ = [&](Coin* coin)->bool { return coin == nullptr; };
 
+	GenerateCoins();
+
 	bIsInitialized_ = true;
 }
 
@@ -43,6 +46,10 @@ void CoinSpawner::Tick(float deltaSeconds)
 	if (coins_.empty())
 	{
 		GenerateCoins();
+
+		CountDowner* countDowner = EntityManager::Get().GetByName<CountDowner>("CountDowner");
+		float time = countDowner->GetTime();
+		countDowner->SetTime(time + 5.0f);
 	}
 
 	for (auto& coin : coins_)
