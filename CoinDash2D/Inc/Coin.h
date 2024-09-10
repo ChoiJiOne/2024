@@ -8,14 +8,6 @@ class SpriteAnim2D;
 
 class Coin : public Entity2D
 {
-public: 
-	enum class Status
-	{
-		ACTIVE = 0x00,
-		PICKUP = 0x01,
-		DONE   = 0x02,
-	};
-
 public:
 	Coin(const Circle2D& bound);
 	virtual ~Coin();
@@ -26,14 +18,13 @@ public:
 	virtual void Render() override;
 	virtual void Release() override;
 
-	const Status& GetStatus() const { return status_; }
-	void SetStatus(const Status& status) { status_ = status; }
-	
+	bool IsPickup() const { return bIsPickup_; }
+
 private:
 	Player* player_ = nullptr;
 
 	SpriteAnim2D* anim_ = nullptr;
 
 	Circle2D bound_;
-	Status status_ = Status::ACTIVE;
+	bool bIsPickup_ = false;
 };

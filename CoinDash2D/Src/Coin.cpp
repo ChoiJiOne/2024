@@ -32,22 +32,28 @@ Coin::~Coin()
 
 void Coin::Tick(float deltaSeconds)
 {
-	if (status_ == Status::DONE)
+	if (bIsPickup_)
 	{
 		return;
 	}
-	
+
+	if (bound_.Intersect(player_->GetCollisionBound()))
+	{
+		bIsPickup_ = true;
+	}
+
 	anim_->Update(deltaSeconds);
 }
 
 void Coin::Render()
 {
-	if (status_ == Status::DONE)
+	if (bIsPickup_)
 	{
 		return;
 	}
 
-	RenderManager2D::Get().DrawSprite(anim_->GetAtlas(), anim_->GetCurrentClip(), bound_.center, 2.0f * bound_.radius, 2.0f * bound_.radius);
+	float size = 2.0f * bound_.radius;
+	RenderManager2D::Get().DrawSprite(anim_->GetAtlas(), anim_->GetCurrentClip(), bound_.center, size, size);
 }
 
 void Coin::Release()
