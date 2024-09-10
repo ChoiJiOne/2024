@@ -44,6 +44,10 @@ Player::Player()
 
 	speed_ = normalSpeed_;
 
+	powerUpBar_ = Rect2D(GameMath::Vec2f(0.0f, 0.0f), GameMath::Vec2f(30.0f, 5.0f));
+	powerUpBarColor_ = GameMath::Vec4f(0.0f, 0.0f, 0.0f, 1.0f);
+	remainBarColor_ = GameMath::Vec4f(1.0f, 0.0f, 0.0f, 1.0f);
+
 	bIsInitialized_ = true;
 }
 
@@ -69,13 +73,14 @@ void Player::Tick(float deltaSeconds)
 
 		if (powerUpTime_ <= 0.0f)
 		{
+			powerUpTime_ = 0.0f;
 			bIsPowerUp_ = false;
 			speed_ = normalSpeed_;
 		}
 	}
 
 	Move(deltaSeconds);
-
+	UpdatePowerUpBar();
 	anims_.at(status_)->Update(deltaSeconds);
 }
 
@@ -83,7 +88,9 @@ void Player::Render()
 {
 	SpriteAnim2D* anim = anims_.at(status_);
 	RenderManager2D::Get().DrawSprite(anim->GetAtlas(), anim->GetCurrentClip(), spriteBound_.center, spriteBound_.size.x, spriteBound_.size.y, 0.0f, bIsFlipH_);
-	RenderManager2D::Get().DrawRectWireframe(collisionBound_.center, collisionBound_.size.x, collisionBound_.size.y, GameMath::Vec4f(1.0f, 0.0f, 0.0f, 1.0f));
+
+	RenderManager2D::Get().DrawRect(powerUpBar_.center, powerUpBar_.size.x, powerUpBar_.size.y, powerUpBarColor_);
+	RenderManager2D::Get().DrawRect(remainBar_.center, remainBar_.size.x, remainBar_.size.y, remainBarColor_);
 }
 
 void Player::Release()
@@ -150,4 +157,16 @@ void Player::Move(float deltaSeconds)
 			center_.center = center;
 		}
 	}
+}
+
+void Player::UpdatePowerUpBar()
+{
+	powerUpBar_.center = collisionBound_.center;
+	powerUpBar_.center.y += collisionBound_.size.y * 0.5f + 5.0f;
+
+	remainBar_.size = powerUpBar_.size;
+	remainBar_.size.x *= (powerUpTime_ / maxPowerUpTime_);
+
+	remainBar_.center = powerUpBar_.center + GameMath::Vec2f(-powerUpBar_.size.x * 0.5f, +powerUpBar_.size.y * 0.5f);
+	remainBar_.center += GameMath::Vec2f(+remainBar_.size.x * 0.5f, -remainBar_.size.y * 0.5f);
 }

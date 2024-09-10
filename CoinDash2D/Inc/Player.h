@@ -39,6 +39,7 @@ public:
 
 private:
 	void Move(float deltaSeconds);
+	void UpdateUI();
 	
 private:
 	IApp* app_ = nullptr;
@@ -64,4 +65,9 @@ private:
 	float maxPowerUpSpeed_ = 350.0f;
 	float maxPowerUpTime_ = 5.0f;
 	float powerUpTime_ = 0.0f;
+	
+	Rect2D powerUpBar_;
+	Rect2D remainBar_;
+	GameMath::Vec4f powerUpBarColor_;
+	GameMath::Vec4f remainBarColor_;
 };
