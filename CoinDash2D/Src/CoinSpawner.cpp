@@ -1,6 +1,7 @@
 #include "Assertion.h"
 #include "EntityManager.h"
 
+#include "Cactus.h"
 #include "Camera.h"
 #include "Coin.h"
 #include "Player.h"
@@ -15,6 +16,13 @@ CoinSpawner::CoinSpawner()
 {
 	camera_ = EntityManager::Get().GetByName<Camera>("Camera");
 	player_ = EntityManager::Get().GetByName<Player>("Player");
+	cactus_ =
+	{
+		EntityManager::Get().GetByName<Cactus>("Cactus0"),
+		EntityManager::Get().GetByName<Cactus>("Cactus1"),
+		EntityManager::Get().GetByName<Cactus>("Cactus2"),
+		EntityManager::Get().GetByName<Cactus>("Cactus3"),
+	};
 
 	maxNumCoin_ = 5;
 
@@ -38,12 +46,28 @@ void CoinSpawner::Tick(float deltaSeconds)
 			Circle2D bound;
 			bound.radius = 15.0f;
 
+			bool bCanCreateCoin = true;
 			do
 			{
+				bCanCreateCoin = true;
+
 				float x = GameMath::GenerateRandomFloat(MIN_X_POS, MAX_X_POS);
 				float y = GameMath::GenerateRandomFloat(MIN_Y_POS, MAX_Y_POS);
 				bound.center = GameMath::Vec2f(x, y);
-			} while (bound.Intersect(player_->GetCollisionBound()));
+
+				if (bound.Intersect(player_->GetCollisionBound()))
+				{
+					bCanCreateCoin = false;
+				}
+
+				for (auto& cactus : cactus_)
+				{
+					if (bound.Intersect(cactus->GetBound()))
+					{
+						bCanCreateCoin = false;
+					}
+				}
+			} while (!bCanCreateCoin);
 
 			Coin* coin = EntityManager::Get().Create<Coin>(bound);
 			coins_.push_back(coin);

@@ -1,9 +1,11 @@
 #pragma once
 
+#include <vector>
 #include <list>
 
 #include "Entity2D.h"
 
+class Cactus;
 class Camera;
 class Coin;
 class Player;
@@ -23,6 +25,7 @@ public:
 private:
 	Camera* camera_ = nullptr;
 	Player* player_ = nullptr;
+	std::vector<Cactus*> cactus_;
 
 	int32_t maxNumCoin_ = 0;
 	std::list<Coin*> coins_;
