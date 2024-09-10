@@ -49,14 +49,18 @@ void Player::Tick(float deltaSeconds)
 		{ Key::KEY_DOWN,  GameMath::Vec2f(+0.0f, -1.0f) },
 	};
 
+	bool bIsPress = false;
+
 	direction_ = GameMath::Vec2f(0.0f, 0.0f);
 	for (const auto& keyDirection : keyDirections)
 	{
 		if (app_->GetKeyPress(keyDirection.first) == Press::HELD)
 		{
+			bIsPress = true;
 			direction_ += keyDirection.second;
 		}
 	}
+	status_ = (bIsPress) ? Status::RUN : Status::IDLE;
 
 	if (!GameMath::NearZero(GameMath::Vec2f::LengthSq(direction_)))
 	{
