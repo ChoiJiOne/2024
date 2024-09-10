@@ -13,6 +13,8 @@
 #include "Entity2D.h"
 #include "GameApp.h"
 #include "Player.h"
+#include "PlayerMessenger.h"
+#include "PowerUpCoin.h"
 
 GameApp::GameApp() : IApp("CoinDash2D", 100, 100, 480, 720, false, false)
 {
@@ -50,15 +52,23 @@ void GameApp::Startup()
 	CoinSpawner* coinSpawner = EntityManager::Get().Create<CoinSpawner>();
 	EntityManager::Get().Register("CoinSpawner", coinSpawner);
 
+	PlayerMessenger* playerMessenger = EntityManager::Get().Create<PlayerMessenger>();
+	EntityManager::Get().Register("PlayerMessenger", playerMessenger);
+
+	PowerUpCoin* powerUpCoin = EntityManager::Get().Create<PowerUpCoin>();
+	EntityManager::Get().Register("PowerUpCoin", powerUpCoin);
+
 	updateEntities_ = 
 	{
 		camera_,
 		player,
 		coinSpawner,
+		powerUpCoin,
 		cactus0,
 		cactus1,
 		cactus2,
 		cactus3,
+		playerMessenger,
 		background,
 	};
 
@@ -67,10 +77,12 @@ void GameApp::Startup()
 		background,
 		player,
 		coinSpawner,
+		powerUpCoin,
 		cactus0,
 		cactus1,
 		cactus2,
 		cactus3,
+		playerMessenger,
 	};
 }
 
@@ -109,7 +121,7 @@ void GameApp::LoadResource()
 	Atlas2D* atlas = ResourceManager::Get().Create<Atlas2D>(resourcePath + "Atlas\\Atlas.png", resourcePath + "Atlas\\Atlas.json", Texture2D::Filter::NEAREST);
 	ResourceManager::Get().Register("Atlas", atlas);
 
-	std::string fontPath = resourcePath + "Font\\KenneyBold.ttf";
+	std::string fontPath = resourcePath + "Font\\SeoulNamsanEB.ttf";
 	std::array<int32_t, 5> fontSizes = { 16, 24, 32, 64, 128 };
 	for (const auto& fontSize : fontSizes)
 	{
