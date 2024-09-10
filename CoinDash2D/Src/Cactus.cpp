@@ -26,6 +26,10 @@ Cactus::~Cactus()
 
 void Cactus::Tick(float deltaSeconds)
 {
+	if (bound_.Intersect(player_->GetCollisionBound()))
+	{
+		player_->SetStatus(Player::Status::HURT);
+	}
 }
 
 void Cactus::Render()
