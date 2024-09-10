@@ -9,7 +9,7 @@ class SpriteAnim2D;
 class Coin : public Entity2D
 {
 public:
-	Coin();
+	Coin(const Circle2D& bound);
 	virtual ~Coin();
 
 	DISALLOW_COPY_AND_ASSIGN(Coin);
