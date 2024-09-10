@@ -42,6 +42,8 @@ Player::Player()
 	collisionBound_.center = center_.center + GameMath::Vec2f(0.0f, -7.0f);
 	collisionBound_.size = GameMath::Vec2f(30.0f, 36.0f);
 
+	speed_ = normalSpeed_;
+
 	bIsInitialized_ = true;
 }
 
@@ -55,10 +57,24 @@ Player::~Player()
 
 void Player::Tick(float deltaSeconds)
 {
-	if (status_ != Status::HURT)
+	if (status_ == Status::HURT)
 	{
-		Move(deltaSeconds);
+		anims_.at(status_)->Update(deltaSeconds);
+		return;
 	}
+
+	if (bIsPowerUp_)
+	{
+		powerUpTime_ -= deltaSeconds;
+
+		if (powerUpTime_ <= 0.0f)
+		{
+			bIsPowerUp_ = false;
+			speed_ = normalSpeed_;
+		}
+	}
+
+	Move(deltaSeconds);
 
 	anims_.at(status_)->Update(deltaSeconds);
 }
@@ -95,6 +111,10 @@ void Player::PickupCoin()
 
 void Player::PickupPowerUpCoin()
 {
+	bIsPowerUp_ = true;
+	powerUpTime_ = maxPowerUpTime_;
+	speed_ = maxPowerUpSpeed_;
+
 	PlayerMessenger* messenger = EntityManager::Get().GetByName<PlayerMessenger>("PlayerMessenger");
 	messenger->Send(L"PowerUp!", messageColor_, 2.0f);
 }

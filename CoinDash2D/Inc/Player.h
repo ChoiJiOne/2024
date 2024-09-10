@@ -52,10 +52,16 @@ private:
 	Rect2D collisionBound_;
 
 	GameMath::Vec2f direction_;
-	float speed_ = 200.0f;
+	float speed_ = 0.0f;
 
 	bool bIsFlipH_ = false;
 
 	int32_t numCoin_ = 0;
 	GameMath::Vec4f messageColor_ = GameMath::Vec4f(0.0f, 0.0f, 0.0f, 1.0f);
+
+	bool bIsPowerUp_ = false;
+	float normalSpeed_ = 200.0f;
+	float maxPowerUpSpeed_ = 350.0f;
+	float maxPowerUpTime_ = 5.0f;
+	float powerUpTime_ = 0.0f;
 };
