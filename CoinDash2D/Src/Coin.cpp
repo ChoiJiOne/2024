@@ -8,7 +8,6 @@
 
 #include "Coin.h"
 #include "Player.h"
-#include "PlayerMessenger.h"
 
 Coin::Coin(const Circle2D& bound)
 	: bound_(bound)
@@ -40,9 +39,7 @@ void Coin::Tick(float deltaSeconds)
 
 	if (bound_.Intersect(player_->GetCollisionBound()))
 	{
-		PlayerMessenger* messenger = EntityManager::Get().GetByName<PlayerMessenger>("PlayerMessenger");
-		messenger->Send(L"+1", GameMath::Vec4f(0.0f, 0.0f, 0.0f, 1.0f), 1.0f);
-
+		player_->PickupCoin();
 		bIsPickup_ = true;
 	}
 
