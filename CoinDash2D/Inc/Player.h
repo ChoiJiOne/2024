@@ -28,6 +28,9 @@ public:
 	virtual void Tick(float deltaSeconds) override;
 	virtual void Render() override;
 	virtual void Release() override;
+
+	const Status& GetStatus() const { return status_; }
+	void SetStatus(const Status& status) { status_ = status; }
 	
 private:
 	IApp* app_ = nullptr;
