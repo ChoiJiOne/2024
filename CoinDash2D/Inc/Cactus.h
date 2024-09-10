@@ -19,6 +19,8 @@ public:
 	virtual void Render() override;
 	virtual void Release() override;
 
+	ICollision2D* GetBound() { return &bound_; }
+
 private:
 	Player* player_ = nullptr;
 	Atlas2D* atlas_ = nullptr;
