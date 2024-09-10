@@ -85,5 +85,5 @@ void PlayerMessenger::CalcMessagePosFromPlayer()
 	messagePos_ = collision->center;
 
 	messagePos_.x -= messageSize_.x * 0.5f;
-	messagePos_.y += (collision->size.y * 0.5f + messageSize_.y + 10.0f);
+	messagePos_.y += (collision->size.y * 0.5f + messageSize_.y + 5.0f);
 }
