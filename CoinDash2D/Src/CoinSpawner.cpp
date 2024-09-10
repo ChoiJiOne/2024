@@ -24,7 +24,7 @@ CoinSpawner::CoinSpawner()
 		EntityManager::Get().GetByName<Cactus>("Cactus3"),
 	};
 
-	maxNumCoin_ = 5;
+	maxNumCoin_ = 4;
 	coinRemoveEvent_ = [&](Coin* coin)->bool { return coin == nullptr; };
 
 	bIsInitialized_ = true;
@@ -42,6 +42,8 @@ void CoinSpawner::Tick(float deltaSeconds)
 {
 	if (coins_.empty())
 	{
+		maxNumCoin_++;
+
 		for (int32_t count = 0; count < maxNumCoin_; ++count)
 		{
 			Circle2D bound;
