@@ -1,5 +1,7 @@
 #pragma once
 
+#include <list>
+
 #include "Entity2D.h"
 
 class Camera;
@@ -21,4 +23,7 @@ public:
 private:
 	Camera* camera_ = nullptr;
 	Player* player_ = nullptr;
+
+	int32_t maxNumCoin_ = 0;
+	std::list<Coin*> coins_;
 };
