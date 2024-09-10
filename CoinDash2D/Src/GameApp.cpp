@@ -23,9 +23,6 @@ GameApp::~GameApp()
 
 void GameApp::Startup()
 {
-	Atlas2D* atlas = ResourceManager::Get().Create<Atlas2D>("CoinDash2D\\Res\\Atlas\\Atlas.png", "CoinDash2D\\Res\\Atlas\\Atlas.json", Texture2D::Filter::NEAREST);
-	ResourceManager::Get().Register("Atlas", atlas);
-
 	camera_ = EntityManager::Get().Create<Camera>();
 	EntityManager::Get().Register("Camera", camera_);
 
@@ -100,4 +97,10 @@ void GameApp::Run()
 			EndFrame();
 		}
 	);
+}
+
+void GameApp::LoadResource()
+{
+	Atlas2D* atlas = ResourceManager::Get().Create<Atlas2D>("CoinDash2D\\Res\\Atlas\\Atlas.png", "CoinDash2D\\Res\\Atlas\\Atlas.json", Texture2D::Filter::NEAREST);
+	ResourceManager::Get().Register("Atlas", atlas);
 }
