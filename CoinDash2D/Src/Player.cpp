@@ -41,7 +41,7 @@ Player::~Player()
 
 void Player::Tick(float deltaSeconds)
 {
-	static std::map<Key, GameMath::Vec2f> directions =
+	static std::map<Key, GameMath::Vec2f> keyDirections =
 	{
 		{ Key::KEY_RIGHT, GameMath::Vec2f(+1.0f, +0.0f) },
 		{ Key::KEY_UP,    GameMath::Vec2f(+0.0f, +1.0f) },
@@ -50,11 +50,11 @@ void Player::Tick(float deltaSeconds)
 	};
 
 	direction_ = GameMath::Vec2f(0.0f, 0.0f);
-	for (const auto& direction : directions)
+	for (const auto& keyDirection : keyDirections)
 	{
-		if (app_->GetKeyPress(direction.first) == Press::HELD)
+		if (app_->GetKeyPress(keyDirection.first) == Press::HELD)
 		{
-			direction_ += direction.second;
+			direction_ += keyDirection.second;
 		}
 	}
 
