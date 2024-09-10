@@ -33,6 +33,9 @@ public:
 	void SetStatus(const Status& status) { status_ = status; }
 
 	ICollision2D* GetCollisionBound() { return &collisionBound_; }
+
+private:
+	void Move(float deltaSeconds);
 	
 private:
 	IApp* app_ = nullptr;

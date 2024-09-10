@@ -9,6 +9,14 @@
 #include "Camera.h"
 #include "Player.h"
 
+static const std::map<Key, GameMath::Vec2f> KEY_DIRECTIONS =
+{
+	{ Key::KEY_RIGHT, GameMath::Vec2f(+1.0f, +0.0f) },
+	{ Key::KEY_UP,    GameMath::Vec2f(+0.0f, +1.0f) },
+	{ Key::KEY_LEFT,  GameMath::Vec2f(-1.0f, +0.0f) },
+	{ Key::KEY_DOWN,  GameMath::Vec2f(+0.0f, -1.0f) },
+};
+
 Player::Player()
 {
 	app_ = IApp::Get();
@@ -46,43 +54,7 @@ Player::~Player()
 
 void Player::Tick(float deltaSeconds)
 {
-	static std::map<Key, GameMath::Vec2f> keyDirections =
-	{
-		{ Key::KEY_RIGHT, GameMath::Vec2f(+1.0f, +0.0f) },
-		{ Key::KEY_UP,    GameMath::Vec2f(+0.0f, +1.0f) },
-		{ Key::KEY_LEFT,  GameMath::Vec2f(-1.0f, +0.0f) },
-		{ Key::KEY_DOWN,  GameMath::Vec2f(+0.0f, -1.0f) },
-	};
-
-	bool bIsPress = false;
-	for (const auto& keyDirection : keyDirections)
-	{
-		if (app_->GetKeyPress(keyDirection.first) == Press::HELD)
-		{
-			bIsPress = true;
-			direction_ += keyDirection.second;
-		}
-	}
-	status_ = (bIsPress) ? Status::RUN : Status::IDLE;
-	bIsFlipH_ = (direction_.x < 0.0f) ? true : false;
-	
-	if (bIsPress && !GameMath::NearZero(GameMath::Vec2f::LengthSq(direction_)))
-	{
-		direction_ = GameMath::Vec2f::Normalize(direction_);
-
-		GameMath::Vec2f center = center_.center;
-		center_.center += direction_ * deltaSeconds * speed_;
-
-		if (center_.Intersect(camera_->GetCollision()))
-		{
-			spriteBound_.center = center_.center;
-			collisionBound_.center = center_.center + GameMath::Vec2f(0.0f, -7.0f);
-		}
-		else
-		{
-			center_.center = center;
-		}
-	}
+	Move(deltaSeconds);
 
 	anims_.at(status_)->Update(deltaSeconds);
 }
@@ -107,4 +79,37 @@ void Player::Release()
 	app_ = nullptr;
 
 	bIsInitialized_ = false;
+}
+
+void Player::Move(float deltaSeconds)
+{
+	bool bIsPress = false;
+	for (const auto& keyDirection : KEY_DIRECTIONS)
+	{
+		if (app_->GetKeyPress(keyDirection.first) == Press::HELD)
+		{
+			bIsPress = true;
+			direction_ += keyDirection.second;
+		}
+	}
+	status_ = (bIsPress) ? Status::RUN : Status::IDLE;
+	bIsFlipH_ = (direction_.x < 0.0f) ? true : false;
+
+	if (bIsPress && !GameMath::NearZero(GameMath::Vec2f::LengthSq(direction_)))
+	{
+		direction_ = GameMath::Vec2f::Normalize(direction_);
+
+		GameMath::Vec2f center = center_.center;
+		center_.center += direction_ * deltaSeconds * speed_;
+
+		if (center_.Intersect(camera_->GetCollision()))
+		{
+			spriteBound_.center = center_.center;
+			collisionBound_.center = center_.center + GameMath::Vec2f(0.0f, -7.0f);
+		}
+		else
+		{
+			center_.center = center;
+		}
+	}
 }
