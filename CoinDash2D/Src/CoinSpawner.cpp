@@ -25,6 +25,7 @@ CoinSpawner::CoinSpawner()
 	};
 
 	maxNumCoin_ = 5;
+	coinRemoveEvent_ = [&](Coin* coin)->bool { return coin == nullptr; };
 
 	bIsInitialized_ = true;
 }
@@ -78,6 +79,8 @@ void CoinSpawner::Tick(float deltaSeconds)
 	{
 		coin->Tick(deltaSeconds);
 	}
+
+	Cleanup();
 }
 
 void CoinSpawner::Render()
@@ -96,4 +99,18 @@ void CoinSpawner::Release()
 	camera_ = nullptr;
 
 	bIsInitialized_ = false;
+}
+
+void CoinSpawner::Cleanup()
+{
+	for (auto& coin : coins_)
+	{
+		if (coin && coin->IsPickup())
+		{
+			EntityManager::Get().Destroy(coin);
+			coin = nullptr;
+		}
+	}
+
+	coins_.remove_if(coinRemoveEvent_);
 }

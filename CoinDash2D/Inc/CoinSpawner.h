@@ -1,5 +1,6 @@
 #pragma once
 
+#include <functional>
 #include <vector>
 #include <list>
 
@@ -23,10 +24,15 @@ public:
 	virtual void Release() override;
 
 private:
+	void Cleanup();
+
+private:
 	Camera* camera_ = nullptr;
 	Player* player_ = nullptr;
 	std::vector<Cactus*> cactus_;
 
 	int32_t maxNumCoin_ = 0;
 	std::list<Coin*> coins_;
+
+	std::function<bool(Coin* coin)> coinRemoveEvent_ = nullptr;
 };
