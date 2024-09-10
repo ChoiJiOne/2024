@@ -6,6 +6,7 @@
 #include "Texture2D.h"
 
 #include "Background.h"
+#include "Cactus.h"
 #include "Camera.h"
 #include "CoinSpawner.h"
 #include "Entity2D.h"
@@ -37,11 +38,27 @@ void GameApp::Startup()
 	CoinSpawner* coinSpawner = EntityManager::Get().Create<CoinSpawner>();
 	EntityManager::Get().Register("CoinSpawner", coinSpawner);
 
+	Cactus* cactus0 = EntityManager::Get().Create<Cactus>(Rect2D(GameMath::Vec2f(-120.0f, +150.0f), GameMath::Vec2f(50.0f, 60.0f)));
+	EntityManager::Get().Register("Cactus0", cactus0);
+
+	Cactus* cactus1 = EntityManager::Get().Create<Cactus>(Rect2D(GameMath::Vec2f(+120.0f, +150.0f), GameMath::Vec2f(50.0f, 60.0f)));
+	EntityManager::Get().Register("Cactus1", cactus1);
+
+	Cactus* cactus2 = EntityManager::Get().Create<Cactus>(Rect2D(GameMath::Vec2f(-120.0f, -150.0f), GameMath::Vec2f(50.0f, 60.0f)));
+	EntityManager::Get().Register("Cactus2", cactus2);
+
+	Cactus* cactus3 = EntityManager::Get().Create<Cactus>(Rect2D(GameMath::Vec2f(+120.0f, -150.0f), GameMath::Vec2f(50.0f, 60.0f)));
+	EntityManager::Get().Register("Cactus3", cactus3);
+
 	updateEntities_ = 
 	{
 		camera_,
 		player,
 		coinSpawner,
+		cactus0,
+		cactus1,
+		cactus2,
+		cactus3,
 		background,
 	};
 
@@ -50,6 +67,10 @@ void GameApp::Startup()
 		background,
 		player,
 		coinSpawner,
+		cactus0,
+		cactus1,
+		cactus2,
+		cactus3,
 	};
 }
 
