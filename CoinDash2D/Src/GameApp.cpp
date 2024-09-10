@@ -10,6 +10,7 @@
 #include "Cactus.h"
 #include "Camera.h"
 #include "CoinSpawner.h"
+#include "CoinViewer.h"
 #include "CountDowner.h"
 #include "Entity2D.h"
 #include "GameApp.h"
@@ -62,6 +63,9 @@ void GameApp::Startup()
 	CountDowner* countDowner = EntityManager::Get().Create<CountDowner>();
 	EntityManager::Get().Register("CountDowner", countDowner);
 
+	CoinViewer* coinViewer = EntityManager::Get().Create<CoinViewer>();
+	EntityManager::Get().Register("CoinViewer", coinViewer);
+
 	updateEntities_ = 
 	{
 		camera_,
@@ -74,6 +78,7 @@ void GameApp::Startup()
 		cactus3,
 		playerMessenger,
 		countDowner,
+		coinViewer,
 		background,
 	};
 
@@ -89,6 +94,7 @@ void GameApp::Startup()
 		cactus3,
 		playerMessenger,
 		countDowner,
+		coinViewer,
 	};
 }
 
