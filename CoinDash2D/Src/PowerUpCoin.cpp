@@ -14,6 +14,8 @@ static const float MIN_X_POS = -240.0f;
 static const float MAX_X_POS = +240.0f;
 static const float MIN_Y_POS = -360.0f;
 static const float MAX_Y_POS = +360.0f;
+static const float MIN_TIME = 10.0f;
+static const float MAX_TIME = 15.0f;
 
 PowerUpCoin::PowerUpCoin()
 {
@@ -44,7 +46,7 @@ PowerUpCoin::PowerUpCoin()
 
 	bound_.radius = 20.0f;
 	
-	time_ = GameMath::GenerateRandomFloat(10.0f, 15.0f);
+	time_ = GameMath::GenerateRandomFloat(MIN_TIME, MAX_TIME);
 
 	bIsInitialized_ = true;
 }
@@ -64,7 +66,7 @@ void PowerUpCoin::Tick(float deltaSeconds)
 	{
 		if (bIsActive_)
 		{
-			time_ = GameMath::GenerateRandomFloat(10.0f, 15.0f);
+			time_ = GameMath::GenerateRandomFloat(MIN_TIME, MAX_TIME);
 		}
 		else
 		{
@@ -100,6 +102,14 @@ void PowerUpCoin::Tick(float deltaSeconds)
 
 	if (bIsActive_)
 	{
+		if (bound_.Intersect(player_->GetCollisionBound()))
+		{
+			player_->PickupPowerUpCoin();
+
+			time_ = GameMath::GenerateRandomFloat(MIN_TIME, MAX_TIME);
+			bIsActive_ = false;
+		}
+
 		anim_->Update(deltaSeconds);
 	}
 }
