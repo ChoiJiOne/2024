@@ -31,6 +31,8 @@ public:
 
 	const Status& GetStatus() const { return status_; }
 	void SetStatus(const Status& status) { status_ = status; }
+
+	ICollision2D* GetCollisionBound() { return &collisionBound_; }
 	
 private:
 	IApp* app_ = nullptr;
