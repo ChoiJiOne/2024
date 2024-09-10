@@ -9,6 +9,7 @@
 #include "Camera.h"
 #include "Entity2D.h"
 #include "GameApp.h"
+#include "Player.h"
 
 GameApp::GameApp() : IApp("CoinDash2D", 100, 100, 480, 720, false, false)
 {
@@ -29,15 +30,20 @@ void GameApp::Startup()
 	Background* background = EntityManager::Get().Create<Background>();
 	EntityManager::Get().Register("Background", background);
 
+	Player* player = EntityManager::Get().Create<Player>();
+	EntityManager::Get().Register("Player", player);
+
 	updateEntities_ = 
 	{
 		camera_,
+		player,
 		background,
 	};
 
 	renderEntities_ = 
 	{
 		background,
+		player,
 	};
 }
 
