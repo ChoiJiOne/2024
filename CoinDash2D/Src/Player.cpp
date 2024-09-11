@@ -107,6 +107,9 @@ void Player::PickupCoin()
 
 	PlayerMessenger* messenger = EntityManager::Get().GetByName<PlayerMessenger>("PlayerMessenger");
 	messenger->Send(L"+1", messageColor_, 1.0f);
+
+	coinSound_->Reset();
+	coinSound_->Play();
 }
 
 void Player::PickupPowerUpCoin()
