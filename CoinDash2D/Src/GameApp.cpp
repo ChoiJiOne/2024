@@ -86,13 +86,28 @@ void GameApp::Startup()
 	Button* startButton = EntityManager::Get().Create<Button>(startButtonLayout, [&]() { status_ = Status::PLAY; });
 	EntityManager::Get().Register("StartButton", startButton);
 
+	Button::Layout resumeButtonLayout;
+	resumeButtonLayout.textColor = GameMath::Vec4f(0.0f, 0.0f, 0.0f, 1.0f);
+	resumeButtonLayout.disableColor = GameMath::Vec4f(1.0f, 1.0f, 1.0f, 0.4f);
+	resumeButtonLayout.enableColor = GameMath::Vec4f(1.0f, 1.0f, 1.0f, 0.6f);
+	resumeButtonLayout.pressColor = GameMath::Vec4f(1.0f, 1.0f, 1.0f, 0.9f);
+	resumeButtonLayout.releaseColor = GameMath::Vec4f(1.0f, 1.0f, 1.0f, 1.0f);
+	resumeButtonLayout.center = GameMath::Vec2f(0.0f, 0.0f);
+	resumeButtonLayout.size = GameMath::Vec2f(200.0f, 50.0f);
+	resumeButtonLayout.mouse = Mouse::LEFT;
+	resumeButtonLayout.font = ResourceManager::Get().GetByName<TTFont>("Font32");
+	resumeButtonLayout.text = L"RESUME";
+	resumeButtonLayout.side = 10.0f;
+	Button* resumeButton = EntityManager::Get().Create<Button>(resumeButtonLayout, [&]() { status_ = Status::PLAY; });
+	EntityManager::Get().Register("ResumeButton", resumeButton);
+
 	Button::Layout quitButtonLayout;
 	quitButtonLayout.textColor = GameMath::Vec4f(0.0f, 0.0f, 0.0f, 1.0f);
 	quitButtonLayout.disableColor = GameMath::Vec4f(1.0f, 1.0f, 1.0f, 0.4f);
 	quitButtonLayout.enableColor = GameMath::Vec4f(1.0f, 1.0f, 1.0f, 0.6f);
 	quitButtonLayout.pressColor = GameMath::Vec4f(1.0f, 1.0f, 1.0f, 0.9f);
 	quitButtonLayout.releaseColor = GameMath::Vec4f(1.0f, 1.0f, 1.0f, 1.0f);
-	quitButtonLayout.center = GameMath::Vec2f(0.0f, -100.0f);
+	quitButtonLayout.center = GameMath::Vec2f(0.0f, -70.0f);
 	quitButtonLayout.size = GameMath::Vec2f(200.0f, 50.0f);
 	quitButtonLayout.mouse = Mouse::LEFT;
 	quitButtonLayout.font = ResourceManager::Get().GetByName<TTFont>("Font32");
@@ -112,8 +127,8 @@ void GameApp::Startup()
 	statusEntities_.insert({ Status::PLAY, playEntities });
 
 	StatusEntities pauseEntities;
-	pauseEntities.updateEntities = { camera_, };
-	pauseEntities.renderEntities = { background, cactus0, cactus1, cactus2, cactus3 };
+	pauseEntities.updateEntities = { camera_, resumeButton, quitButton, };
+	pauseEntities.renderEntities = { background, cactus0, cactus1, cactus2, cactus3, resumeButton, quitButton, };
 	statusEntities_.insert({ Status::PAUSE, pauseEntities });
 
 	StatusEntities doneEntities;
