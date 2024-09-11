@@ -17,6 +17,7 @@
 #include "Player.h"
 #include "PlayerMessenger.h"
 #include "PowerUpCoin.h"
+#include "Title.h"
 
 GameApp::GameApp() : IApp("CoinDash2D", 100, 100, 480, 720, false, false)
 {
@@ -66,9 +67,12 @@ void GameApp::Startup()
 	CoinViewer* coinViewer = EntityManager::Get().Create<CoinViewer>();
 	EntityManager::Get().Register("CoinViewer", coinViewer);
 
+	Title* title = EntityManager::Get().Create<Title>();
+	EntityManager::Get().Register("Title", title);
+
 	StatusEntities readyEntities;
 	readyEntities.updateEntities = { camera_, };
-	readyEntities.renderEntities = { background, cactus0, cactus1, cactus2, cactus3 };
+	readyEntities.renderEntities = { background, cactus0, cactus1, cactus2, cactus3, title, };
 	statusEntities_.insert({ Status::READY, readyEntities });
 
 	StatusEntities playEntities;
@@ -125,7 +129,7 @@ void GameApp::LoadResource()
 	ResourceManager::Get().Register("Atlas", atlas);
 
 	std::string fontPath = resourcePath + "Font\\SeoulNamsanEB.ttf";
-	std::array<int32_t, 5> fontSizes = { 16, 24, 32, 64, 128 };
+	std::array<int32_t, 5> fontSizes = { 16, 24, 32, 64, 72 };
 	for (const auto& fontSize : fontSizes)
 	{
 		TTFont* font = ResourceManager::Get().Create<TTFont>(fontPath, 0x00, 0x128, static_cast<float>(fontSize));
