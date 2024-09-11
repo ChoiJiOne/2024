@@ -19,7 +19,7 @@ CoinSpawner::CoinSpawner()
 {
 	camera_ = EntityManager::Get().GetByName<Camera>("Camera");
 	player_ = EntityManager::Get().GetByName<Player>("Player");
-	level_ = ResourceManager::Get().GetByName<Sound>("PowerUp");
+	level_ = ResourceManager::Get().GetByName<Sound>("Level");
 	cactus_ =
 	{
 		EntityManager::Get().GetByName<Cactus>("Cactus0"),
@@ -58,6 +58,9 @@ void CoinSpawner::Tick(float deltaSeconds)
 
 	if (coins_.empty())
 	{
+		level_->Reset();
+		level_->Play();
+
 		GenerateCoins();
 
 		CountDowner* countDowner = EntityManager::Get().GetByName<CountDowner>("CountDowner");
