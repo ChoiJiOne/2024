@@ -1,5 +1,7 @@
 #include "Assertion.h"
 #include "EntityManager.h"
+#include "ResourceManager.h"
+#include "Sound.h"
 
 #include "Cactus.h"
 #include "Camera.h"
@@ -17,6 +19,7 @@ CoinSpawner::CoinSpawner()
 {
 	camera_ = EntityManager::Get().GetByName<Camera>("Camera");
 	player_ = EntityManager::Get().GetByName<Player>("Player");
+	level_ = ResourceManager::Get().GetByName<Sound>("PowerUp");
 	cactus_ =
 	{
 		EntityManager::Get().GetByName<Cactus>("Cactus0"),
@@ -81,6 +84,7 @@ void CoinSpawner::Release()
 {
 	CHECK(bIsInitialized_);
 
+	level_ = nullptr;
 	player_ = nullptr;
 	camera_ = nullptr;
 

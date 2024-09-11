@@ -10,6 +10,7 @@ class Cactus;
 class Camera;
 class Coin;
 class Player;
+class Sound;
 
 class CoinSpawner : public Entity2D
 {
@@ -38,4 +39,6 @@ private:
 	std::list<Coin*> coins_;
 
 	std::function<bool(Coin* coin)> coinRemoveEvent_ = nullptr;
+
+	Sound* level_ = nullptr;
 };
