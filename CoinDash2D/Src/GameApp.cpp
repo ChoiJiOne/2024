@@ -7,6 +7,7 @@
 #include "TTFont.h"
 
 #include "Background.h"
+#include "Button.h"
 #include "Cactus.h"
 #include "Camera.h"
 #include "CoinSpawner.h"
@@ -70,9 +71,39 @@ void GameApp::Startup()
 	Title* title = EntityManager::Get().Create<Title>();
 	EntityManager::Get().Register("Title", title);
 
+	Button::Layout startButtonLayout;
+	startButtonLayout.textColor = GameMath::Vec4f(0.0f, 0.0f, 0.0f, 1.0f);
+	startButtonLayout.disableColor = GameMath::Vec4f(1.0f, 1.0f, 1.0f, 0.4f);
+	startButtonLayout.enableColor = GameMath::Vec4f(1.0f, 1.0f, 1.0f, 0.6f);
+	startButtonLayout.pressColor = GameMath::Vec4f(1.0f, 1.0f, 1.0f, 0.9f);
+	startButtonLayout.releaseColor = GameMath::Vec4f(1.0f, 1.0f, 1.0f, 1.0f);
+	startButtonLayout.center = GameMath::Vec2f(0.0f, 0.0f);
+	startButtonLayout.size = GameMath::Vec2f(200.0f, 50.0f);
+	startButtonLayout.mouse = Mouse::LEFT;
+	startButtonLayout.font = ResourceManager::Get().GetByName<TTFont>("Font32");
+	startButtonLayout.text = L"START";
+	startButtonLayout.side = 10.0f;
+	Button* startButton = EntityManager::Get().Create<Button>(startButtonLayout, [&]() { status_ = Status::PLAY; });
+	EntityManager::Get().Register("StartButton", startButton);
+
+	Button::Layout quitButtonLayout;
+	quitButtonLayout.textColor = GameMath::Vec4f(0.0f, 0.0f, 0.0f, 1.0f);
+	quitButtonLayout.disableColor = GameMath::Vec4f(1.0f, 1.0f, 1.0f, 0.4f);
+	quitButtonLayout.enableColor = GameMath::Vec4f(1.0f, 1.0f, 1.0f, 0.6f);
+	quitButtonLayout.pressColor = GameMath::Vec4f(1.0f, 1.0f, 1.0f, 0.9f);
+	quitButtonLayout.releaseColor = GameMath::Vec4f(1.0f, 1.0f, 1.0f, 1.0f);
+	quitButtonLayout.center = GameMath::Vec2f(0.0f, -100.0f);
+	quitButtonLayout.size = GameMath::Vec2f(200.0f, 50.0f);
+	quitButtonLayout.mouse = Mouse::LEFT;
+	quitButtonLayout.font = ResourceManager::Get().GetByName<TTFont>("Font32");
+	quitButtonLayout.text = L"QUIT";
+	quitButtonLayout.side = 10.0f;
+	Button* quitButton = EntityManager::Get().Create<Button>(quitButtonLayout, [&]() { bIsQuit_ = true; });
+	EntityManager::Get().Register("QuitButton", quitButton);
+
 	StatusEntities readyEntities;
-	readyEntities.updateEntities = { camera_, };
-	readyEntities.renderEntities = { background, cactus0, cactus1, cactus2, cactus3, title, };
+	readyEntities.updateEntities = { camera_, startButton, quitButton, };
+	readyEntities.renderEntities = { background, cactus0, cactus1, cactus2, cactus3, title, startButton, quitButton, };
 	statusEntities_.insert({ Status::READY, readyEntities });
 
 	StatusEntities playEntities;
