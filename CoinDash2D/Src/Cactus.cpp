@@ -5,6 +5,7 @@
 #include "ResourceManager.h"
 
 #include "Cactus.h"
+#include "GameApp.h"
 #include "Player.h"
 
 Cactus::Cactus(const Rect2D& bound)
@@ -31,7 +32,13 @@ void Cactus::Tick(float deltaSeconds)
 {
 	if (collisionBound_.Intersect(player_->GetCollisionBound()))
 	{
-		player_->SetStatus(Player::Status::HURT);
+		GameApp* app = reinterpret_cast<GameApp*>(IApp::Get());
+		GameApp::Status status = app->GetStatus();
+		if (status == GameApp::Status::PLAY)
+		{
+			app->SetStatus(GameApp::Status::DONE);
+			player_->SetStatus(Player::Status::HURT);
+		}
 	}
 }
 
