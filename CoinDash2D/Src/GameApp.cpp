@@ -113,6 +113,30 @@ void GameApp::Startup()
 	Button* resumeButton = EntityManager::Get().Create<Button>(resumeButtonLayout, [&]() { status_ = Status::PLAY; });
 	EntityManager::Get().Register("ResumeButton", resumeButton);
 
+	Button::Layout resetButtonLayout;
+	resetButtonLayout.textColor = GameMath::Vec4f(0.0f, 0.0f, 0.0f, 1.0f);
+	resetButtonLayout.disableColor = GameMath::Vec4f(1.0f, 1.0f, 1.0f, 0.4f);
+	resetButtonLayout.enableColor = GameMath::Vec4f(1.0f, 1.0f, 1.0f, 0.6f);
+	resetButtonLayout.pressColor = GameMath::Vec4f(1.0f, 1.0f, 1.0f, 0.9f);
+	resetButtonLayout.releaseColor = GameMath::Vec4f(1.0f, 1.0f, 1.0f, 1.0f);
+	resetButtonLayout.center = GameMath::Vec2f(0.0f, 0.0f);
+	resetButtonLayout.size = GameMath::Vec2f(200.0f, 50.0f);
+	resetButtonLayout.mouse = Mouse::LEFT;
+	resetButtonLayout.font = ResourceManager::Get().GetByName<TTFont>("Font32");
+	resetButtonLayout.text = L"RESET";
+	resetButtonLayout.side = 10.0f;
+	Button* resetButton = EntityManager::Get().Create<Button>(resetButtonLayout, [&]() 
+		{
+			EntityManager::Get().GetByName<Player>("Player")->Reset();
+			EntityManager::Get().GetByName<CoinSpawner>("CoinSpawner")->Reset();
+			EntityManager::Get().GetByName<PowerUpCoin>("PowerUpCoin")->Reset();
+			EntityManager::Get().GetByName<CountDowner>("CountDowner")->Reset();
+			EntityManager::Get().GetByName<CoinViewer>("CoinViewer")->Reset();
+
+			status_ = Status::PLAY; 
+		});
+	EntityManager::Get().Register("ResetButton", resetButton);
+
 	Button::Layout quitButtonLayout;
 	quitButtonLayout.textColor = GameMath::Vec4f(0.0f, 0.0f, 0.0f, 1.0f);
 	quitButtonLayout.disableColor = GameMath::Vec4f(1.0f, 1.0f, 1.0f, 0.4f);
@@ -144,8 +168,8 @@ void GameApp::Startup()
 	statusEntities_.insert({ Status::PAUSE, pauseEntities });
 
 	StatusEntities doneEntities;
-	doneEntities.updateEntities = { camera_, player, coinSpawner, };
-	doneEntities.renderEntities = { background, player, coinSpawner, cactus0, cactus1, cactus2, cactus3, countDowner, coinViewer, };
+	doneEntities.updateEntities = { camera_, player, coinSpawner, resetButton, quitButton, };
+	doneEntities.renderEntities = { background, player, coinSpawner, cactus0, cactus1, cactus2, cactus3, countDowner, coinViewer, resetButton, quitButton, };
 	statusEntities_.insert({ Status::DONE, doneEntities });
 }
 
