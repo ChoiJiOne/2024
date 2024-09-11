@@ -114,6 +114,24 @@ void Player::PickupPowerUpCoin()
 	messenger->Send(L"PowerUp!", messageColor_, 2.0f);
 }
 
+void Player::Reset()
+{
+	status_ = Status::IDLE;
+
+	center_.center = GameMath::Vec2f();
+	spriteBound_.center = center_.center;
+	spriteBound_.size = GameMath::Vec2f(50.0f, 50.0f);
+	collisionBound_.center = center_.center + GameMath::Vec2f(0.0f, -7.0f);
+	collisionBound_.size = GameMath::Vec2f(30.0f, 36.0f);
+
+	speed_ = normalSpeed_;
+
+	bIsFlipH_ = false;
+	numCoin_ = 0;
+	bIsPowerUp_ = false;
+	powerUpTime_ = 0.0f;
+}
+
 void Player::Move(float deltaSeconds)
 {
 	bool bIsPress = false;

@@ -39,6 +39,8 @@ public:
 
 	int32_t GetNumCoin() const { return numCoin_; }
 
+	void Reset();
+
 private:
 	void Move(float deltaSeconds);
 	void UpdatePowerUpBar(float deltaSeconds);
