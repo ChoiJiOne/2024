@@ -15,6 +15,7 @@
 #include "CountDowner.h"
 #include "Entity2D.h"
 #include "GameApp.h"
+#include "GameOver.h"
 #include "Player.h"
 #include "PlayerMessenger.h"
 #include "PowerUpCoin.h"
@@ -82,6 +83,9 @@ void GameApp::Startup()
 
 	Title* title = EntityManager::Get().Create<Title>();
 	EntityManager::Get().Register("Title", title);
+
+	GameOver* gameOver = EntityManager::Get().Create<GameOver>();
+	EntityManager::Get().Register("GameOver", gameOver);
 
 	Button::Layout startButtonLayout;
 	startButtonLayout.textColor = GameMath::Vec4f(0.0f, 0.0f, 0.0f, 1.0f);
@@ -168,8 +172,8 @@ void GameApp::Startup()
 	statusEntities_.insert({ Status::PAUSE, pauseEntities });
 
 	StatusEntities doneEntities;
-	doneEntities.updateEntities = { camera_, player, coinSpawner, resetButton, quitButton, };
-	doneEntities.renderEntities = { background, player, coinSpawner, cactus0, cactus1, cactus2, cactus3, countDowner, coinViewer, resetButton, quitButton, };
+	doneEntities.updateEntities = { camera_, player, coinSpawner, resetButton, quitButton, gameOver, };
+	doneEntities.renderEntities = { background, player, coinSpawner, cactus0, cactus1, cactus2, cactus3, countDowner, coinViewer, gameOver, resetButton, quitButton, };
 	statusEntities_.insert({ Status::DONE, doneEntities });
 }
 
