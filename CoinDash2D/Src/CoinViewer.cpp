@@ -52,5 +52,8 @@ void CoinViewer::Release()
 {
 	CHECK(bIsInitialized_);
 
+	font_ = nullptr;
+	player_ = nullptr;
+
 	bIsInitialized_ = false;
 }
