@@ -78,3 +78,9 @@ void CountDowner::Release()
 
 	bIsInitialized_ = false;
 }
+
+void CountDowner::Reset()
+{
+	time_ = 31.0f;
+	remainTime_ = 0;
+}

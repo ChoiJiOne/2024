@@ -20,6 +20,8 @@ public:
 	float GetTime() const { return time_; }
 	void SetTime(float time) { time_ = time; }
 
+	void Reset();
+
 private:
 	Player* player_ = nullptr;
 	TTFont* font_ = nullptr;
