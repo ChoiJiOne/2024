@@ -43,6 +43,16 @@ CoinSpawner::~CoinSpawner()
 
 void CoinSpawner::Tick(float deltaSeconds)
 {
+	Player::Status status = player_->GetStatus();
+	if (status == Player::Status::HURT)
+	{
+		for (auto& coin : coins_)
+		{
+			coin->Tick(deltaSeconds);
+		}
+		return;
+	}
+
 	if (coins_.empty())
 	{
 		GenerateCoins();
@@ -56,7 +66,6 @@ void CoinSpawner::Tick(float deltaSeconds)
 	{
 		coin->Tick(deltaSeconds);
 	}
-
 	Cleanup();
 }
 
