@@ -3,6 +3,7 @@
 #include "EntityManager.h"
 #include "RenderManager2D.h"
 #include "ResourceManager.h"
+#include "Sound.h"
 
 #include "Cactus.h"
 #include "GameApp.h"
@@ -13,6 +14,7 @@ Cactus::Cactus(const Rect2D& bound)
 {
 	player_ = EntityManager::Get().GetByName<Player>("Player");
 	atlas_ = ResourceManager::Get().GetByName<Atlas2D>("Atlas");
+	hitSound_ = ResourceManager::Get().GetByName<Sound>("Hit");
 
 	collisionBound_ = spriteBound_;
 	collisionBound_.size.x -= 10.0f;
@@ -32,6 +34,9 @@ void Cactus::Tick(float deltaSeconds)
 {
 	if (collisionBound_.Intersect(player_->GetCollisionBound()))
 	{
+		hitSound_->Reset();
+		hitSound_->Play();
+
 		GameApp* app = reinterpret_cast<GameApp*>(IApp::Get());
 		GameApp::Status status = app->GetStatus();
 		if (status == GameApp::Status::PLAY)
@@ -51,6 +56,7 @@ void Cactus::Release()
 {
 	CHECK(bIsInitialized_);
 
+	hitSound_ = nullptr;
 	player_ = nullptr;
 	atlas_ = nullptr;
 

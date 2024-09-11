@@ -6,6 +6,7 @@
 
 class Atlas2D;
 class Player;
+class Sound;
 
 class Cactus : public Entity2D
 {
@@ -27,4 +28,6 @@ private:
 
 	Rect2D spriteBound_;
 	Rect2D collisionBound_;
+
+	Sound* hitSound_ = nullptr;
 };
