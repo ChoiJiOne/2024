@@ -30,12 +30,21 @@ public:
 	virtual void Shutdown() override;
 	virtual void Run() override;
 
+	const Status& GetStatus() const { return status_; }
+	void SetStatus(const Status& status) { status_ = status; }
+
 private:
+	struct StatusEntities
+	{
+		std::vector<IEntity*> updateEntities;
+		std::vector<Entity2D*> renderEntities;
+	};
+
 	void LoadResource();
 
 private:
 	Camera* camera_ = nullptr;
 
-	std::vector<IEntity*> updateEntities_;
-	std::vector<Entity2D*> renderEntities_;
+	Status status_ = Status::READY;
+	std::map<Status, StatusEntities> statusEntities_;
 };

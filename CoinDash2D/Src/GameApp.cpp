@@ -66,36 +66,25 @@ void GameApp::Startup()
 	CoinViewer* coinViewer = EntityManager::Get().Create<CoinViewer>();
 	EntityManager::Get().Register("CoinViewer", coinViewer);
 
-	updateEntities_ = 
-	{
-		camera_,
-		player,
-		coinSpawner,
-		powerUpCoin,
-		cactus0,
-		cactus1,
-		cactus2,
-		cactus3,
-		playerMessenger,
-		countDowner,
-		coinViewer,
-		background,
-	};
+	StatusEntities readyEntities;
+	readyEntities.updateEntities = { camera_, };
+	readyEntities.renderEntities = { background, cactus0, cactus1, cactus2, cactus3 };
+	statusEntities_.insert({ Status::READY, readyEntities });
 
-	renderEntities_ = 
-	{
-		background,
-		player,
-		coinSpawner,
-		powerUpCoin,
-		cactus0,
-		cactus1,
-		cactus2,
-		cactus3,
-		playerMessenger,
-		countDowner,
-		coinViewer,
-	};
+	StatusEntities playEntities;
+	playEntities.updateEntities = { camera_, player, coinSpawner, powerUpCoin, cactus0, cactus1, cactus2, cactus3, playerMessenger, countDowner, coinViewer, background, };
+	playEntities.renderEntities = { background, player, coinSpawner, powerUpCoin, cactus0, cactus1, cactus2, cactus3, playerMessenger, countDowner, coinViewer, };
+	statusEntities_.insert({ Status::PLAY, playEntities });
+
+	StatusEntities pauseEntities;
+	pauseEntities.updateEntities = { camera_, };
+	pauseEntities.renderEntities = { background, cactus0, cactus1, cactus2, cactus3 };
+	statusEntities_.insert({ Status::PAUSE, pauseEntities });
+
+	StatusEntities doneEntities;
+	doneEntities.updateEntities = { camera_, };
+	doneEntities.renderEntities = { background, cactus0, cactus1, cactus2, cactus3 };
+	statusEntities_.insert({ Status::DONE, doneEntities });
 }
 
 void GameApp::Shutdown()
@@ -107,7 +96,9 @@ void GameApp::Run()
 	RunLoop(
 		[&](float deltaSeconds)
 		{
-			for (auto& entity : updateEntities_)
+			StatusEntities& statusEntities = statusEntities_.at(status_);
+
+			for (auto& entity : statusEntities.updateEntities)
 			{
 				entity->Tick(deltaSeconds);
 			}
@@ -115,7 +106,7 @@ void GameApp::Run()
 			BeginFrame(0.0f, 0.0f, 0.0f, 1.0f);
 
 			RenderManager2D::Get().Begin(camera_);
-			for (auto& entity : renderEntities_)
+			for (auto& entity : statusEntities.renderEntities)
 			{
 				entity->Render();
 			}
