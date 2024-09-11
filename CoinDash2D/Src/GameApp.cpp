@@ -3,6 +3,7 @@
 #include "EntityManager.h"
 #include "RenderManager2D.h"
 #include "ResourceManager.h"
+#include "Sound.h"
 #include "Texture2D.h"
 #include "TTFont.h"
 
@@ -99,7 +100,14 @@ void GameApp::Startup()
 	startButtonLayout.font = ResourceManager::Get().GetByName<TTFont>("Font32");
 	startButtonLayout.text = L"START";
 	startButtonLayout.side = 10.0f;
-	Button* startButton = EntityManager::Get().Create<Button>(startButtonLayout, [&]() { status_ = Status::PLAY; });
+	Button* startButton = EntityManager::Get().Create<Button>(startButtonLayout, [&]() 
+		{ 
+			Sound* click = ResourceManager::Get().GetByName<Sound>("Click");
+			click->Reset();
+			click->Play();
+
+			status_ = Status::PLAY; 
+		});
 	EntityManager::Get().Register("StartButton", startButton);
 
 	Button::Layout resumeButtonLayout;
@@ -114,7 +122,14 @@ void GameApp::Startup()
 	resumeButtonLayout.font = ResourceManager::Get().GetByName<TTFont>("Font32");
 	resumeButtonLayout.text = L"RESUME";
 	resumeButtonLayout.side = 10.0f;
-	Button* resumeButton = EntityManager::Get().Create<Button>(resumeButtonLayout, [&]() { status_ = Status::PLAY; });
+	Button* resumeButton = EntityManager::Get().Create<Button>(resumeButtonLayout, [&]() 
+		{ 			
+			Sound* click = ResourceManager::Get().GetByName<Sound>("Click");
+			click->Reset();
+			click->Play();
+
+			status_ = Status::PLAY; 
+		});
 	EntityManager::Get().Register("ResumeButton", resumeButton);
 
 	Button::Layout resetButtonLayout;
@@ -130,7 +145,11 @@ void GameApp::Startup()
 	resetButtonLayout.text = L"RESET";
 	resetButtonLayout.side = 10.0f;
 	Button* resetButton = EntityManager::Get().Create<Button>(resetButtonLayout, [&]() 
-		{
+		{			
+			Sound* click = ResourceManager::Get().GetByName<Sound>("Click");
+			click->Reset();
+			click->Play();
+
 			EntityManager::Get().GetByName<Player>("Player")->Reset();
 			EntityManager::Get().GetByName<CoinSpawner>("CoinSpawner")->Reset();
 			EntityManager::Get().GetByName<PowerUpCoin>("PowerUpCoin")->Reset();
@@ -226,5 +245,21 @@ void GameApp::LoadResource()
 	{
 		TTFont* font = ResourceManager::Get().Create<TTFont>(fontPath, 0x00, 0x128, static_cast<float>(fontSize));
 		ResourceManager::Get().Register(GameUtils::PrintF("Font%d", fontSize), font);
+	}
+
+	std::string soundPath = resourcePath + "Sound\\";
+	std::array<std::pair<std::string, std::string>, 5> soundPaths =
+	{
+		std::pair {"Click",    ".mp3"},
+		std::pair {"Coin",     ".wav"},
+		std::pair {"Hit",      ".wav"},
+		std::pair {"Level",    ".wav"},
+		std::pair {"PowerUp",  ".wav"},
+	};
+
+	for (const auto& path : soundPaths)
+	{
+		Sound* sound = ResourceManager::Get().Create<Sound>(soundPath + path.first + path.second);
+		ResourceManager::Get().Register(path.first, sound);
 	}
 }
