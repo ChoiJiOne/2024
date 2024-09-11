@@ -32,6 +32,18 @@ void GameApp::Startup()
 {
 	LoadResource();
 
+	auto pauseEvent = [&]()
+		{
+			Player* player = EntityManager::Get().GetByName<Player>("Player");
+			Player::Status status = player->GetStatus();
+			if (status_ == Status::PLAY && (status != Player::Status::HURT))
+			{
+				status_ = Status::PAUSE;
+			}
+		};
+	AddWindowEventAction(WindowEvent::FOCUS_LOST, pauseEvent, true);
+	AddWindowEventAction(WindowEvent::MOVED, pauseEvent, true);
+
 	camera_ = EntityManager::Get().Create<Camera>();
 	EntityManager::Get().Register("Camera", camera_);
 
