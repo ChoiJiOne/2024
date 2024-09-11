@@ -143,3 +143,10 @@ void PowerUpCoin::Release()
 
 	bIsInitialized_ = false;
 }
+
+void PowerUpCoin::Reset()
+{
+	time_ = GameMath::GenerateRandomFloat(MIN_TIME, MAX_TIME);
+	bIsActive_ = false;
+	anim_->Reset();
+}
