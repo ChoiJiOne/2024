@@ -8,6 +8,7 @@
 #include "TTFont.h"
 
 #include "CountDowner.h"
+#include "GameApp.h"
 #include "Player.h"
 
 CountDowner::CountDowner()
@@ -42,7 +43,14 @@ void CountDowner::Tick(float deltaSeconds)
 	if (time_ <= 0.0f)
 	{
 		time_ = 0.0f;
-		player_->SetStatus(Player::Status::HURT);
+
+		GameApp* app = reinterpret_cast<GameApp*>(IApp::Get());
+		GameApp::Status status = app->GetStatus();
+		if (status == GameApp::Status::PLAY)
+		{
+			app->SetStatus(GameApp::Status::DONE);
+			player_->SetStatus(Player::Status::HURT);
+		}
 		return;
 	}
 
