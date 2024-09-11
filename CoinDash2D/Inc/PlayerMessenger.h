@@ -22,6 +22,7 @@ public:
 	virtual void Release() override;
 
 	void Send(const std::wstring& message, const GameMath::Vec4f& color, float time);
+	void Reset();
 
 private:
 	void CalcMessagePosFromPlayer();

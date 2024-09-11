@@ -79,6 +79,13 @@ void PlayerMessenger::Send(const std::wstring& message, const GameMath::Vec4f& c
 	bIsDetectMessage_ = true;
 }
 
+void PlayerMessenger::Reset()
+{
+	remainTime_ = 0.0f;
+	messageTime_ = 0.0f;
+	bIsDetectMessage_ = false;
+}
+
 void PlayerMessenger::CalcMessagePosFromPlayer()
 {
 	Rect2D* collision = reinterpret_cast<Rect2D*>(player_->GetCollisionBound());
