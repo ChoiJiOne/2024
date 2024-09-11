@@ -87,6 +87,22 @@ void CoinSpawner::Release()
 	bIsInitialized_ = false;
 }
 
+void CoinSpawner::Reset()
+{
+	for (auto& coin : coins_)
+	{
+		if (coin)
+		{
+			EntityManager::Get().Destroy(coin);
+			coin = nullptr;
+		}
+	}
+
+	coins_.clear();
+	maxNumCoin_ = 4;
+	GenerateCoins();
+}
+
 void CoinSpawner::Cleanup()
 {
 	for (auto& coin : coins_)
