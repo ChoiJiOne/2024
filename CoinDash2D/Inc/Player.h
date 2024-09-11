@@ -7,6 +7,7 @@
 
 class Camera;
 class IApp;
+class Sound;
 class SpriteAnim2D;
 
 class Player : public Entity2D
@@ -48,6 +49,8 @@ private:
 private:
 	IApp* app_ = nullptr;
 	Camera* camera_ = nullptr;
+	Sound* coinSound_ = nullptr;
+	Sound* powerUpSound_ = nullptr;
 	
 	Status status_ = Status::IDLE;
 	std::map<Status, SpriteAnim2D*> anims_;

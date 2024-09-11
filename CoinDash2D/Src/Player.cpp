@@ -5,6 +5,7 @@
 #include "RenderManager2D.h"
 #include "ResourceManager.h"
 #include "SpriteAnim2D.h"
+#include "Sound.h"
 
 #include "Camera.h"
 #include "Player.h"
@@ -21,7 +22,9 @@ static const std::map<Key, GameMath::Vec2f> KEY_DIRECTIONS =
 Player::Player()
 {
 	app_ = IApp::Get();
-	camera_ = EntityManager::Get().GetByName<Camera>("Camera");
+	camera_ = EntityManager::Get().GetByName<Camera>("Camera"); 
+	coinSound_ = ResourceManager::Get().GetByName<Sound>("Coin");
+	powerUpSound_ = ResourceManager::Get().GetByName<Sound>("PowerUp");
 
 	Atlas2D* atlas = ResourceManager::Get().GetByName<Atlas2D>("Atlas");
 
@@ -91,6 +94,8 @@ void Player::Release()
 		anim.second = nullptr;
 	}
 
+	powerUpSound_ = nullptr;
+	coinSound_ = nullptr;
 	app_ = nullptr;
 
 	bIsInitialized_ = false;
