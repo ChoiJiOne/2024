@@ -1,5 +1,6 @@
 #pragma once
 
+#include <map>
 #include <vector>
 
 #include "IApp.h"
@@ -10,6 +11,15 @@ class Entity2D;
 
 class GameApp : public IApp
 {
+public:
+	enum class Status
+	{
+		READY = 0x00,
+		PLAY  = 0x01,
+		PAUSE = 0x02,
+		DONE  = 0x03
+	};
+
 public:
 	GameApp();
 	virtual ~GameApp();
