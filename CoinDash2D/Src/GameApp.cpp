@@ -136,6 +136,7 @@ void GameApp::Startup()
 			EntityManager::Get().GetByName<PowerUpCoin>("PowerUpCoin")->Reset();
 			EntityManager::Get().GetByName<CountDowner>("CountDowner")->Reset();
 			EntityManager::Get().GetByName<CoinViewer>("CoinViewer")->Reset();
+			EntityManager::Get().GetByName<PlayerMessenger>("PlayerMessenger")->Reset();
 
 			status_ = Status::PLAY; 
 		});
