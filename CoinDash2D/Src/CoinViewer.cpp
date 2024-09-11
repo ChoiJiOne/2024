@@ -57,3 +57,8 @@ void CoinViewer::Release()
 
 	bIsInitialized_ = false;
 }
+
+void CoinViewer::Reset()
+{
+	numCoin_ = -1;
+}

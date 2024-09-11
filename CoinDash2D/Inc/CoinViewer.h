@@ -17,6 +17,8 @@ public:
 	virtual void Render() override;
 	virtual void Release() override;
 
+	void Reset();
+
 private:
 	Player* player_ = nullptr;
 	TTFont* font_ = nullptr;
