@@ -144,8 +144,8 @@ void GameApp::Startup()
 	statusEntities_.insert({ Status::PAUSE, pauseEntities });
 
 	StatusEntities doneEntities;
-	doneEntities.updateEntities = { camera_, };
-	doneEntities.renderEntities = { background, cactus0, cactus1, cactus2, cactus3 };
+	doneEntities.updateEntities = { camera_, player, coinSpawner, };
+	doneEntities.renderEntities = { background, player, coinSpawner, cactus0, cactus1, cactus2, cactus3, countDowner, coinViewer, };
 	statusEntities_.insert({ Status::DONE, doneEntities });
 }
 
