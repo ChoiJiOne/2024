@@ -165,6 +165,11 @@ void GameApp::Run()
 				entity->Tick(deltaSeconds);
 			}
 
+			if (status_ == Status::PLAY && GetKeyPress(Key::KEY_ESCAPE) == Press::PRESSED)
+			{
+				status_ = Status::PAUSE;
+			}
+
 			BeginFrame(0.0f, 0.0f, 0.0f, 1.0f);
 
 			RenderManager2D::Get().Begin(camera_);
