@@ -21,6 +21,10 @@ public:
 	float GetBlockSize() const { return blockSize_; }
 	uint32_t GetRow() const { return row_; }
 	uint32_t GetCol() const { return col_; }
+	float GetMaxBlockCenterX() const { maxBlockCenter_.x; }
+	float GetMaxBlockCenterY() const { maxBlockCenter_.y; }
+	float GetMinBlockCenterX() const { minBlockCenter_.x; }
+	float GetMinBlockCenterY() const { minBlockCenter_.y; }
 	const std::vector<Vec2f>& GetBlockCenters() { return blockCenters_; }
 
 private:
@@ -33,6 +37,9 @@ private:
 	Vec4f outlineColor_;
 	Vec4f inlineColor_;
 
+	Vec2f maxBlockCenter_;
+	Vec2f minBlockCenter_;
+	
 	std::vector<Vec2f> inlines_;
 	std::vector<Vec2f> blockCenters_;
 };
