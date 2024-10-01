@@ -18,6 +18,7 @@ public:
 	virtual void Render() override;
 	virtual void Release() override;
 
+	float GetBlockSize() const { return blockSize_; }
 	uint32_t GetRow() const { return row_; }
 	uint32_t GetCol() const { return col_; }
 	const std::vector<Vec2f>& GetBlockCenters() { return blockCenters_; }
