@@ -21,10 +21,10 @@ public:
 	float GetBlockSize() const { return blockSize_; }
 	uint32_t GetRow() const { return row_; }
 	uint32_t GetCol() const { return col_; }
-	float GetMaxBlockCenterX() const { maxBlockCenter_.x; }
-	float GetMaxBlockCenterY() const { maxBlockCenter_.y; }
-	float GetMinBlockCenterX() const { minBlockCenter_.x; }
-	float GetMinBlockCenterY() const { minBlockCenter_.y; }
+	float GetMaxBlockCenterX() const { return maxBlockCenter_.x; }
+	float GetMaxBlockCenterY() const { return maxBlockCenter_.y; }
+	float GetMinBlockCenterX() const { return minBlockCenter_.x; }
+	float GetMinBlockCenterY() const { return minBlockCenter_.y; }
 	const std::vector<Vec2f>& GetBlockCenters() { return blockCenters_; }
 
 private:
