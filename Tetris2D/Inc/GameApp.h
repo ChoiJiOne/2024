@@ -3,6 +3,8 @@
 #include "IApp.h"
 
 class Camera2D;
+class IEntity;
+class IEntity2D;
 
 class GameApp : public IApp 
 {
@@ -18,4 +20,7 @@ public:
 
 private:
 	Camera2D* mainCamera_ = nullptr;
+
+	std::vector<IEntity*> updateEntities_;
+	std::vector<IEntity2D*> renderEntities_;
 };

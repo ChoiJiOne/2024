@@ -4,6 +4,7 @@
 #include "ResourceManager.h"
 #include "RenderManager2D.h"
 
+#include "Board.h"
 #include "GameApp.h"
 
 GameApp::GameApp() : IApp("Tetris2D", 200, 200, 600, 800, false, false)
@@ -16,8 +17,24 @@ GameApp::~GameApp()
 
 void GameApp::Startup()
 {
+	EntityManager& entityMgr = EntityManager::Get();
+
 	mainCamera_ = Camera2D::CreateScreenCamera();
-	EntityManager::Get().Register("MainCamera", mainCamera_);
+	entityMgr.Register("MainCamera", mainCamera_);
+
+	Board* board = entityMgr.Create<Board>();
+	entityMgr.Register("Board", board);
+
+	updateEntities_ =
+	{
+		mainCamera_,
+		board,
+	};
+
+	renderEntities_ =
+	{
+		board,
+	};
 }
 
 void GameApp::Shutdown()
@@ -31,7 +48,16 @@ void GameApp::Run()
 	RunLoop(
 		[&](float deltaSeconds)
 		{
-			BeginFrame(0.0f, 0.0f, 0.0f, 1.0f);	
+			for (auto& entity : updateEntities_)
+			{
+				entity->Tick(deltaSeconds);
+			}
+
+
+			BeginFrame(0.0f, 0.0f, 0.0f, 1.0f);
+
+			RenderManager2D::Get().DrawEntities(mainCamera_, renderEntities_.data(), renderEntities_.size());
+
 			EndFrame();
 		}
 	);
