@@ -27,7 +27,6 @@ private:
 
 	Vec4f outlineColor_;
 	Vec4f inlineColor_;
-	Vec4f pointColor_;
 
 	std::vector<Vec2f> blockCenters_;
 };
