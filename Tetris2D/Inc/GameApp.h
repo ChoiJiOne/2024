@@ -2,6 +2,8 @@
 
 #include "IApp.h"
 
+class Camera2D;
+
 class GameApp : public IApp 
 {
 public:
@@ -13,4 +15,7 @@ public:
 	virtual void Startup() override;
 	virtual void Shutdown() override;
 	virtual void Run() override;
+
+private:
+	Camera2D* mainCamera_ = nullptr;
 };

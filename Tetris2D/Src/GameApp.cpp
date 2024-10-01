@@ -1,4 +1,6 @@
 #include "Assertion.h"
+#include "Camera2D.h"
+#include "EntityManager.h"
 #include "ResourceManager.h"
 #include "RenderManager2D.h"
 
@@ -14,10 +16,13 @@ GameApp::~GameApp()
 
 void GameApp::Startup()
 {
+	mainCamera_ = Camera2D::CreateScreenCamera();
 }
 
 void GameApp::Shutdown()
 {
+	EntityManager::Get().Destroy(mainCamera_);
+	mainCamera_ = nullptr;
 }
 
 void GameApp::Run()
