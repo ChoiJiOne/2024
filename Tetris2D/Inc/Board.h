@@ -18,6 +18,8 @@ public:
 	virtual void Render() override;
 	virtual void Release() override;
 
+	const std::vector<Vec2f>& GetBlockCenters() { return blockCenters_; }
+
 private:
 	Vec2f center_;
 	float blockSize_ = 0.0f;
