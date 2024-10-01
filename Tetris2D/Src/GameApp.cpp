@@ -56,7 +56,7 @@ void GameApp::Run()
 
 			BeginFrame(0.0f, 0.0f, 0.0f, 1.0f);
 
-			RenderManager2D::Get().DrawEntities(mainCamera_, renderEntities_.data(), renderEntities_.size());
+			RenderManager2D::Get().BatchRenderEntities(mainCamera_, renderEntities_.data(), renderEntities_.size());
 
 			EndFrame();
 		}
