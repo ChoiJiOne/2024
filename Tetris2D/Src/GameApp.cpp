@@ -6,7 +6,7 @@
 
 #include "GameApp.h"
 
-GameApp::GameApp() : IApp("Tetris2D", 200, 200, 800, 600, false, false)
+GameApp::GameApp() : IApp("Tetris2D", 200, 200, 600, 800, false, false)
 {
 }
 
@@ -31,7 +31,7 @@ void GameApp::Run()
 	RunLoop(
 		[&](float deltaSeconds)
 		{
-			BeginFrame(0.0f, 0.0f, 0.0f, 1.0f);
+			BeginFrame(0.0f, 0.0f, 0.0f, 1.0f);	
 			EndFrame();
 		}
 	);
