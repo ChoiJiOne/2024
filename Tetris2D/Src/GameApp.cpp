@@ -22,7 +22,7 @@ void GameApp::Startup()
 	mainCamera_ = Camera2D::CreateScreenCamera();
 	entityMgr.Register("MainCamera", mainCamera_);
 
-	Board* board = entityMgr.Create<Board>();
+	Board* board = entityMgr.Create<Board>(Vec2f(-50.0f, 0.0f), 30.0f, 10, 20);
 	entityMgr.Register("Board", board);
 
 	updateEntities_ =
