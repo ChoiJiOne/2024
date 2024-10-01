@@ -1,5 +1,7 @@
 #pragma once
 
+#include <vector>
+
 #include "IEntity2D.h"
 #include "GameMath.h"
 
@@ -26,4 +28,6 @@ private:
 	Vec4f outlineColor_;
 	Vec4f inlineColor_;
 	Vec4f pointColor_;
+
+	std::vector<Vec2f> blockCenters_;
 };
