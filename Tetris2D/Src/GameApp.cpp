@@ -17,6 +17,7 @@ GameApp::~GameApp()
 void GameApp::Startup()
 {
 	mainCamera_ = Camera2D::CreateScreenCamera();
+	EntityManager::Get().Register("MainCamera", mainCamera_);
 }
 
 void GameApp::Shutdown()
