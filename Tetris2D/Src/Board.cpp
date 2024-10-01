@@ -16,6 +16,21 @@ Board::Board(const Vec2f& center, float blockSize, uint32_t row, uint32_t col)
 	outlineColor_ = Vec4f(1.0f, 1.0f, 1.0f, 1.0f);
 	inlineColor_ = Vec4f(0.3f, 0.3f, 0.3f, 0.3f);
 
+	inlines_ = std::vector<Vec2f>((row_ - 2) * (col_ - 2) * 2);
+
+	int32_t index = 0;
+	for (uint32_t row = 1; row < row_; ++row)
+	{
+		inlines_[index++] = center_ + Vec2f(-size_.x * 0.5f + static_cast<float>(row) * blockSize_, size_.y * 0.5f - static_cast<float>(0) * blockSize_);
+		inlines_[index++] = center_ + Vec2f(-size_.x * 0.5f + static_cast<float>(row) * blockSize_, size_.y * 0.5f - static_cast<float>(col_) * blockSize_);
+	}
+
+	for (uint32_t col = 1; col < col_; ++col)
+	{
+		inlines_[index++] = center_ + Vec2f(-size_.x * 0.5f + static_cast<float>(0) * blockSize_, size_.y * 0.5f - static_cast<float>(col) * blockSize_);
+		inlines_[index++] = center_ + Vec2f(-size_.x * 0.5f + static_cast<float>(row_) * blockSize_, size_.y * 0.5f - static_cast<float>(col) * blockSize_);
+	}
+
 	blockCenters_ = std::vector<Vec2f>(row_ * col_, center_);
 	for (uint32_t colIndex = 0; colIndex < col_; ++colIndex)
 	{
@@ -50,22 +65,9 @@ void Board::Render()
 
 	renderMgr.DrawRectWireframe(center_, size_.x, size_.y, outlineColor_, 0.0f);
 
-	Vec2f start;
-	Vec2f end;
-	for (uint32_t row = 1; row < row_; ++row)
+	for (uint32_t index = 0; index < inlines_.size(); index += 2)
 	{
-		start = center_ + Vec2f(-size_.x * 0.5f + static_cast<float>(row) * blockSize_, size_.y * 0.5f - static_cast<float>(0) * blockSize_);
-		end = center_ + Vec2f(-size_.x * 0.5f + static_cast<float>(row) * blockSize_, size_.y * 0.5f - static_cast<float>(col_) * blockSize_);
-
-		renderMgr.DrawLine(start, end, inlineColor_);
-	}
-
-	for (uint32_t col = 1; col < col_; ++col)
-	{
-		start = center_ + Vec2f(-size_.x * 0.5f + static_cast<float>(0) * blockSize_, size_.y * 0.5f - static_cast<float>(col) * blockSize_);
-		end = center_ + Vec2f(-size_.x * 0.5f + static_cast<float>(row_) * blockSize_, size_.y * 0.5f - static_cast<float>(col) * blockSize_);
-
-		renderMgr.DrawLine(start, end, inlineColor_);
+		renderMgr.DrawLine(inlines_[index + 0], inlines_[index + 1], inlineColor_);
 	}
 }
 
