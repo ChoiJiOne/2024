@@ -44,6 +44,10 @@ public:
 	const Rect2D& GetBound() const { return bound_; }
 	const Vec4f& GetColor() const { return color_; }
 
+	void SetBound(const Rect2D& bound) { bound_ = bound; }
+	void SetCenter(const Vec2f& center) { bound_.center = center; }
+	void SetColor(const Vec4f& color) { color_ = color; }
+
 private:
 	Rect2D bound_;
 	Vec4f color_;
