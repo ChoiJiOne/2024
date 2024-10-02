@@ -1,7 +1,11 @@
 #pragma once
 
+#include <array>
+
 #include "IEntity2D.h"
 #include "GameMath.h"
+
+#include "Block.h"
 
 class Board;
 
@@ -32,4 +36,7 @@ public:
 
 private:
 	Board* board_ = nullptr;
+
+	static const uint32_t NUM_BLOCKS = 4;
+
 };
