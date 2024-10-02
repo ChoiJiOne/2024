@@ -40,7 +40,10 @@ public:
 
 		return *this;
 	}
-	
+
+	const Rect2D& GetBound() const { return bound_; }
+	const Vec4f& GetColor() const { return color_; }
+
 private:
 	Rect2D bound_;
 	Vec4f color_;
