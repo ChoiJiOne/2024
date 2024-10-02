@@ -19,7 +19,7 @@ public:
 		: bound_(bound)
 		, color_(color) {}
 
-	virtual ~Block();
+	virtual ~Block() {}
 
 	Block& operator=(Block&& instance) noexcept
 	{
