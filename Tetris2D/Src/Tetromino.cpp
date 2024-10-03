@@ -42,22 +42,7 @@ void Tetromino::Tick(float deltaSeconds)
 {
 	if (app_->GetKeyPress(Key::KEY_SPACE) == Press::PRESSED)
 	{
-		Mat2x2 rotate(
-			GameMath::Cos(-PI_DIV_2), -GameMath::Sin(-PI_DIV_2),
-			GameMath::Sin(-PI_DIV_2),  GameMath::Cos(-PI_DIV_2)
-		);
-
-		for (auto& block : blocks_)
-		{
-			const Rect2D& bound = block.GetBound();
-			Vec2f center = bound.center;
-
-			center -= rotatePos_;
-			center = rotate * center;
-			center += rotatePos_;
-
-			block.SetCenter(center);
-		}
+		Rotate();
 	}
 }
 
@@ -202,4 +187,21 @@ void Tetromino::Move(const Direction& direction)
 	}
 
 	rotatePos_ += moveLength;
+}
+
+void Tetromino::Rotate(bool bIsRight)
+{
+	float rotate = bIsRight ? -PI_DIV_2 : PI_DIV_2;
+	Mat2x2 rotateMat(GameMath::Cos(rotate), -GameMath::Sin(rotate), GameMath::Sin(rotate), GameMath::Cos(rotate));
+
+	for (auto& block : blocks_)
+	{
+		Vec2f center = block.GetBound().center;
+
+		center -= rotatePos_;
+		center = rotateMat * center;
+		center += rotatePos_;
+
+		block.SetCenter(center);
+	}
 }
