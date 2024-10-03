@@ -79,6 +79,30 @@ void Board::Release()
 	bIsInitialized_ = false;
 }
 
+bool Board::IsBlockInside(const Block* blocks, uint32_t count)
+{
+	for (uint32_t index = 0; index < count; ++index)
+	{
+		bool bIsBlockInside = false;
+		const Rect2D& bound = blocks[index].GetBound();
+
+		for (const auto& cell : cells_)
+		{
+			if (cell.GetBound().Intersect(&bound))
+			{
+				bIsBlockInside = true;
+			}
+		}
+
+		if (!bIsBlockInside)
+		{
+			return false;
+		}
+	}
+	
+	return true;
+}
+
 Vec2f Board::CalculateCellPos(uint32_t row, uint32_t col)
 {
 	Vec2f cellPos = center_;
