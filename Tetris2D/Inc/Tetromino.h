@@ -73,7 +73,7 @@ private:
 
 	float stride_ = 0.0f;
 	Type type_ = Type::NONE;
-	Status status_ = Status::ACTIVE;
+	Status status_ = Status::WAIT;
 	Vec2f rotatePos_;
 	std::array<Block, NUM_BLOCKS> blocks_;
 
