@@ -53,6 +53,7 @@ private:
 	void ConstructBlocks(const Vec2f& startPos, float blockSize, const Vec4f& color);
 	bool CanMove(const Direction& direction);
 	void Move(const Direction& direction);
+	bool CanRotate(bool bIsRight = true);
 	void Rotate(bool bIsRight = true);
 
 private:

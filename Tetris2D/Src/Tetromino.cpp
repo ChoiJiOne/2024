@@ -48,7 +48,7 @@ void Tetromino::Tick(float deltaSeconds)
 		}
 	}
 
-	if (app_->GetKeyPress(Key::KEY_UP) == Press::PRESSED)
+	if (app_->GetKeyPress(Key::KEY_UP) == Press::PRESSED && CanRotate())
 	{
 		Rotate();
 	}
@@ -196,6 +196,27 @@ void Tetromino::Move(const Direction& direction)
 	}
 
 	rotatePos_ += moveLength;
+}
+
+bool Tetromino::CanRotate(bool bIsRight)
+{
+	std::array<Block, NUM_BLOCKS> tempBlocks = blocks_;
+
+	float rotate = bIsRight ? -PI_DIV_2 : PI_DIV_2;
+	Mat2x2 rotateMat(GameMath::Cos(rotate), -GameMath::Sin(rotate), GameMath::Sin(rotate), GameMath::Cos(rotate));
+
+	for (auto& block : tempBlocks)
+	{
+		Vec2f center = block.GetBound().center;
+
+		center -= rotatePos_;
+		center = rotateMat * center;
+		center += rotatePos_;
+
+		block.SetCenter(center);
+	}
+
+	return board_->IsBlockInside(tempBlocks.data(), NUM_BLOCKS);
 }
 
 void Tetromino::Rotate(bool bIsRight)
