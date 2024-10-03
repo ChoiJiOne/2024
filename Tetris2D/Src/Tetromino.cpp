@@ -42,7 +42,7 @@ void Tetromino::Tick(float deltaSeconds)
 {
 	for (const auto& keyDirection : keyDirections_)
 	{
-		if (app_->GetKeyPress(keyDirection.first) == Press::PRESSED)
+		if (app_->GetKeyPress(keyDirection.first) == Press::PRESSED && CanMove(keyDirection.second))
 		{
 			Move(keyDirection.second);
 		}
@@ -162,6 +162,24 @@ void Tetromino::ConstructBlocks(const Vec2f& startPos, float blockSize, const Ve
 	}
 	break;
 	}
+}
+
+bool Tetromino::CanMove(const Direction& direction)
+{
+	std::array<Block, NUM_BLOCKS> tempBlocks = blocks_;
+
+	Vec2f moveLength;
+	moveLength.x = direction == Direction::LEFT ? -stride_ : (direction == Direction::RIGHT ? stride_ : 0.0f);
+	moveLength.y = direction == Direction::DOWN ? -stride_ : (direction == Direction::UP ? stride_ : 0.0f);
+
+	for (auto& block : tempBlocks)
+	{
+		Vec2f center = block.GetBound().center;
+		center += moveLength;
+		block.SetCenter(center);
+	}
+
+	return board_->IsBlockInside(tempBlocks.data(), NUM_BLOCKS);
 }
 
 void Tetromino::Move(const Direction& direction)
