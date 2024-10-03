@@ -129,6 +129,14 @@ bool Board::CanBlocksDeploy(const Block* blocks, uint32_t count)
 	return true;
 }
 
+void Board::DeployBlocks(const Block* blocks, uint32_t count)
+{
+	for (uint32_t index = 0; index < count; ++index)
+	{
+		blocks_.push_back(blocks[index]);
+	}
+}
+
 Vec2f Board::CalculateCellPos(uint32_t row, uint32_t col)
 {
 	Vec2f cellPos = center_;
