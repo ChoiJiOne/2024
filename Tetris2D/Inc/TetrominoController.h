@@ -20,6 +20,9 @@ public:
 	virtual void Release() override;
 
 private:
+	Vec2f startPos_;
+	Vec2f waitPos_;
+
 	Board* board_ = nullptr;
 	Tetromino* currentTetromino_ = nullptr;
 	Tetromino* nextTetromino_ = nullptr;
