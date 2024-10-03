@@ -47,6 +47,7 @@ public:
 	virtual void Release() override;
 
 	const Status& GetStatus() const { return status_; }
+	const std::array<Block, NUM_BLOCKS>& GetBlocks() const { return blocks_; }
 
 	static Tetromino* CreateRandom(const Vec2f& startPos, float blockSize, float stride);
 	
