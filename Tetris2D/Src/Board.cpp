@@ -79,7 +79,7 @@ void Board::Release()
 	bIsInitialized_ = false;
 }
 
-bool Board::IsBlockInside(const Block* blocks, uint32_t count)
+bool Board::IsBlocksInside(const Block* blocks, uint32_t count)
 {
 	for (uint32_t index = 0; index < count; ++index)
 	{
