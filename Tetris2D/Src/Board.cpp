@@ -44,9 +44,6 @@ Board::Board(const Vec2f& center, float blockSize, uint32_t row, uint32_t col)
 		}
 	}
 
-	maxBlockCenter_ = center_ + Vec2f(-size_.x * 0.5f + (static_cast<float>(row_ - 1) + 0.5f) * blockSize_, (size_.y - blockSize_) * 0.5f);
-	minBlockCenter_ = center_ + Vec2f((-size_.x + blockSize_) * 0.5f, +size_.y * 0.5f - (static_cast<float>(col_ - 1) + 0.5f) * blockSize_);
-
 	bIsInitialized_ = true;
 }
 

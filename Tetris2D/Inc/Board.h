@@ -5,6 +5,8 @@
 #include "IEntity2D.h"
 #include "GameMath.h"
 
+#include "Block.h"
+
 class Board : public IEntity2D
 {
 public:
@@ -20,11 +22,7 @@ public:
 
 	float GetBlockSize() const { return blockSize_; }
 	uint32_t GetRow() const { return row_; }
-	uint32_t GetCol() const { return col_; }
-	float GetMaxBlockCenterX() const { return maxBlockCenter_.x; }
-	float GetMaxBlockCenterY() const { return maxBlockCenter_.y; }
-	float GetMinBlockCenterX() const { return minBlockCenter_.x; }
-	float GetMinBlockCenterY() const { return minBlockCenter_.y; }
+	uint32_t GetCol() const { return col_; }\
 	const std::vector<Vec2f>& GetBlockCenters() { return blockCenters_; }
 
 private:
@@ -37,9 +35,11 @@ private:
 	Vec4f outlineColor_;
 	Vec4f inlineColor_;
 
-	Vec2f maxBlockCenter_;
-	Vec2f minBlockCenter_;
 	
 	std::vector<Vec2f> inlines_;
 	std::vector<Vec2f> blockCenters_;
+
+
+	std::vector<Block> cells_;
+
 };
