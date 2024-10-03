@@ -46,6 +46,8 @@ public:
 	virtual void Render() override;
 	virtual void Release() override;
 
+	const Status& GetStatus() const { return status_; }
+
 	static Tetromino* CreateRandom(const Vec2f& startPos, float blockSize, float stride);
 	
 private:
