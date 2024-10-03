@@ -45,9 +45,7 @@ public:
 	virtual void Tick(float deltaSeconds) override;
 	virtual void Render() override;
 	virtual void Release() override;
-
-	const std::array<Block, NUM_BLOCKS>& GetBlocks() const { return blocks_; }
-
+	
 private:
 	enum class Direction
 	{
