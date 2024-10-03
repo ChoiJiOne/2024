@@ -22,8 +22,7 @@ public:
 
 	float GetBlockSize() const { return blockSize_; }
 	uint32_t GetRow() const { return row_; }
-	uint32_t GetCol() const { return col_; }\
-	const std::vector<Vec2f>& GetBlockCenters() { return blockCenters_; }
+	uint32_t GetCol() const { return col_; }
 
 private:
 	Vec2f center_;
@@ -35,11 +34,6 @@ private:
 	Vec4f outlineColor_;
 	Vec4f inlineColor_;
 
-	
 	std::vector<Vec2f> inlines_;
-	std::vector<Vec2f> blockCenters_;
-
-
 	std::vector<Block> cells_;
-
 };
