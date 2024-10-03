@@ -15,13 +15,14 @@ public:
 	/** https://en.wikipedia.org/wiki/Tetromino */
 	enum class Type
 	{
-		I = 0x00,
-		O = 0x01,
-		T = 0x02,
-		J = 0x03,
-		L = 0x04,
-		S = 0x05,
-		Z = 0x06,
+		NONE = 0x00,
+		I = 0x01,
+		O = 0x02,
+		T = 0x03,
+		J = 0x04,
+		L = 0x05,
+		S = 0x06,
+		Z = 0x07,
 	};
 
 	static const uint32_t NUM_BLOCKS = 4;
@@ -39,11 +40,13 @@ public:
 	const std::array<Block, NUM_BLOCKS>& GetBlocks() const { return blocks_; }
 
 private:
-	void ConstructBlocks(const Vec2f& startPos, float blockSize, float stride, const Type& type, const Vec4f& color);
+	void ConstructBlocks(const Vec2f& startPos, float blockSize, const Vec4f& color);
 
 private:
 	Board* board_ = nullptr;
 
+	float stride_ = 0.0f;
+	Type type_ = Type::NONE;
 	Vec2f rotatePos_;
 	std::array<Block, NUM_BLOCKS> blocks_;
 };
