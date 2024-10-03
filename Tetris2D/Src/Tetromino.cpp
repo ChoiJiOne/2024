@@ -97,6 +97,14 @@ void Tetromino::Release()
 	bIsInitialized_ = false;
 }
 
+Tetromino* Tetromino::CreateRandom(const Vec2f& startPos, float blockSize, float stride, const Vec4f& color)
+{
+	static const std::array<Type, 7> types = { Type::I, Type::O, Type::T, Type::J, Type::L, Type::S, Type::Z};
+	uint32_t randomTypeIndex = GameMath::GenerateRandomInt(0, types.size() - 1);
+
+	return EntityManager::Get().Create<Tetromino>(startPos, blockSize, stride, types[randomTypeIndex], color);
+}
+
 void Tetromino::ConstructBlocks(const Vec2f& startPos, float blockSize, const Vec4f& color)
 {
 	for (auto& block : blocks_)

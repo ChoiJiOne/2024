@@ -45,6 +45,8 @@ public:
 	virtual void Tick(float deltaSeconds) override;
 	virtual void Render() override;
 	virtual void Release() override;
+
+	static Tetromino* CreateRandom(const Vec2f& startPos, float blockSize, float stride, const Vec4f& color);
 	
 private:
 	enum class Direction
