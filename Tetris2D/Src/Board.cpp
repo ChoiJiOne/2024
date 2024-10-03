@@ -70,6 +70,12 @@ void Board::Render()
 	{
 		renderMgr.DrawLine(inlines_[index + 0], inlines_[index + 1], inlineColor_);
 	}
+
+	for (const auto& block : blocks_)
+	{
+		const Rect2D& bound = block.GetBound();
+		renderMgr.DrawRoundRect(bound.center, bound.size.x, bound.size.y, 10.0f, block.GetColor(), 0.0f);
+	}
 }
 
 void Board::Release()
