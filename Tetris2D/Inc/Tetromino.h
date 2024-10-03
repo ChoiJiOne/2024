@@ -27,6 +27,13 @@ public:
 		Z = 0x07,
 	};
 
+	enum class Status
+	{
+		WAIT   = 0x00, /** 보드에 배치되기 전의 상태 */
+		ACTIVE = 0x01, /** 보드에 배치되어서 플레이어가 컨트롤 할 수 있는 상태 */
+		DONE   = 0x02, /** 더 이상 테트로미노를 움직일 수 없는 상태 */
+	};
+
 	static const uint32_t NUM_BLOCKS = 4;
 	
 public:
@@ -51,6 +58,7 @@ private:
 	};
 
 	void ConstructBlocks(const Vec2f& startPos, float blockSize, const Vec4f& color);
+
 	bool CanMove(const Direction& direction);
 	void Move(const Direction& direction);
 	bool CanRotate();
@@ -64,6 +72,7 @@ private:
 
 	float stride_ = 0.0f;
 	Type type_ = Type::NONE;
+	Status status_ = Status::ACTIVE;
 	Vec2f rotatePos_;
 	std::array<Block, NUM_BLOCKS> blocks_;
 
