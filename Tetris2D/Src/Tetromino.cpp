@@ -158,27 +158,11 @@ void Tetromino::ConstructBlocks(const Vec2f& startPos, float blockSize, const Ve
 
 void Tetromino::Move(const Direction& direction)
 {
-	Vec2f moveLength;
-
-	switch (direction)
-	{
-	case Direction::LEFT:
-		moveLength.x = -stride_;
-		break;
-
-	case Direction::RIGHT:
-		moveLength.x = stride_;
-		break;
-
-	case Direction::UP:
-		moveLength.y = stride_;
-		break;
-
-	case Direction::DOWN:
-		moveLength.y = -stride_;
-		break;
-	}
-
+	Vec2f moveLength = Vec2f(
+		direction == Direction::LEFT ? -stride_ : (direction == Direction::RIGHT ? stride_ : 0.0f),
+		direction == Direction::DOWN ? -stride_ : (direction == Direction::UP    ? stride_ : 0.0f)
+	);
+	
 	for (auto& block : blocks_)
 	{
 		Vec2f center = block.GetBound().center;
