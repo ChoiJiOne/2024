@@ -199,7 +199,7 @@ bool Tetromino::CanMove(const Direction& direction)
 
 	MoveBlocks(direction, tempBlocks, tempRotatePos);
 
-	return board_->IsBlockInside(tempBlocks.data(), NUM_BLOCKS);
+	return board_->IsBlocksInside(tempBlocks.data(), NUM_BLOCKS);
 }
 
 void Tetromino::Move(const Direction& direction)
@@ -214,7 +214,7 @@ bool Tetromino::CanRotate()
 
 	RotateBlocks(tempBlocks, tempRotatePos);
 
-	return board_->IsBlockInside(tempBlocks.data(), NUM_BLOCKS);
+	return board_->IsBlocksInside(tempBlocks.data(), NUM_BLOCKS);
 }
 
 void Tetromino::Rotate()
@@ -229,7 +229,7 @@ bool Tetromino::IsDone()
 
 	MoveBlocks(Direction::DOWN, tempBlocks, tempRotatePos);
 
-	return !board_->IsBlockInside(tempBlocks.data(), NUM_BLOCKS);
+	return !board_->IsBlocksInside(tempBlocks.data(), NUM_BLOCKS);
 }
 
 void Tetromino::UpdateActiveStatus(float deltaSeconds)
