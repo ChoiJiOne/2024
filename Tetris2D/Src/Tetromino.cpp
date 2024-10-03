@@ -27,6 +27,9 @@ Tetromino::Tetromino(const Vec2f& startPos, float blockSize, float stride, const
 
 	ConstructBlocks(startPos, blockSize, color);
 
+	maxMoveStepTime_ = 1.0f;
+	moveStepTime_ = maxMoveStepTime_;
+
 	bIsInitialized_ = true;
 }
 
@@ -54,18 +57,29 @@ void Tetromino::Tick(float deltaSeconds)
 		{
 			if (app_->GetKeyPress(keyDirection.first) == Press::PRESSED && CanMove(keyDirection.second))
 			{
+				moveStepTime_ = maxMoveStepTime_;
 				Move(keyDirection.second);
 			}
 		}
 
 		if (app_->GetKeyPress(Key::KEY_UP) == Press::PRESSED && CanRotate())
 		{
+			moveStepTime_ = maxMoveStepTime_;
 			Rotate();
 		}
-
-		if (IsDone())
+		
+		moveStepTime_ -= deltaSeconds;
+		if (moveStepTime_ <= 0.0f)
 		{
-			status_ = Status::DONE;
+			if (IsDone())
+			{
+				status_ = Status::DONE;
+			}
+			else
+			{
+				moveStepTime_ = maxMoveStepTime_;
+				Move(Direction::DOWN);
+			}
 		}
 	}
 	break;

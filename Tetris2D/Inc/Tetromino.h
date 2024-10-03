@@ -79,6 +79,9 @@ private:
 	Vec2f rotatePos_;
 	std::array<Block, NUM_BLOCKS> blocks_;
 
+	float moveStepTime_ = 0.0f;
+	float maxMoveStepTime_ = 0.0f;
+
 	static GameApp* app_;
 	static std::map<Key, Direction> keyDirections_;
 };
