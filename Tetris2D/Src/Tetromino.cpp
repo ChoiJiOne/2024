@@ -52,37 +52,8 @@ void Tetromino::Tick(float deltaSeconds)
 	break;
 
 	case Status::ACTIVE:
-	{
-		for (const auto& keyDirection : keyDirections_)
-		{
-			if (app_->GetKeyPress(keyDirection.first) == Press::PRESSED && CanMove(keyDirection.second))
-			{
-				moveStepTime_ = maxMoveStepTime_;
-				Move(keyDirection.second);
-			}
-		}
-
-		if (app_->GetKeyPress(Key::KEY_UP) == Press::PRESSED && CanRotate())
-		{
-			moveStepTime_ = maxMoveStepTime_;
-			Rotate();
-		}
-		
-		moveStepTime_ -= deltaSeconds;
-		if (moveStepTime_ <= 0.0f)
-		{
-			if (IsDone())
-			{
-				status_ = Status::DONE;
-			}
-			else
-			{
-				moveStepTime_ = maxMoveStepTime_;
-				Move(Direction::DOWN);
-			}
-		}
-	}
-	break;
+		UpdateActiveStatus(deltaSeconds);
+		break;
 
 	case Status::DONE:
 	{
@@ -259,6 +230,38 @@ bool Tetromino::IsDone()
 	MoveBlocks(Direction::DOWN, tempBlocks, tempRotatePos);
 
 	return !board_->IsBlockInside(tempBlocks.data(), NUM_BLOCKS);
+}
+
+void Tetromino::UpdateActiveStatus(float deltaSeconds)
+{
+	for (const auto& keyDirection : keyDirections_)
+	{
+		if (app_->GetKeyPress(keyDirection.first) == Press::PRESSED && CanMove(keyDirection.second))
+		{
+			moveStepTime_ = maxMoveStepTime_;
+			Move(keyDirection.second);
+		}
+	}
+
+	if (app_->GetKeyPress(Key::KEY_UP) == Press::PRESSED && CanRotate())
+	{
+		moveStepTime_ = maxMoveStepTime_;
+		Rotate();
+	}
+
+	moveStepTime_ -= deltaSeconds;
+	if (moveStepTime_ <= 0.0f)
+	{
+		if (IsDone())
+		{
+			status_ = Status::DONE;
+		}
+		else
+		{
+			moveStepTime_ = maxMoveStepTime_;
+			Move(Direction::DOWN);
+		}
+	}
 }
 
 void Tetromino::MoveBlocks(const Direction& direction, std::array<Block, NUM_BLOCKS>& blocks, Vec2f& rotatePos)
