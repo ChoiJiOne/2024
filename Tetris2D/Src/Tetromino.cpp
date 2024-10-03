@@ -167,70 +167,61 @@ void Tetromino::ConstructBlocks(const Vec2f& startPos, float blockSize, const Ve
 bool Tetromino::CanMove(const Direction& direction)
 {
 	std::array<Block, NUM_BLOCKS> tempBlocks = blocks_;
+	Vec2f tempRotatePos = rotatePos_;
 
-	Vec2f moveLength;
-	moveLength.x = direction == Direction::LEFT ? -stride_ : (direction == Direction::RIGHT ? stride_ : 0.0f);
-	moveLength.y = direction == Direction::DOWN ? -stride_ : (direction == Direction::UP ? stride_ : 0.0f);
-
-	for (auto& block : tempBlocks)
-	{
-		Vec2f center = block.GetBound().center;
-		center += moveLength;
-		block.SetCenter(center);
-	}
+	MoveBlocks(direction, tempBlocks, tempRotatePos);
 
 	return board_->IsBlockInside(tempBlocks.data(), NUM_BLOCKS);
 }
 
 void Tetromino::Move(const Direction& direction)
 {
+	MoveBlocks(direction, blocks_, rotatePos_);
+}
+
+bool Tetromino::CanRotate()
+{
+	std::array<Block, NUM_BLOCKS> tempBlocks = blocks_;
+	Vec2f tempRotatePos = rotatePos_;
+
+	RotateBlocks(tempBlocks, tempRotatePos);
+
+	return board_->IsBlockInside(tempBlocks.data(), NUM_BLOCKS);
+}
+
+void Tetromino::Rotate()
+{
+	RotateBlocks(blocks_, rotatePos_);
+}
+
+void Tetromino::MoveBlocks(const Direction& direction, std::array<Block, NUM_BLOCKS>& blocks, Vec2f& rotatePos)
+{
 	Vec2f moveLength;
 	moveLength.x = direction == Direction::LEFT ? -stride_ : (direction == Direction::RIGHT ? stride_ : 0.0f);
-	moveLength.y = direction == Direction::DOWN ? -stride_ : (   direction == Direction::UP ? stride_ : 0.0f);
-	
-	for (auto& block : blocks_)
+	moveLength.y = direction == Direction::DOWN ? -stride_ : (direction == Direction::UP ? stride_ : 0.0f);
+
+	for (auto& block : blocks)
 	{
 		Vec2f center = block.GetBound().center;
 		center += moveLength;
 		block.SetCenter(center);
 	}
 
-	rotatePos_ += moveLength;
+	rotatePos += moveLength;
 }
 
-bool Tetromino::CanRotate(bool bIsRight)
+void Tetromino::RotateBlocks(std::array<Block, NUM_BLOCKS>& blocks, Vec2f& rotatePos)
 {
-	std::array<Block, NUM_BLOCKS> tempBlocks = blocks_;
-
-	float rotate = bIsRight ? -PI_DIV_2 : PI_DIV_2;
+	float rotate = -PI_DIV_2;
 	Mat2x2 rotateMat(GameMath::Cos(rotate), -GameMath::Sin(rotate), GameMath::Sin(rotate), GameMath::Cos(rotate));
 
-	for (auto& block : tempBlocks)
+	for (auto& block : blocks)
 	{
 		Vec2f center = block.GetBound().center;
 
-		center -= rotatePos_;
+		center -= rotatePos;
 		center = rotateMat * center;
-		center += rotatePos_;
-
-		block.SetCenter(center);
-	}
-
-	return board_->IsBlockInside(tempBlocks.data(), NUM_BLOCKS);
-}
-
-void Tetromino::Rotate(bool bIsRight)
-{
-	float rotate = bIsRight ? -PI_DIV_2 : PI_DIV_2;
-	Mat2x2 rotateMat(GameMath::Cos(rotate), -GameMath::Sin(rotate), GameMath::Sin(rotate), GameMath::Cos(rotate));
-
-	for (auto& block : blocks_)
-	{
-		Vec2f center = block.GetBound().center;
-
-		center -= rotatePos_;
-		center = rotateMat * center;
-		center += rotatePos_;
+		center += rotatePos;
 
 		block.SetCenter(center);
 	}

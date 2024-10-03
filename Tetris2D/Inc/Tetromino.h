@@ -53,8 +53,11 @@ private:
 	void ConstructBlocks(const Vec2f& startPos, float blockSize, const Vec4f& color);
 	bool CanMove(const Direction& direction);
 	void Move(const Direction& direction);
-	bool CanRotate(bool bIsRight = true);
-	void Rotate(bool bIsRight = true);
+	bool CanRotate();
+	void Rotate();
+
+	void MoveBlocks(const Direction& direction, std::array<Block, NUM_BLOCKS>& blocks, Vec2f& rotatePos);
+	void RotateBlocks(std::array<Block, NUM_BLOCKS>& blocks, Vec2f& rotatePos);
 
 private:
 	Board* board_ = nullptr;
