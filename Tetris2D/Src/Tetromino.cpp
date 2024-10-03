@@ -48,7 +48,7 @@ void Tetromino::Tick(float deltaSeconds)
 		}
 	}
 
-	if (app_->GetKeyPress(Key::KEY_SPACE) == Press::PRESSED)
+	if (app_->GetKeyPress(Key::KEY_UP) == Press::PRESSED)
 	{
 		Rotate();
 	}
