@@ -91,6 +91,7 @@ bool Board::IsBlockInside(const Block* blocks, uint32_t count)
 			if (cell.GetBound().Intersect(&bound))
 			{
 				bIsBlockInside = true;
+				break;
 			}
 		}
 
