@@ -36,14 +36,14 @@ Board::Board(const Vec2f& center, float blockSize, uint32_t row, uint32_t col)
 		for (uint32_t rowIndex = 0; rowIndex < row_; ++rowIndex)
 		{
 			uint32_t index = rowIndex + colIndex * row_;
-
-			Vec2f center = center_;
-			center += Vec2f(-size_.x * 0.5f + (static_cast<float>(rowIndex) + 0.5f) * blockSize_, +size_.y * 0.5f - (static_cast<float>(colIndex) + 0.5f) * blockSize_);
+			Vec2f center = CalculateCellPos(rowIndex, colIndex);
 
 			cells_[index].SetBound(Rect2D(center, blockSize_));
 			cells_[index].SetColor(Vec4f(1.0f, 1.0f, 1.0f, 1.0f));
 		}
 	}
+
+	startPos_ = CalculateCellPos(4, 0);
 
 	bIsInitialized_ = true;
 }
@@ -77,4 +77,11 @@ void Board::Release()
 	CHECK(bIsInitialized_);
 
 	bIsInitialized_ = false;
+}
+
+Vec2f Board::CalculateCellPos(uint32_t row, uint32_t col)
+{
+	Vec2f cellPos = center_;
+	cellPos += Vec2f(-size_.x * 0.5f + (static_cast<float>(row) + 0.5f) * blockSize_, +size_.y * 0.5f - (static_cast<float>(col) + 0.5f) * blockSize_);
+	return cellPos;
 }

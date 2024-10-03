@@ -24,12 +24,18 @@ public:
 	uint32_t GetRow() const { return row_; }
 	uint32_t GetCol() const { return col_; }
 
+	const Vec2f& GetStartPos() const { return startPos_; }
+
+private:
+	Vec2f CalculateCellPos(uint32_t row, uint32_t col);
+
 private:
 	Vec2f center_;
 	float blockSize_ = 0.0f;
 	uint32_t row_ = 0U;
 	uint32_t col_ = 0U;
 	Vec2f size_;
+	Vec2f startPos_;
 
 	Vec4f outlineColor_;
 	Vec4f inlineColor_;
