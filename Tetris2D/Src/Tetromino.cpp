@@ -40,6 +40,14 @@ Tetromino::~Tetromino()
 
 void Tetromino::Tick(float deltaSeconds)
 {
+	for (const auto& keyDirection : keyDirections_)
+	{
+		if (app_->GetKeyPress(keyDirection.first) == Press::PRESSED)
+		{
+			Move(keyDirection.second);
+		}
+	}
+
 	if (app_->GetKeyPress(Key::KEY_SPACE) == Press::PRESSED)
 	{
 		Rotate();
