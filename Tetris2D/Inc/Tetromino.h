@@ -57,6 +57,8 @@ private:
 		UP    = 0x03,
 	};
 
+	friend class TetrominoController;
+
 	void ConstructBlocks(const Vec2f& startPos, float blockSize, const Vec4f& color);
 
 	bool CanMove(const Direction& direction);
