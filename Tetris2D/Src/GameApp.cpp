@@ -7,6 +7,7 @@
 #include "Board.h"
 #include "GameApp.h"
 #include "Tetromino.h"
+#include "TetrominoController.h"
 
 GameApp::GameApp() : IApp("Tetris2D", 200, 200, 600, 800, false, false)
 {
@@ -26,19 +27,20 @@ void GameApp::Startup()
 	Board* board = entityMgr.Create<Board>(Vec2f(-50.0f, 0.0f), 30.0f, 10, 20);
 	entityMgr.Register("Board", board);
 
-	Tetromino* tetromino = entityMgr.Create<Tetromino>(board->GetStartPos(), 27.0f, 30.0f, Tetromino::Type::Z, Vec4f(1.0f, 1.0f, 0.5f, 1.0f));
-
+	TetrominoController* controller = entityMgr.Create<TetrominoController>();
+	entityMgr.Register("Controller", controller);
+	
 	updateEntities_ =
 	{
 		mainCamera_,
-		tetromino,
+		controller,
 		board,
 	};
 
 	renderEntities_ =
 	{
 		board,
-		tetromino,
+		controller,
 	};
 }
 
