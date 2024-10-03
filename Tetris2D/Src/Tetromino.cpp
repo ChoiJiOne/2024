@@ -3,6 +3,7 @@
 #include "RenderManager2D.h"
 
 #include "Board.h"
+#include "GameApp.h"
 #include "Tetromino.h"
 
 Tetromino::Tetromino(const Vec2f& startPos, float blockSize, float stride, const Type& type, const Vec4f& color)
@@ -24,6 +25,26 @@ Tetromino::~Tetromino()
 
 void Tetromino::Tick(float deltaSeconds)
 {
+	GameApp* app = reinterpret_cast<GameApp*>(IApp::Get());
+	if (app->GetKeyPress(Key::KEY_SPACE) == Press::PRESSED)
+	{
+		Mat2x2 rotate(
+			GameMath::Cos(-PI_DIV_2), -GameMath::Sin(-PI_DIV_2),
+			GameMath::Sin(-PI_DIV_2),  GameMath::Cos(-PI_DIV_2)
+		);
+
+		for (auto& block : blocks_)
+		{
+			const Rect2D& bound = block.GetBound();
+			Vec2f center = bound.center;
+
+			center -= rotatePos_;
+			center = rotate * center;
+			center += rotatePos_;
+
+			block.SetCenter(center);
+		}
+	}
 }
 
 void Tetromino::Render()
@@ -63,6 +84,8 @@ void Tetromino::ConstructBlocks(const Vec2f& startPos, float blockSize, float st
 		blocks_[1].SetCenter(Vec2f(startPos.x + 1.0f * stride, startPos.y - 1.0f * stride));
 		blocks_[2].SetCenter(Vec2f(startPos.x + 2.0f * stride, startPos.y - 1.0f * stride));
 		blocks_[3].SetCenter(Vec2f(startPos.x + 3.0f * stride, startPos.y - 1.0f * stride));
+
+		rotatePos_ = startPos + Vec2f(+1.5f * stride, -1.5f * stride);
 	}
 	break;
 
@@ -72,6 +95,8 @@ void Tetromino::ConstructBlocks(const Vec2f& startPos, float blockSize, float st
 		blocks_[1].SetCenter(Vec2f(startPos.x + 1.0f * stride, startPos.y - 0.0f * stride));
 		blocks_[2].SetCenter(Vec2f(startPos.x + 0.0f * stride, startPos.y - 1.0f * stride));
 		blocks_[3].SetCenter(Vec2f(startPos.x + 1.0f * stride, startPos.y - 1.0f * stride));
+
+		rotatePos_ = startPos + Vec2f(+0.5f * stride, -0.5f * stride);
 	}
 	break;
 
@@ -81,6 +106,8 @@ void Tetromino::ConstructBlocks(const Vec2f& startPos, float blockSize, float st
 		blocks_[1].SetCenter(Vec2f(startPos.x + 1.0f * stride, startPos.y - 1.0f * stride));
 		blocks_[2].SetCenter(Vec2f(startPos.x + 2.0f * stride, startPos.y - 1.0f * stride));
 		blocks_[3].SetCenter(Vec2f(startPos.x + 1.0f * stride, startPos.y - 2.0f * stride));
+
+		rotatePos_ = startPos + Vec2f(stride, -stride);
 	}
 	break;
 
@@ -90,6 +117,8 @@ void Tetromino::ConstructBlocks(const Vec2f& startPos, float blockSize, float st
 		blocks_[1].SetCenter(Vec2f(startPos.x + 1.0f * stride, startPos.y - 1.0f * stride));
 		blocks_[2].SetCenter(Vec2f(startPos.x + 2.0f * stride, startPos.y - 1.0f * stride));
 		blocks_[3].SetCenter(Vec2f(startPos.x + 2.0f * stride, startPos.y - 2.0f * stride));
+		
+		rotatePos_ = startPos + Vec2f(stride, -stride);
 	}
 	break;
 
@@ -99,6 +128,8 @@ void Tetromino::ConstructBlocks(const Vec2f& startPos, float blockSize, float st
 		blocks_[1].SetCenter(Vec2f(startPos.x + 1.0f * stride, startPos.y - 1.0f * stride));
 		blocks_[2].SetCenter(Vec2f(startPos.x + 2.0f * stride, startPos.y - 1.0f * stride));
 		blocks_[3].SetCenter(Vec2f(startPos.x + 0.0f * stride, startPos.y - 2.0f * stride));
+
+		rotatePos_ = startPos + Vec2f(stride, -stride);
 	}
 	break;
 
@@ -108,6 +139,8 @@ void Tetromino::ConstructBlocks(const Vec2f& startPos, float blockSize, float st
 		blocks_[1].SetCenter(Vec2f(startPos.x + 2.0f * stride, startPos.y - 0.0f * stride));
 		blocks_[2].SetCenter(Vec2f(startPos.x + 0.0f * stride, startPos.y - 1.0f * stride));
 		blocks_[3].SetCenter(Vec2f(startPos.x + 1.0f * stride, startPos.y - 1.0f * stride));
+
+		rotatePos_ = startPos + Vec2f(stride, -stride);
 	}
 	break;
 
@@ -117,6 +150,8 @@ void Tetromino::ConstructBlocks(const Vec2f& startPos, float blockSize, float st
 		blocks_[1].SetCenter(Vec2f(startPos.x + 1.0f * stride, startPos.y - 0.0f * stride));
 		blocks_[2].SetCenter(Vec2f(startPos.x + 1.0f * stride, startPos.y - 1.0f * stride));
 		blocks_[3].SetCenter(Vec2f(startPos.x + 2.0f * stride, startPos.y - 1.0f * stride));
+
+		rotatePos_ = startPos + Vec2f(stride, -stride);
 	}
 	break;
 	}
