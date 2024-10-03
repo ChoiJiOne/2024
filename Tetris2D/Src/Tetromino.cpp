@@ -6,10 +6,23 @@
 #include "GameApp.h"
 #include "Tetromino.h"
 
+GameApp* Tetromino::app_ = nullptr;
+std::map<Key, Tetromino::Direction> Tetromino::keyDirections_ =
+{
+	{ Key::KEY_LEFT,  Direction::LEFT  },
+	{ Key::KEY_RIGHT, Direction::RIGHT },
+	{ Key::KEY_DOWN,  Direction::DOWN  },
+};
+
 Tetromino::Tetromino(const Vec2f& startPos, float blockSize, float stride, const Type& type, const Vec4f& color)
 	: stride_(stride)
 	, type_(type)
 {
+	if (!app_)
+	{
+		app_ = reinterpret_cast<GameApp*>(IApp::Get());
+	}
+	
 	board_ = EntityManager::Get().GetByName<Board>("Board");
 
 	ConstructBlocks(startPos, blockSize, color);
@@ -27,14 +40,7 @@ Tetromino::~Tetromino()
 
 void Tetromino::Tick(float deltaSeconds)
 {
-	GameApp* app = reinterpret_cast<GameApp*>(IApp::Get());
-	std::array<Key, 3> move =
-	{
-
-	};
-
-
-	if (app->GetKeyPress(Key::KEY_SPACE) == Press::PRESSED)
+	if (app_->GetKeyPress(Key::KEY_SPACE) == Press::PRESSED)
 	{
 		Mat2x2 rotate(
 			GameMath::Cos(-PI_DIV_2), -GameMath::Sin(-PI_DIV_2),
@@ -84,7 +90,7 @@ void Tetromino::ConstructBlocks(const Vec2f& startPos, float blockSize, const Ve
 		block.SetColor(color);
 	}
 
-	switch (type)
+	switch (type_)
 	{
 	case Type::I:
 	{
@@ -163,4 +169,37 @@ void Tetromino::ConstructBlocks(const Vec2f& startPos, float blockSize, const Ve
 	}
 	break;
 	}
+}
+
+void Tetromino::Move(const Direction& direction)
+{
+	Vec2f moveLength;
+
+	switch (direction)
+	{
+	case Direction::LEFT:
+		moveLength.x = -stride_;
+		break;
+
+	case Direction::RIGHT:
+		moveLength.x = stride_;
+		break;
+
+	case Direction::UP:
+		moveLength.y = stride_;
+		break;
+
+	case Direction::DOWN:
+		moveLength.y = -stride_;
+		break;
+	}
+
+	for (auto& block : blocks_)
+	{
+		Vec2f center = block.GetBound().center;
+		center += moveLength;
+		block.SetCenter(center);
+	}
+
+	rotatePos_ += moveLength;
 }

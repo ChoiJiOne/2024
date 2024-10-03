@@ -2,12 +2,14 @@
 
 #include <array>
 
+#include "IApp.h"
 #include "IEntity2D.h"
 #include "GameMath.h"
 
 #include "Block.h"
 
 class Board;
+class GameApp;
 
 class Tetromino : public IEntity2D
 {
@@ -40,7 +42,16 @@ public:
 	const std::array<Block, NUM_BLOCKS>& GetBlocks() const { return blocks_; }
 
 private:
+	enum class Direction
+	{
+		LEFT  = 0x00,
+		RIGHT = 0x01,
+		DOWN  = 0x02,
+		UP    = 0x03,
+	};
+
 	void ConstructBlocks(const Vec2f& startPos, float blockSize, const Vec4f& color);
+	void Move(const Direction& direction);
 
 private:
 	Board* board_ = nullptr;
@@ -49,4 +60,7 @@ private:
 	Type type_ = Type::NONE;
 	Vec2f rotatePos_;
 	std::array<Block, NUM_BLOCKS> blocks_;
+
+	static GameApp* app_;
+	static std::map<Key, Direction> keyDirections_;
 };
