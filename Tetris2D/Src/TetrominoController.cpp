@@ -15,6 +15,8 @@ TetrominoController::TetrominoController()
 	blockStride_ = 30.0f;
 
 	currentTetromino_ = Tetromino::CreateRandom(startPos_, blockSize_, blockStride_, Vec4f(1.0f, 1.0f, 1.0f, 1.0f));
+	currentTetromino_->status_ = Tetromino::Status::ACTIVE; /** 여기만 예외적으로 접근! */
+
 	nextTetromino_ = Tetromino::CreateRandom(waitPos_, blockSize_, blockStride_, Vec4f(1.0f, 1.0f, 1.0f, 1.0f));
 
 	bIsInitialized_ = true;
