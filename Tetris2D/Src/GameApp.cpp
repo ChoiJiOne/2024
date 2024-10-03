@@ -32,12 +32,12 @@ void GameApp::Startup()
 	{
 		mainCamera_,
 		tetromino,
-		board,
+		//board,
 	};
 
 	renderEntities_ =
 	{
-		board,
+		//board,
 		tetromino,
 	};
 }
@@ -57,7 +57,6 @@ void GameApp::Run()
 			{
 				entity->Tick(deltaSeconds);
 			}
-
 
 			BeginFrame(0.0f, 0.0f, 0.0f, 1.0f);
 
