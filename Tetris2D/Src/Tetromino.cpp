@@ -194,6 +194,16 @@ void Tetromino::Rotate()
 	RotateBlocks(blocks_, rotatePos_);
 }
 
+bool Tetromino::IsDone()
+{
+	std::array<Block, NUM_BLOCKS> tempBlocks = blocks_;
+	Vec2f tempRotatePos = rotatePos_;
+
+	MoveBlocks(Direction::DOWN, tempBlocks, tempRotatePos);
+
+	return !board_->IsBlockInside(tempBlocks.data(), NUM_BLOCKS);
+}
+
 void Tetromino::MoveBlocks(const Direction& direction, std::array<Block, NUM_BLOCKS>& blocks, Vec2f& rotatePos)
 {
 	Vec2f moveLength;

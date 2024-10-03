@@ -63,6 +63,7 @@ private:
 	void Move(const Direction& direction);
 	bool CanRotate();
 	void Rotate();
+	bool IsDone();
 
 	void MoveBlocks(const Direction& direction, std::array<Block, NUM_BLOCKS>& blocks, Vec2f& rotatePos);
 	void RotateBlocks(std::array<Block, NUM_BLOCKS>& blocks, Vec2f& rotatePos);
