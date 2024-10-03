@@ -26,7 +26,7 @@ void GameApp::Startup()
 	Board* board = entityMgr.Create<Board>(Vec2f(-50.0f, 0.0f), 30.0f, 10, 20);
 	entityMgr.Register("Board", board);
 
-	Tetromino* tetromino = entityMgr.Create<Tetromino>(Vec2f(0.0f, 0.0f), 27.0f, 30.0f, Tetromino::Type::Z, Vec4f(1.0f, 1.0f, 0.5f, 1.0f));
+	Tetromino* tetromino = entityMgr.Create<Tetromino>(board->GetStartPos(), 27.0f, 30.0f, Tetromino::Type::Z, Vec4f(1.0f, 1.0f, 0.5f, 1.0f));
 
 	updateEntities_ =
 	{
