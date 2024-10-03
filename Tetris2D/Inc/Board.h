@@ -25,7 +25,7 @@ public:
 	uint32_t GetCol() const { return col_; }
 
 	const Vec2f& GetStartPos() const { return startPos_; }
-	bool IsBlockInside(Block* blocks, uint32_t count);
+	bool IsBlockInside(const Block* blocks, uint32_t count);
 
 private:
 	Vec2f CalculateCellPos(uint32_t row, uint32_t col);
