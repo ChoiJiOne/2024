@@ -40,17 +40,41 @@ Tetromino::~Tetromino()
 
 void Tetromino::Tick(float deltaSeconds)
 {
-	for (const auto& keyDirection : keyDirections_)
+	switch (status_)
 	{
-		if (app_->GetKeyPress(keyDirection.first) == Press::PRESSED && CanMove(keyDirection.second))
+	case Status::WAIT:
+	{
+
+	}
+	break;
+
+	case Status::ACTIVE:
+	{
+		for (const auto& keyDirection : keyDirections_)
 		{
-			Move(keyDirection.second);
+			if (app_->GetKeyPress(keyDirection.first) == Press::PRESSED && CanMove(keyDirection.second))
+			{
+				Move(keyDirection.second);
+			}
+		}
+
+		if (app_->GetKeyPress(Key::KEY_UP) == Press::PRESSED && CanRotate())
+		{
+			Rotate();
+		}
+
+		if (IsDone())
+		{
+			status_ = Status::DONE;
 		}
 	}
+	break;
 
-	if (app_->GetKeyPress(Key::KEY_UP) == Press::PRESSED && CanRotate())
+	case Status::DONE:
 	{
-		Rotate();
+
+	}
+	break;
 	}
 }
 
