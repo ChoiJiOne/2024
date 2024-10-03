@@ -22,6 +22,8 @@ public:
 private:
 	Vec2f startPos_;
 	Vec2f waitPos_;
+	float blockSize_ = 0.0f;
+	float blockStride_ = 0.0f;
 
 	Board* board_ = nullptr;
 	Tetromino* currentTetromino_ = nullptr;

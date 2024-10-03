@@ -11,9 +11,11 @@ TetrominoController::TetrominoController()
 
 	startPos_ = board_->GetStartPos();
 	waitPos_ = Vec2f(150.0f, 100.0f);
+	blockSize_ = 27.0f;
+	blockStride_ = 30.0f;
 
-	currentTetromino_ = Tetromino::CreateRandom(startPos_, 27.0f, 30.0f, Vec4f(1.0f, 1.0f, 1.0f, 1.0f));
-	nextTetromino_ = Tetromino::CreateRandom(waitPos_, 27.0f, 30.0f, Vec4f(1.0f, 1.0f, 1.0f, 1.0f));
+	currentTetromino_ = Tetromino::CreateRandom(startPos_, blockSize_, blockStride_, Vec4f(1.0f, 1.0f, 1.0f, 1.0f));
+	nextTetromino_ = Tetromino::CreateRandom(waitPos_, blockSize_, blockStride_, Vec4f(1.0f, 1.0f, 1.0f, 1.0f));
 
 	bIsInitialized_ = true;
 }
