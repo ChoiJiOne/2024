@@ -104,6 +104,31 @@ bool Board::IsBlocksInside(const Block* blocks, uint32_t count)
 	return true;
 }
 
+bool Board::CanBlocksDeploy(const Block* blocks, uint32_t count)
+{
+	for (uint32_t index = 0; index < count; ++index)
+	{
+		bool bCanBlocksDeploy = true;
+		const Rect2D& bound = blocks[index].GetBound();
+
+		for (const auto& block : blocks_)
+		{
+			if (block.GetBound().Intersect(&bound))
+			{
+				bCanBlocksDeploy = false;
+				break;
+			}
+		}
+
+		if (!bCanBlocksDeploy)
+		{
+			return false;
+		}
+	}
+
+	return true;
+}
+
 Vec2f Board::CalculateCellPos(uint32_t row, uint32_t col)
 {
 	Vec2f cellPos = center_;

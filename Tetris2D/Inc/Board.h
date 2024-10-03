@@ -1,5 +1,6 @@
 #pragma once
 
+#include <list>
 #include <vector>
 
 #include "IEntity2D.h"
@@ -26,6 +27,7 @@ public:
 
 	const Vec2f& GetStartPos() const { return startPos_; }
 	bool IsBlocksInside(const Block* blocks, uint32_t count);
+	bool CanBlocksDeploy(const Block* blocks, uint32_t count);
 
 private:
 	Vec2f CalculateCellPos(uint32_t row, uint32_t col);
@@ -43,4 +45,5 @@ private:
 
 	std::vector<Vec2f> inlines_;
 	std::vector<Block> cells_;
+	std::list<Block> blocks_;
 };
