@@ -34,6 +34,19 @@ void TetrominoController::Tick(float deltaSeconds)
 {
 	currentTetromino_->Tick(deltaSeconds);
 	nextTetromino_->Tick(deltaSeconds);
+
+	if (currentTetromino_->GetStatus() == Tetromino::Status::DONE)
+	{
+		const std::array<Block, Tetromino::NUM_BLOCKS>& blocks = currentTetromino_->GetBlocks();
+		board_->DeployBlocks(blocks.data(), blocks.size());
+
+		EntityManager::Get().Destroy(currentTetromino_);
+
+		currentTetromino_ = nextTetromino_;
+		currentTetromino_->startPos_ = startPos_;
+
+		nextTetromino_ = Tetromino::CreateRandom(waitPos_, blockSize_, blockStride_);
+	}
 }
 
 void TetrominoController::Render()
