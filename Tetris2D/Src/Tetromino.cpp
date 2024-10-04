@@ -17,7 +17,6 @@ std::map<Key, Tetromino::Direction> Tetromino::keyDirections_ =
 Tetromino::Tetromino(const Vec2f& startPos, float blockSize, float stride, const Type& type, const Vec4f& color)
 	: stride_(stride)
 	, type_(type)
-	, startPos_(startPos)
 {
 	if (!app_)
 	{
@@ -54,7 +53,21 @@ void Tetromino::Tick(float deltaSeconds)
 
 	case Status::GOTO:
 	{
+		gotoStepTime_ += deltaSeconds;
+		float t = gotoStepTime_ / maxGotoStepTime_;
+		t = GameMath::Clamp<float>(t, 0.0f, 1.0f);
+		if (t >= 1.0f)
+		{
+			status_ = Status::ACTIVE;
+			return;
+		}
 
+		rotatePos_ = Vec2f::Lerp(startRotatePos_, gotoRotatePos_, t);
+		for (uint32_t index = 0; index < NUM_BLOCKS; ++index)
+		{
+			Vec2f center = Vec2f::Lerp(startBlocks_[index].GetBound().center, gotoBlocks_[index].GetBound().center, t);
+			blocks_[index].SetCenter(center);
+		}
 	}
 	break;
 
@@ -87,6 +100,24 @@ void Tetromino::Release()
 	board_ = nullptr;
 
 	bIsInitialized_ = false;
+}
+
+void Tetromino::GotoPosition(const Vec2f& gotoPos)
+{
+	const Block& block = blocks_.front();
+	float blockSize = block.GetBound().size.x;
+	Vec4f color = block.GetColor();
+
+	gotoStepTime_ = 0.0f;
+	maxGotoStepTime_ = 1.0f;
+
+	startRotatePos_ = rotatePos_;
+	startBlocks_ = blocks_;
+
+	Vec2f startPos = board_->GetStartPos();
+	CreateBlocks(gotoBlocks_, gotoRotatePos_, startPos, blockSize, color);
+	
+	status_ = Status::GOTO;
 }
 
 Tetromino* Tetromino::CreateRandom(const Vec2f& startPos, float blockSize, float stride)

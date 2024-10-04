@@ -85,13 +85,19 @@ private:
 	float stride_ = 0.0f;
 	Type type_ = Type::NONE;
 	Status status_ = Status::WAIT;
-	Vec2f startPos_;
-	Vec2f gotoPos_;
+	
 	Vec2f rotatePos_;
 	std::array<Block, NUM_BLOCKS> blocks_;
 
 	float moveStepTime_ = 0.0f;
 	float maxMoveStepTime_ = 0.0f;
+
+	float gotoStepTime_ = 0.0f;
+	float maxGotoStepTime_ = 0.0f;
+	Vec2f startRotatePos_;
+	std::array<Block, NUM_BLOCKS> startBlocks_;
+	Vec2f gotoRotatePos_;
+	std::array<Block, NUM_BLOCKS> gotoBlocks_;
 
 	static GameApp* app_;
 	static std::map<Key, Direction> keyDirections_;
