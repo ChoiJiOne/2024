@@ -109,7 +109,7 @@ void Tetromino::GotoPosition(const Vec2f& gotoPos)
 	Vec4f color = block.GetColor();
 
 	gotoStepTime_ = 0.0f;
-	maxGotoStepTime_ = 0.5f;
+	maxGotoStepTime_ = 0.4f;
 
 	startRotatePos_ = rotatePos_;
 	startBlocks_ = blocks_;
@@ -120,25 +120,6 @@ void Tetromino::GotoPosition(const Vec2f& gotoPos)
 	status_ = Status::GOTO;
 }
 
-Tetromino* Tetromino::CreateRandom(const Vec2f& startPos, float blockSize, float stride)
-{
-	static const std::array<Type, 7> types = { Type::I, Type::O, Type::T, Type::J, Type::L, Type::S, Type::Z};
-	uint32_t randomTypeIndex = GameMath::GenerateRandomInt(0, types.size() - 1);
-
-	static const std::array<Vec4f, 6> colors =
-	{
-		Vec4f(1.0f, 0.5f, 0.5f, 1.0f),
-		Vec4f(0.5f, 1.0f, 0.5f, 1.0f),
-		Vec4f(0.5f, 0.5f, 1.0f, 1.0f),
-		Vec4f(1.0f, 1.0f, 0.5f, 1.0f),
-		Vec4f(1.0f, 0.5f, 1.0f, 1.0f),
-		Vec4f(0.5f, 1.0f, 1.0f, 1.0f),
-	};
-	uint32_t randomColorIndex = GameMath::GenerateRandomInt(0, colors.size() - 1);
-
-	return EntityManager::Get().Create<Tetromino>(startPos, blockSize, stride, types[randomTypeIndex], colors[randomColorIndex]);
-}
-
 bool Tetromino::CanMove(const Direction& direction)
 {
 	std::array<Block, NUM_BLOCKS> tempBlocks = blocks_;
@@ -146,7 +127,7 @@ bool Tetromino::CanMove(const Direction& direction)
 
 	MoveBlocks(direction, tempBlocks, tempRotatePos);
 
-	return board_->IsBlocksInside(tempBlocks.data(), NUM_BLOCKS);
+	return board_->IsBlocksInside(tempBlocks.data(), NUM_BLOCKS) && board_->CanBlocksDeploy(tempBlocks.data(), NUM_BLOCKS);
 }
 
 void Tetromino::Move(const Direction& direction)
@@ -161,7 +142,7 @@ bool Tetromino::CanRotate()
 
 	RotateBlocks(tempBlocks, tempRotatePos);
 
-	return board_->IsBlocksInside(tempBlocks.data(), NUM_BLOCKS);
+	return board_->IsBlocksInside(tempBlocks.data(), NUM_BLOCKS) && board_->CanBlocksDeploy(tempBlocks.data(), NUM_BLOCKS);
 }
 
 void Tetromino::Rotate()
@@ -176,7 +157,7 @@ bool Tetromino::IsDone()
 
 	MoveBlocks(Direction::DOWN, tempBlocks, tempRotatePos);
 
-	return !board_->IsBlocksInside(tempBlocks.data(), NUM_BLOCKS);
+	return !board_->IsBlocksInside(tempBlocks.data(), NUM_BLOCKS) || !board_->CanBlocksDeploy(tempBlocks.data(), NUM_BLOCKS);
 }
 
 void Tetromino::UpdateActiveStatus(float deltaSeconds)

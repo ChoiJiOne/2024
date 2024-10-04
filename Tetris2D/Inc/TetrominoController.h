@@ -20,6 +20,9 @@ public:
 	virtual void Release() override;
 
 private:
+	Tetromino* CreateRandomTetromino(const Vec2f& startPos, float blockSize, float stride);
+
+private:
 	Vec2f startPos_;
 	Vec2f waitPos_;
 	float blockSize_ = 0.0f;

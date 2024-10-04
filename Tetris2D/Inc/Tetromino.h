@@ -52,8 +52,6 @@ public:
 
 	void GotoPosition(const Vec2f& gotoPos);
 
-	static Tetromino* CreateRandom(const Vec2f& startPos, float blockSize, float stride);
-	
 private:
 	enum class Direction
 	{
