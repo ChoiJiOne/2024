@@ -92,8 +92,6 @@ void Tetromino::Release()
 {
 	CHECK(bIsInitialized_);
 
-	board_ = nullptr;
-
 	bIsInitialized_ = false;
 }
 
