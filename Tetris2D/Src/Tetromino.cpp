@@ -5,8 +5,11 @@
 #include "Board.h"
 #include "GameApp.h"
 #include "Tetromino.h"
+#include "TetrominoController.h"
 
 GameApp* Tetromino::app_ = nullptr;
+Board* Tetromino::board_ = nullptr;
+TetrominoController* Tetromino::controller_ = nullptr;
 std::map<Key, Tetromino::Direction> Tetromino::keyDirections_ =
 {
 	{ Key::KEY_LEFT,  Direction::LEFT  },
@@ -23,7 +26,15 @@ Tetromino::Tetromino(const Vec2f& startPos, float blockSize, float stride, const
 		app_ = reinterpret_cast<GameApp*>(IApp::Get());
 	}
 	
-	board_ = EntityManager::Get().GetByName<Board>("Board");
+	if (!board_)
+	{
+		board_ = EntityManager::Get().GetByName<Board>("Board");
+	}
+
+	if (!controller_)
+	{
+		controller_ = EntityManager::Get().GetByName<TetrominoController>("Controller");
+	}
 
 	CreateBlocks(blocks_, rotatePos_, startPos, blockSize, color);
 

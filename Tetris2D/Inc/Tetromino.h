@@ -10,6 +10,7 @@
 
 class Board;
 class GameApp;
+class TetrominoController;
 
 class Tetromino : public IEntity2D
 {
@@ -79,8 +80,6 @@ private:
 	void RotateBlocks(std::array<Block, NUM_BLOCKS>& blocks, Vec2f& rotatePos);
 
 private:
-	Board* board_ = nullptr;
-
 	float stride_ = 0.0f;
 	Type type_ = Type::NONE;
 	Status status_ = Status::WAIT;
@@ -104,5 +103,7 @@ private:
 	float maxHoldKeyStepTime_ = 0.05f;
 
 	static GameApp* app_;
+	static Board* board_;
+	static TetrominoController* controller_;
 	static std::map<Key, Direction> keyDirections_;
 };
