@@ -14,10 +14,10 @@ TetrominoController::TetrominoController()
 	blockSize_ = 27.0f;
 	blockStride_ = 30.0f;
 
-	currentTetromino_ = Tetromino::CreateRandom(startPos_, blockSize_, blockStride_);
+	currentTetromino_ = CreateRandomTetromino(startPos_, blockSize_, blockStride_);
 	currentTetromino_->status_ = Tetromino::Status::ACTIVE; /** 여기만 예외적으로 접근! */
 
-	nextTetromino_ = Tetromino::CreateRandom(waitPos_, blockSize_, blockStride_);
+	nextTetromino_ = CreateRandomTetromino(waitPos_, blockSize_, blockStride_);
 
 	bIsInitialized_ = true;
 }
@@ -45,7 +45,7 @@ void TetrominoController::Tick(float deltaSeconds)
 		currentTetromino_ = nextTetromino_;
 		currentTetromino_->GotoPosition(startPos_);
 
-		nextTetromino_ = Tetromino::CreateRandom(waitPos_, blockSize_, blockStride_);
+		nextTetromino_ = CreateRandomTetromino(waitPos_, blockSize_, blockStride_);
 	}
 }
 
