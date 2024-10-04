@@ -63,16 +63,17 @@ private:
 
 	friend class TetrominoController;
 
-	void ConstructBlocks(const Vec2f& startPos, float blockSize, const Vec4f& color);
-	
 	bool CanMove(const Direction& direction);
 	void Move(const Direction& direction);
 	bool CanRotate();
 	void Rotate();
 	bool IsDone();
 
+	/** 로직 업데이트. */
 	void UpdateActiveStatus(float deltaSeconds);
-
+	
+	/** 전체 블럭들 관련 동작. */
+	void CreateBlocks(std::array<Block, NUM_BLOCKS>& outBlocks, const Vec2f& startPos, float blockSize, const Vec4f& color);
 	void MoveBlocks(const Direction& direction, std::array<Block, NUM_BLOCKS>& blocks, Vec2f& rotatePos);
 	void RotateBlocks(std::array<Block, NUM_BLOCKS>& blocks, Vec2f& rotatePos);
 

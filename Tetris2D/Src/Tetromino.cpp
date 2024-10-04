@@ -25,7 +25,7 @@ Tetromino::Tetromino(const Vec2f& startPos, float blockSize, float stride, const
 	
 	board_ = EntityManager::Get().GetByName<Board>("Board");
 
-	ConstructBlocks(startPos, blockSize, color);
+	CreateBlocks(blocks_, startPos, blockSize, color);
 
 	maxMoveStepTime_ = 1.0f;
 	moveStepTime_ = maxMoveStepTime_;
@@ -101,97 +101,6 @@ Tetromino* Tetromino::CreateRandom(const Vec2f& startPos, float blockSize, float
 	return EntityManager::Get().Create<Tetromino>(startPos, blockSize, stride, types[randomTypeIndex], colors[randomColorIndex]);
 }
 
-void Tetromino::ConstructBlocks(const Vec2f& startPos, float blockSize, const Vec4f& color)
-{
-	for (auto& block : blocks_)
-	{
-		const Rect2D& bound = block.GetBound();
-
-		block.SetBound(Rect2D(Vec2f(0.0f, 0.0f), Vec2f(blockSize, blockSize)));
-		block.SetColor(color);
-	}
-
-	switch (type_)
-	{
-	case Type::I:
-	{
-		blocks_[0].SetCenter(Vec2f(startPos.x + 0.0f * stride_, startPos.y - 1.0f * stride_));
-		blocks_[1].SetCenter(Vec2f(startPos.x + 1.0f * stride_, startPos.y - 1.0f * stride_));
-		blocks_[2].SetCenter(Vec2f(startPos.x + 2.0f * stride_, startPos.y - 1.0f * stride_));
-		blocks_[3].SetCenter(Vec2f(startPos.x + 3.0f * stride_, startPos.y - 1.0f * stride_));
-
-		rotatePos_ = startPos + Vec2f(+1.5f * stride_, -1.5f * stride_);
-	}
-	break;
-
-	case Type::O:
-	{
-		blocks_[0].SetCenter(Vec2f(startPos.x + 0.0f * stride_, startPos.y - 0.0f * stride_));
-		blocks_[1].SetCenter(Vec2f(startPos.x + 1.0f * stride_, startPos.y - 0.0f * stride_));
-		blocks_[2].SetCenter(Vec2f(startPos.x + 0.0f * stride_, startPos.y - 1.0f * stride_));
-		blocks_[3].SetCenter(Vec2f(startPos.x + 1.0f * stride_, startPos.y - 1.0f * stride_));
-
-		rotatePos_ = startPos + Vec2f(+0.5f * stride_, -0.5f * stride_);
-	}
-	break;
-
-	case Type::T:
-	{
-		blocks_[0].SetCenter(Vec2f(startPos.x + 0.0f * stride_, startPos.y - 1.0f * stride_));
-		blocks_[1].SetCenter(Vec2f(startPos.x + 1.0f * stride_, startPos.y - 1.0f * stride_));
-		blocks_[2].SetCenter(Vec2f(startPos.x + 2.0f * stride_, startPos.y - 1.0f * stride_));
-		blocks_[3].SetCenter(Vec2f(startPos.x + 1.0f * stride_, startPos.y - 2.0f * stride_));
-
-		rotatePos_ = startPos + Vec2f(stride_, -stride_);
-	}
-	break;
-
-	case Type::J:
-	{
-		blocks_[0].SetCenter(Vec2f(startPos.x + 0.0f * stride_, startPos.y - 1.0f * stride_));
-		blocks_[1].SetCenter(Vec2f(startPos.x + 1.0f * stride_, startPos.y - 1.0f * stride_));
-		blocks_[2].SetCenter(Vec2f(startPos.x + 2.0f * stride_, startPos.y - 1.0f * stride_));
-		blocks_[3].SetCenter(Vec2f(startPos.x + 2.0f * stride_, startPos.y - 2.0f * stride_));
-		
-		rotatePos_ = startPos + Vec2f(stride_, -stride_);
-	}
-	break;
-
-	case Type::L:
-	{
-		blocks_[0].SetCenter(Vec2f(startPos.x + 0.0f * stride_, startPos.y - 1.0f * stride_));
-		blocks_[1].SetCenter(Vec2f(startPos.x + 1.0f * stride_, startPos.y - 1.0f * stride_));
-		blocks_[2].SetCenter(Vec2f(startPos.x + 2.0f * stride_, startPos.y - 1.0f * stride_));
-		blocks_[3].SetCenter(Vec2f(startPos.x + 0.0f * stride_, startPos.y - 2.0f * stride_));
-
-		rotatePos_ = startPos + Vec2f(stride_, -stride_);
-	}
-	break;
-
-	case Type::S:
-	{
-		blocks_[0].SetCenter(Vec2f(startPos.x + 1.0f * stride_, startPos.y - 0.0f * stride_));
-		blocks_[1].SetCenter(Vec2f(startPos.x + 2.0f * stride_, startPos.y - 0.0f * stride_));
-		blocks_[2].SetCenter(Vec2f(startPos.x + 0.0f * stride_, startPos.y - 1.0f * stride_));
-		blocks_[3].SetCenter(Vec2f(startPos.x + 1.0f * stride_, startPos.y - 1.0f * stride_));
-
-		rotatePos_ = startPos + Vec2f(stride_, -stride_);
-	}
-	break;
-
-	case Type::Z:
-	{
-		blocks_[0].SetCenter(Vec2f(startPos.x + 0.0f * stride_, startPos.y - 0.0f * stride_));
-		blocks_[1].SetCenter(Vec2f(startPos.x + 1.0f * stride_, startPos.y - 0.0f * stride_));
-		blocks_[2].SetCenter(Vec2f(startPos.x + 1.0f * stride_, startPos.y - 1.0f * stride_));
-		blocks_[3].SetCenter(Vec2f(startPos.x + 2.0f * stride_, startPos.y - 1.0f * stride_));
-
-		rotatePos_ = startPos + Vec2f(stride_, -stride_);
-	}
-	break;
-	}
-}
-
 bool Tetromino::CanMove(const Direction& direction)
 {
 	std::array<Block, NUM_BLOCKS> tempBlocks = blocks_;
@@ -261,6 +170,97 @@ void Tetromino::UpdateActiveStatus(float deltaSeconds)
 			moveStepTime_ = maxMoveStepTime_;
 			Move(Direction::DOWN);
 		}
+	}
+}
+
+void Tetromino::CreateBlocks(std::array<Block, NUM_BLOCKS>& outBlocks, const Vec2f& startPos, float blockSize, const Vec4f& color)
+{
+	for (auto& block : outBlocks)
+	{
+		const Rect2D& bound = block.GetBound();
+
+		block.SetBound(Rect2D(Vec2f(0.0f, 0.0f), Vec2f(blockSize, blockSize)));
+		block.SetColor(color);
+	}
+
+	switch (type_)
+	{
+	case Type::I:
+	{
+		outBlocks[0].SetCenter(Vec2f(startPos.x + 0.0f * stride_, startPos.y - 1.0f * stride_));
+		outBlocks[1].SetCenter(Vec2f(startPos.x + 1.0f * stride_, startPos.y - 1.0f * stride_));
+		outBlocks[2].SetCenter(Vec2f(startPos.x + 2.0f * stride_, startPos.y - 1.0f * stride_));
+		outBlocks[3].SetCenter(Vec2f(startPos.x + 3.0f * stride_, startPos.y - 1.0f * stride_));
+
+		rotatePos_ = startPos + Vec2f(+1.5f * stride_, -1.5f * stride_);
+	}
+	break;
+
+	case Type::O:
+	{
+		outBlocks[0].SetCenter(Vec2f(startPos.x + 0.0f * stride_, startPos.y - 0.0f * stride_));
+		outBlocks[1].SetCenter(Vec2f(startPos.x + 1.0f * stride_, startPos.y - 0.0f * stride_));
+		outBlocks[2].SetCenter(Vec2f(startPos.x + 0.0f * stride_, startPos.y - 1.0f * stride_));
+		outBlocks[3].SetCenter(Vec2f(startPos.x + 1.0f * stride_, startPos.y - 1.0f * stride_));
+
+		rotatePos_ = startPos + Vec2f(+0.5f * stride_, -0.5f * stride_);
+	}
+	break;
+
+	case Type::T:
+	{
+		outBlocks[0].SetCenter(Vec2f(startPos.x + 0.0f * stride_, startPos.y - 1.0f * stride_));
+		outBlocks[1].SetCenter(Vec2f(startPos.x + 1.0f * stride_, startPos.y - 1.0f * stride_));
+		outBlocks[2].SetCenter(Vec2f(startPos.x + 2.0f * stride_, startPos.y - 1.0f * stride_));
+		outBlocks[3].SetCenter(Vec2f(startPos.x + 1.0f * stride_, startPos.y - 2.0f * stride_));
+
+		rotatePos_ = startPos + Vec2f(stride_, -stride_);
+	}
+	break;
+
+	case Type::J:
+	{
+		outBlocks[0].SetCenter(Vec2f(startPos.x + 0.0f * stride_, startPos.y - 1.0f * stride_));
+		outBlocks[1].SetCenter(Vec2f(startPos.x + 1.0f * stride_, startPos.y - 1.0f * stride_));
+		outBlocks[2].SetCenter(Vec2f(startPos.x + 2.0f * stride_, startPos.y - 1.0f * stride_));
+		outBlocks[3].SetCenter(Vec2f(startPos.x + 2.0f * stride_, startPos.y - 2.0f * stride_));
+
+		rotatePos_ = startPos + Vec2f(stride_, -stride_);
+	}
+	break;
+
+	case Type::L:
+	{
+		outBlocks[0].SetCenter(Vec2f(startPos.x + 0.0f * stride_, startPos.y - 1.0f * stride_));
+		outBlocks[1].SetCenter(Vec2f(startPos.x + 1.0f * stride_, startPos.y - 1.0f * stride_));
+		outBlocks[2].SetCenter(Vec2f(startPos.x + 2.0f * stride_, startPos.y - 1.0f * stride_));
+		outBlocks[3].SetCenter(Vec2f(startPos.x + 0.0f * stride_, startPos.y - 2.0f * stride_));
+
+		rotatePos_ = startPos + Vec2f(stride_, -stride_);
+	}
+	break;
+
+	case Type::S:
+	{
+		outBlocks[0].SetCenter(Vec2f(startPos.x + 1.0f * stride_, startPos.y - 0.0f * stride_));
+		outBlocks[1].SetCenter(Vec2f(startPos.x + 2.0f * stride_, startPos.y - 0.0f * stride_));
+		outBlocks[2].SetCenter(Vec2f(startPos.x + 0.0f * stride_, startPos.y - 1.0f * stride_));
+		outBlocks[3].SetCenter(Vec2f(startPos.x + 1.0f * stride_, startPos.y - 1.0f * stride_));
+
+		rotatePos_ = startPos + Vec2f(stride_, -stride_);
+	}
+	break;
+
+	case Type::Z:
+	{
+		outBlocks[0].SetCenter(Vec2f(startPos.x + 0.0f * stride_, startPos.y - 0.0f * stride_));
+		outBlocks[1].SetCenter(Vec2f(startPos.x + 1.0f * stride_, startPos.y - 0.0f * stride_));
+		outBlocks[2].SetCenter(Vec2f(startPos.x + 1.0f * stride_, startPos.y - 1.0f * stride_));
+		outBlocks[3].SetCenter(Vec2f(startPos.x + 2.0f * stride_, startPos.y - 1.0f * stride_));
+
+		rotatePos_ = startPos + Vec2f(stride_, -stride_);
+	}
+	break;
 	}
 }
 
