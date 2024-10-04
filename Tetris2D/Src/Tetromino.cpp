@@ -177,8 +177,6 @@ void Tetromino::CreateBlocks(std::array<Block, NUM_BLOCKS>& outBlocks, const Vec
 {
 	for (auto& block : outBlocks)
 	{
-		const Rect2D& bound = block.GetBound();
-
 		block.SetBound(Rect2D(Vec2f(0.0f, 0.0f), Vec2f(blockSize, blockSize)));
 		block.SetColor(color);
 	}
