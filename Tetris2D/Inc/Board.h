@@ -1,6 +1,7 @@
 #pragma once
 
 #include <list>
+#include <functional>
 #include <vector>
 
 #include "IEntity2D.h"
@@ -48,4 +49,6 @@ private:
 	std::vector<Vec2f> inlines_;
 	std::vector<Block> cells_;
 	std::list<Block> blocks_;
+
+	std::function<bool(const Block&, const Block&)> blockSortEvent_ = nullptr;
 };

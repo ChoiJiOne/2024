@@ -44,6 +44,31 @@ Board::Board(const Vec2f& center, float blockSize, uint32_t row, uint32_t col)
 	}
 
 	startPos_ = CalculateCellPos(4, 0);
+	blockSortEvent_ = [&](const Block& l, const Block& r)->bool
+		{
+			const Vec2f& cl = l.GetBound().center;
+			const Vec2f& cr = r.GetBound().center;
+
+			if (cl.y < cr.y)
+			{
+				return true;
+			}
+			else if (GameMath::NearZero(cl.y - cr.y))
+			{
+				if (cl.x < cr.x)
+				{
+					return true;
+				}
+				else
+				{
+					return false;
+				}
+			}
+			else
+			{
+				return false;
+			}
+		};
 
 	bIsInitialized_ = true;
 }
@@ -141,6 +166,8 @@ void Board::DeployBlocks(const Block* blocks, uint32_t count)
 	{
 		blocks_.push_back(blocks[index]);
 	}
+
+	blocks_.sort(blockSortEvent_);
 }
 
 Vec2f Board::CalculateCellPos(uint32_t row, uint32_t col)
