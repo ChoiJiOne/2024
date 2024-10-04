@@ -64,15 +64,14 @@ private:
 
 	friend class TetrominoController;
 
-	bool CanMove(const Direction& direction);
 	void Move(const Direction& direction);
-	bool CanRotate();
 	void Rotate();
 	bool IsDone();
 
 	/** 로직 업데이트. */
 	void UpdateGotoStatus(float deltaSeconds);
 	void UpdateActiveStatus(float deltaSeconds);
+	void UpdateShadowBlocks();
 	
 	/** 전체 블럭들 관련 동작. */
 	void CreateBlocks(std::array<Block, NUM_BLOCKS>& outBlocks, Vec2f& outRotatePos, const Vec2f& startPos, float blockSize, const Vec4f& color);
@@ -88,6 +87,7 @@ private:
 	
 	Vec2f rotatePos_;
 	std::array<Block, NUM_BLOCKS> blocks_;
+	std::array<Block, NUM_BLOCKS> shadowBlocks_;
 
 	float moveStepTime_ = 0.0f;
 	float maxMoveStepTime_ = 0.0f;
@@ -103,6 +103,9 @@ private:
 	float holdKeyStepTime_ = 0.0f;
 	float holdWaitTime_ = 0.5f;
 	float maxHoldKeyStepTime_ = 0.05f;
+
+	Vec4f shadowColor_;
+	bool bNeedUpdateShadow_ = true;
 
 	static GameApp* app_;
 	static Board* board_;

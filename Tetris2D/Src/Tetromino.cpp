@@ -41,6 +41,8 @@ Tetromino::Tetromino(const Vec2f& startPos, float blockSize, float stride, const
 	maxMoveStepTime_ = 1.0f;
 	moveStepTime_ = maxMoveStepTime_;
 
+	shadowColor_ = Vec4f(1.0f, 1.0f, 1.0f, 0.3f);
+
 	bIsInitialized_ = true;
 }
 
@@ -68,6 +70,11 @@ void Tetromino::Tick(float deltaSeconds)
 
 	case Status::ACTIVE:
 		UpdateActiveStatus(deltaSeconds);
+		if (bNeedUpdateShadow_)
+		{
+			UpdateShadowBlocks();
+			bNeedUpdateShadow_ = false;
+		}
 		break;
 
 	case Status::DONE:
@@ -81,6 +88,15 @@ void Tetromino::Tick(float deltaSeconds)
 void Tetromino::Render()
 {
 	RenderManager2D& renderMgr = RenderManager2D::Get();
+	if (status_ == Status::ACTIVE)
+	{
+		for (const auto& block : shadowBlocks_)
+		{
+			const Rect2D& bound = block.GetBound();
+			renderMgr.DrawRoundRect(bound.center, bound.size.x, bound.size.y, 10.0f, block.GetColor(), 0.0f);
+		}
+	}
+
 	for (const auto& block : blocks_)
 	{
 		const Rect2D& bound = block.GetBound();
@@ -120,6 +136,7 @@ void Tetromino::Move(const Direction& direction)
 		return;
 	}
 
+	bNeedUpdateShadow_ = true;
 	MoveBlocks(direction, blocks_, rotatePos_);
 }
 
@@ -130,6 +147,7 @@ void Tetromino::Rotate()
 		return;
 	}
 
+	bNeedUpdateShadow_ = true;
 	RotateBlocks(blocks_, rotatePos_);
 }
 
@@ -223,6 +241,23 @@ void Tetromino::UpdateActiveStatus(float deltaSeconds)
 			moveStepTime_ = maxMoveStepTime_;
 			Move(Direction::DOWN);
 		}
+	}
+}
+
+void Tetromino::UpdateShadowBlocks()
+{
+	std::array<Block, NUM_BLOCKS> tempBlocks = blocks_;
+	Vec2f rotatePos = rotatePos_;
+
+	while (CanMoveBlocks(Tetromino::Direction::DOWN, tempBlocks, rotatePos))
+	{
+		MoveBlocks(Tetromino::Direction::DOWN, tempBlocks, rotatePos);
+	}
+
+	shadowBlocks_ = tempBlocks;
+	for (auto& shaodwBlock : shadowBlocks_)
+	{
+		shaodwBlock.SetColor(shadowColor_);
 	}
 }
 
