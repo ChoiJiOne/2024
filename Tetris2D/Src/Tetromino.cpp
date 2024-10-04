@@ -167,9 +167,40 @@ void Tetromino::UpdateActiveStatus(float deltaSeconds)
 {
 	for (const auto& keyDirection : keyDirections_)
 	{
-		if (app_->GetKeyPress(keyDirection.first) == Press::PRESSED && CanMove(keyDirection.second))
+		Press press = app_->GetKeyPress(keyDirection.first);
+
+		if (press == Press::PRESSED)
 		{
-			Move(keyDirection.second);
+			if (CanMove(keyDirection.second))
+			{
+				Move(keyDirection.second);
+			}
+		}
+		else if (press == Press::HELD)
+		{
+			if (!bIsHoldKey_)
+			{
+				holdKeyStepTime_ += deltaSeconds;
+				if (holdKeyStepTime_ >= holdWaitTime_)
+				{
+					holdKeyStepTime_ = 0.0f;
+					bIsHoldKey_ = true;
+				}
+			}
+			else
+			{
+				holdKeyStepTime_ += deltaSeconds;
+				if (holdKeyStepTime_ >= maxHoldKeyStepTime_ && CanMove(keyDirection.second))
+				{
+					holdKeyStepTime_ -= maxHoldKeyStepTime_;
+					Move(keyDirection.second);
+				}
+			}
+		}
+		else if (press == Press::RELEASED)
+		{
+			holdKeyStepTime_ = 0.0f;
+			bIsHoldKey_ = false;
 		}
 	}
 
@@ -178,7 +209,8 @@ void Tetromino::UpdateActiveStatus(float deltaSeconds)
 		Rotate();
 	}
 
-	if (app_->GetKeyPress(Key::KEY_DOWN) == Press::PRESSED)
+	Press press = app_->GetKeyPress(Key::KEY_DOWN);
+	if (press == Press::PRESSED || press == Press::HELD)
 	{
 		moveStepTime_ = maxMoveStepTime_;
 	}

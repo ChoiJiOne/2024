@@ -98,6 +98,11 @@ private:
 	Vec2f gotoRotatePos_;
 	std::array<Block, NUM_BLOCKS> gotoBlocks_;
 
+	bool bIsHoldKey_ = false;
+	float holdKeyStepTime_ = 0.0f;
+	float holdWaitTime_ = 0.5f;
+	float maxHoldKeyStepTime_ = 0.05f;
+
 	static GameApp* app_;
 	static std::map<Key, Direction> keyDirections_;
 };
