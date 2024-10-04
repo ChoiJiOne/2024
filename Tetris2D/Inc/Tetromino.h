@@ -77,7 +77,9 @@ private:
 	/** 전체 블럭들 관련 동작. */
 	void CreateBlocks(std::array<Block, NUM_BLOCKS>& outBlocks, Vec2f& outRotatePos, const Vec2f& startPos, float blockSize, const Vec4f& color);
 	void MoveBlocks(const Direction& direction, std::array<Block, NUM_BLOCKS>& blocks, Vec2f& rotatePos);
+	bool CanMoveBlocks(const Direction& direction, const std::array<Block, NUM_BLOCKS>& blocks, const Vec2f& rotatePos);
 	void RotateBlocks(std::array<Block, NUM_BLOCKS>& blocks, Vec2f& rotatePos);
+	bool CanRotateBlocks(const std::array<Block, NUM_BLOCKS>& blocks, const Vec2f& rotatePos);
 
 private:
 	float stride_ = 0.0f;

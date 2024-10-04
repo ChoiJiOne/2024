@@ -113,33 +113,23 @@ void Tetromino::GotoPosition(const Vec2f& gotoPos)
 	status_ = Status::GOTO;
 }
 
-bool Tetromino::CanMove(const Direction& direction)
-{
-	std::array<Block, NUM_BLOCKS> tempBlocks = blocks_;
-	Vec2f tempRotatePos = rotatePos_;
-
-	MoveBlocks(direction, tempBlocks, tempRotatePos);
-
-	return board_->IsBlocksInside(tempBlocks.data(), NUM_BLOCKS) && board_->CanBlocksDeploy(tempBlocks.data(), NUM_BLOCKS);
-}
-
 void Tetromino::Move(const Direction& direction)
 {
+	if (!CanMoveBlocks(direction, blocks_, rotatePos_))
+	{
+		return;
+	}
+
 	MoveBlocks(direction, blocks_, rotatePos_);
-}
-
-bool Tetromino::CanRotate()
-{
-	std::array<Block, NUM_BLOCKS> tempBlocks = blocks_;
-	Vec2f tempRotatePos = rotatePos_;
-
-	RotateBlocks(tempBlocks, tempRotatePos);
-
-	return board_->IsBlocksInside(tempBlocks.data(), NUM_BLOCKS) && board_->CanBlocksDeploy(tempBlocks.data(), NUM_BLOCKS);
 }
 
 void Tetromino::Rotate()
 {
+	if (!CanRotateBlocks(blocks_, rotatePos_))
+	{
+		return;
+	}
+
 	RotateBlocks(blocks_, rotatePos_);
 }
 
@@ -180,10 +170,7 @@ void Tetromino::UpdateActiveStatus(float deltaSeconds)
 
 		if (press == Press::PRESSED)
 		{
-			if (CanMove(keyDirection.second))
-			{
-				Move(keyDirection.second);
-			}
+			Move(keyDirection.second);
 		}
 		else if (press == Press::HELD)
 		{
@@ -199,7 +186,7 @@ void Tetromino::UpdateActiveStatus(float deltaSeconds)
 			else
 			{
 				holdKeyStepTime_ += deltaSeconds;
-				if (holdKeyStepTime_ >= maxHoldKeyStepTime_ && CanMove(keyDirection.second))
+				if (holdKeyStepTime_ >= maxHoldKeyStepTime_)
 				{
 					holdKeyStepTime_ -= maxHoldKeyStepTime_;
 					Move(keyDirection.second);
@@ -213,7 +200,7 @@ void Tetromino::UpdateActiveStatus(float deltaSeconds)
 		}
 	}
 
-	if (app_->GetKeyPress(Key::KEY_UP) == Press::PRESSED && CanRotate())
+	if (app_->GetKeyPress(Key::KEY_UP) == Press::PRESSED)
 	{
 		Rotate();
 	}
@@ -344,6 +331,16 @@ void Tetromino::MoveBlocks(const Direction& direction, std::array<Block, NUM_BLO
 	rotatePos += moveLength;
 }
 
+bool Tetromino::CanMoveBlocks(const Direction& direction, const std::array<Block, NUM_BLOCKS>& blocks, const Vec2f& rotatePos)
+{
+	std::array<Block, NUM_BLOCKS> tempBlocks = blocks;
+	Vec2f tempRotatePos = rotatePos;
+
+	MoveBlocks(direction, tempBlocks, tempRotatePos);
+
+	return board_->IsBlocksInside(tempBlocks.data(), NUM_BLOCKS) && board_->CanBlocksDeploy(tempBlocks.data(), NUM_BLOCKS);
+}
+
 void Tetromino::RotateBlocks(std::array<Block, NUM_BLOCKS>& blocks, Vec2f& rotatePos)
 {
 	float rotate = -PI_DIV_2;
@@ -359,4 +356,14 @@ void Tetromino::RotateBlocks(std::array<Block, NUM_BLOCKS>& blocks, Vec2f& rotat
 
 		block.SetCenter(center);
 	}
+}
+
+bool Tetromino::CanRotateBlocks(const std::array<Block, NUM_BLOCKS>& blocks, const Vec2f& rotatePos)
+{
+	std::array<Block, NUM_BLOCKS> tempBlocks = blocks;
+	Vec2f tempRotatePos = rotatePos;
+
+	RotateBlocks(tempBlocks, tempRotatePos);
+
+	return board_->IsBlocksInside(tempBlocks.data(), NUM_BLOCKS) && board_->CanBlocksDeploy(tempBlocks.data(), NUM_BLOCKS);
 }
