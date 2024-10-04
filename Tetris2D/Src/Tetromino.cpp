@@ -169,15 +169,18 @@ void Tetromino::UpdateActiveStatus(float deltaSeconds)
 	{
 		if (app_->GetKeyPress(keyDirection.first) == Press::PRESSED && CanMove(keyDirection.second))
 		{
-			moveStepTime_ = maxMoveStepTime_;
 			Move(keyDirection.second);
 		}
 	}
 
 	if (app_->GetKeyPress(Key::KEY_UP) == Press::PRESSED && CanRotate())
 	{
-		moveStepTime_ = maxMoveStepTime_;
 		Rotate();
+	}
+
+	if (app_->GetKeyPress(Key::KEY_DOWN) == Press::PRESSED)
+	{
+		moveStepTime_ = maxMoveStepTime_;
 	}
 
 	moveStepTime_ -= deltaSeconds;
