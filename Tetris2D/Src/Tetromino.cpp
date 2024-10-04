@@ -52,24 +52,8 @@ void Tetromino::Tick(float deltaSeconds)
 	break;
 
 	case Status::GOTO:
-	{
-		gotoStepTime_ += deltaSeconds;
-		float t = gotoStepTime_ / maxGotoStepTime_;
-		t = GameMath::Clamp<float>(t, 0.0f, 1.0f);
-		if (t >= 1.0f)
-		{
-			status_ = Status::ACTIVE;
-			return;
-		}
-
-		rotatePos_ = Vec2f::Lerp(startRotatePos_, gotoRotatePos_, t);
-		for (uint32_t index = 0; index < NUM_BLOCKS; ++index)
-		{
-			Vec2f center = Vec2f::Lerp(startBlocks_[index].GetBound().center, gotoBlocks_[index].GetBound().center, t);
-			blocks_[index].SetCenter(center);
-		}
-	}
-	break;
+		UpdateGotoStatus(deltaSeconds);
+		break;
 
 	case Status::ACTIVE:
 		UpdateActiveStatus(deltaSeconds);
@@ -158,6 +142,25 @@ bool Tetromino::IsDone()
 	MoveBlocks(Direction::DOWN, tempBlocks, tempRotatePos);
 
 	return !board_->IsBlocksInside(tempBlocks.data(), NUM_BLOCKS) || !board_->CanBlocksDeploy(tempBlocks.data(), NUM_BLOCKS);
+}
+
+void Tetromino::UpdateGotoStatus(float deltaSeconds)
+{
+	gotoStepTime_ += deltaSeconds;
+	float step = gotoStepTime_ / maxGotoStepTime_;
+	step = GameMath::Clamp<float>(step, 0.0f, 1.0f);
+
+	rotatePos_ = Vec2f::Lerp(startRotatePos_, gotoRotatePos_, step);
+	for (uint32_t index = 0; index < NUM_BLOCKS; ++index)
+	{
+		Vec2f center = Vec2f::Lerp(startBlocks_[index].GetBound().center, gotoBlocks_[index].GetBound().center, step);
+		blocks_[index].SetCenter(center);
+	}
+
+	if (step >= 1.0f)
+	{
+		status_ = Status::ACTIVE;
+	}
 }
 
 void Tetromino::UpdateActiveStatus(float deltaSeconds)

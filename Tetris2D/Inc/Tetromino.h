@@ -70,6 +70,7 @@ private:
 	bool IsDone();
 
 	/** 로직 업데이트. */
+	void UpdateGotoStatus(float deltaSeconds);
 	void UpdateActiveStatus(float deltaSeconds);
 	
 	/** 전체 블럭들 관련 동작. */
