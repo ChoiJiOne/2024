@@ -50,6 +50,8 @@ public:
 	const Status& GetStatus() const { return status_; }
 	const std::array<Block, NUM_BLOCKS>& GetBlocks() const { return blocks_; }
 
+	void GotoPosition(const Vec2f& gotoPos);
+
 	static Tetromino* CreateRandom(const Vec2f& startPos, float blockSize, float stride);
 	
 private:
@@ -73,7 +75,7 @@ private:
 	void UpdateActiveStatus(float deltaSeconds);
 	
 	/** 전체 블럭들 관련 동작. */
-	void CreateBlocks(std::array<Block, NUM_BLOCKS>& outBlocks, const Vec2f& startPos, float blockSize, const Vec4f& color);
+	void CreateBlocks(std::array<Block, NUM_BLOCKS>& outBlocks, Vec2f& outRotatePos, const Vec2f& startPos, float blockSize, const Vec4f& color);
 	void MoveBlocks(const Direction& direction, std::array<Block, NUM_BLOCKS>& blocks, Vec2f& rotatePos);
 	void RotateBlocks(std::array<Block, NUM_BLOCKS>& blocks, Vec2f& rotatePos);
 
@@ -83,6 +85,8 @@ private:
 	float stride_ = 0.0f;
 	Type type_ = Type::NONE;
 	Status status_ = Status::WAIT;
+	Vec2f startPos_;
+	Vec2f gotoPos_;
 	Vec2f rotatePos_;
 	std::array<Block, NUM_BLOCKS> blocks_;
 

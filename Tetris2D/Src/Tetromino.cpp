@@ -17,6 +17,7 @@ std::map<Key, Tetromino::Direction> Tetromino::keyDirections_ =
 Tetromino::Tetromino(const Vec2f& startPos, float blockSize, float stride, const Type& type, const Vec4f& color)
 	: stride_(stride)
 	, type_(type)
+	, startPos_(startPos)
 {
 	if (!app_)
 	{
@@ -25,7 +26,7 @@ Tetromino::Tetromino(const Vec2f& startPos, float blockSize, float stride, const
 	
 	board_ = EntityManager::Get().GetByName<Board>("Board");
 
-	CreateBlocks(blocks_, startPos, blockSize, color);
+	CreateBlocks(blocks_, rotatePos_, startPos, blockSize, color);
 
 	maxMoveStepTime_ = 1.0f;
 	moveStepTime_ = maxMoveStepTime_;
@@ -46,6 +47,12 @@ void Tetromino::Tick(float deltaSeconds)
 	switch (status_)
 	{
 	case Status::WAIT:
+	{
+
+	}
+	break;
+
+	case Status::GOTO:
 	{
 
 	}
@@ -173,7 +180,7 @@ void Tetromino::UpdateActiveStatus(float deltaSeconds)
 	}
 }
 
-void Tetromino::CreateBlocks(std::array<Block, NUM_BLOCKS>& outBlocks, const Vec2f& startPos, float blockSize, const Vec4f& color)
+void Tetromino::CreateBlocks(std::array<Block, NUM_BLOCKS>& outBlocks, Vec2f& outRotatePos, const Vec2f& startPos, float blockSize, const Vec4f& color)
 {
 	for (auto& block : outBlocks)
 	{
@@ -190,7 +197,7 @@ void Tetromino::CreateBlocks(std::array<Block, NUM_BLOCKS>& outBlocks, const Vec
 		outBlocks[2].SetCenter(Vec2f(startPos.x + 2.0f * stride_, startPos.y - 1.0f * stride_));
 		outBlocks[3].SetCenter(Vec2f(startPos.x + 3.0f * stride_, startPos.y - 1.0f * stride_));
 
-		rotatePos_ = startPos + Vec2f(+1.5f * stride_, -1.5f * stride_);
+		outRotatePos = startPos + Vec2f(+1.5f * stride_, -1.5f * stride_);
 	}
 	break;
 
@@ -201,7 +208,7 @@ void Tetromino::CreateBlocks(std::array<Block, NUM_BLOCKS>& outBlocks, const Vec
 		outBlocks[2].SetCenter(Vec2f(startPos.x + 0.0f * stride_, startPos.y - 1.0f * stride_));
 		outBlocks[3].SetCenter(Vec2f(startPos.x + 1.0f * stride_, startPos.y - 1.0f * stride_));
 
-		rotatePos_ = startPos + Vec2f(+0.5f * stride_, -0.5f * stride_);
+		outRotatePos = startPos + Vec2f(+0.5f * stride_, -0.5f * stride_);
 	}
 	break;
 
@@ -212,7 +219,7 @@ void Tetromino::CreateBlocks(std::array<Block, NUM_BLOCKS>& outBlocks, const Vec
 		outBlocks[2].SetCenter(Vec2f(startPos.x + 2.0f * stride_, startPos.y - 1.0f * stride_));
 		outBlocks[3].SetCenter(Vec2f(startPos.x + 1.0f * stride_, startPos.y - 2.0f * stride_));
 
-		rotatePos_ = startPos + Vec2f(stride_, -stride_);
+		outRotatePos = startPos + Vec2f(stride_, -stride_);
 	}
 	break;
 
@@ -223,7 +230,7 @@ void Tetromino::CreateBlocks(std::array<Block, NUM_BLOCKS>& outBlocks, const Vec
 		outBlocks[2].SetCenter(Vec2f(startPos.x + 2.0f * stride_, startPos.y - 1.0f * stride_));
 		outBlocks[3].SetCenter(Vec2f(startPos.x + 2.0f * stride_, startPos.y - 2.0f * stride_));
 
-		rotatePos_ = startPos + Vec2f(stride_, -stride_);
+		outRotatePos = startPos + Vec2f(stride_, -stride_);
 	}
 	break;
 
@@ -234,7 +241,7 @@ void Tetromino::CreateBlocks(std::array<Block, NUM_BLOCKS>& outBlocks, const Vec
 		outBlocks[2].SetCenter(Vec2f(startPos.x + 2.0f * stride_, startPos.y - 1.0f * stride_));
 		outBlocks[3].SetCenter(Vec2f(startPos.x + 0.0f * stride_, startPos.y - 2.0f * stride_));
 
-		rotatePos_ = startPos + Vec2f(stride_, -stride_);
+		outRotatePos = startPos + Vec2f(stride_, -stride_);
 	}
 	break;
 
@@ -245,7 +252,7 @@ void Tetromino::CreateBlocks(std::array<Block, NUM_BLOCKS>& outBlocks, const Vec
 		outBlocks[2].SetCenter(Vec2f(startPos.x + 0.0f * stride_, startPos.y - 1.0f * stride_));
 		outBlocks[3].SetCenter(Vec2f(startPos.x + 1.0f * stride_, startPos.y - 1.0f * stride_));
 
-		rotatePos_ = startPos + Vec2f(stride_, -stride_);
+		outRotatePos = startPos + Vec2f(stride_, -stride_);
 	}
 	break;
 
@@ -256,7 +263,7 @@ void Tetromino::CreateBlocks(std::array<Block, NUM_BLOCKS>& outBlocks, const Vec
 		outBlocks[2].SetCenter(Vec2f(startPos.x + 1.0f * stride_, startPos.y - 1.0f * stride_));
 		outBlocks[3].SetCenter(Vec2f(startPos.x + 2.0f * stride_, startPos.y - 1.0f * stride_));
 
-		rotatePos_ = startPos + Vec2f(stride_, -stride_);
+		outRotatePos = startPos + Vec2f(stride_, -stride_);
 	}
 	break;
 	}
