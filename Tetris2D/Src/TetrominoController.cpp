@@ -43,7 +43,7 @@ void TetrominoController::Tick(float deltaSeconds)
 		EntityManager::Get().Destroy(currentTetromino_);
 
 		currentTetromino_ = nextTetromino_;
-		currentTetromino_->startPos_ = startPos_;
+		currentTetromino_->GotoPosition(startPos_);
 
 		nextTetromino_ = Tetromino::CreateRandom(waitPos_, blockSize_, blockStride_);
 	}
