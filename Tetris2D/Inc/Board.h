@@ -12,6 +12,13 @@
 class Board : public IEntity2D
 {
 public:
+	enum class Status
+	{
+		WAIT   = 0x00,
+		DEPLOY = 0x01,
+	};
+
+public:
 	/** row: За, col: ї­ */
 	Board(const Vec2f& center, float blockSize, uint32_t row, uint32_t col);
 	virtual ~Board();
@@ -25,6 +32,7 @@ public:
 	float GetBlockSize() const { return blockSize_; }
 	uint32_t GetRow() const { return row_; }
 	uint32_t GetCol() const { return col_; }
+	const Status& GetStatus() const { return status_; }
 
 	const Vec2f& GetStartPos() const { return startPos_; }
 	bool IsBlocksInside(const Block* blocks, uint32_t count);
@@ -49,6 +57,8 @@ private:
 	std::vector<Vec2f> inlines_;
 	std::vector<Block> cells_;
 	std::list<Block> blocks_;
+
+	Status status_ = Status::WAIT;
 
 	std::function<bool(const Block&, const Block&)> blockSortEvent_ = nullptr;
 };
