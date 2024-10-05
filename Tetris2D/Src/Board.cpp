@@ -77,8 +77,6 @@ void Board::Tick(float deltaSeconds)
 	}
 	break;
 	}
-
-	//status_ = Status::WAIT;
 }
 
 void Board::Render()
