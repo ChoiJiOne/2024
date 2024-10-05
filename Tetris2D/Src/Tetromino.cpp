@@ -87,6 +87,11 @@ void Tetromino::Tick(float deltaSeconds)
 
 void Tetromino::Render()
 {
+	if (status_ == Status::DONE)
+	{
+		return;
+	}
+
 	RenderManager2D& renderMgr = RenderManager2D::Get();
 	if (status_ == Status::ACTIVE)
 	{
