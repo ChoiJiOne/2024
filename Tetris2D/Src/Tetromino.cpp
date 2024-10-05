@@ -223,6 +223,17 @@ void Tetromino::UpdateActiveStatus(float deltaSeconds)
 		Rotate();
 	}
 
+	if (app_->GetKeyPress(Key::KEY_SPACE) == Press::PRESSED)
+	{
+		while (CanMoveBlocks(Tetromino::Direction::DOWN, blocks_, rotatePos_))
+		{
+			MoveBlocks(Tetromino::Direction::DOWN, blocks_, rotatePos_);
+		}
+
+		status_ = Status::DONE;
+		return;
+	}
+
 	Press press = app_->GetKeyPress(Key::KEY_DOWN);
 	if (press == Press::PRESSED || press == Press::HELD)
 	{
