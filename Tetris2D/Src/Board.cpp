@@ -219,10 +219,13 @@ bool Board::UpdateRemoveColumn()
 
 		if (count == row_)
 		{
+			removeColumn_[col] = true;
 			bNeedUpdateRemoveColumn = true;
 		}
-
-		removeColumn_[col] = (count == row_);
+		else
+		{
+			removeColumn_[col] = false;
+		}
 	}
 
 	return bNeedUpdateRemoveColumn;
