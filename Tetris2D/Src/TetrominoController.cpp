@@ -32,27 +32,67 @@ TetrominoController::~TetrominoController()
 
 void TetrominoController::Tick(float deltaSeconds)
 {
-	currentTetromino_->Tick(deltaSeconds);
-	nextTetromino_->Tick(deltaSeconds);
-
-	if (currentTetromino_->GetStatus() == Tetromino::Status::DONE)
+	switch (status_)
 	{
-		const std::array<Block, Tetromino::NUM_BLOCKS>& blocks = currentTetromino_->GetBlocks();
-		board_->DeployBlocks(blocks.data(), blocks.size());
+	case Status::ACTIVE:
+	{
+		currentTetromino_->Tick(deltaSeconds);
+		nextTetromino_->Tick(deltaSeconds);
 
-		EntityManager::Get().Destroy(currentTetromino_);
+		Tetromino::Status status = currentTetromino_->GetStatus();
+		if (status == Tetromino::Status::DONE)
+		{
+			const std::array<Block, Tetromino::NUM_BLOCKS>& currentBlocks = currentTetromino_->GetBlocks();
+			board_->DeployBlocks(currentBlocks.data(), currentBlocks.size());
 
-		currentTetromino_ = nextTetromino_;
-		currentTetromino_->GotoPosition(startPos_);
+			EntityManager::Get().Destroy(currentTetromino_);
+			currentTetromino_ = nullptr;
 
-		nextTetromino_ = CreateRandomTetromino(waitPos_, blockSize_, blockStride_);
+			status_ = Status::DEACTIVE;
+		}
+	}
+	break;
+
+	case Status::DEACTIVE:
+	{
+		Board::Status status = board_->GetStatus();
+		if (status == Board::Status::WAIT)
+		{
+			currentTetromino_ = nextTetromino_;
+			currentTetromino_->GotoPosition(startPos_);
+
+			const std::array<Block, Tetromino::NUM_BLOCKS>& newCurrentBlocks = currentTetromino_->gotoBlocks_;
+			if (!board_->CanBlocksDeploy(newCurrentBlocks.data(), newCurrentBlocks.size()))
+			{
+				status_ = Status::DONE;
+				break;
+			}
+
+			status_ = Status::ACTIVE;
+			nextTetromino_ = CreateRandomTetromino(waitPos_, blockSize_, blockStride_);
+		}
+	}
+	break;
+	
+	case Status::DONE:
+	{
+
+	}
+	break;
 	}
 }
 
 void TetrominoController::Render()
 {
-	currentTetromino_->Render();
-	nextTetromino_->Render();
+	if (currentTetromino_)
+	{
+		currentTetromino_->Render();
+	}
+
+	if (nextTetromino_)
+	{
+		nextTetromino_->Render();
+	}
 }
 
 void TetrominoController::Release()

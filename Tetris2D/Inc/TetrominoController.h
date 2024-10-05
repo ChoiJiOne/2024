@@ -12,9 +12,9 @@ class TetrominoController : public IEntity2D
 public:
 	enum class Status
 	{
-		WAIT   = 0x00, /** 대기 상태 */
-		DEPLOY = 0x01, /** 테트로미노를 보드에 배포 */
-		DONE   = 0x02, /** 더 이상 진행할 수 없는 상태 */
+		ACTIVE   = 0x00, /** 활성화 상태 */
+		DEACTIVE = 0x01, /** 비활성화 상태 */
+		DONE     = 0x02, /** 더 이상 진행할 수 없는 상태 */
 	};
 
 public:
@@ -29,7 +29,7 @@ public:
 
 private:
 	Tetromino* CreateRandomTetromino(const Vec2f& startPos, float blockSize, float stride);
-
+	
 private:
 	Vec2f startPos_;
 	Vec2f waitPos_;
@@ -40,5 +40,5 @@ private:
 	Tetromino* currentTetromino_ = nullptr;
 	Tetromino* nextTetromino_ = nullptr;
 
-	Status status_ = Status::WAIT;
+	Status status_ = Status::ACTIVE;
 };
