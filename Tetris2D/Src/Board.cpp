@@ -8,6 +8,7 @@ Board::Board(const Vec2f& center, float cellSize, uint32_t row, uint32_t col)
 	, cellSize_(cellSize)
 	, row_(row)
 	, col_(col)
+	, removeColumn_(col_)
 {
 	size_.x = static_cast<float>(row) * cellSize_;
 	size_.y = static_cast<float>(col) * cellSize_;
@@ -57,12 +58,28 @@ Board::~Board()
 
 void Board::Tick(float deltaSeconds)
 {
-	if (status_ == Status::WAIT)
+	switch (status_)
 	{
-		return;
+	case Status::WAIT:
+	{
+
+	}
+	break;
+
+	case Status::REMOVE:
+	{
+
+	}
+	break;
+
+	case Status::FILL:
+	{
+
+	}
+	break;
 	}
 
-	status_ = Status::WAIT;
+	//status_ = Status::WAIT;
 }
 
 void Board::Render()
@@ -167,7 +184,8 @@ void Board::DeployBlocks(const Block* blocks, uint32_t count)
 		}
 	}
 
-	status_ = Status::DEPLOY;
+	UpdateRemoveColumn();
+	status_ = Status::REMOVE;
 }
 
 Vec2f Board::CalculateCellPos(uint32_t row, uint32_t col)
@@ -175,4 +193,23 @@ Vec2f Board::CalculateCellPos(uint32_t row, uint32_t col)
 	Vec2f cellPos = center_;
 	cellPos += Vec2f(-size_.x * 0.5f + (static_cast<float>(row) + 0.5f) * cellSize_, +size_.y * 0.5f - (static_cast<float>(col) + 0.5f) * cellSize_);
 	return cellPos;
+}
+
+void Board::UpdateRemoveColumn()
+{
+	for (uint32_t col = 0; col < col_; ++col)
+	{
+		int32_t count = 0;
+
+		for (uint32_t row = 0; row < row_; ++row)
+		{
+			uint32_t index = row + col * row_;
+			if (cells_[index].second)
+			{
+				count++;
+			}
+		}
+
+		removeColumn_[col] = (count == row_);
+	}
 }

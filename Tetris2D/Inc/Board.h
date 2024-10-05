@@ -15,7 +15,8 @@ public:
 	enum class Status
 	{
 		WAIT   = 0x00,
-		DEPLOY = 0x01,
+		REMOVE = 0x01,
+		FILL   = 0x02,
 	};
 
 public:
@@ -42,6 +43,7 @@ public:
 
 private:
 	Vec2f CalculateCellPos(uint32_t row, uint32_t col);
+	void UpdateRemoveColumn();
 
 private:
 	Vec2f center_;
@@ -56,6 +58,8 @@ private:
 
 	std::vector<Vec2f> inlines_;
 	std::vector<std::pair<Block, bool>> cells_;
+
+	std::vector<bool> removeColumn_;
 
 	Status status_ = Status::WAIT;
 };
