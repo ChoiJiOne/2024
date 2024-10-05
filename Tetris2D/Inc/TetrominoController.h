@@ -10,6 +10,14 @@ class Tetromino;
 class TetrominoController : public IEntity2D
 {
 public:
+	enum class Status
+	{
+		WAIT   = 0x00, /** 대기 상태 */
+		DEPLOY = 0x01, /** 테트로미노를 보드에 배포 */
+		DONE   = 0x02, /** 더 이상 진행할 수 없는 상태 */
+	};
+
+public:
 	TetrominoController();
 	virtual ~TetrominoController();
 
@@ -31,4 +39,6 @@ private:
 	Board* board_ = nullptr;
 	Tetromino* currentTetromino_ = nullptr;
 	Tetromino* nextTetromino_ = nullptr;
+
+	Status status_ = Status::WAIT;
 };
