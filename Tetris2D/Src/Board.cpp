@@ -68,7 +68,6 @@ void Board::Tick(float deltaSeconds)
 
 	case Status::REMOVE:
 	{
-
 	}
 	break;
 
@@ -184,8 +183,14 @@ void Board::DeployBlocks(const Block* blocks, uint32_t count)
 		}
 	}
 
-	UpdateRemoveColumn();
-	status_ = Status::REMOVE;
+	if (!UpdateRemoveColumn())
+	{
+		status_ = Status::WAIT;
+	}
+	else
+	{
+		status_ = Status::REMOVE;
+	}
 }
 
 Vec2f Board::CalculateCellPos(uint32_t row, uint32_t col)
@@ -195,8 +200,10 @@ Vec2f Board::CalculateCellPos(uint32_t row, uint32_t col)
 	return cellPos;
 }
 
-void Board::UpdateRemoveColumn()
+bool Board::UpdateRemoveColumn()
 {
+	bool bNeedUpdateRemoveColumn = false;
+
 	for (uint32_t col = 0; col < col_; ++col)
 	{
 		int32_t count = 0;
@@ -210,6 +217,13 @@ void Board::UpdateRemoveColumn()
 			}
 		}
 
+		if (count == row_)
+		{
+			bNeedUpdateRemoveColumn = true;
+		}
+
 		removeColumn_[col] = (count == row_);
 	}
+
+	return bNeedUpdateRemoveColumn;
 }

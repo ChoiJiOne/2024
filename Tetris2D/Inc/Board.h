@@ -43,7 +43,7 @@ public:
 
 private:
 	Vec2f CalculateCellPos(uint32_t row, uint32_t col);
-	void UpdateRemoveColumn();
+	bool UpdateRemoveColumn();
 
 private:
 	Vec2f center_;
@@ -59,6 +59,8 @@ private:
 	std::vector<Vec2f> inlines_;
 	std::vector<std::pair<Block, bool>> cells_;
 
+	float removeStepTime_ = 0.0f;
+	float maxRemoveStepTime_ = 0.0f;
 	std::vector<bool> removeColumn_;
 
 	Status status_ = Status::WAIT;
