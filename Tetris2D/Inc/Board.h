@@ -20,7 +20,7 @@ public:
 
 public:
 	/** row: За, col: ї­ */
-	Board(const Vec2f& center, float blockSize, uint32_t row, uint32_t col);
+	Board(const Vec2f& center, float cellSize, uint32_t row, uint32_t col);
 	virtual ~Board();
 
 	DISALLOW_COPY_AND_ASSIGN(Board);
@@ -29,7 +29,7 @@ public:
 	virtual void Render() override;
 	virtual void Release() override;
 
-	float GetBlockSize() const { return blockSize_; }
+	float GetCellSize() const { return cellSize_; }
 	uint32_t GetRow() const { return row_; }
 	uint32_t GetCol() const { return col_; }
 	const Status& GetStatus() const { return status_; }
@@ -45,7 +45,7 @@ private:
 
 private:
 	Vec2f center_;
-	float blockSize_ = 0.0f;
+	float cellSize_ = 0.0f;
 	uint32_t row_ = 0U;
 	uint32_t col_ = 0U;
 	Vec2f size_;
@@ -55,10 +55,7 @@ private:
 	Vec4f inlineColor_;
 
 	std::vector<Vec2f> inlines_;
-	std::vector<Block> cells_;
-	std::list<Block> blocks_;
+	std::vector<std::pair<Block, bool>> cells_;
 
 	Status status_ = Status::WAIT;
-
-	std::function<bool(const Block&, const Block&)> blockSortEvent_ = nullptr;
 };

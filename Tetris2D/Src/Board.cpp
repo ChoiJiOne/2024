@@ -3,14 +3,14 @@
 
 #include "Board.h"
 
-Board::Board(const Vec2f& center, float blockSize, uint32_t row, uint32_t col)
+Board::Board(const Vec2f& center, float cellSize, uint32_t row, uint32_t col)
 	: center_(center)
-	, blockSize_(blockSize)
+	, cellSize_(cellSize)
 	, row_(row)
 	, col_(col)
 {
-	size_.x = static_cast<float>(row) * blockSize;
-	size_.y = static_cast<float>(col) * blockSize;
+	size_.x = static_cast<float>(row) * cellSize_;
+	size_.y = static_cast<float>(col) * cellSize_;
 
 	outlineColor_ = Vec4f(1.0f, 1.0f, 1.0f, 1.0f);
 	inlineColor_ = Vec4f(0.3f, 0.3f, 0.3f, 0.3f);
@@ -20,17 +20,17 @@ Board::Board(const Vec2f& center, float blockSize, uint32_t row, uint32_t col)
 	int32_t index = 0;
 	for (uint32_t row = 1; row < row_; ++row)
 	{
-		inlines_[index++] = center_ + Vec2f(-size_.x * 0.5f + static_cast<float>(row) * blockSize_, size_.y * 0.5f - static_cast<float>(0) * blockSize_);
-		inlines_[index++] = center_ + Vec2f(-size_.x * 0.5f + static_cast<float>(row) * blockSize_, size_.y * 0.5f - static_cast<float>(col_) * blockSize_);
+		inlines_[index++] = center_ + Vec2f(-size_.x * 0.5f + static_cast<float>(row) * cellSize_, size_.y * 0.5f - static_cast<float>(0) * cellSize_);
+		inlines_[index++] = center_ + Vec2f(-size_.x * 0.5f + static_cast<float>(row) * cellSize_, size_.y * 0.5f - static_cast<float>(col_) * cellSize_);
 	}
 
 	for (uint32_t col = 1; col < col_; ++col)
 	{
-		inlines_[index++] = center_ + Vec2f(-size_.x * 0.5f + static_cast<float>(0) * blockSize_, size_.y * 0.5f - static_cast<float>(col) * blockSize_);
-		inlines_[index++] = center_ + Vec2f(-size_.x * 0.5f + static_cast<float>(row_) * blockSize_, size_.y * 0.5f - static_cast<float>(col) * blockSize_);
+		inlines_[index++] = center_ + Vec2f(-size_.x * 0.5f + static_cast<float>(0) * cellSize_, size_.y * 0.5f - static_cast<float>(col) * cellSize_);
+		inlines_[index++] = center_ + Vec2f(-size_.x * 0.5f + static_cast<float>(row_) * cellSize_, size_.y * 0.5f - static_cast<float>(col) * cellSize_);
 	}
 	
-	cells_ = std::vector<Block>(row_ * col_);
+	cells_ = std::vector<std::pair<Block, bool>>(row_ * col_);
 	for (uint32_t colIndex = 0; colIndex < col_; ++colIndex)
 	{
 		for (uint32_t rowIndex = 0; rowIndex < row_; ++rowIndex)
@@ -38,37 +38,11 @@ Board::Board(const Vec2f& center, float blockSize, uint32_t row, uint32_t col)
 			uint32_t index = rowIndex + colIndex * row_;
 			Vec2f center = CalculateCellPos(rowIndex, colIndex);
 
-			cells_[index].SetBound(Rect2D(center, blockSize_));
-			cells_[index].SetColor(Vec4f(1.0f, 1.0f, 1.0f, 1.0f));
+			cells_[index] = { Block(Rect2D(center, cellSize_), Vec4f(0.0f, 0.0f, 0.0f, 0.0f)), false };
 		}
 	}
 
 	startPos_ = CalculateCellPos(4, 0);
-	blockSortEvent_ = [&](const Block& l, const Block& r)->bool
-		{
-			const Vec2f& cl = l.GetBound().center;
-			const Vec2f& cr = r.GetBound().center;
-
-			if (cl.y < cr.y)
-			{
-				return true;
-			}
-			else if (GameMath::NearZero(cl.y - cr.y))
-			{
-				if (cl.x < cr.x)
-				{
-					return true;
-				}
-				else
-				{
-					return false;
-				}
-			}
-			else
-			{
-				return false;
-			}
-		};
 
 	bIsInitialized_ = true;
 }
@@ -83,6 +57,12 @@ Board::~Board()
 
 void Board::Tick(float deltaSeconds)
 {
+	if (status_ == Status::WAIT)
+	{
+		return;
+	}
+
+	status_ = Status::WAIT;
 }
 
 void Board::Render()
@@ -96,10 +76,14 @@ void Board::Render()
 		renderMgr.DrawLine(inlines_[index + 0], inlines_[index + 1], inlineColor_);
 	}
 
-	for (const auto& block : blocks_)
+	for (const auto& cell : cells_)
 	{
-		const Rect2D& bound = block.GetBound();
-		renderMgr.DrawRoundRect(bound.center, bound.size.x, bound.size.y, 10.0f, block.GetColor(), 0.0f);
+		if (cell.second)
+		{
+			const Block& block = cell.first;
+			const Rect2D& bound = block.GetBound();
+			renderMgr.DrawRoundRect(bound.center, bound.size.x, bound.size.y, 10.0f, block.GetColor(), 0.0f);
+		}
 	}
 }
 
@@ -119,7 +103,9 @@ bool Board::IsBlocksInside(const Block* blocks, uint32_t count)
 
 		for (const auto& cell : cells_)
 		{
-			if (cell.GetBound().Intersect(&bound))
+			const Rect2D cellBound = cell.first.GetBound();
+
+			if (cellBound.Intersect(&bound))
 			{
 				bIsBlockInside = true;
 				break;
@@ -142,9 +128,11 @@ bool Board::CanBlocksDeploy(const Block* blocks, uint32_t count)
 		bool bCanBlocksDeploy = true;
 		const Rect2D& bound = blocks[index].GetBound();
 
-		for (const auto& block : blocks_)
+		for (const auto& cell : cells_)
 		{
-			if (block.GetBound().Intersect(&bound))
+			const Rect2D cellBound = cell.first.GetBound();
+
+			if (cellBound.Intersect(&bound) && cell.second)
 			{
 				bCanBlocksDeploy = false;
 				break;
@@ -164,15 +152,27 @@ void Board::DeployBlocks(const Block* blocks, uint32_t count)
 {
 	for (uint32_t index = 0; index < count; ++index)
 	{
-		blocks_.push_back(blocks[index]);
+		const Block& block = blocks[index];
+		const Rect2D& bound = block.GetBound();
+
+		for (auto& cell : cells_)
+		{
+			const Rect2D cellBound = cell.first.GetBound();
+
+			if (cellBound.Intersect(&bound))
+			{
+				cell = { block, true };
+				break;
+			}
+		}
 	}
 
-	blocks_.sort(blockSortEvent_);
+	status_ = Status::DEPLOY;
 }
 
 Vec2f Board::CalculateCellPos(uint32_t row, uint32_t col)
 {
 	Vec2f cellPos = center_;
-	cellPos += Vec2f(-size_.x * 0.5f + (static_cast<float>(row) + 0.5f) * blockSize_, +size_.y * 0.5f - (static_cast<float>(col) + 0.5f) * blockSize_);
+	cellPos += Vec2f(-size_.x * 0.5f + (static_cast<float>(row) + 0.5f) * cellSize_, +size_.y * 0.5f - (static_cast<float>(col) + 0.5f) * cellSize_);
 	return cellPos;
 }
