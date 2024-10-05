@@ -44,6 +44,7 @@ public:
 private:
 	Vec2f CalculateCellPos(uint32_t row, uint32_t col);
 	bool UpdateRemoveColumn();
+	bool IsEmptyColumn(uint32_t col);
 
 private:
 	Vec2f center_;

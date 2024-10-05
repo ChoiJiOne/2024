@@ -250,3 +250,17 @@ bool Board::UpdateRemoveColumn()
 
 	return bNeedUpdateRemoveColumn;
 }
+
+bool Board::IsEmptyColumn(uint32_t col)
+{
+	for (uint32_t row = 0; row < row_; ++row)
+	{
+		uint32_t index = row + col * row_;
+		if (cells_[index].second)
+		{
+			return false;
+		}
+	}
+
+	return true;
+}
