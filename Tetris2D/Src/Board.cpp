@@ -45,6 +45,8 @@ Board::Board(const Vec2f& center, float cellSize, uint32_t row, uint32_t col)
 
 	startPos_ = CalculateCellPos(4, 0);
 
+	maxRemoveStepTime_ = 1.0f;
+
 	bIsInitialized_ = true;
 }
 
@@ -68,6 +70,25 @@ void Board::Tick(float deltaSeconds)
 
 	case Status::REMOVE:
 	{
+		removeStepTime_ -= deltaSeconds;
+		for (uint32_t col = 0; col < col_; ++col)
+		{
+			if (removeColumn_[col])
+			{
+				for (uint32_t row = 0; row < row_; ++row)
+				{
+					uint32_t index = row + col * row_;
+					Vec4f color = cells_[index].first.GetColor();
+					color.w = removeStepTime_ / maxRemoveStepTime_;
+					cells_[index].first.SetColor(color);
+				}
+			}
+		}
+
+		if (removeStepTime_ <= 0.0f)
+		{
+			status_ = Status::FILL;
+		}
 	}
 	break;
 
@@ -187,6 +208,7 @@ void Board::DeployBlocks(const Block* blocks, uint32_t count)
 	}
 	else
 	{
+		removeStepTime_ = maxRemoveStepTime_;
 		status_ = Status::REMOVE;
 	}
 }
