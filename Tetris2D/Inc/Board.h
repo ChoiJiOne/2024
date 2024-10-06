@@ -14,9 +14,10 @@ class Board : public IEntity2D
 public:
 	enum class Status
 	{
-		WAIT   = 0x00,
-		REMOVE = 0x01,
-		FILL   = 0x02,
+		WAIT    = 0x00, /** 대기 */
+		REMOVE  = 0x01, /** 꽉 채워진 라인을 삭제 */
+		CONFIRM = 0x02, /** 비워진 라인이 있는지 확인. */
+		FILL    = 0x03, /** 비워진 라인을 채움. */
 	};
 
 public:
@@ -63,6 +64,9 @@ private:
 	float removeStepTime_ = 0.0f;
 	float maxRemoveStepTime_ = 0.0f;
 	std::vector<bool> removeColumn_;
+
+	float fillStepTime_ = 0.0f;
+	float maxFillStepTime_ = 0.0f;
 
 	Status status_ = Status::WAIT;
 };

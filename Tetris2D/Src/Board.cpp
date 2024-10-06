@@ -46,6 +46,7 @@ Board::Board(const Vec2f& center, float cellSize, uint32_t row, uint32_t col)
 	startPos_ = CalculateCellPos(4, 0);
 
 	maxRemoveStepTime_ = 1.0f;
+	maxFillStepTime_ = 1.0f;
 
 	bIsInitialized_ = true;
 }
@@ -99,9 +100,15 @@ void Board::Tick(float deltaSeconds)
 					}
 				}
 			}
-
-			status_ = Status::FILL;
+			
+			status_ = Status::CONFIRM;
 		}
+	}
+	break;
+
+	case Status::CONFIRM:
+	{
+
 	}
 	break;
 
