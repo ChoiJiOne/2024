@@ -8,6 +8,7 @@ Board::Board(const Vec2f& center, float cellSize, uint32_t row, uint32_t col)
 	, cellSize_(cellSize)
 	, row_(row)
 	, col_(col)
+	, cells_(row_* col_)
 	, removeColumn_(col_)
 {
 	size_.x = static_cast<float>(row) * cellSize_;
@@ -31,18 +32,7 @@ Board::Board(const Vec2f& center, float cellSize, uint32_t row, uint32_t col)
 		inlines_[index++] = center_ + Vec2f(-size_.x * 0.5f + static_cast<float>(row_) * cellSize_, size_.y * 0.5f - static_cast<float>(col) * cellSize_);
 	}
 	
-	cells_ = std::vector<std::pair<Block, bool>>(row_ * col_);
-	for (uint32_t colIndex = 0; colIndex < col_; ++colIndex)
-	{
-		for (uint32_t rowIndex = 0; rowIndex < row_; ++rowIndex)
-		{
-			uint32_t index = rowIndex + colIndex * row_;
-			Vec2f center = CalculateCellPos(rowIndex, colIndex);
-
-			cells_[index] = { Block(Rect2D(center, cellSize_), Vec4f(0.0f, 0.0f, 0.0f, 0.0f)), false };
-		}
-	}
-
+	CleanupCells(cells_);
 	startPos_ = CalculateCellPos(4, 0);
 
 	maxRemoveStepTime_ = 1.0f;
@@ -283,4 +273,18 @@ bool Board::IsEmptyColumn(uint32_t col)
 	}
 
 	return true;
+}
+
+void Board::CleanupCells(std::vector<std::pair<Block, bool>>& cells)
+{
+	for (uint32_t col = 0; col < col_; ++col)
+	{
+		for (uint32_t row = 0; row < row_; ++row)
+		{
+			uint32_t index = row + col * row_;
+			Vec2f center = CalculateCellPos(row, col);
+
+			cells[index] = { Block(Rect2D(center, cellSize_), Vec4f(0.0f, 0.0f, 0.0f, 0.0f)), false };
+		}
+	}
 }
