@@ -51,11 +51,10 @@ private:
 	void CleanupCells(std::vector<std::pair<Block, bool>>& cells);
 
 private:
-	Vec2f center_;
+	Rect2D bound_;
 	float cellSize_ = 0.0f;
 	uint32_t row_ = 0U;
 	uint32_t col_ = 0U;
-	Vec2f size_;
 	Vec2f startPos_;
 
 	Vec4f outlineColor_;
@@ -70,6 +69,7 @@ private:
 
 	float fillStepTime_ = 0.0f;
 	float maxFillStepTime_ = 0.0f;
+	uint32_t currentfillColumn_ = 0;
 
 	Status status_ = Status::WAIT;
 };

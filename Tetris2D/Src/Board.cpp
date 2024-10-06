@@ -4,16 +4,14 @@
 #include "Board.h"
 
 Board::Board(const Vec2f& center, float cellSize, uint32_t row, uint32_t col)
-	: center_(center)
-	, cellSize_(cellSize)
+	: cellSize_(cellSize)
 	, row_(row)
 	, col_(col)
 	, inlines_((row_ - 2)* (col_ - 2) * 2)
 	, cells_(row_* col_)
 	, removeColumn_(col_)
 {
-	size_.x = static_cast<float>(row) * cellSize_;
-	size_.y = static_cast<float>(col) * cellSize_;
+	bound_ = Rect2D(center, Vec2f(static_cast<float>(row) * cellSize_, static_cast<float>(col) * cellSize_));
 
 	outlineColor_ = Vec4f(1.0f, 1.0f, 1.0f, 1.0f);
 	inlineColor_ = Vec4f(0.3f, 0.3f, 0.3f, 0.3f);
@@ -77,7 +75,8 @@ void Board::Tick(float deltaSeconds)
 					}
 				}
 			}
-			
+
+			currentfillColumn_ = 0;
 			status_ = Status::CONFIRM;
 		}
 	}
@@ -85,13 +84,36 @@ void Board::Tick(float deltaSeconds)
 
 	case Status::CONFIRM:
 	{
+		for (uint32_t col = currentfillColumn_; col < col_; ++col)
+		{
+			if (removeColumn_[col])
+			{
+				currentfillColumn_ = col;
+				removeColumn_[col] = false;
+				status_ = Status::FILL;
+				return;
+			}
+		}
 
+		status_ = Status::WAIT;
 	}
 	break;
 
 	case Status::FILL:
 	{
+		fillStepTime_ += deltaSeconds;
+		float t = fillStepTime_ / maxFillStepTime_;
 
+		for (int32_t col = currentfillColumn_ - 1; col > 0; --col)
+		{
+			//GotoColumn(t, col, col + 1);
+		}
+
+
+		if (fillStepTime_ >= maxFillStepTime_)
+		{
+			status_ = Status::CONFIRM;
+		}
 	}
 	break;
 	}
@@ -101,7 +123,7 @@ void Board::Render()
 {
 	RenderManager2D& renderMgr = RenderManager2D::Get();
 
-	renderMgr.DrawRectWireframe(center_, size_.x, size_.y, outlineColor_, 0.0f);
+	renderMgr.DrawRectWireframe(bound_.center, bound_.size.x, bound_.size.y, outlineColor_, 0.0f);
 
 	for (uint32_t index = 0; index < inlines_.size(); index += 2)
 	{
@@ -212,8 +234,8 @@ void Board::DeployBlocks(const Block* blocks, uint32_t count)
 
 Vec2f Board::CalculateCellPos(uint32_t row, uint32_t col)
 {
-	Vec2f cellPos = center_;
-	cellPos += Vec2f(-size_.x * 0.5f + (static_cast<float>(row) + 0.5f) * cellSize_, +size_.y * 0.5f - (static_cast<float>(col) + 0.5f) * cellSize_);
+	Vec2f cellPos = bound_.center;
+	cellPos += Vec2f(-bound_.size.x * 0.5f + (static_cast<float>(row) + 0.5f) * cellSize_, +bound_.size.y * 0.5f - (static_cast<float>(col) + 0.5f) * cellSize_);
 	return cellPos;
 }
 
@@ -267,14 +289,14 @@ void Board::CleanupInlines(std::vector<Vec2f>& inlines)
 	int32_t index = 0;
 	for (uint32_t row = 1; row < row_; ++row)
 	{
-		inlines[index++] = center_ + Vec2f(-size_.x * 0.5f + static_cast<float>(row) * cellSize_, size_.y * 0.5f -    static_cast<float>(0) * cellSize_);
-		inlines[index++] = center_ + Vec2f(-size_.x * 0.5f + static_cast<float>(row) * cellSize_, size_.y * 0.5f - static_cast<float>(col_) * cellSize_);
+		inlines[index++] = bound_.center + Vec2f(-bound_.size.x * 0.5f + static_cast<float>(row) * cellSize_, bound_.size.y * 0.5f - static_cast<float>(   0) * cellSize_);
+		inlines[index++] = bound_.center + Vec2f(-bound_.size.x * 0.5f + static_cast<float>(row) * cellSize_, bound_.size.y * 0.5f - static_cast<float>(col_) * cellSize_);
 	}
 
 	for (uint32_t col = 1; col < col_; ++col)
 	{
-		inlines[index++] = center_ + Vec2f(-size_.x * 0.5f +    static_cast<float>(0) * cellSize_, size_.y * 0.5f - static_cast<float>(col) * cellSize_);
-		inlines[index++] = center_ + Vec2f(-size_.x * 0.5f + static_cast<float>(row_) * cellSize_, size_.y * 0.5f - static_cast<float>(col) * cellSize_);
+		inlines[index++] = bound_.center + Vec2f(-bound_.size.x * 0.5f +    static_cast<float>(0) * cellSize_, bound_.size.y * 0.5f - static_cast<float>(col) * cellSize_);
+		inlines[index++] = bound_.center + Vec2f(-bound_.size.x * 0.5f + static_cast<float>(row_) * cellSize_, bound_.size.y * 0.5f - static_cast<float>(col) * cellSize_);
 	}
 }
 
