@@ -8,6 +8,7 @@ Board::Board(const Vec2f& center, float cellSize, uint32_t row, uint32_t col)
 	, cellSize_(cellSize)
 	, row_(row)
 	, col_(col)
+	, inlines_((row_ - 2)* (col_ - 2) * 2)
 	, cells_(row_* col_)
 	, removeColumn_(col_)
 {
@@ -16,22 +17,8 @@ Board::Board(const Vec2f& center, float cellSize, uint32_t row, uint32_t col)
 
 	outlineColor_ = Vec4f(1.0f, 1.0f, 1.0f, 1.0f);
 	inlineColor_ = Vec4f(0.3f, 0.3f, 0.3f, 0.3f);
-
-	inlines_ = std::vector<Vec2f>((row_ - 2) * (col_ - 2) * 2);
 	
-	int32_t index = 0;
-	for (uint32_t row = 1; row < row_; ++row)
-	{
-		inlines_[index++] = center_ + Vec2f(-size_.x * 0.5f + static_cast<float>(row) * cellSize_, size_.y * 0.5f - static_cast<float>(0) * cellSize_);
-		inlines_[index++] = center_ + Vec2f(-size_.x * 0.5f + static_cast<float>(row) * cellSize_, size_.y * 0.5f - static_cast<float>(col_) * cellSize_);
-	}
-
-	for (uint32_t col = 1; col < col_; ++col)
-	{
-		inlines_[index++] = center_ + Vec2f(-size_.x * 0.5f + static_cast<float>(0) * cellSize_, size_.y * 0.5f - static_cast<float>(col) * cellSize_);
-		inlines_[index++] = center_ + Vec2f(-size_.x * 0.5f + static_cast<float>(row_) * cellSize_, size_.y * 0.5f - static_cast<float>(col) * cellSize_);
-	}
-	
+	CleanupInlines(inlines_);
 	CleanupCells(cells_);
 	startPos_ = CalculateCellPos(4, 0);
 
@@ -273,6 +260,22 @@ bool Board::IsEmptyColumn(uint32_t col)
 	}
 
 	return true;
+}
+
+void Board::CleanupInlines(std::vector<Vec2f>& inlines)
+{
+	int32_t index = 0;
+	for (uint32_t row = 1; row < row_; ++row)
+	{
+		inlines[index++] = center_ + Vec2f(-size_.x * 0.5f + static_cast<float>(row) * cellSize_, size_.y * 0.5f -    static_cast<float>(0) * cellSize_);
+		inlines[index++] = center_ + Vec2f(-size_.x * 0.5f + static_cast<float>(row) * cellSize_, size_.y * 0.5f - static_cast<float>(col_) * cellSize_);
+	}
+
+	for (uint32_t col = 1; col < col_; ++col)
+	{
+		inlines[index++] = center_ + Vec2f(-size_.x * 0.5f +    static_cast<float>(0) * cellSize_, size_.y * 0.5f - static_cast<float>(col) * cellSize_);
+		inlines[index++] = center_ + Vec2f(-size_.x * 0.5f + static_cast<float>(row_) * cellSize_, size_.y * 0.5f - static_cast<float>(col) * cellSize_);
+	}
 }
 
 void Board::CleanupCells(std::vector<std::pair<Block, bool>>& cells)

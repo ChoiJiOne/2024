@@ -46,6 +46,8 @@ private:
 	Vec2f CalculateCellPos(uint32_t row, uint32_t col);
 	bool UpdateRemoveColumn();
 	bool IsEmptyColumn(uint32_t col);
+
+	void CleanupInlines(std::vector<Vec2f>& inlines);
 	void CleanupCells(std::vector<std::pair<Block, bool>>& cells);
 
 private:
