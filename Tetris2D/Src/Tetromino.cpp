@@ -120,7 +120,7 @@ void Tetromino::GotoPosition(const Vec2f& gotoPos)
 	Vec4f color = block.GetColor();
 
 	gotoStepTime_ = 0.0f;
-	maxGotoStepTime_ = 0.4f;
+	maxGotoStepTime_ = 0.3f;
 
 	startRotatePos_ = rotatePos_;
 	startBlocks_ = blocks_;
