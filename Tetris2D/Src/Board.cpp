@@ -11,12 +11,11 @@ Board::Board(const Vec2f& center, float cellSize, uint32_t row, uint32_t col)
 	, cells_(row_* col_)
 	, removeColumn_(col_)
 	, fillBlocks_(row_)
+	, outlineColor_(Vec4f(1.0f, 1.0f, 1.0f, 1.0f))
+	, inlineColor_(Vec4f(0.3f, 0.3f, 0.3f, 0.3f))
 {
 	bound_ = Rect2D(center, Vec2f(static_cast<float>(row) * cellSize_, static_cast<float>(col) * cellSize_));
 
-	outlineColor_ = Vec4f(1.0f, 1.0f, 1.0f, 1.0f);
-	inlineColor_ = Vec4f(0.3f, 0.3f, 0.3f, 0.3f);
-	
 	CleanupInlines(inlines_);
 	CleanupCells(cells_);
 	startPos_ = CalculateCellPos(4, 0);
@@ -62,7 +61,6 @@ void Board::Render()
 	RenderManager2D& renderMgr = RenderManager2D::Get();
 
 	renderMgr.DrawRectWireframe(bound_.center, bound_.size.x, bound_.size.y, outlineColor_, 0.0f);
-
 	for (uint32_t index = 0; index < inlines_.size(); index += 2)
 	{
 		renderMgr.DrawLine(inlines_[index + 0], inlines_[index + 1], inlineColor_);
@@ -70,24 +68,28 @@ void Board::Render()
 
 	for (const auto& cell : cells_)
 	{
-		if (cell.second)
+		if (!cell.second)
 		{
-			const Block& block = cell.first;
-			const Rect2D& bound = block.GetBound();
-			renderMgr.DrawRoundRect(bound.center, bound.size.x, bound.size.y, 10.0f, block.GetColor(), 0.0f);
+			continue;
 		}
+
+		const Block& block = cell.first;
+		const Rect2D& bound = block.GetBound();
+		renderMgr.DrawRoundRect(bound.center, bound.size.x, bound.size.y, 10.0f, block.GetColor(), 0.0f);
 	}
 
 	if (status_ == Status::FILL)
 	{
-		for (const auto& cell : fillBlocks_)
+		for (const auto& fillBlock : fillBlocks_)
 		{
-			if (cell.second)
+			if (!fillBlock.second)
 			{
-				const Block& block = cell.first;
-				const Rect2D& bound = block.GetBound();
-				renderMgr.DrawRoundRect(bound.center, bound.size.x, bound.size.y, 10.0f, block.GetColor(), 0.0f);
+				continue;
 			}
+
+			const Block& block = fillBlock.first;
+			const Rect2D& bound = block.GetBound();
+			renderMgr.DrawRoundRect(bound.center, bound.size.x, bound.size.y, 10.0f, block.GetColor(), 0.0f);
 		}
 	}
 }
