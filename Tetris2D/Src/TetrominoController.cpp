@@ -35,23 +35,8 @@ void TetrominoController::Tick(float deltaSeconds)
 	switch (status_)
 	{
 	case Status::ACTIVE:
-	{
-		currentTetromino_->Tick(deltaSeconds);
-		nextTetromino_->Tick(deltaSeconds);
-
-		Tetromino::Status status = currentTetromino_->GetStatus();
-		if (status == Tetromino::Status::DONE)
-		{
-			const std::array<Block, Tetromino::NUM_BLOCKS>& currentBlocks = currentTetromino_->GetBlocks();
-			board_->DeployBlocks(currentBlocks.data(), currentBlocks.size());
-
-			EntityManager::Get().Destroy(currentTetromino_);
-			currentTetromino_ = nullptr;
-
-			status_ = Status::DEACTIVE;
-		}
-	}
-	break;
+		UpdateActiveStatus(deltaSeconds);
+		break;
 
 	case Status::DEACTIVE:
 	{
@@ -142,4 +127,22 @@ Tetromino* TetrominoController::CreateRandomTetromino(const Vec2f& startPos, flo
 	uint32_t randomColorIndex = GameMath::GenerateRandomInt(0, colors.size() - 1);
 
 	return EntityManager::Get().Create<Tetromino>(startPos, blockSize, stride, types[randomTypeIndex], colors[randomColorIndex]);
+}
+
+void TetrominoController::UpdateActiveStatus(float deltaSeconds)
+{
+	currentTetromino_->Tick(deltaSeconds);
+	nextTetromino_->Tick(deltaSeconds);
+
+	Tetromino::Status status = currentTetromino_->GetStatus();
+	if (status == Tetromino::Status::DONE)
+	{
+		const std::array<Block, Tetromino::NUM_BLOCKS>& currentBlocks = currentTetromino_->GetBlocks();
+		board_->DeployBlocks(currentBlocks.data(), currentBlocks.size());
+
+		EntityManager::Get().Destroy(currentTetromino_);
+		currentTetromino_ = nullptr;
+
+		status_ = Status::DEACTIVE;
+	}
 }

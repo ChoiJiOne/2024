@@ -29,6 +29,8 @@ public:
 
 private:
 	Tetromino* CreateRandomTetromino(const Vec2f& startPos, float blockSize, float stride);
+
+	void UpdateActiveStatus(float deltaSeconds);
 	
 private:
 	Vec2f startPos_;
