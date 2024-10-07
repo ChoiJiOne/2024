@@ -37,18 +37,19 @@ public:
 	const Status& GetStatus() const { return status_; }
 
 	const Vec2f& GetStartPos() const { return startPos_; }
+
+	/** 보드 내의 블럭 관련 기능. */
 	bool IsBlocksInside(const Block* blocks, uint32_t count);
 	bool CanBlocksDeploy(const Block* blocks, uint32_t count);
-
 	void DeployBlocks(const Block* blocks, uint32_t count);
 
 private:
+	void CleanupInlines(std::vector<Vec2f>& inlines);
+	void CleanupCells(std::vector<std::pair<Block, bool>>& cells);
+
 	Vec2f CalculateCellPos(uint32_t row, uint32_t col);
 	bool UpdateRemoveColumn();
 	bool IsEmptyColumn(uint32_t col);
-
-	void CleanupInlines(std::vector<Vec2f>& inlines);
-	void CleanupCells(std::vector<std::pair<Block, bool>>& cells);
 
 	void GotoColumn(float t, int32_t fromFillColumn, int32_t toFillColumn, std::vector<std::pair<Block, bool>>& fillBlocks);
 

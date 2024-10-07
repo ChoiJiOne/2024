@@ -86,29 +86,33 @@ void Board::Tick(float deltaSeconds)
 	{
 		for (int32_t col = col_ - 1; col >= 0; --col)
 		{
-			if (!IsEmptyColumn(col))
+			if (IsEmptyColumn(col))
 			{
-				for (int32_t fillCol = col_ - 1; fillCol > col; --fillCol)
+				continue;
+			}
+
+			for (int32_t fillCol = col_ - 1; fillCol > col; --fillCol)
+			{
+				if (!IsEmptyColumn(fillCol))
 				{
-					if (IsEmptyColumn(fillCol))
-					{
-						fromFillColumn_ = col;
-						toFillColumn_ = fillCol;
-
-						for (uint32_t row = 0; row < row_; ++row)
-						{
-							uint32_t index = row + col * row_;
-
-							fillBlocks_[row] = cells_[index];
-
-							Vec2f center = CalculateCellPos(row, col);
-							cells_[index] = { Block(Rect2D(center, cellSize_), Vec4f(0.0f, 0.0f, 0.0f, 0.0f)), false };						
-						}
-
-						status_ = Status::FILL;
-						return;
-					}
+					continue;
 				}
+
+				fromFillColumn_ = col;
+				toFillColumn_ = fillCol;
+
+				for (uint32_t row = 0; row < row_; ++row)
+				{
+					uint32_t index = row + col * row_;
+
+					fillBlocks_[row] = cells_[index];
+
+					Vec2f center = CalculateCellPos(row, col);
+					cells_[index] = { Block(Rect2D(center, cellSize_), Vec4f(0.0f, 0.0f, 0.0f, 0.0f)), false };
+				}
+
+				status_ = Status::FILL;
+				return;
 			}
 		}
 
@@ -268,6 +272,36 @@ void Board::DeployBlocks(const Block* blocks, uint32_t count)
 	}
 }
 
+void Board::CleanupInlines(std::vector<Vec2f>& inlines)
+{
+	int32_t index = 0;
+	for (uint32_t row = 1; row < row_; ++row)
+	{
+		inlines[index++] = bound_.center + Vec2f(-bound_.size.x * 0.5f + static_cast<float>(row) * cellSize_, bound_.size.y * 0.5f - static_cast<float>(0) * cellSize_);
+		inlines[index++] = bound_.center + Vec2f(-bound_.size.x * 0.5f + static_cast<float>(row) * cellSize_, bound_.size.y * 0.5f - static_cast<float>(col_) * cellSize_);
+	}
+
+	for (uint32_t col = 1; col < col_; ++col)
+	{
+		inlines[index++] = bound_.center + Vec2f(-bound_.size.x * 0.5f + static_cast<float>(0) * cellSize_, bound_.size.y * 0.5f - static_cast<float>(col) * cellSize_);
+		inlines[index++] = bound_.center + Vec2f(-bound_.size.x * 0.5f + static_cast<float>(row_) * cellSize_, bound_.size.y * 0.5f - static_cast<float>(col) * cellSize_);
+	}
+}
+
+void Board::CleanupCells(std::vector<std::pair<Block, bool>>& cells)
+{
+	for (uint32_t col = 0; col < col_; ++col)
+	{
+		for (uint32_t row = 0; row < row_; ++row)
+		{
+			uint32_t index = row + col * row_;
+			Vec2f center = CalculateCellPos(row, col);
+
+			cells[index] = { Block(Rect2D(center, cellSize_), Vec4f(0.0f, 0.0f, 0.0f, 0.0f)), false };
+		}
+	}
+}
+
 Vec2f Board::CalculateCellPos(uint32_t row, uint32_t col)
 {
 	Vec2f cellPos = bound_.center;
@@ -318,36 +352,6 @@ bool Board::IsEmptyColumn(uint32_t col)
 	}
 
 	return true;
-}
-
-void Board::CleanupInlines(std::vector<Vec2f>& inlines)
-{
-	int32_t index = 0;
-	for (uint32_t row = 1; row < row_; ++row)
-	{
-		inlines[index++] = bound_.center + Vec2f(-bound_.size.x * 0.5f + static_cast<float>(row) * cellSize_, bound_.size.y * 0.5f - static_cast<float>(   0) * cellSize_);
-		inlines[index++] = bound_.center + Vec2f(-bound_.size.x * 0.5f + static_cast<float>(row) * cellSize_, bound_.size.y * 0.5f - static_cast<float>(col_) * cellSize_);
-	}
-
-	for (uint32_t col = 1; col < col_; ++col)
-	{
-		inlines[index++] = bound_.center + Vec2f(-bound_.size.x * 0.5f +    static_cast<float>(0) * cellSize_, bound_.size.y * 0.5f - static_cast<float>(col) * cellSize_);
-		inlines[index++] = bound_.center + Vec2f(-bound_.size.x * 0.5f + static_cast<float>(row_) * cellSize_, bound_.size.y * 0.5f - static_cast<float>(col) * cellSize_);
-	}
-}
-
-void Board::CleanupCells(std::vector<std::pair<Block, bool>>& cells)
-{
-	for (uint32_t col = 0; col < col_; ++col)
-	{
-		for (uint32_t row = 0; row < row_; ++row)
-		{
-			uint32_t index = row + col * row_;
-			Vec2f center = CalculateCellPos(row, col);
-
-			cells[index] = { Block(Rect2D(center, cellSize_), Vec4f(0.0f, 0.0f, 0.0f, 0.0f)), false };
-		}
-	}
 }
 
 void Board::GotoColumn(float t, int32_t fromFillColumn, int32_t toFillColumn, std::vector<std::pair<Block, bool>>& fillBlocks)
