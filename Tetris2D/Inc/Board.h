@@ -35,7 +35,6 @@ public:
 	uint32_t GetRow() const { return row_; }
 	uint32_t GetCol() const { return col_; }
 	const Status& GetStatus() const { return status_; }
-
 	const Vec2f& GetStartPos() const { return startPos_; }
 
 	/** 보드 내의 블럭 관련 기능. */
@@ -53,6 +52,9 @@ private:
 	bool UpdateRemoveColumn();
 	bool IsEmptyColumn(uint32_t col);
 	void GotoColumn(float t, int32_t fromFillColumn, int32_t toFillColumn, std::vector<std::pair<Block, bool>>& fillBlocks);
+
+	/** 상태에 따른 로직 업데이트. */
+	void UpdateRemoveStatus(float deltaSeconds);
 
 private:
 	Rect2D bound_;

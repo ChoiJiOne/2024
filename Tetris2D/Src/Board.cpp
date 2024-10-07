@@ -40,47 +40,11 @@ void Board::Tick(float deltaSeconds)
 	switch (status_)
 	{
 	case Status::WAIT:
-	{
-
-	}
-	break;
+		break;
 
 	case Status::REMOVE:
-	{
-		removeStepTime_ -= deltaSeconds;
-		for (uint32_t col = 0; col < col_; ++col)
-		{
-			if (removeColumn_[col])
-			{
-				for (uint32_t row = 0; row < row_; ++row)
-				{
-					uint32_t index = row + col * row_;
-					Vec4f color = cells_[index].first.GetColor();
-					color.w = removeStepTime_ / maxRemoveStepTime_;
-					cells_[index].first.SetColor(color);
-				}
-			}
-		}
-
-		if (removeStepTime_ <= 0.0f)
-		{
-			for (uint32_t col = 0; col < col_; ++col)
-			{
-				if (removeColumn_[col])
-				{
-					for (uint32_t row = 0; row < row_; ++row)
-					{
-						uint32_t index = row + col * row_;
-						Vec2f center = CalculateCellPos(row, col);
-						cells_[index] = { Block(Rect2D(center, cellSize_), Vec4f(0.0f, 0.0f, 0.0f, 0.0f)), false };
-					}
-				}
-			}
-
-			status_ = Status::CONFIRM;
-		}
-	}
-	break;
+		UpdateRemoveStatus(deltaSeconds);
+		break;
 
 	case Status::CONFIRM:
 	{
@@ -364,4 +328,39 @@ void Board::GotoColumn(float t, int32_t fromFillColumn, int32_t toFillColumn, st
 		Vec2f center = Vec2f::Lerp(cells_[fromIndex].first.GetBound().center, cells_[toIndex].first.GetBound().center, t);
 		fillBlocks[row].first.SetCenter(center);
 	}
+}
+
+void Board::UpdateRemoveStatus(float deltaSeconds)
+{
+	removeStepTime_ -= deltaSeconds;
+	for (uint32_t col = 0; col < col_; ++col)
+	{
+		if (removeColumn_[col])
+		{
+			for (uint32_t row = 0; row < row_; ++row)
+			{
+				uint32_t index = row + col * row_;
+				Vec4f color = cells_[index].first.GetColor();
+				color.w = removeStepTime_ / maxRemoveStepTime_;
+				cells_[index].first.SetColor(color);
+			}
+		}
+	}
+
+	if (removeStepTime_ <= 0.0f)
+	{
+		for (uint32_t col = 0; col < col_; ++col)
+		{
+			if (removeColumn_[col])
+			{
+				for (uint32_t row = 0; row < row_; ++row)
+				{
+					uint32_t index = row + col * row_;
+					Vec2f center = CalculateCellPos(row, col);
+					cells_[index] = { Block(Rect2D(center, cellSize_), Vec4f(0.0f, 0.0f, 0.0f, 0.0f)), false };
+				}
+			}
+		}
+
+		status_ = Status::CONFIRM;
 }
