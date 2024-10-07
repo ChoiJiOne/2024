@@ -14,7 +14,7 @@ Board::Board(const Vec2f& center, float cellSize, uint32_t row, uint32_t col)
 	, outlineColor_(Vec4f(1.0f, 1.0f, 1.0f, 1.0f))
 	, inlineColor_(Vec4f(0.3f, 0.3f, 0.3f, 0.3f))
 {
-	bound_ = Rect2D(center, Vec2f(static_cast<float>(row) * cellSize_, static_cast<float>(col) * cellSize_));
+	bound_ = Rect2D(center, Vec2f(static_cast<float>(row_) * cellSize_, static_cast<float>(col_) * cellSize_));
 
 	int32_t index = 0;
 	for (uint32_t row = 1; row < row_; ++row)
@@ -33,7 +33,7 @@ Board::Board(const Vec2f& center, float cellSize, uint32_t row, uint32_t col)
 	startPos_ = CalculateCellPos(4, 0);
 
 	maxRemoveStepTime_ = 1.0f;
-	maxFillStepTime_ = 0.1f;
+	maxFillStepTime_ = 0.5f;
 
 	bIsInitialized_ = true;
 }
@@ -115,9 +115,10 @@ void Board::Release()
 
 bool Board::IsBlocksInside(const Block* blocks, uint32_t count)
 {
+	bool bIsBlockInside = false;
 	for (uint32_t index = 0; index < count; ++index)
 	{
-		bool bIsBlockInside = false;
+		bIsBlockInside = false;
 		const Rect2D& bound = blocks[index].GetBound();
 
 		for (const auto& cell : cells_)
@@ -142,9 +143,10 @@ bool Board::IsBlocksInside(const Block* blocks, uint32_t count)
 
 bool Board::CanBlocksDeploy(const Block* blocks, uint32_t count)
 {
+	bool bCanBlocksDeploy = true;
 	for (uint32_t index = 0; index < count; ++index)
 	{
-		bool bCanBlocksDeploy = true;
+		bCanBlocksDeploy = true;
 		const Rect2D& bound = blocks[index].GetBound();
 
 		for (const auto& cell : cells_)
