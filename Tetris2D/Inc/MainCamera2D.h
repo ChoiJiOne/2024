@@ -13,6 +13,17 @@ public:
 	virtual void Tick(float deltaSeconds) override;
 	virtual void Release() override;
 
+	void Shake();
+
 private:
 
+
+private:
+	float shakeTime_ = 0.0f;
+	float maxShakeTime_ = 0.0f;
+	
+	Rect2D originCollision_;
+	float shakeMoveLength_ = 0.0f;
+
+	bool bStartShake_ = false;
 };
