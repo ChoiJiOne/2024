@@ -178,7 +178,7 @@ void Board::DeployBlocks(const Block* blocks, uint32_t count)
 
 		for (auto& cell : cells_)
 		{
-			const Rect2D cellBound = cell.first.GetBound();
+			const Rect2D& cellBound = cell.first.GetBound();
 
 			if (cellBound.Intersect(&bound))
 			{
