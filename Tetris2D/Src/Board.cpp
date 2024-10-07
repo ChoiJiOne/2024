@@ -52,28 +52,8 @@ void Board::Tick(float deltaSeconds)
 		break;
 
 	case Status::FILL:
-	{
-		fillStepTime_ += deltaSeconds;
-		float t = fillStepTime_ / maxFillStepTime_;
-
-		GotoColumn(t, fromFillColumn_, toFillColumn_, fillBlocks_);
-
-		if (fillStepTime_ >= maxFillStepTime_)
-		{
-			for (uint32_t row = 0; row < row_; ++row)
-			{
-				uint32_t index = row + toFillColumn_ * row_;
-
-				Vec2f originCenter = cells_[index].first.GetBound().center;
-				cells_[index] = fillBlocks_[row];
-				cells_[index].first.SetCenter(originCenter);
-			}
-
-			fillStepTime_ = 0.0f;
-			status_ = Status::CONFIRM;
-		}
-	}
-	break;
+		UpdateFillStatus(deltaSeconds);
+		break;
 	}
 }
 
@@ -368,4 +348,27 @@ void Board::UpdateConfirmStatus(float deltaSeconds)
 	}
 
 	status_ = Status::WAIT;
+}
+
+void Board::UpdateFillStatus(float deltaSeconds)
+{
+	fillStepTime_ += deltaSeconds;
+
+	float t = fillStepTime_ / maxFillStepTime_;
+	GotoColumn(t, fromFillColumn_, toFillColumn_, fillBlocks_);
+
+	if (fillStepTime_ >= maxFillStepTime_)
+	{
+		for (uint32_t row = 0; row < row_; ++row)
+		{
+			uint32_t index = row + toFillColumn_ * row_;
+
+			Vec2f originCenter = cells_[index].first.GetBound().center;
+			cells_[index] = fillBlocks_[row];
+			cells_[index].first.SetCenter(originCenter);
+		}
+
+		fillStepTime_ = 0.0f;
+		status_ = Status::CONFIRM;
+	}
 }
