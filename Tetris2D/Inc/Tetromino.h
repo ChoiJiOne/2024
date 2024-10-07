@@ -10,6 +10,7 @@
 
 class Board;
 class GameApp;
+class MainCamera2D;
 
 class Tetromino : public IEntity2D
 {
@@ -108,5 +109,6 @@ private:
 
 	static GameApp* app_;
 	static Board* board_;
+	static MainCamera2D* camera_;
 	static std::map<Key, Direction> keyDirections_;
 };

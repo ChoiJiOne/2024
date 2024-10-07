@@ -4,10 +4,12 @@
 
 #include "Board.h"
 #include "GameApp.h"
+#include "MainCamera2D.h"
 #include "Tetromino.h"
 
 GameApp* Tetromino::app_ = nullptr;
 Board* Tetromino::board_ = nullptr;
+MainCamera2D* Tetromino::camera_ = nullptr;
 std::map<Key, Tetromino::Direction> Tetromino::keyDirections_ =
 {
 	{ Key::KEY_LEFT,  Direction::LEFT  },
@@ -27,6 +29,11 @@ Tetromino::Tetromino(const Vec2f& startPos, float blockSize, float stride, const
 	if (!board_)
 	{
 		board_ = EntityManager::Get().GetByName<Board>("Board");
+	}
+
+	if (!camera_)
+	{
+		camera_ = EntityManager::Get().GetByName<MainCamera2D>("MainCamera");
 	}
 
 	CreateBlocks(blocks_, rotatePos_, startPos, blockSize, color);
