@@ -39,31 +39,12 @@ void TetrominoController::Tick(float deltaSeconds)
 		break;
 
 	case Status::DEACTIVE:
-	{
-		Board::Status status = board_->GetStatus();
-		if (status == Board::Status::WAIT)
-		{
-			currentTetromino_ = nextTetromino_;
-			currentTetromino_->GotoPosition(startPos_);
-
-			const std::array<Block, Tetromino::NUM_BLOCKS>& newCurrentBlocks = currentTetromino_->gotoBlocks_;
-			if (!board_->CanBlocksDeploy(newCurrentBlocks.data(), newCurrentBlocks.size()))
-			{
-				status_ = Status::DONE;
-				break;
-			}
-
-			status_ = Status::ACTIVE;
-			nextTetromino_ = CreateRandomTetromino(waitPos_, blockSize_, blockStride_);
-		}
-	}
-	break;
+		UpdateDeactiveStatus(deltaSeconds);
+		break;
 	
 	case Status::DONE:
-	{
-
-	}
-	break;
+		// Nothing...
+		break;
 	}
 }
 
@@ -145,4 +126,26 @@ void TetrominoController::UpdateActiveStatus(float deltaSeconds)
 
 		status_ = Status::DEACTIVE;
 	}
+}
+
+void TetrominoController::UpdateDeactiveStatus(float deltaSeconds)
+{
+	Board::Status status = board_->GetStatus();
+	if (status != Board::Status::WAIT)
+	{
+		return;
+	}
+
+	currentTetromino_ = nextTetromino_;
+	currentTetromino_->GotoPosition(startPos_);
+
+	const std::array<Block, Tetromino::NUM_BLOCKS>& newCurrentBlocks = currentTetromino_->gotoBlocks_;
+	if (!board_->CanBlocksDeploy(newCurrentBlocks.data(), newCurrentBlocks.size()))
+	{
+		status_ = Status::DONE;
+		return;
+	}
+
+	status_ = Status::ACTIVE;
+	nextTetromino_ = CreateRandomTetromino(waitPos_, blockSize_, blockStride_);
 }

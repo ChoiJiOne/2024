@@ -31,6 +31,7 @@ private:
 	Tetromino* CreateRandomTetromino(const Vec2f& startPos, float blockSize, float stride);
 
 	void UpdateActiveStatus(float deltaSeconds);
+	void UpdateDeactiveStatus(float deltaSeconds);
 	
 private:
 	Vec2f startPos_;
