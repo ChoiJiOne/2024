@@ -52,10 +52,8 @@ void Tetromino::Tick(float deltaSeconds)
 	switch (status_)
 	{
 	case Status::WAIT:
-	{
-
-	}
-	break;
+		// Nothing...
+		break;
 
 	case Status::GOTO:
 		UpdateGotoStatus(deltaSeconds);
@@ -66,15 +64,12 @@ void Tetromino::Tick(float deltaSeconds)
 		if (bNeedUpdateShadow_)
 		{
 			UpdateShadowBlocks();
-			bNeedUpdateShadow_ = false;
 		}
 		break;
 
 	case Status::DONE:
-	{
-
-	}
-	break;
+		// Nothing...
+		break;
 	}
 }
 
@@ -88,17 +83,19 @@ void Tetromino::Render()
 	RenderManager2D& renderMgr = RenderManager2D::Get();
 	if (status_ == Status::ACTIVE)
 	{
-		for (const auto& block : shadowBlocks_)
+		for (const auto& shadowBlock : shadowBlocks_)
 		{
-			const Rect2D& bound = block.GetBound();
-			renderMgr.DrawRoundRect(bound.center, bound.size.x, bound.size.y, 10.0f, block.GetColor(), 0.0f);
+			const Rect2D& bound = shadowBlock.GetBound();
+			const Vec4f& color = shadowBlock.GetColor();
+			renderMgr.DrawRoundRect(bound.center, bound.size.x, bound.size.y, 10.0f, color, 0.0f);
 		}
 	}
 
 	for (const auto& block : blocks_)
 	{
 		const Rect2D& bound = block.GetBound();
-		renderMgr.DrawRoundRect(bound.center, bound.size.x, bound.size.y, 10.0f, block.GetColor(), 0.0f);
+		const Vec4f& color = block.GetColor();
+		renderMgr.DrawRoundRect(bound.center, bound.size.x, bound.size.y, 10.0f, color, 0.0f);
 	}
 }
 
@@ -268,6 +265,8 @@ void Tetromino::UpdateShadowBlocks()
 	{
 		shaodwBlock.SetColor(shadowColor_);
 	}
+
+	bNeedUpdateShadow_ = false;
 }
 
 void Tetromino::CreateBlocks(std::array<Block, NUM_BLOCKS>& outBlocks, Vec2f& outRotatePos, const Vec2f& startPos, float blockSize, const Vec4f& color)
