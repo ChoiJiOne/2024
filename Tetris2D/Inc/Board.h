@@ -43,9 +43,7 @@ public:
 	void DeployBlocks(const Block* blocks, uint32_t count);
 
 private:
-	void CleanupInlines(std::vector<Vec2f>& inlines);
 	void CleanupCells(std::vector<std::pair<Block, bool>>& cells);
-
 	Vec2f CalculateCellPos(uint32_t row, uint32_t col);
 
 	/** 열(Column) 관련 기능. */

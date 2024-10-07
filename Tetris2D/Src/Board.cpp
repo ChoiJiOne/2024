@@ -16,7 +16,19 @@ Board::Board(const Vec2f& center, float cellSize, uint32_t row, uint32_t col)
 {
 	bound_ = Rect2D(center, Vec2f(static_cast<float>(row) * cellSize_, static_cast<float>(col) * cellSize_));
 
-	CleanupInlines(inlines_);
+	int32_t index = 0;
+	for (uint32_t row = 1; row < row_; ++row)
+	{
+		inlines_[index++] = bound_.center + Vec2f(-bound_.size.x * 0.5f + static_cast<float>(row) * cellSize_, bound_.size.y * 0.5f - static_cast<float>(0) * cellSize_);
+		inlines_[index++] = bound_.center + Vec2f(-bound_.size.x * 0.5f + static_cast<float>(row) * cellSize_, bound_.size.y * 0.5f - static_cast<float>(col_) * cellSize_);
+	}
+
+	for (uint32_t col = 1; col < col_; ++col)
+	{
+		inlines_[index++] = bound_.center + Vec2f(-bound_.size.x * 0.5f + static_cast<float>(0) * cellSize_, bound_.size.y * 0.5f - static_cast<float>(col) * cellSize_);
+		inlines_[index++] = bound_.center + Vec2f(-bound_.size.x * 0.5f + static_cast<float>(row_) * cellSize_, bound_.size.y * 0.5f - static_cast<float>(col) * cellSize_);
+	}
+
 	CleanupCells(cells_);
 	startPos_ = CalculateCellPos(4, 0);
 
@@ -182,22 +194,6 @@ void Board::DeployBlocks(const Block* blocks, uint32_t count)
 	{
 		removeStepTime_ = maxRemoveStepTime_;
 		status_ = Status::REMOVE;
-	}
-}
-
-void Board::CleanupInlines(std::vector<Vec2f>& inlines)
-{
-	int32_t index = 0;
-	for (uint32_t row = 1; row < row_; ++row)
-	{
-		inlines[index++] = bound_.center + Vec2f(-bound_.size.x * 0.5f + static_cast<float>(row) * cellSize_, bound_.size.y * 0.5f - static_cast<float>(0) * cellSize_);
-		inlines[index++] = bound_.center + Vec2f(-bound_.size.x * 0.5f + static_cast<float>(row) * cellSize_, bound_.size.y * 0.5f - static_cast<float>(col_) * cellSize_);
-	}
-
-	for (uint32_t col = 1; col < col_; ++col)
-	{
-		inlines[index++] = bound_.center + Vec2f(-bound_.size.x * 0.5f + static_cast<float>(0) * cellSize_, bound_.size.y * 0.5f - static_cast<float>(col) * cellSize_);
-		inlines[index++] = bound_.center + Vec2f(-bound_.size.x * 0.5f + static_cast<float>(row_) * cellSize_, bound_.size.y * 0.5f - static_cast<float>(col) * cellSize_);
 	}
 }
 
