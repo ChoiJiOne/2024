@@ -2,7 +2,7 @@
 
 #include "IApp.h"
 
-class Camera2D;
+class MainCamera2D;
 class IEntity;
 class IEntity2D;
 
@@ -19,7 +19,7 @@ public:
 	virtual void Run() override;
 
 private:
-	Camera2D* mainCamera_ = nullptr;
+	MainCamera2D* mainCamera_ = nullptr;
 
 	std::vector<IEntity*> updateEntities_;
 	std::vector<IEntity2D*> renderEntities_;

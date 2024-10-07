@@ -1,11 +1,11 @@
 #include "Assertion.h"
-#include "Camera2D.h"
 #include "EntityManager.h"
 #include "ResourceManager.h"
 #include "RenderManager2D.h"
 
 #include "Board.h"
 #include "GameApp.h"
+#include "MainCamera2D.h"
 #include "Tetromino.h"
 #include "TetrominoController.h"
 
@@ -21,7 +21,7 @@ void GameApp::Startup()
 {
 	EntityManager& entityMgr = EntityManager::Get();
 
-	mainCamera_ = Camera2D::CreateScreenCamera();
+	mainCamera_ = entityMgr.Create<MainCamera2D>();
 	entityMgr.Register("MainCamera", mainCamera_);
 
 	Board* board = entityMgr.Create<Board>(Vec2f(-50.0f, 0.0f), 30.0f, 10, 20);
