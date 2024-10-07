@@ -22,7 +22,7 @@ Board::Board(const Vec2f& center, float cellSize, uint32_t row, uint32_t col)
 	startPos_ = CalculateCellPos(4, 0);
 
 	maxRemoveStepTime_ = 1.0f;
-	maxFillStepTime_ = 0.5f;
+	maxFillStepTime_ = 0.1f;
 
 	bIsInitialized_ = true;
 }
@@ -128,7 +128,10 @@ void Board::Tick(float deltaSeconds)
 			for (uint32_t row = 0; row < row_; ++row)
 			{
 				uint32_t index = row + toFillColumn_ * row_;
+
+				Vec2f originCenter = cells_[index].first.GetBound().center;
 				cells_[index] = fillBlocks_[row];
+				cells_[index].first.SetCenter(originCenter);
 			}
 
 			fillStepTime_ = 0.0f;
