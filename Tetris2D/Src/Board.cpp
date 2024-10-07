@@ -10,6 +10,7 @@ Board::Board(const Vec2f& center, float cellSize, uint32_t row, uint32_t col)
 	, inlines_((row_ - 2)* (col_ - 2) * 2)
 	, cells_(row_* col_)
 	, removeColumn_(col_)
+	, fillBlocks_(row_)
 {
 	bound_ = Rect2D(center, Vec2f(static_cast<float>(row) * cellSize_, static_cast<float>(col) * cellSize_));
 
@@ -21,7 +22,7 @@ Board::Board(const Vec2f& center, float cellSize, uint32_t row, uint32_t col)
 	startPos_ = CalculateCellPos(4, 0);
 
 	maxRemoveStepTime_ = 1.0f;
-	maxFillStepTime_ = 1.0f;
+	maxFillStepTime_ = 0.5f;
 
 	bIsInitialized_ = true;
 }
@@ -76,7 +77,6 @@ void Board::Tick(float deltaSeconds)
 				}
 			}
 
-			currentfillColumn_ = 0;
 			status_ = Status::CONFIRM;
 		}
 	}
@@ -84,14 +84,31 @@ void Board::Tick(float deltaSeconds)
 
 	case Status::CONFIRM:
 	{
-		for (uint32_t col = currentfillColumn_; col < col_; ++col)
+		for (int32_t col = col_ - 1; col >= 0; --col)
 		{
-			if (removeColumn_[col])
+			if (!IsEmptyColumn(col))
 			{
-				currentfillColumn_ = col;
-				removeColumn_[col] = false;
-				status_ = Status::FILL;
-				return;
+				for (int32_t fillCol = col_ - 1; fillCol > col; --fillCol)
+				{
+					if (IsEmptyColumn(fillCol))
+					{
+						fromFillColumn_ = col;
+						toFillColumn_ = fillCol;
+
+						for (uint32_t row = 0; row < row_; ++row)
+						{
+							uint32_t index = row + col * row_;
+
+							fillBlocks_[row] = cells_[index];
+
+							Vec2f center = CalculateCellPos(row, col);
+							cells_[index] = { Block(Rect2D(center, cellSize_), Vec4f(0.0f, 0.0f, 0.0f, 0.0f)), false };						
+						}
+
+						status_ = Status::FILL;
+						return;
+					}
+				}
 			}
 		}
 
@@ -104,14 +121,17 @@ void Board::Tick(float deltaSeconds)
 		fillStepTime_ += deltaSeconds;
 		float t = fillStepTime_ / maxFillStepTime_;
 
-		for (int32_t col = currentfillColumn_ - 1; col > 0; --col)
-		{
-			//GotoColumn(t, col, col + 1);
-		}
-
+		GotoColumn(t, fromFillColumn_, toFillColumn_, fillBlocks_);
 
 		if (fillStepTime_ >= maxFillStepTime_)
 		{
+			for (uint32_t row = 0; row < row_; ++row)
+			{
+				uint32_t index = row + toFillColumn_ * row_;
+				cells_[index] = fillBlocks_[row];
+			}
+
+			fillStepTime_ = 0.0f;
 			status_ = Status::CONFIRM;
 		}
 	}
@@ -137,6 +157,19 @@ void Board::Render()
 			const Block& block = cell.first;
 			const Rect2D& bound = block.GetBound();
 			renderMgr.DrawRoundRect(bound.center, bound.size.x, bound.size.y, 10.0f, block.GetColor(), 0.0f);
+		}
+	}
+
+	if (status_ == Status::FILL)
+	{
+		for (const auto& cell : fillBlocks_)
+		{
+			if (cell.second)
+			{
+				const Block& block = cell.first;
+				const Rect2D& bound = block.GetBound();
+				renderMgr.DrawRoundRect(bound.center, bound.size.x, bound.size.y, 10.0f, block.GetColor(), 0.0f);
+			}
 		}
 	}
 }
@@ -311,5 +344,17 @@ void Board::CleanupCells(std::vector<std::pair<Block, bool>>& cells)
 
 			cells[index] = { Block(Rect2D(center, cellSize_), Vec4f(0.0f, 0.0f, 0.0f, 0.0f)), false };
 		}
+	}
+}
+
+void Board::GotoColumn(float t, int32_t fromFillColumn, int32_t toFillColumn, std::vector<std::pair<Block, bool>>& fillBlocks)
+{
+	for (uint32_t row = 0; row < row_; ++row)
+	{
+		uint32_t fromIndex = row + fromFillColumn * row_;
+		uint32_t toIndex = row + toFillColumn * row_;
+
+		Vec2f center = Vec2f::Lerp(cells_[fromIndex].first.GetBound().center, cells_[toIndex].first.GetBound().center, t);
+		fillBlocks[row].first.SetCenter(center);
 	}
 }

@@ -50,6 +50,8 @@ private:
 	void CleanupInlines(std::vector<Vec2f>& inlines);
 	void CleanupCells(std::vector<std::pair<Block, bool>>& cells);
 
+	void GotoColumn(float t, int32_t fromFillColumn, int32_t toFillColumn, std::vector<std::pair<Block, bool>>& fillBlocks);
+
 private:
 	Rect2D bound_;
 	float cellSize_ = 0.0f;
@@ -69,7 +71,9 @@ private:
 
 	float fillStepTime_ = 0.0f;
 	float maxFillStepTime_ = 0.0f;
-	uint32_t currentfillColumn_ = 0;
+	std::vector<std::pair<Block, bool>> fillBlocks_;
+	int32_t fromFillColumn_;
+	int32_t toFillColumn_;
 
 	Status status_ = Status::WAIT;
 };
