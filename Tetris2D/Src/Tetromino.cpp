@@ -232,6 +232,7 @@ void Tetromino::UpdateActiveStatus(float deltaSeconds)
 			MoveBlocks(Tetromino::Direction::DOWN, blocks_, rotatePos_);
 		}
 
+		camera_->Shake();
 		status_ = Status::DONE;
 		return;
 	}
