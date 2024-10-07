@@ -282,15 +282,19 @@ void Board::UpdateRemoveStatus(float deltaSeconds)
 	removeStepTime_ -= deltaSeconds;
 	for (uint32_t col = 0; col < col_; ++col)
 	{
-		if (removeColumn_[col])
+		if (!removeColumn_[col])
 		{
-			for (uint32_t row = 0; row < row_; ++row)
-			{
-				uint32_t index = row + col * row_;
-				Vec4f color = cells_[index].first.GetColor();
-				color.w = removeStepTime_ / maxRemoveStepTime_;
-				cells_[index].first.SetColor(color);
-			}
+			continue;
+		}
+
+		for (uint32_t row = 0; row < row_; ++row)
+		{
+			uint32_t index = row + col * row_;
+
+			Vec4f color = cells_[index].first.GetColor();
+			color.w = removeStepTime_ / maxRemoveStepTime_;
+
+			cells_[index].first.SetColor(color);
 		}
 	}
 
@@ -298,14 +302,16 @@ void Board::UpdateRemoveStatus(float deltaSeconds)
 	{
 		for (uint32_t col = 0; col < col_; ++col)
 		{
-			if (removeColumn_[col])
+			if (!removeColumn_[col])
 			{
-				for (uint32_t row = 0; row < row_; ++row)
-				{
-					uint32_t index = row + col * row_;
-					Vec2f center = CalculateCellPos(row, col);
-					cells_[index] = { Block(Rect2D(center, cellSize_), Vec4f(0.0f, 0.0f, 0.0f, 0.0f)), false };
-				}
+				continue;
+			}
+
+			for (uint32_t row = 0; row < row_; ++row)
+			{
+				uint32_t index = row + col * row_;
+				Vec2f center = CalculateCellPos(row, col);
+				cells_[index] = { Block(Rect2D(center, cellSize_), Vec4f(0.0f, 0.0f, 0.0f, 0.0f)), false };
 			}
 		}
 
