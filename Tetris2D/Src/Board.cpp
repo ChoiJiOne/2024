@@ -40,6 +40,7 @@ void Board::Tick(float deltaSeconds)
 	switch (status_)
 	{
 	case Status::WAIT:
+		// Nothing...
 		break;
 
 	case Status::REMOVE:
@@ -47,42 +48,8 @@ void Board::Tick(float deltaSeconds)
 		break;
 
 	case Status::CONFIRM:
-	{
-		for (int32_t col = col_ - 1; col >= 0; --col)
-		{
-			if (IsEmptyColumn(col))
-			{
-				continue;
-			}
-
-			for (int32_t fillCol = col_ - 1; fillCol > col; --fillCol)
-			{
-				if (!IsEmptyColumn(fillCol))
-				{
-					continue;
-				}
-
-				fromFillColumn_ = col;
-				toFillColumn_ = fillCol;
-
-				for (uint32_t row = 0; row < row_; ++row)
-				{
-					uint32_t index = row + col * row_;
-
-					fillBlocks_[row] = cells_[index];
-
-					Vec2f center = CalculateCellPos(row, col);
-					cells_[index] = { Block(Rect2D(center, cellSize_), Vec4f(0.0f, 0.0f, 0.0f, 0.0f)), false };
-				}
-
-				status_ = Status::FILL;
-				return;
-			}
-		}
-
-		status_ = Status::WAIT;
-	}
-	break;
+		UpdateConfirmStatus(deltaSeconds);
+		break;
 
 	case Status::FILL:
 	{
@@ -363,4 +330,42 @@ void Board::UpdateRemoveStatus(float deltaSeconds)
 		}
 
 		status_ = Status::CONFIRM;
+	}
+}
+
+void Board::UpdateConfirmStatus(float deltaSeconds)
+{
+	for (int32_t col = col_ - 1; col >= 0; --col)
+	{
+		if (IsEmptyColumn(col))
+		{
+			continue;
+		}
+
+		for (int32_t fillCol = col_ - 1; fillCol > col; --fillCol)
+		{
+			if (!IsEmptyColumn(fillCol))
+			{
+				continue;
+			}
+
+			fromFillColumn_ = col;
+			toFillColumn_ = fillCol;
+
+			for (uint32_t row = 0; row < row_; ++row)
+			{
+				uint32_t index = row + col * row_;
+
+				fillBlocks_[row] = cells_[index];
+
+				Vec2f center = CalculateCellPos(row, col);
+				cells_[index] = { Block(Rect2D(center, cellSize_), Vec4f(0.0f, 0.0f, 0.0f, 0.0f)), false };
+			}
+
+			status_ = Status::FILL;
+			return;
+		}
+	}
+
+	status_ = Status::WAIT;
 }

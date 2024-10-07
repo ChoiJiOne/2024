@@ -55,6 +55,7 @@ private:
 
 	/** 상태에 따른 로직 업데이트. */
 	void UpdateRemoveStatus(float deltaSeconds);
+	void UpdateConfirmStatus(float deltaSeconds);
 
 private:
 	Rect2D bound_;
