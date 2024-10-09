@@ -31,6 +31,8 @@ public:
 	void Reset(const Rect2D& bound, const Vec2f& direction, const Vec4f& color, float speed);
 	void Start();
 
+	const Status& GetStatus() const { return status_; }
+
 private:
 	Rect2D bound_;
 	Vec2f direction_;
