@@ -37,6 +37,8 @@ Board::Board(const Vec2f& center, float cellSize, uint32_t row, uint32_t col)
 
 	maxFillStepTime_ = 0.5f;
 
+	particleScheduler_ = EntityManager::Get().GetByName<ParticleScheduler>("ParticleScheduler");
+
 	bIsInitialized_ = true;
 }
 
@@ -57,7 +59,10 @@ void Board::Tick(float deltaSeconds)
 		break;
 
 	case Status::REMOVE:
-		UpdateRemoveStatus(deltaSeconds);
+		if (!particleScheduler_->IsActive())
+		{
+			status_ = Status::CONFIRM;
+		}
 		break;
 
 	case Status::CONFIRM:
@@ -219,9 +224,7 @@ void Board::DeployBlocks(const Block* blocks, uint32_t count)
 			}
 		}
 		
-		ParticleScheduler* particleScheduler = EntityManager::Get().GetByName<ParticleScheduler>("ParticleScheduler");
-		particleScheduler->Start(removeBlocks_.data(), numRemoveBlock_);
-
+		particleScheduler_->Start(removeBlocks_.data(), numRemoveBlock_);
 		status_ = Status::REMOVE;
 	}
 }
@@ -302,17 +305,6 @@ void Board::GotoColumn(float t, int32_t fromFillColumn, int32_t toFillColumn, st
 		Vec2f center = Vec2f::Lerp(cells_[fromIndex].first.GetBound().center, cells_[toIndex].first.GetBound().center, t);
 		fillBlocks[row].first.SetCenter(center);
 	}
-}
-
-void Board::UpdateRemoveStatus(float deltaSeconds)
-{
-	ParticleScheduler* particleScheduler = EntityManager::Get().GetByName<ParticleScheduler>("ParticleScheduler");
-	if (particleScheduler->IsActive())
-	{
-		return;
-	}
-
-	status_ = Status::CONFIRM;
 }
 
 void Board::UpdateConfirmStatus(float deltaSeconds)

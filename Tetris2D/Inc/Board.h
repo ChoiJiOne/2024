@@ -9,6 +9,8 @@
 
 #include "Block.h"
 
+class ParticleScheduler;
+
 class Board : public IEntity2D
 {
 public:
@@ -52,7 +54,6 @@ private:
 	void GotoColumn(float t, int32_t fromFillColumn, int32_t toFillColumn, std::vector<std::pair<Block, bool>>& fillBlocks);
 
 	/** 상태에 따른 로직 업데이트. */
-	void UpdateRemoveStatus(float deltaSeconds);
 	void UpdateConfirmStatus(float deltaSeconds);
 	void UpdateFillStatus(float deltaSeconds);
 
@@ -80,4 +81,6 @@ private:
 	int32_t toFillColumn_;
 
 	Status status_ = Status::WAIT;
+
+	ParticleScheduler* particleScheduler_ = nullptr;
 };
