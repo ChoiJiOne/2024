@@ -8,6 +8,7 @@
 #include "GameApp.h"
 #include "MainCamera2D.h"
 #include "Next.h"
+#include "Particle.h"
 #include "Score.h"
 #include "Tetromino.h"
 #include "TetrominoController.h"
@@ -41,12 +42,16 @@ void GameApp::Startup()
 	Score* score = entityMgr.Create<Score>();
 	entityMgr.Register("Score", score);
 
+	Particle* particle = entityMgr.Create<Particle>();
+	entityMgr.Register("Particle", particle);
+
 	updateEntities_ =
 	{
 		mainCamera_,
 		controller,
 		board,
 		score,
+		particle,
 	};
 
 	renderEntities_ =
@@ -55,6 +60,7 @@ void GameApp::Startup()
 		next,
 		controller,
 		score,
+		particle,
 	};
 }
 
