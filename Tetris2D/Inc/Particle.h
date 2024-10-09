@@ -38,6 +38,7 @@ private:
 	Vec2f direction_;
 	Vec4f color_;
 	float speed_ = 0.0f;
+	float directionFactor_ = 0.0f;
 	Status status_ = Status::WAIT;
 
 	static Camera2D* camera_;

@@ -14,6 +14,7 @@ Particle::Particle()
 		camera_ = EntityManager::Get().GetByName<Camera2D>("MainCamera");
 	}
 
+	directionFactor_ = 2.0f;
 	bIsInitialized_ = true;
 }
 
@@ -28,6 +29,7 @@ Particle::Particle(const Rect2D& bound, const Vec2f& direction, const Vec4f& col
 		camera_ = EntityManager::Get().GetByName<Camera2D>("MainCamera");
 	}
 
+	directionFactor_ = 2.0f;
 	bIsInitialized_ = true;
 }
 
@@ -46,9 +48,9 @@ void Particle::Tick(float deltaSeconds)
 		return;
 	}
 
-	direction_.y -= 0.98f; /** 중력 작용 테스트. */
-	bound_.center.x += speed_ * direction_.x;
-	bound_.center.y += speed_ * direction_.y;
+	direction_.y -= deltaSeconds * directionFactor_;
+	bound_.center.x += deltaSeconds * speed_ * direction_.x;
+	bound_.center.y += deltaSeconds * speed_ * direction_.y;
 
 	if (!bound_.Intersect(camera_->GetCollision()))
 	{
@@ -79,6 +81,7 @@ void Particle::Reset(const Rect2D& bound, const Vec2f& direction, const Vec4f& c
 	direction_ = direction;
 	color_ = color;
 	speed_ = speed;
+	directionFactor_ = 2.0f;
 	status_ = Status::WAIT;
 }
 
