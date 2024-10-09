@@ -10,7 +10,15 @@ class Camera2D;
 class Particle : public IEntity2D
 {
 public:
-	Particle(const Rect2D& bound, const Vec2f& direction, float speed);
+	enum class Status
+	{
+		WAIT   = 0x00,
+		ACTIVE = 0x01,
+		DONE   = 0x02,
+	};
+
+public:
+	Particle(const Rect2D& bound, const Vec2f& direction, const Vec4f& color, float speed);
 	virtual ~Particle();
 
 	DISALLOW_COPY_AND_ASSIGN(Particle);
@@ -22,7 +30,9 @@ public:
 private:
 	Rect2D bound_;
 	Vec2f direction_;
+	Vec4f color_;
 	float speed_ = 0.0f;
+
 
 	static Camera2D* camera_;
 };
