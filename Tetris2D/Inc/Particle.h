@@ -26,13 +26,15 @@ public:
 	virtual void Tick(float deltaSeconds) override;
 	virtual void Render() override;
 	virtual void Release() override;
-	
+
+	void Start();
+
 private:
 	Rect2D bound_;
 	Vec2f direction_;
 	Vec4f color_;
 	float speed_ = 0.0f;
-
+	Status status_ = Status::WAIT;
 
 	static Camera2D* camera_;
 };
