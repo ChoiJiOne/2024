@@ -7,6 +7,8 @@
 #include "Board.h"
 #include "GameApp.h"
 #include "MainCamera2D.h"
+#include "Next.h"
+#include "Score.h"
 #include "Tetromino.h"
 #include "TetrominoController.h"
 
@@ -33,17 +35,26 @@ void GameApp::Startup()
 	TetrominoController* controller = entityMgr.Create<TetrominoController>();
 	entityMgr.Register("Controller", controller);
 
+	Next* next = entityMgr.Create<Next>();
+	entityMgr.Register("Next", next);
+
+	Score* score = entityMgr.Create<Score>();
+	entityMgr.Register("Score", score);
+
 	updateEntities_ =
 	{
 		mainCamera_,
 		controller,
 		board,
+		score,
 	};
 
 	renderEntities_ =
 	{
 		board,
+		next,
 		controller,
+		score,
 	};
 }
 
