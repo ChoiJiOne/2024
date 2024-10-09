@@ -27,6 +27,7 @@ public:
 	virtual void Render() override;
 	virtual void Release() override;
 
+	void Reset(const Rect2D& bound, const Vec2f& direction, const Vec4f& color, float speed);
 	void Start();
 
 private:

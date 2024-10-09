@@ -63,6 +63,15 @@ void Particle::Release()
 	bIsInitialized_ = false;
 }
 
+void Particle::Reset(const Rect2D& bound, const Vec2f& direction, const Vec4f& color, float speed)
+{
+	bound_ = bound;
+	direction_ = direction;
+	color_ = color;
+	speed_ = speed;
+	status_ = Status::WAIT;
+}
+
 void Particle::Start()
 {
 	CHECK(status_ == Status::WAIT);
