@@ -169,10 +169,16 @@ void Tetromino::UpdateGotoStatus(float deltaSeconds)
 	float step = gotoStepTime_ / maxGotoStepTime_;
 	step = GameMath::Clamp<float>(step, 0.0f, 1.0f);
 
-	rotatePos_ = Vec2f::Lerp(startRotatePos_, gotoRotatePos_, step);
+	Vec2f rotateControll(startRotatePos_.x, gotoRotatePos_.y);
+	rotatePos_ = Vec2f::Bezier(startRotatePos_, gotoRotatePos_, rotateControll, step);
+
 	for (uint32_t index = 0; index < NUM_BLOCKS; ++index)
 	{
-		Vec2f center = Vec2f::Lerp(startBlocks_[index].GetBound().center, gotoBlocks_[index].GetBound().center, step);
+		Vec2f start = startBlocks_[index].GetBound().center;
+		Vec2f end = gotoBlocks_[index].GetBound().center;
+		Vec2f controll = Vec2f(start.x, end.y);
+
+		Vec2f center = Vec2f::Bezier(start, end, controll, step);
 		blocks_[index].SetCenter(center);
 	}
 
