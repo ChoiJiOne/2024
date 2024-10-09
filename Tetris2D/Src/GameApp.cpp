@@ -33,17 +33,17 @@ void GameApp::Startup()
 	ParticleScheduler* particleScheduler = entityMgr.Create<ParticleScheduler>();
 	entityMgr.Register("ParticleScheduler", particleScheduler);
 
-	Board* board = entityMgr.Create<Board>(Vec2f(-50.0f, 0.0f), 30.0f, 10, 20);
-	entityMgr.Register("Board", board);
-
-	TetrominoController* tetrominoController = entityMgr.Create<TetrominoController>();
-	entityMgr.Register("TetrominoController", tetrominoController);
-
 	Next* next = entityMgr.Create<Next>();
 	entityMgr.Register("Next", next);
 
 	Score* score = entityMgr.Create<Score>();
 	entityMgr.Register("Score", score);
+
+	Board* board = entityMgr.Create<Board>(Vec2f(-50.0f, 0.0f), 30.0f, 10, 20);
+	entityMgr.Register("Board", board);
+
+	TetrominoController* tetrominoController = entityMgr.Create<TetrominoController>();
+	entityMgr.Register("TetrominoController", tetrominoController);
 
 	updateEntities_ =
 	{
