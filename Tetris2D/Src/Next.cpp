@@ -52,10 +52,12 @@ void Next::Tick(float deltaSeconds)
 
 void Next::Render()
 {
-	RenderManager2D::Get().DrawString(font_, text_, textPos_, textColor_);
+	RenderManager2D& renderMgr = RenderManager2D::Get();
+
+	renderMgr.DrawString(font_, text_, textPos_, textColor_);
 	for (uint32_t index = 0; index < lines_.size(); index += 2)
 	{
-		RenderManager2D::Get().DrawLine(lines_[index + 0], lines_[index + 1], lineColor_);
+		renderMgr.DrawLine(lines_[index + 0], lines_[index + 1], lineColor_);
 	}
 }
 
