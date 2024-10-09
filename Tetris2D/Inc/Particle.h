@@ -12,14 +12,6 @@ class Camera2D;
 class Particle : public IEntity2D
 {
 public:
-	enum class Status
-	{
-		WAIT      = 0x00,
-		EXPLOSION = 0x01,
-		DONE      = 0x02,
-	};
-
-public:
 	Particle();
 	virtual ~Particle();
 
@@ -29,15 +21,6 @@ public:
 	virtual void Render() override;
 	virtual void Release() override;
 
-	const Status GetStatus() const { return status_; }
-
 private:
 	Camera2D* camera_ = nullptr;
-
-	static const uint32_t MAX_PARTICLE_COUNT = 200;
-
-	uint32_t numParticleBlock_ = 0;
-	std::array<Block, MAX_PARTICLE_COUNT> particles_;
-
-	Status status_;
 };
