@@ -12,6 +12,14 @@ class Camera2D;
 class Particle : public IEntity2D
 {
 public:
+	enum class Status
+	{
+		WAIT      = 0x00,
+		EXPLOSION = 0x01,
+		DONE      = 0x02,
+	};
+
+public:
 	Particle();
 	virtual ~Particle();
 
