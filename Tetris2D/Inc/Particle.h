@@ -29,6 +29,8 @@ public:
 	virtual void Render() override;
 	virtual void Release() override;
 
+	const Status GetStatus() const { return status_; }
+
 private:
 	Camera2D* camera_ = nullptr;
 
@@ -36,4 +38,6 @@ private:
 
 	uint32_t numParticleBlock_ = 0;
 	std::array<Block, MAX_PARTICLE_COUNT> particles_;
+
+	Status status_;
 };
