@@ -7,6 +7,16 @@
 
 Camera2D* Particle::camera_ = nullptr;
 
+Particle::Particle()
+{
+	if (!camera_)
+	{
+		camera_ = EntityManager::Get().GetByName<Camera2D>("MainCamera");
+	}
+
+	bIsInitialized_ = true;
+}
+
 Particle::Particle(const Rect2D& bound, const Vec2f& direction, const Vec4f& color, float speed)
 	: bound_(bound)
 	, direction_(direction)

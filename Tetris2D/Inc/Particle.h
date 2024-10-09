@@ -18,6 +18,7 @@ public:
 	};
 
 public:
+	Particle();
 	Particle(const Rect2D& bound, const Vec2f& direction, const Vec4f& color, float speed);
 	virtual ~Particle();
 
