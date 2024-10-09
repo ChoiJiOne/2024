@@ -23,6 +23,8 @@ public:
 
 	bool IsActive() const { return bIsActive_; }
 	
+	void Start(const Block* blocks, uint32_t count); /** 파티클 스케줄러 시작. */
+
 private:
 	bool bIsActive_ = false;
 

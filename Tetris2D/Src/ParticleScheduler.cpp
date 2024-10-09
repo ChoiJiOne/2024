@@ -62,3 +62,30 @@ void ParticleScheduler::Release()
 
 	bIsInitialized_ = false;
 }
+
+void ParticleScheduler::Start(const Block* blocks, uint32_t count)
+{
+	static std::array<Vec2f, 4> directions =
+	{
+		Vec2f(GameMath::Cos(GameMath::ToRadian(150.0f)), GameMath::Sin(GameMath::ToRadian(150.0f))),
+		Vec2f(GameMath::Cos(GameMath::ToRadian(120.0f)), GameMath::Sin(GameMath::ToRadian(120.0f))),
+		Vec2f(GameMath::Cos(GameMath::ToRadian(60.0f)), GameMath::Sin(GameMath::ToRadian(60.0f))),
+		Vec2f(GameMath::Cos(GameMath::ToRadian(30.0f)), GameMath::Sin(GameMath::ToRadian(30.0f))),
+	};
+
+	numActiveParticle_ = 0;
+	for (uint32_t index = 0; index < count; ++index)
+	{
+		Rect2D bound = blocks[index].GetBound();
+		Vec4f color = blocks[index].GetColor();
+
+		bound.size = bound.size * 0.5f;
+
+		for (uint32_t ii = 0; ii < directions.size(); ++ii)
+		{
+			particles_[numActiveParticle_ + ii]->Reset(bound, directions[ii], color, 100.0f);
+		}
+
+		numActiveParticle_ += directions.size();
+	}
+}
