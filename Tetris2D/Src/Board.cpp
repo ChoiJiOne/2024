@@ -87,7 +87,7 @@ void Board::Render()
 
 		const Block& block = cell.first;
 		const Rect2D& bound = block.GetBound();
-		renderMgr.DrawRoundRect(bound.center, bound.size.x, bound.size.y, 10.0f, block.GetColor(), 0.0f);
+		renderMgr.DrawRect(bound.center, bound.size.x, bound.size.y, block.GetColor(), 0.0f);
 	}
 
 	if (status_ == Status::FILL)
@@ -100,8 +100,8 @@ void Board::Render()
 			}
 
 			const Block& block = fillBlock.first;
-			const Rect2D& bound = block.GetBound();
-			renderMgr.DrawRoundRect(bound.center, bound.size.x, bound.size.y, 10.0f, block.GetColor(), 0.0f);
+			const Rect2D& bound = block.GetBound(); 
+			renderMgr.DrawRect(bound.center, bound.size.x, bound.size.y, block.GetColor(), 0.0f);
 		}
 	}
 }

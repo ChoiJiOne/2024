@@ -94,7 +94,7 @@ void Tetromino::Render()
 		{
 			const Rect2D& bound = shadowBlock.GetBound();
 			const Vec4f& color = shadowBlock.GetColor();
-			renderMgr.DrawRoundRect(bound.center, bound.size.x, bound.size.y, 10.0f, color, 0.0f);
+			renderMgr.DrawRect(bound.center, bound.size.x, bound.size.y, color, 0.0f);
 		}
 	}
 
@@ -102,7 +102,7 @@ void Tetromino::Render()
 	{
 		const Rect2D& bound = block.GetBound();
 		const Vec4f& color = block.GetColor();
-		renderMgr.DrawRoundRect(bound.center, bound.size.x, bound.size.y, 10.0f, color, 0.0f);
+		renderMgr.DrawRect(bound.center, bound.size.x, bound.size.y, color, 0.0f);
 	}
 }
 
