@@ -46,7 +46,7 @@ void Particle::Tick(float deltaSeconds)
 		return;
 	}
 
-	direction_.y -= 9.8f; /** 중력 작용 테스트. */
+	direction_.y -= 0.98f; /** 중력 작용 테스트. */
 	bound_.center.x += speed_ * direction_.x;
 	bound_.center.y += speed_ * direction_.y;
 
