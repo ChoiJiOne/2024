@@ -314,7 +314,7 @@ void Tetromino::CreateBlocks(std::array<Block, NUM_BLOCKS>& outBlocks, Vec2f& ou
 		outBlocks[0].SetCenter(Vec2f(startPos.x + 0.0f * stride_, startPos.y - 1.0f * stride_));
 		outBlocks[1].SetCenter(Vec2f(startPos.x + 1.0f * stride_, startPos.y - 1.0f * stride_));
 		outBlocks[2].SetCenter(Vec2f(startPos.x + 2.0f * stride_, startPos.y - 1.0f * stride_));
-		outBlocks[3].SetCenter(Vec2f(startPos.x + 1.0f * stride_, startPos.y - 2.0f * stride_));
+		outBlocks[3].SetCenter(Vec2f(startPos.x + 1.0f * stride_, startPos.y - 0.0f * stride_));
 
 		outRotatePos = startPos + Vec2f(stride_, -stride_);
 	}
@@ -322,10 +322,10 @@ void Tetromino::CreateBlocks(std::array<Block, NUM_BLOCKS>& outBlocks, Vec2f& ou
 
 	case Type::J:
 	{
-		outBlocks[0].SetCenter(Vec2f(startPos.x + 0.0f * stride_, startPos.y - 1.0f * stride_));
-		outBlocks[1].SetCenter(Vec2f(startPos.x + 1.0f * stride_, startPos.y - 1.0f * stride_));
-		outBlocks[2].SetCenter(Vec2f(startPos.x + 2.0f * stride_, startPos.y - 1.0f * stride_));
-		outBlocks[3].SetCenter(Vec2f(startPos.x + 2.0f * stride_, startPos.y - 2.0f * stride_));
+		outBlocks[0].SetCenter(Vec2f(startPos.x + 0.0f * stride_, startPos.y - 0.0f * stride_));
+		outBlocks[1].SetCenter(Vec2f(startPos.x + 0.0f * stride_, startPos.y - 1.0f * stride_));
+		outBlocks[2].SetCenter(Vec2f(startPos.x + 1.0f * stride_, startPos.y - 1.0f * stride_));
+		outBlocks[3].SetCenter(Vec2f(startPos.x + 2.0f * stride_, startPos.y - 1.0f * stride_));
 
 		outRotatePos = startPos + Vec2f(stride_, -stride_);
 	}
@@ -336,7 +336,7 @@ void Tetromino::CreateBlocks(std::array<Block, NUM_BLOCKS>& outBlocks, Vec2f& ou
 		outBlocks[0].SetCenter(Vec2f(startPos.x + 0.0f * stride_, startPos.y - 1.0f * stride_));
 		outBlocks[1].SetCenter(Vec2f(startPos.x + 1.0f * stride_, startPos.y - 1.0f * stride_));
 		outBlocks[2].SetCenter(Vec2f(startPos.x + 2.0f * stride_, startPos.y - 1.0f * stride_));
-		outBlocks[3].SetCenter(Vec2f(startPos.x + 0.0f * stride_, startPos.y - 2.0f * stride_));
+		outBlocks[3].SetCenter(Vec2f(startPos.x + 2.0f * stride_, startPos.y - 0.0f * stride_));
 
 		outRotatePos = startPos + Vec2f(stride_, -stride_);
 	}
