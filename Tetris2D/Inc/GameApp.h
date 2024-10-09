@@ -19,6 +19,9 @@ public:
 	virtual void Run() override;
 
 private:
+	void LoadResource();
+
+private:
 	MainCamera2D* mainCamera_ = nullptr;
 
 	std::vector<IEntity*> updateEntities_;

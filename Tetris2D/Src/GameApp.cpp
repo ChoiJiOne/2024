@@ -2,6 +2,7 @@
 #include "EntityManager.h"
 #include "ResourceManager.h"
 #include "RenderManager2D.h"
+#include "TTFont.h"
 
 #include "Board.h"
 #include "GameApp.h"
@@ -19,6 +20,8 @@ GameApp::~GameApp()
 
 void GameApp::Startup()
 {
+	LoadResource();
+
 	EntityManager& entityMgr = EntityManager::Get();
 
 	mainCamera_ = entityMgr.Create<MainCamera2D>();
@@ -29,7 +32,7 @@ void GameApp::Startup()
 
 	TetrominoController* controller = entityMgr.Create<TetrominoController>();
 	entityMgr.Register("Controller", controller);
-	
+
 	updateEntities_ =
 	{
 		mainCamera_,
@@ -67,4 +70,18 @@ void GameApp::Run()
 			EndFrame();
 		}
 	);
+}
+
+void GameApp::LoadResource()
+{
+	ResourceManager& resourceMgr = ResourceManager::Get();
+	std::string resourcePath = "Tetris2D\\Res\\";
+
+	std::string fontPath = resourcePath + "Font\\SeoulNamsanEB.ttf";
+	std::array<int32_t, 1> fontSizes = { 32, };
+	for (const auto& fontSize : fontSizes)
+	{
+		TTFont* font = resourceMgr.Create<TTFont>(fontPath, 0x00, 0x128, static_cast<float>(fontSize));
+		resourceMgr.Register(GameUtils::PrintF("Font%d", fontSize), font);
+	}
 }
