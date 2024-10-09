@@ -18,6 +18,12 @@ public:
 	virtual void Release() override;
 
 private:
+	TTFont* font_ = nullptr;
+
+	std::wstring text_;
+	Vec2f textPos_;
+	Vec4f textColor_;
+
 	Vec4f lineColor_;
 	std::vector<Vec2f> lines_;
 };
