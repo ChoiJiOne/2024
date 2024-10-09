@@ -58,9 +58,11 @@ void Score::Tick(float deltaSeconds)
 
 void Score::Render()
 {
-	RenderManager2D::Get().DrawString(font_, text_, textPos_, textColor_);
-	RenderManager2D::Get().DrawString(font_, scoreText_, scoreTextPos_, scoreTextColor_);
-	RenderManager2D::Get().DrawRoundRectWireframe(outline_.center, outline_.size.x, outline_.size.y, 10.0f, outlineColor_, 0.0f);
+	RenderManager2D& renderMgr = RenderManager2D::Get();
+
+	renderMgr.DrawString(font_, text_, textPos_, textColor_);
+	renderMgr.DrawString(font_, scoreText_, scoreTextPos_, scoreTextColor_);
+	renderMgr.DrawRoundRectWireframe(outline_.center, outline_.size.x, outline_.size.y, 10.0f, outlineColor_, 0.0f);
 }
 
 void Score::Release()
