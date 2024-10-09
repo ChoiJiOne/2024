@@ -32,5 +32,7 @@ private:
 	static const uint32_t MAX_PARTICLE_SIZE = 160;
 	std::array<Particle*, MAX_PARTICLE_SIZE> particles_;
 
+	float particleSpeed_ = 0.0f;
+	float particleScale_ = 0.0f;
 	int32_t numActiveParticle_ = 0;
 };

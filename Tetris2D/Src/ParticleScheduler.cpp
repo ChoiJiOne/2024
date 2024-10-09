@@ -13,6 +13,9 @@ ParticleScheduler::ParticleScheduler()
 		particles_[index] = entityMgr.Create<Particle>();
 	}
 
+	particleSpeed_ = 100.0f;
+	particleScale_ = 0.3f;
+
 	bIsInitialized_ = true;
 }
 
@@ -76,13 +79,7 @@ void ParticleScheduler::Release()
 
 void ParticleScheduler::Start(const Block* blocks, uint32_t count)
 {
-	static std::array<Vec2f, 4> directions =
-	{
-		Vec2f(GameMath::Cos(GameMath::ToRadian(150.0f)), GameMath::Sin(GameMath::ToRadian(150.0f))),
-		Vec2f(GameMath::Cos(GameMath::ToRadian(120.0f)), GameMath::Sin(GameMath::ToRadian(120.0f))),
-		Vec2f(GameMath::Cos(GameMath::ToRadian(60.0f)), GameMath::Sin(GameMath::ToRadian(60.0f))),
-		Vec2f(GameMath::Cos(GameMath::ToRadian(30.0f)), GameMath::Sin(GameMath::ToRadian(30.0f))),
-	};
+	static const uint32_t NUM_DIRECTIONS = 4;
 
 	numActiveParticle_ = 0;
 	for (uint32_t index = 0; index < count; ++index)
@@ -90,15 +87,18 @@ void ParticleScheduler::Start(const Block* blocks, uint32_t count)
 		Rect2D bound = blocks[index].GetBound();
 		Vec4f color = blocks[index].GetColor();
 
-		bound.size = bound.size * 0.5f;
+		bound.size = bound.size * particleScale_;
 
-		for (uint32_t ii = 0; ii < directions.size(); ++ii)
+		for (uint32_t ii = 0; ii < NUM_DIRECTIONS; ++ii)
 		{
-			particles_[numActiveParticle_ + ii]->Reset(bound, directions[ii], color, 100.0f);
+			float radian = GameMath::GenerateRandomFloat(0.0f, TWO_PI);
+			Vec2f direction(GameMath::Cos(radian), GameMath::Sin(radian));
+
+			particles_[numActiveParticle_ + ii]->Reset(bound, direction, color, particleSpeed_);
 			particles_[numActiveParticle_ + ii]->Start();
 		}
-
-		numActiveParticle_ += directions.size();
+		
+		numActiveParticle_ += NUM_DIRECTIONS;
 	}
 	bIsActive_ = true;
 }
