@@ -30,6 +30,9 @@ void GameApp::Startup()
 	mainCamera_ = entityMgr.Create<MainCamera2D>();
 	entityMgr.Register("MainCamera", mainCamera_);
 
+	ParticleScheduler* particleScheduler = entityMgr.Create<ParticleScheduler>();
+	entityMgr.Register("ParticleScheduler", particleScheduler);
+
 	Board* board = entityMgr.Create<Board>(Vec2f(-50.0f, 0.0f), 30.0f, 10, 20);
 	entityMgr.Register("Board", board);
 
@@ -41,9 +44,6 @@ void GameApp::Startup()
 
 	Score* score = entityMgr.Create<Score>();
 	entityMgr.Register("Score", score);
-
-	ParticleScheduler* particleScheduler = entityMgr.Create<ParticleScheduler>();
-	entityMgr.Register("ParticleScheduler", particleScheduler);
 
 	updateEntities_ =
 	{
