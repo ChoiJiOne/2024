@@ -4,17 +4,16 @@
 #include "RenderManager2D.h"
 
 #include "Board.h"
-#include "Particle.h"
-#include "Particle.h"
+#include "ParticleController.h"
 
-Particle::Particle()
+ParticleController::ParticleController()
 {
 	camera_ = EntityManager::Get().GetByName<Camera2D>("MainCamera");
 
 	bIsInitialized_ = true;
 }
 
-Particle::~Particle()
+ParticleController::~ParticleController()
 {
 	if (bIsInitialized_)
 	{
@@ -22,15 +21,15 @@ Particle::~Particle()
 	}
 }
 
-void Particle::Tick(float deltaSeconds)
+void ParticleController::Tick(float deltaSeconds)
 {
 }
 
-void Particle::Render()
+void ParticleController::Render()
 {
 }
 
-void Particle::Release()
+void ParticleController::Release()
 {
 	CHECK(bIsInitialized_);
 

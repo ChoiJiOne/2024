@@ -9,13 +9,13 @@
 
 class Camera2D;
 
-class Particle : public IEntity2D
+class ParticleController : public IEntity2D
 {
 public:
-	Particle();
-	virtual ~Particle();
+	ParticleController();
+	virtual ~ParticleController();
 
-	DISALLOW_COPY_AND_ASSIGN(Particle);
+	DISALLOW_COPY_AND_ASSIGN(ParticleController);
 
 	virtual void Tick(float deltaSeconds) override;
 	virtual void Render() override;
