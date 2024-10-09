@@ -72,10 +72,6 @@ private:
 	float removeStepTime_ = 0.0f;
 	float maxRemoveStepTime_ = 0.0f;
 	std::vector<bool> removeColumn_;
-	int32_t currentRemoveBlocks_ = 0;
-	std::vector<Block> removeBlocks_;
-	std::vector<Block> fromRemoveBlocks_;
-	std::vector<Block> toRemoveBlocks_;
 
 	float fillStepTime_ = 0.0f;
 	float maxFillStepTime_ = 0.0f;
