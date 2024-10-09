@@ -8,7 +8,7 @@
 #include "GameApp.h"
 #include "MainCamera2D.h"
 #include "Next.h"
-#include "ParticleController.h"
+#include "ParticleScheduler.h"
 #include "Score.h"
 #include "Tetromino.h"
 #include "TetrominoController.h"
@@ -42,8 +42,8 @@ void GameApp::Startup()
 	Score* score = entityMgr.Create<Score>();
 	entityMgr.Register("Score", score);
 
-	ParticleController* particleController = entityMgr.Create<ParticleController>();
-	entityMgr.Register("ParticleController", particleController);
+	ParticleScheduler* particleScheduler = entityMgr.Create<ParticleScheduler>();
+	entityMgr.Register("ParticleScheduler", particleScheduler);
 
 	updateEntities_ =
 	{
@@ -51,7 +51,7 @@ void GameApp::Startup()
 		tetrominoController,
 		board,
 		score,
-		particleController,
+		particleScheduler,
 	};
 
 	renderEntities_ =
@@ -60,7 +60,7 @@ void GameApp::Startup()
 		next,
 		tetrominoController,
 		score,
-		particleController,
+		particleScheduler,
 	};
 }
 
