@@ -69,8 +69,8 @@ private:
 	std::vector<Vec2f> inlines_;
 	std::vector<std::pair<Block, bool>> cells_;
 
-	float removeStepTime_ = 0.0f;
-	float maxRemoveStepTime_ = 0.0f;
+	int32_t numRemoveBlock_ = 0;
+	std::vector<Block> removeBlocks_;
 	std::vector<bool> removeColumn_;
 
 	float fillStepTime_ = 0.0f;

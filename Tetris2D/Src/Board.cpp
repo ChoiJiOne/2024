@@ -1,7 +1,9 @@
 #include "Assertion.h"
+#include "EntityManager.h"
 #include "RenderManager2D.h"
 
 #include "Board.h"
+#include "ParticleScheduler.h"
 
 Board::Board(const Vec2f& center, float cellSize, uint32_t row, uint32_t col)
 	: cellSize_(cellSize)
@@ -9,6 +11,7 @@ Board::Board(const Vec2f& center, float cellSize, uint32_t row, uint32_t col)
 	, col_(col)
 	, inlines_((row_ - 2)* (col_ - 2) * 2)
 	, cells_(row_* col_)
+	, removeBlocks_(row_* col_)
 	, removeColumn_(col_)
 	, fillBlocks_(row_)
 	, outlineColor_(Vec4f(1.0f, 1.0f, 1.0f, 1.0f))
@@ -32,7 +35,6 @@ Board::Board(const Vec2f& center, float cellSize, uint32_t row, uint32_t col)
 	CleanupCells(cells_);
 	startPos_ = CalculateCellPos(4, 0);
 
-	maxRemoveStepTime_ = 0.5f;
 	maxFillStepTime_ = 0.5f;
 
 	bIsInitialized_ = true;
@@ -194,7 +196,32 @@ void Board::DeployBlocks(const Block* blocks, uint32_t count)
 	}
 	else
 	{
-		removeStepTime_ = maxRemoveStepTime_;
+		numRemoveBlock_ = 0;
+
+		for (uint32_t col = 0; col < col_; ++col)
+		{
+			if (!removeColumn_[col])
+			{
+				continue;
+			}
+
+			for (uint32_t row = 0; row < row_; ++row)
+			{
+				uint32_t index = row + col * row_;
+
+				if (cells_[index].second)
+				{
+					removeBlocks_[numRemoveBlock_++] = cells_[index].first;
+				}
+
+				Vec2f center = CalculateCellPos(row, col);
+				cells_[index] = { Block(Rect2D(center, cellSize_), Vec4f(0.0f, 0.0f, 0.0f, 0.0f)), false };
+			}
+		}
+		
+		ParticleScheduler* particleScheduler = EntityManager::Get().GetByName<ParticleScheduler>("ParticleScheduler");
+		particleScheduler->Start(removeBlocks_.data(), numRemoveBlock_);
+
 		status_ = Status::REMOVE;
 	}
 }
@@ -279,44 +306,13 @@ void Board::GotoColumn(float t, int32_t fromFillColumn, int32_t toFillColumn, st
 
 void Board::UpdateRemoveStatus(float deltaSeconds)
 {
-	removeStepTime_ -= deltaSeconds;
-	for (uint32_t col = 0; col < col_; ++col)
+	ParticleScheduler* particleScheduler = EntityManager::Get().GetByName<ParticleScheduler>("ParticleScheduler");
+	if (particleScheduler->IsActive())
 	{
-		if (!removeColumn_[col])
-		{
-			continue;
-		}
-
-		for (uint32_t row = 0; row < row_; ++row)
-		{
-			uint32_t index = row + col * row_;
-
-			Vec4f color = cells_[index].first.GetColor();
-			color.w = removeStepTime_ / maxRemoveStepTime_;
-
-			cells_[index].first.SetColor(color);
-		}
+		return;
 	}
 
-	if (removeStepTime_ <= 0.0f)
-	{
-		for (uint32_t col = 0; col < col_; ++col)
-		{
-			if (!removeColumn_[col])
-			{
-				continue;
-			}
-
-			for (uint32_t row = 0; row < row_; ++row)
-			{
-				uint32_t index = row + col * row_;
-				Vec2f center = CalculateCellPos(row, col);
-				cells_[index] = { Block(Rect2D(center, cellSize_), Vec4f(0.0f, 0.0f, 0.0f, 0.0f)), false };
-			}
-		}
-
-		status_ = Status::CONFIRM;
-	}
+	status_ = Status::CONFIRM;
 }
 
 void Board::UpdateConfirmStatus(float deltaSeconds)
