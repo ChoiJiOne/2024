@@ -31,9 +31,20 @@ void ParticleScheduler::Tick(float deltaSeconds)
 		return;
 	}
 
+	bool bIsDoneAllParticle = true;
 	for (uint32_t index = 0; index < numActiveParticle_; ++index)
 	{
 		particles_[index]->Tick(deltaSeconds);
+
+		if (particles_[index]->GetStatus() == Particle::Status::ACTIVE)
+		{
+			bIsDoneAllParticle = false;
+		}
+	}
+
+	if (bIsDoneAllParticle)
+	{
+		bIsActive_ = false;
 	}
 }
 
@@ -84,8 +95,10 @@ void ParticleScheduler::Start(const Block* blocks, uint32_t count)
 		for (uint32_t ii = 0; ii < directions.size(); ++ii)
 		{
 			particles_[numActiveParticle_ + ii]->Reset(bound, directions[ii], color, 100.0f);
+			particles_[numActiveParticle_ + ii]->Start();
 		}
 
 		numActiveParticle_ += directions.size();
 	}
+	bIsActive_ = true;
 }
