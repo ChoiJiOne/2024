@@ -27,6 +27,13 @@ private:
 	Vec2f textPos_;
 	Vec4f textColor_;
 
+	std::wstring scoreText_;
+	Vec2f scoreTextPos_;
+	Vec4f scoreTextColor_;
+
+	Rect2D outline_;
+	Vec4f outlineColor_;
+
 	int32_t score_ = 0;
 	bool bIsUpdateScore_ = false;
 };
