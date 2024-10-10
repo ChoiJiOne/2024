@@ -32,47 +32,10 @@ void GameApp::Startup()
 	mainCamera_ = entityMgr.Create<MainCamera2D>();
 	entityMgr.Register("MainCamera", mainCamera_);
 
-	GameAppStatusController* gameAppStatusController = entityMgr.Create<GameAppStatusController>();
-	entityMgr.Register("GameAppStatusController", gameAppStatusController);
-
-	ParticleScheduler* particleScheduler = entityMgr.Create<ParticleScheduler>();
-	entityMgr.Register("ParticleScheduler", particleScheduler);
-
-	Next* next = entityMgr.Create<Next>();
-	entityMgr.Register("Next", next);
-
-	Score* score = entityMgr.Create<Score>();
-	entityMgr.Register("Score", score);
-
-	Messenger* messenger = entityMgr.Create<Messenger>();
-	entityMgr.Register("Messenger", messenger);
-
-	Board* board = entityMgr.Create<Board>(Vec2f(-50.0f, 0.0f), 30.0f, 10, 20);
-	entityMgr.Register("Board", board);
-
-	TetrominoController* tetrominoController = entityMgr.Create<TetrominoController>();
-	entityMgr.Register("TetrominoController", tetrominoController);
-
-	updateEntities_ =
-	{
-		mainCamera_,
-		tetrominoController,
-		board,
-		score,
-		particleScheduler,
-		messenger,
-		gameAppStatusController,
-	};
-
-	renderEntities_ =
-	{
-		board,
-		next,
-		tetrominoController,
-		score,
-		particleScheduler,
-		messenger,
-	};
+	gameAppStatusController_ = entityMgr.Create<GameAppStatusController>();
+	entityMgr.Register("GameAppStatusController", gameAppStatusController_);
+	
+	LoadTitleStatusEntities();
 }
 
 void GameApp::Shutdown()
@@ -86,14 +49,19 @@ void GameApp::Run()
 	RunLoop(
 		[&](float deltaSeconds)
 		{
-			for (auto& entity : updateEntities_)
+			StatusEntities& statusEntities = statusEntities_.at(status_);
+
+			for (auto& entity : statusEntities.updateEntities_)
 			{
 				entity->Tick(deltaSeconds);
 			}
 
 			BeginFrame(0.0f, 0.0f, 0.0f, 1.0f);
-			
-			RenderManager2D::Get().BatchRenderEntities(mainCamera_, renderEntities_.data(), renderEntities_.size());
+
+			IEntity2D** renderEntities = statusEntities.renderEntities_.data();
+			uint32_t count = static_cast<uint32_t>(statusEntities.renderEntities_.size());
+
+			RenderManager2D::Get().BatchRenderEntities(mainCamera_, renderEntities, count);
 
 			EndFrame();
 		}
@@ -112,4 +80,22 @@ void GameApp::LoadResource()
 		TTFont* font = resourceMgr.Create<TTFont>(fontPath, 0x00, 0x128, static_cast<float>(fontSize));
 		resourceMgr.Register(GameUtils::PrintF("Font%d", fontSize), font);
 	}
+}
+
+void GameApp::LoadTitleStatusEntities()
+{
+	EntityManager& entityMgr = EntityManager::Get();
+
+	StatusEntities statusEntities;
+	statusEntities.updateEntities_ = 
+	{
+		mainCamera_,
+		gameAppStatusController_,
+	};
+	statusEntities.renderEntities_ = 
+	{
+
+	};
+
+	statusEntities_.insert({ Status::TITLE, statusEntities });
 }

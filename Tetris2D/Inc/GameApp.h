@@ -1,5 +1,7 @@
 #pragma once
 
+#include <map>
+
 #include "IApp.h"
 
 class MainCamera2D;
@@ -38,10 +40,12 @@ private:
 	};
 
 	void LoadResource();
+	void LoadTitleStatusEntities();
 
 private:
 	MainCamera2D* mainCamera_ = nullptr;
+	GameAppStatusController* gameAppStatusController_ = nullptr;
 
-	std::vector<IEntity*> updateEntities_;
-	std::vector<IEntity2D*> renderEntities_;
+	Status status_ = Status::TITLE;
+	std::map<Status, StatusEntities> statusEntities_;
 };
