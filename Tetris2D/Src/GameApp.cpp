@@ -7,6 +7,7 @@
 #include "Board.h"
 #include "GameApp.h"
 #include "MainCamera2D.h"
+#include "Messenger.h"
 #include "Next.h"
 #include "ParticleScheduler.h"
 #include "Score.h"
@@ -39,6 +40,9 @@ void GameApp::Startup()
 	Score* score = entityMgr.Create<Score>();
 	entityMgr.Register("Score", score);
 
+	Messenger* messenger = entityMgr.Create<Messenger>();
+	entityMgr.Register("Messenger", messenger);
+
 	Board* board = entityMgr.Create<Board>(Vec2f(-50.0f, 0.0f), 30.0f, 10, 20);
 	entityMgr.Register("Board", board);
 
@@ -52,6 +56,7 @@ void GameApp::Startup()
 		board,
 		score,
 		particleScheduler,
+		messenger,
 	};
 
 	renderEntities_ =
@@ -61,6 +66,7 @@ void GameApp::Startup()
 		tetrominoController,
 		score,
 		particleScheduler,
+		messenger,
 	};
 }
 
