@@ -3,6 +3,7 @@
 #include "RenderManager2D.h"
 
 #include "Board.h"
+#include "Messenger.h"
 #include "ParticleScheduler.h"
 #include "Score.h"
 
@@ -40,6 +41,7 @@ Board::Board(const Vec2f& center, float cellSize, uint32_t row, uint32_t col)
 
 	scoreScale_ = 10;
 
+	messenger_ = EntityManager::Get().GetByName<Messenger>("Messenger");
 	particleScheduler_ = EntityManager::Get().GetByName<ParticleScheduler>("ParticleScheduler");
 	score_ = EntityManager::Get().GetByName<Score>("Score");
 
@@ -66,6 +68,12 @@ void Board::Tick(float deltaSeconds)
 		if (!particleScheduler_->IsActive())
 		{
 			int32_t gainScore = scoreScale_ * numRemoveCol_;
+			messenger_->Send(
+				GameUtils::PrintF(L"+%d", gainScore),
+				Vec2f(195.0f, -100.0f),
+				Vec3f(1.0f, 0.0f, 0.0f),
+				1.0f
+			);
 
 			int32_t score = score_->GetScore();
 			score += gainScore;
@@ -129,6 +137,7 @@ void Board::Release()
 
 	particleScheduler_ = nullptr;
 	score_ = nullptr;
+	messenger_ = nullptr;
 
 	bIsInitialized_ = false;
 }

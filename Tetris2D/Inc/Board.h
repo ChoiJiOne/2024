@@ -9,6 +9,7 @@
 
 #include "Block.h"
 
+class Messenger;
 class ParticleScheduler;
 class Score;
 
@@ -86,6 +87,7 @@ private:
 
 	int32_t scoreScale_ = 0;
 
+	Messenger* messenger_ = nullptr;
 	ParticleScheduler* particleScheduler_ = nullptr;
 	Score* score_ = nullptr;
 };
