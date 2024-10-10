@@ -202,6 +202,7 @@ void Board::DeployBlocks(const Block* blocks, uint32_t count)
 	else
 	{
 		numRemoveBlock_ = 0;
+		numRemoveCol_ = 0;
 
 		for (uint32_t col = 0; col < col_; ++col)
 		{
@@ -210,6 +211,7 @@ void Board::DeployBlocks(const Block* blocks, uint32_t count)
 				continue;
 			}
 
+			numRemoveCol_++;
 			for (uint32_t row = 0; row < row_; ++row)
 			{
 				uint32_t index = row + col * row_;

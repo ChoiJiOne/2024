@@ -71,6 +71,7 @@ private:
 	std::vector<std::pair<Block, bool>> cells_;
 
 	int32_t numRemoveBlock_ = 0;
+	int32_t numRemoveCol_ = 0;
 	std::vector<Block> removeBlocks_;
 	std::vector<bool> removeColumn_;
 
