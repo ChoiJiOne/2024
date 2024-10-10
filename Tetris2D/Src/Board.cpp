@@ -35,7 +35,7 @@ Board::Board(const Vec2f& center, float cellSize, uint32_t row, uint32_t col)
 	CleanupCells(cells_);
 	startPos_ = CalculateCellPos(4, 0);
 
-	maxFillStepTime_ = 0.5f;
+	maxFillStepTime_ = 0.3f;
 
 	particleScheduler_ = EntityManager::Get().GetByName<ParticleScheduler>("ParticleScheduler");
 
