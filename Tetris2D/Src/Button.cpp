@@ -54,8 +54,10 @@ void Button::Tick(float deltaSeconds)
 
 void Button::Render()
 {
-	RenderManager2D::Get().DrawRoundRect(bound_.center, bound_.size.x, bound_.size.y, layout_.side, stateColors_.at(state_));
-	RenderManager2D::Get().DrawString(layout_.font, layout_.text, textPos_, layout_.textColor);
+	RenderManager2D& renderMgr = RenderManager2D::Get();
+
+	renderMgr.DrawRoundRect(bound_.center, bound_.size.x, bound_.size.y, layout_.side, stateColors_.at(state_), 0.0f);
+	renderMgr.DrawString(layout_.font, layout_.text, textPos_, layout_.textColor);
 }
 
 void Button::Release()
