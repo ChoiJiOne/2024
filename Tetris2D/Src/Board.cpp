@@ -40,6 +40,9 @@ Board::Board(const Vec2f& center, float cellSize, uint32_t row, uint32_t col)
 	maxFillStepTime_ = 0.3f;
 
 	scoreScale_ = 10;
+	gainScoreMessagePos_ = Vec2f(195.0f, -100.0f);
+	gainScoreMessageColor_ = Vec3f(1.0f, 0.5f, 0.5f);
+	gainScoreMessageTime_ = 1.0f;
 
 	messenger_ = EntityManager::Get().GetByName<Messenger>("Messenger");
 	particleScheduler_ = EntityManager::Get().GetByName<ParticleScheduler>("ParticleScheduler");
@@ -65,22 +68,7 @@ void Board::Tick(float deltaSeconds)
 		break;
 
 	case Status::REMOVE:
-		if (!particleScheduler_->IsActive())
-		{
-			int32_t gainScore = scoreScale_ * numRemoveCol_;
-			messenger_->Send(
-				GameUtils::PrintF(L"+%d", gainScore),
-				Vec2f(195.0f, -100.0f),
-				Vec3f(1.0f, 0.0f, 0.0f),
-				1.0f
-			);
-
-			int32_t score = score_->GetScore();
-			score += gainScore;
-			score_->SetScore(score);
-
-			status_ = Status::CONFIRM;
-		}
+		UpdateRemoveStatus(deltaSeconds);
 		break;
 
 	case Status::CONFIRM:
@@ -329,6 +317,23 @@ void Board::GotoColumn(float t, int32_t fromFillColumn, int32_t toFillColumn, st
 		Vec2f center = Vec2f::Lerp(cells_[fromIndex].first.GetBound().center, cells_[toIndex].first.GetBound().center, t);
 		fillBlocks[row].first.SetCenter(center);
 	}
+}
+
+void Board::UpdateRemoveStatus(float deltaSeconds)
+{
+	if (particleScheduler_->IsActive())
+	{
+		return;
+	}
+
+	int32_t gainScore = scoreScale_ * numRemoveCol_;
+	messenger_->Send(GameUtils::PrintF(L"+%d", gainScore), gainScoreMessagePos_, gainScoreMessageColor_, gainScoreMessageTime_);
+
+	int32_t score = score_->GetScore();
+	score += gainScore;
+	score_->SetScore(score);
+
+	status_ = Status::CONFIRM;
 }
 
 void Board::UpdateConfirmStatus(float deltaSeconds)

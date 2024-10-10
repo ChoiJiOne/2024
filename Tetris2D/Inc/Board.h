@@ -56,6 +56,7 @@ private:
 	void GotoColumn(float t, int32_t fromFillColumn, int32_t toFillColumn, std::vector<std::pair<Block, bool>>& fillBlocks);
 
 	/** 상태에 따른 로직 업데이트. */
+	void UpdateRemoveStatus(float deltaSeconds);
 	void UpdateConfirmStatus(float deltaSeconds);
 	void UpdateFillStatus(float deltaSeconds);
 
@@ -86,6 +87,9 @@ private:
 	Status status_ = Status::WAIT;
 
 	int32_t scoreScale_ = 0;
+	Vec2f gainScoreMessagePos_;
+	Vec3f gainScoreMessageColor_;
+	float gainScoreMessageTime_ = 0.0f;
 
 	Messenger* messenger_ = nullptr;
 	ParticleScheduler* particleScheduler_ = nullptr;
