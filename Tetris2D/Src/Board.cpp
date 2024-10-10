@@ -4,6 +4,7 @@
 
 #include "Board.h"
 #include "ParticleScheduler.h"
+#include "Score.h"
 
 Board::Board(const Vec2f& center, float cellSize, uint32_t row, uint32_t col)
 	: cellSize_(cellSize)
@@ -37,7 +38,10 @@ Board::Board(const Vec2f& center, float cellSize, uint32_t row, uint32_t col)
 
 	maxFillStepTime_ = 0.3f;
 
+	scoreScale_ = 10;
+
 	particleScheduler_ = EntityManager::Get().GetByName<ParticleScheduler>("ParticleScheduler");
+	score_ = EntityManager::Get().GetByName<Score>("Score");
 
 	bIsInitialized_ = true;
 }
@@ -61,6 +65,12 @@ void Board::Tick(float deltaSeconds)
 	case Status::REMOVE:
 		if (!particleScheduler_->IsActive())
 		{
+			int32_t gainScore = scoreScale_ * numRemoveCol_;
+
+			int32_t score = score_->GetScore();
+			score += gainScore;
+			score_->SetScore(score);
+
 			status_ = Status::CONFIRM;
 		}
 		break;
@@ -116,6 +126,9 @@ void Board::Render()
 void Board::Release()
 {
 	CHECK(bIsInitialized_);
+
+	particleScheduler_ = nullptr;
+	score_ = nullptr;
 
 	bIsInitialized_ = false;
 }

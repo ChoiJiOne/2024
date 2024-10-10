@@ -10,6 +10,7 @@
 #include "Block.h"
 
 class ParticleScheduler;
+class Score;
 
 class Board : public IEntity2D
 {
@@ -83,5 +84,8 @@ private:
 
 	Status status_ = Status::WAIT;
 
+	int32_t scoreScale_ = 0;
+
 	ParticleScheduler* particleScheduler_ = nullptr;
+	Score* score_ = nullptr;
 };
