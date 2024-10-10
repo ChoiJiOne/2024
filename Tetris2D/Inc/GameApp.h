@@ -31,6 +31,12 @@ public:
 private:
 	friend class GameAppStatusController;
 
+	struct StatusEntities
+	{
+		std::vector<IEntity*> updateEntities_;
+		std::vector<IEntity2D*> renderEntities_;
+	};
+
 	void LoadResource();
 
 private:
