@@ -208,3 +208,4 @@ bool Button::IsDetectMouseCursor()
 	mouseCursor.center.y = +screenSize.y * 0.5f - static_cast<float>(currPos.y);
 
 	return bound_.Intersect(&mouseCursor);
+}
