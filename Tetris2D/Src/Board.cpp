@@ -44,6 +44,13 @@ Board::Board(const Vec2f& center, float cellSize, uint32_t row, uint32_t col)
 	gainScoreMessageColor_ = Vec3f(1.0f, 0.5f, 0.5f);
 	gainScoreMessageTime_ = 1.0f;
 
+	bEnableWarning_ = false;
+	warningCol_ = 3;
+	warningStepTime_ = 0.0f;
+	maxWarningStepTime_ = 0.5f;
+	warningMessagePos_ = center + Vec2f(0.0f, 0.55f * static_cast<float>(col_) * cellSize_ );
+	warningMessageColor_ = Vec3f(1.0f, 0.0f, 0.0f);
+
 	messenger_ = EntityManager::Get().GetByName<Messenger>("Messenger");
 	particleScheduler_ = EntityManager::Get().GetByName<ParticleScheduler>("ParticleScheduler");
 	score_ = EntityManager::Get().GetByName<Score>("Score");
@@ -64,7 +71,7 @@ void Board::Tick(float deltaSeconds)
 	switch (status_)
 	{
 	case Status::WAIT:
-		// Nothing...
+		UpdateWaitStatus(deltaSeconds);
 		break;
 
 	case Status::REMOVE:
@@ -262,6 +269,19 @@ Vec2f Board::CalculateCellPos(uint32_t row, uint32_t col)
 	return cellPos;
 }
 
+bool Board::IsDetectWarning()
+{
+	for (uint32_t col = 0; col < warningCol_; ++col)
+	{
+		if (!IsEmptyColumn(col))
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
+
 bool Board::UpdateRemoveColumn()
 {
 	bool bNeedUpdateRemoveColumn = false;
@@ -316,6 +336,25 @@ void Board::GotoColumn(float t, int32_t fromFillColumn, int32_t toFillColumn, st
 
 		Vec2f center = Vec2f::Lerp(cells_[fromIndex].first.GetBound().center, cells_[toIndex].first.GetBound().center, t);
 		fillBlocks[row].first.SetCenter(center);
+	}
+}
+
+void Board::UpdateWaitStatus(float deltaSeconds)
+{
+	if (bEnableWarning_)
+	{
+		warningStepTime_ += deltaSeconds;
+		if (warningStepTime_ >= maxWarningStepTime_)
+		{
+			warningStepTime_ = 0.0f;
+			bEnableWarning_ = false;
+		}
+	}
+
+	if (!bEnableWarning_ && IsDetectWarning())
+	{
+		bEnableWarning_ = true;
+		messenger_->Send(L"WARNING!", warningMessagePos_, warningMessageColor_, maxWarningStepTime_);
 	}
 }
 
