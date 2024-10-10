@@ -29,6 +29,8 @@ public:
 	virtual void Run() override;
 
 private:
+	friend class GameAppStatusController;
+
 	void LoadResource();
 
 private:
