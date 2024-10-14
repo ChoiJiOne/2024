@@ -56,13 +56,16 @@ void RewardViewer::Tick(float deltaSeconds)
 
 void RewardViewer::Render()
 {
-	RenderManager2D::Get().DrawRoundRect(backgroundPos_, backgroundSize_.x, backgroundSize_.y, backgroundSide_, backgroundColor_);
+	RenderManager2D& renderMgr = RenderManager2D::Get();
 
-	RenderManager2D::Get().DrawSprite(atlas_, "Cherry_3", cherrySpritePos_, spriteSize_.x, spriteSize_.y);
-	RenderManager2D::Get().DrawSprite(atlas_, "Gem_1", gemSpritePos_, spriteSize_.x, spriteSize_.y);
+	renderMgr.DrawRoundRect(backgroundPos_, backgroundSize_.x, backgroundSize_.y, backgroundSide_, backgroundColor_, 0.0f);
 
-	RenderManager2D::Get().DrawString(font_, pickupCherryText_, pickupCherryTextPos_, textColor_);
-	RenderManager2D::Get().DrawString(font_, pickupGemText_, pickupGemTextPos_, textColor_);
+	static RenderManager2D::SpriteRenderOptions option;
+	renderMgr.DrawSprite(atlas_, "Cherry_3", cherrySpritePos_, spriteSize_.x, spriteSize_.y, 0.0f, option);
+	renderMgr.DrawSprite(atlas_, "Gem_1", gemSpritePos_, spriteSize_.x, spriteSize_.y, 0.0f, option);
+
+	renderMgr.DrawString(font_, pickupCherryText_, pickupCherryTextPos_, textColor_);
+	renderMgr.DrawString(font_, pickupGemText_, pickupGemTextPos_, textColor_);
 }
 
 void RewardViewer::Release()
