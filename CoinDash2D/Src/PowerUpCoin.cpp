@@ -129,7 +129,9 @@ void PowerUpCoin::Render()
 	}
 
 	float size = 2.0f * bound_.radius;
-	RenderManager2D::Get().DrawSprite(anim_->GetAtlas(), anim_->GetCurrentClip(), bound_.center, size, size);
+
+	static RenderManager2D::SpriteRenderOptions option;
+	RenderManager2D::Get().DrawSprite(anim_->GetAtlas(), anim_->GetCurrentClip(), bound_.center, size, size, 0.0f, option);
 }
 
 void PowerUpCoin::Release()

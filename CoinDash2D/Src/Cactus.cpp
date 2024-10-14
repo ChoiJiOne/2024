@@ -49,7 +49,8 @@ void Cactus::Tick(float deltaSeconds)
 
 void Cactus::Render()
 {
-	RenderManager2D::Get().DrawSprite(atlas_, "Cactus", spriteBound_.center, spriteBound_.size.x, spriteBound_.size.y);
+	static RenderManager2D::SpriteRenderOptions option;
+	RenderManager2D::Get().DrawSprite(atlas_, "Cactus", spriteBound_.center, spriteBound_.size.x, spriteBound_.size.y, 0.0f, option);
 }
 
 void Cactus::Release()

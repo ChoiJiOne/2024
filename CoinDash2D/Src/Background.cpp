@@ -29,7 +29,8 @@ void Background::Tick(float deltaSeconds)
 
 void Background::Render()
 {
-	RenderManager2D::Get().DrawSprite(atlas_, "Grass", rect_.center, rect_.size.x, rect_.size.y);
+	static RenderManager2D::SpriteRenderOptions option;
+	RenderManager2D::Get().DrawSprite(atlas_, "Grass", rect_.center, rect_.size.x, rect_.size.y, 0.0f, option);
 }
 
 void Background::Release()
