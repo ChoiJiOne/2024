@@ -133,7 +133,7 @@ Button::State Button::GetState(const Press& press, const State& state)
 
 bool Button::IsDetectMouseCursor()
 {
-	GameMath::Vec2i currPos = app_->GetCurrMousePos();
+	Vec2i currPos = app_->GetCurrMousePos();
 
 	Vec2f screenSize;
 	app_->GetScreenSize<float>(screenSize.x, screenSize.y);
