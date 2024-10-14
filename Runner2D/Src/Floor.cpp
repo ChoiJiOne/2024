@@ -61,11 +61,13 @@ void Floor::Tick(float deltaSeconds)
 
 void Floor::Render()
 {
-	RenderManager2D::Get().DrawSprite(atlas_, "Floor", floor_.center, floor_.size.x, floor_.size.y);
+	RenderManager2D& renderMgr = RenderManager2D::Get();
+	static RenderManager2D::SpriteRenderOptions option;
 
+	renderMgr.DrawSprite(atlas_, "Floor", floor_.center, floor_.size.x, floor_.size.y, 0.0f, option);
 	for (const auto& block : blocks_)
 	{
-		RenderManager2D::Get().DrawSprite(atlas_, "Block", block.center, block.size.x, block.size.y);
+		renderMgr.DrawSprite(atlas_, "Block", block.center, block.size.x, block.size.y, 0.0f, option);
 	}
 }
 
