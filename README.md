@@ -10,7 +10,7 @@
 - [CMake 3.27 or later](https://cmake.org/)
 - [Python 3.x](https://www.python.org/)
 - [NSIS](https://nsis.sourceforge.io/Download)
-- [GameMaker](https://github.com/ChoiJiOne/GameMaker)
+- [MiniGame](https://github.com/ChoiJiOne/MiniGame)
 
 ## How to get repository clone?
 
@@ -20,7 +20,7 @@ You can obtain a copy of the repository using the following command.
 git clone https://github.com/ChoiJiOne/CoinDash2D.git
 ```
 
-## How to setup `GameMaker`
+## How to setup `MiniGame`
 
 You can initialize the game engine using the following command.
 
