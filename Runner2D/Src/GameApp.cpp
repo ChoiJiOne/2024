@@ -11,7 +11,6 @@
 #include "Background.h"
 #include "Box.h"
 #include "Button.h"
-#include "Camera.h"
 #include "CountDowner.h"
 #include "Floor.h"
 #include "GameApp.h"
@@ -51,7 +50,7 @@ void GameApp::Startup()
 	AddWindowEventAction(WindowEvent::FOCUS_LOST, pauseEvent, true);
 	AddWindowEventAction(WindowEvent::MOVED, pauseEvent, true);
 
-	Camera* camera = EntityManager::Get().Create<Camera>();
+	Camera2D* camera = Camera2D::CreateScreenCamera();
 	EntityManager::Get().Register("Camera", camera);
 
 	Player* player = EntityManager::Get().Create<Player>();

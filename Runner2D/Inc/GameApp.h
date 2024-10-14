@@ -5,7 +5,7 @@
 #include "IApp.h"
 #include "IEntity.h"
 
-class Camera;
+class Camera2D;
 class Entity2D;
 
 class GameApp : public IApp
@@ -44,7 +44,7 @@ private:
 private:
 	std::string resourceRootPath_;
 
-	Camera* camera_ = nullptr;
+	Camera2D* camera_ = nullptr;
 
 	EStatus status_ = EStatus::READY;
 	std::map<EStatus, StatusEntities> statusEntities_;
