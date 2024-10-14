@@ -7,7 +7,7 @@
 #include "Entity2D.h"
 
 class Cactus;
-class Camera;
+class Camera2D;
 class Coin;
 class Player;
 class Sound;
@@ -31,7 +31,7 @@ private:
 	void GenerateCoins();
 
 private:
-	Camera* camera_ = nullptr;
+	Camera2D* camera_ = nullptr;
 	Player* player_ = nullptr;
 	std::vector<Cactus*> cactus_;
 

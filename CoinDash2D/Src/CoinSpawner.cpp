@@ -1,10 +1,10 @@
 #include "Assertion.h"
+#include "Camera2D.h"
 #include "EntityManager.h"
 #include "ResourceManager.h"
 #include "Sound.h"
 
 #include "Cactus.h"
-#include "Camera.h"
 #include "Coin.h"
 #include "CoinSpawner.h"
 #include "CountDowner.h"
@@ -17,7 +17,7 @@ static const float MAX_Y_POS = +360.0f;
 
 CoinSpawner::CoinSpawner()
 {
-	camera_ = EntityManager::Get().GetByName<Camera>("Camera");
+	camera_ = EntityManager::Get().GetByName<Camera2D>("Camera");
 	player_ = EntityManager::Get().GetByName<Player>("Player");
 	level_ = ResourceManager::Get().GetByName<Sound>("Level");
 	cactus_ =
