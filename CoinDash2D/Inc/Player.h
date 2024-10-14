@@ -59,13 +59,13 @@ private:
 	Rect2D spriteBound_;
 	Rect2D collisionBound_;
 
-	GameMath::Vec2f direction_;
+	Vec2f direction_;
 	float speed_ = 0.0f;
 
 	bool bIsFlipH_ = false;
 
 	int32_t numCoin_ = 0;
-	GameMath::Vec4f messageColor_ = GameMath::Vec4f(0.0f, 0.0f, 0.0f, 1.0f);
+	Vec4f messageColor_ = Vec4f(0.0f, 0.0f, 0.0f, 1.0f);
 
 	bool bIsPowerUp_ = false;
 	float normalSpeed_ = 200.0f;
@@ -75,6 +75,6 @@ private:
 	
 	Rect2D powerUpBar_;
 	Rect2D remainBar_;
-	GameMath::Vec4f powerUpBarColor_;
-	GameMath::Vec4f remainBarColor_;
+	Vec4f powerUpBarColor_;
+	Vec4f remainBarColor_;
 };

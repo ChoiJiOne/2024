@@ -65,7 +65,7 @@ void PlayerMessenger::Release()
 	bIsInitialized_ = false;
 }
 
-void PlayerMessenger::Send(const std::wstring& message, const GameMath::Vec4f& color, float time)
+void PlayerMessenger::Send(const std::wstring& message, const Vec4f& color, float time)
 {
 	message_ = message;
 	messageColor_ = color;

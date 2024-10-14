@@ -11,12 +11,12 @@
 #include "Player.h"
 #include "PlayerMessenger.h"
 
-static const std::map<Key, GameMath::Vec2f> KEY_DIRECTIONS =
+static const std::map<Key, Vec2f> KEY_DIRECTIONS =
 {
-	{ Key::KEY_RIGHT, GameMath::Vec2f(+1.0f, +0.0f) },
-	{ Key::KEY_UP,    GameMath::Vec2f(+0.0f, +1.0f) },
-	{ Key::KEY_LEFT,  GameMath::Vec2f(-1.0f, +0.0f) },
-	{ Key::KEY_DOWN,  GameMath::Vec2f(+0.0f, -1.0f) },
+	{ Key::KEY_RIGHT, Vec2f(+1.0f, +0.0f) },
+	{ Key::KEY_UP,    Vec2f(+0.0f, +1.0f) },
+	{ Key::KEY_LEFT,  Vec2f(-1.0f, +0.0f) },
+	{ Key::KEY_DOWN,  Vec2f(+0.0f, -1.0f) },
 };
 
 Player::Player()
@@ -37,19 +37,19 @@ Player::Player()
 	std::vector<std::string> hurtClip = { "Hurt_1", "Hurt_2", };
 	anims_.insert({ Status::HURT, ResourceManager::Get().Create<SpriteAnim2D>(atlas, hurtClip, true, 0.5f) });
 
-	center_.center = GameMath::Vec2f();
+	center_.center = Vec2f();
 
 	spriteBound_.center = center_.center;
-	spriteBound_.size = GameMath::Vec2f(50.0f, 50.0f);
+	spriteBound_.size = Vec2f(50.0f, 50.0f);
 
-	collisionBound_.center = center_.center + GameMath::Vec2f(0.0f, -7.0f);
-	collisionBound_.size = GameMath::Vec2f(30.0f, 36.0f);
+	collisionBound_.center = center_.center + Vec2f(0.0f, -7.0f);
+	collisionBound_.size = Vec2f(30.0f, 36.0f);
 
 	speed_ = normalSpeed_;
 
-	powerUpBar_ = Rect2D(GameMath::Vec2f(0.0f, 0.0f), GameMath::Vec2f(30.0f, 5.0f));
-	powerUpBarColor_ = GameMath::Vec4f(0.0f, 0.0f, 0.0f, 1.0f);
-	remainBarColor_ = GameMath::Vec4f(1.0f, 0.0f, 0.0f, 1.0f);
+	powerUpBar_ = Rect2D(Vec2f(0.0f, 0.0f), Vec2f(30.0f, 5.0f));
+	powerUpBarColor_ = Vec4f(0.0f, 0.0f, 0.0f, 1.0f);
+	remainBarColor_ = Vec4f(1.0f, 0.0f, 0.0f, 1.0f);
 
 	bIsInitialized_ = true;
 }
@@ -129,11 +129,11 @@ void Player::Reset()
 {
 	status_ = Status::IDLE;
 
-	center_.center = GameMath::Vec2f();
+	center_.center = Vec2f();
 	spriteBound_.center = center_.center;
-	spriteBound_.size = GameMath::Vec2f(50.0f, 50.0f);
-	collisionBound_.center = center_.center + GameMath::Vec2f(0.0f, -7.0f);
-	collisionBound_.size = GameMath::Vec2f(30.0f, 36.0f);
+	spriteBound_.size = Vec2f(50.0f, 50.0f);
+	collisionBound_.center = center_.center + Vec2f(0.0f, -7.0f);
+	collisionBound_.size = Vec2f(30.0f, 36.0f);
 
 	speed_ = normalSpeed_;
 
@@ -157,17 +157,17 @@ void Player::Move(float deltaSeconds)
 	status_ = (bIsPress) ? Status::RUN : Status::IDLE;
 	bIsFlipH_ = (direction_.x < 0.0f) ? true : false;
 
-	if (bIsPress && !GameMath::NearZero(GameMath::Vec2f::LengthSq(direction_)))
+	if (bIsPress && !GameMath::NearZero(Vec2f::LengthSq(direction_)))
 	{
-		direction_ = GameMath::Vec2f::Normalize(direction_);
+		direction_ = Vec2f::Normalize(direction_);
 
-		GameMath::Vec2f center = center_.center;
+		Vec2f center = center_.center;
 		center_.center += direction_ * deltaSeconds * speed_;
 
 		if (center_.Intersect(camera_->GetCollision()))
 		{
 			spriteBound_.center = center_.center;
-			collisionBound_.center = center_.center + GameMath::Vec2f(0.0f, -7.0f);
+			collisionBound_.center = center_.center + Vec2f(0.0f, -7.0f);
 		}
 		else
 		{
@@ -196,6 +196,6 @@ void Player::UpdatePowerUpBar(float deltaSeconds)
 	remainBar_.size = powerUpBar_.size;
 	remainBar_.size.x *= (powerUpTime_ / maxPowerUpTime_);
 
-	remainBar_.center = powerUpBar_.center + GameMath::Vec2f(-powerUpBar_.size.x * 0.5f, +powerUpBar_.size.y * 0.5f);
-	remainBar_.center += GameMath::Vec2f(+remainBar_.size.x * 0.5f, -remainBar_.size.y * 0.5f);
+	remainBar_.center = powerUpBar_.center + Vec2f(-powerUpBar_.size.x * 0.5f, +powerUpBar_.size.y * 0.5f);
+	remainBar_.center += Vec2f(+remainBar_.size.x * 0.5f, -remainBar_.size.y * 0.5f);
 }

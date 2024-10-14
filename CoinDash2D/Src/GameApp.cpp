@@ -55,16 +55,16 @@ void GameApp::Startup()
 	Player* player = EntityManager::Get().Create<Player>();
 	EntityManager::Get().Register("Player", player);
 
-	Cactus* cactus0 = EntityManager::Get().Create<Cactus>(Rect2D(GameMath::Vec2f(-120.0f, +150.0f), GameMath::Vec2f(50.0f, 60.0f)));
+	Cactus* cactus0 = EntityManager::Get().Create<Cactus>(Rect2D(Vec2f(-120.0f, +150.0f), Vec2f(50.0f, 60.0f)));
 	EntityManager::Get().Register("Cactus0", cactus0);
 
-	Cactus* cactus1 = EntityManager::Get().Create<Cactus>(Rect2D(GameMath::Vec2f(+120.0f, +150.0f), GameMath::Vec2f(50.0f, 60.0f)));
+	Cactus* cactus1 = EntityManager::Get().Create<Cactus>(Rect2D(Vec2f(+120.0f, +150.0f), Vec2f(50.0f, 60.0f)));
 	EntityManager::Get().Register("Cactus1", cactus1);
 
-	Cactus* cactus2 = EntityManager::Get().Create<Cactus>(Rect2D(GameMath::Vec2f(-120.0f, -150.0f), GameMath::Vec2f(50.0f, 60.0f)));
+	Cactus* cactus2 = EntityManager::Get().Create<Cactus>(Rect2D(Vec2f(-120.0f, -150.0f), Vec2f(50.0f, 60.0f)));
 	EntityManager::Get().Register("Cactus2", cactus2);
 
-	Cactus* cactus3 = EntityManager::Get().Create<Cactus>(Rect2D(GameMath::Vec2f(+120.0f, -150.0f), GameMath::Vec2f(50.0f, 60.0f)));
+	Cactus* cactus3 = EntityManager::Get().Create<Cactus>(Rect2D(Vec2f(+120.0f, -150.0f), Vec2f(50.0f, 60.0f)));
 	EntityManager::Get().Register("Cactus3", cactus3);
 
 	CoinSpawner* coinSpawner = EntityManager::Get().Create<CoinSpawner>();
@@ -89,13 +89,13 @@ void GameApp::Startup()
 	EntityManager::Get().Register("GameOver", gameOver);
 
 	Button::Layout startButtonLayout;
-	startButtonLayout.textColor = GameMath::Vec4f(0.0f, 0.0f, 0.0f, 1.0f);
-	startButtonLayout.disableColor = GameMath::Vec4f(1.0f, 1.0f, 1.0f, 0.4f);
-	startButtonLayout.enableColor = GameMath::Vec4f(1.0f, 1.0f, 1.0f, 0.6f);
-	startButtonLayout.pressColor = GameMath::Vec4f(1.0f, 1.0f, 1.0f, 0.9f);
-	startButtonLayout.releaseColor = GameMath::Vec4f(1.0f, 1.0f, 1.0f, 1.0f);
-	startButtonLayout.center = GameMath::Vec2f(0.0f, 0.0f);
-	startButtonLayout.size = GameMath::Vec2f(200.0f, 50.0f);
+	startButtonLayout.textColor = Vec4f(0.0f, 0.0f, 0.0f, 1.0f);
+	startButtonLayout.disableColor = Vec4f(1.0f, 1.0f, 1.0f, 0.4f);
+	startButtonLayout.enableColor = Vec4f(1.0f, 1.0f, 1.0f, 0.6f);
+	startButtonLayout.pressColor = Vec4f(1.0f, 1.0f, 1.0f, 0.9f);
+	startButtonLayout.releaseColor = Vec4f(1.0f, 1.0f, 1.0f, 1.0f);
+	startButtonLayout.center = Vec2f(0.0f, 0.0f);
+	startButtonLayout.size = Vec2f(200.0f, 50.0f);
 	startButtonLayout.mouse = Mouse::LEFT;
 	startButtonLayout.font = ResourceManager::Get().GetByName<TTFont>("Font32");
 	startButtonLayout.text = L"START";
@@ -111,13 +111,13 @@ void GameApp::Startup()
 	EntityManager::Get().Register("StartButton", startButton);
 
 	Button::Layout resumeButtonLayout;
-	resumeButtonLayout.textColor = GameMath::Vec4f(0.0f, 0.0f, 0.0f, 1.0f);
-	resumeButtonLayout.disableColor = GameMath::Vec4f(1.0f, 1.0f, 1.0f, 0.4f);
-	resumeButtonLayout.enableColor = GameMath::Vec4f(1.0f, 1.0f, 1.0f, 0.6f);
-	resumeButtonLayout.pressColor = GameMath::Vec4f(1.0f, 1.0f, 1.0f, 0.9f);
-	resumeButtonLayout.releaseColor = GameMath::Vec4f(1.0f, 1.0f, 1.0f, 1.0f);
-	resumeButtonLayout.center = GameMath::Vec2f(0.0f, 0.0f);
-	resumeButtonLayout.size = GameMath::Vec2f(200.0f, 50.0f);
+	resumeButtonLayout.textColor = Vec4f(0.0f, 0.0f, 0.0f, 1.0f);
+	resumeButtonLayout.disableColor = Vec4f(1.0f, 1.0f, 1.0f, 0.4f);
+	resumeButtonLayout.enableColor = Vec4f(1.0f, 1.0f, 1.0f, 0.6f);
+	resumeButtonLayout.pressColor = Vec4f(1.0f, 1.0f, 1.0f, 0.9f);
+	resumeButtonLayout.releaseColor = Vec4f(1.0f, 1.0f, 1.0f, 1.0f);
+	resumeButtonLayout.center = Vec2f(0.0f, 0.0f);
+	resumeButtonLayout.size = Vec2f(200.0f, 50.0f);
 	resumeButtonLayout.mouse = Mouse::LEFT;
 	resumeButtonLayout.font = ResourceManager::Get().GetByName<TTFont>("Font32");
 	resumeButtonLayout.text = L"RESUME";
@@ -133,13 +133,13 @@ void GameApp::Startup()
 	EntityManager::Get().Register("ResumeButton", resumeButton);
 
 	Button::Layout resetButtonLayout;
-	resetButtonLayout.textColor = GameMath::Vec4f(0.0f, 0.0f, 0.0f, 1.0f);
-	resetButtonLayout.disableColor = GameMath::Vec4f(1.0f, 1.0f, 1.0f, 0.4f);
-	resetButtonLayout.enableColor = GameMath::Vec4f(1.0f, 1.0f, 1.0f, 0.6f);
-	resetButtonLayout.pressColor = GameMath::Vec4f(1.0f, 1.0f, 1.0f, 0.9f);
-	resetButtonLayout.releaseColor = GameMath::Vec4f(1.0f, 1.0f, 1.0f, 1.0f);
-	resetButtonLayout.center = GameMath::Vec2f(0.0f, 0.0f);
-	resetButtonLayout.size = GameMath::Vec2f(200.0f, 50.0f);
+	resetButtonLayout.textColor = Vec4f(0.0f, 0.0f, 0.0f, 1.0f);
+	resetButtonLayout.disableColor = Vec4f(1.0f, 1.0f, 1.0f, 0.4f);
+	resetButtonLayout.enableColor = Vec4f(1.0f, 1.0f, 1.0f, 0.6f);
+	resetButtonLayout.pressColor = Vec4f(1.0f, 1.0f, 1.0f, 0.9f);
+	resetButtonLayout.releaseColor = Vec4f(1.0f, 1.0f, 1.0f, 1.0f);
+	resetButtonLayout.center = Vec2f(0.0f, 0.0f);
+	resetButtonLayout.size = Vec2f(200.0f, 50.0f);
 	resetButtonLayout.mouse = Mouse::LEFT;
 	resetButtonLayout.font = ResourceManager::Get().GetByName<TTFont>("Font32");
 	resetButtonLayout.text = L"RESET";
@@ -162,13 +162,13 @@ void GameApp::Startup()
 	EntityManager::Get().Register("ResetButton", resetButton);
 
 	Button::Layout quitButtonLayout;
-	quitButtonLayout.textColor = GameMath::Vec4f(0.0f, 0.0f, 0.0f, 1.0f);
-	quitButtonLayout.disableColor = GameMath::Vec4f(1.0f, 1.0f, 1.0f, 0.4f);
-	quitButtonLayout.enableColor = GameMath::Vec4f(1.0f, 1.0f, 1.0f, 0.6f);
-	quitButtonLayout.pressColor = GameMath::Vec4f(1.0f, 1.0f, 1.0f, 0.9f);
-	quitButtonLayout.releaseColor = GameMath::Vec4f(1.0f, 1.0f, 1.0f, 1.0f);
-	quitButtonLayout.center = GameMath::Vec2f(0.0f, -70.0f);
-	quitButtonLayout.size = GameMath::Vec2f(200.0f, 50.0f);
+	quitButtonLayout.textColor = Vec4f(0.0f, 0.0f, 0.0f, 1.0f);
+	quitButtonLayout.disableColor = Vec4f(1.0f, 1.0f, 1.0f, 0.4f);
+	quitButtonLayout.enableColor = Vec4f(1.0f, 1.0f, 1.0f, 0.6f);
+	quitButtonLayout.pressColor = Vec4f(1.0f, 1.0f, 1.0f, 0.9f);
+	quitButtonLayout.releaseColor = Vec4f(1.0f, 1.0f, 1.0f, 1.0f);
+	quitButtonLayout.center = Vec2f(0.0f, -70.0f);
+	quitButtonLayout.size = Vec2f(200.0f, 50.0f);
 	quitButtonLayout.mouse = Mouse::LEFT;
 	quitButtonLayout.font = ResourceManager::Get().GetByName<TTFont>("Font32");
 	quitButtonLayout.text = L"QUIT";

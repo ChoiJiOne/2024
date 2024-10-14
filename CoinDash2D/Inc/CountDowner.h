@@ -29,10 +29,10 @@ private:
 	float time_ = 0.0f;
 	int32_t remainTime_ = 0;
 
-	GameMath::Vec2f textCenter_;
-	GameMath::Vec2f textPos_;
-	GameMath::Vec4f textColor_;
-	GameMath::Vec2f textShadowPos_;
-	GameMath::Vec4f textShadowColor_;
+	Vec2f textCenter_;
+	Vec2f textPos_;
+	Vec4f textColor_;
+	Vec2f textShadowPos_;
+	Vec4f textShadowColor_;
 	std::wstring text_;
 };

@@ -13,14 +13,14 @@ Title::Title()
 {
 	font_ = ResourceManager::Get().GetByName<TTFont>("Font72");
 	text_ = L"CoinDash2D";
-	textColor_ = GameMath::Vec4f(1.0f, 1.0f, 1.0f, 1.0f);
-	textShadowColor_ = GameMath::Vec4f(0.5f, 0.5f, 0.5f, 0.5f);
+	textColor_ = Vec4f(1.0f, 1.0f, 1.0f, 1.0f);
+	textShadowColor_ = Vec4f(0.5f, 0.5f, 0.5f, 0.5f);
 
-	GameMath::Vec2f size;
+	Vec2f size;
 	font_->MeasureText(text_, size.x, size.y);
 
-	textPos_ = GameMath::Vec2f(0.0f, 100.0f) + GameMath::Vec2f(-size.x * 0.5f, +size.y * 0.5f);
-	textShadowPos_ = textPos_ + GameMath::Vec2f(+3.0f, -3.0f);
+	textPos_ = Vec2f(0.0f, 100.0f) + Vec2f(-size.x * 0.5f, +size.y * 0.5f);
+	textShadowPos_ = textPos_ + Vec2f(+3.0f, -3.0f);
 	
 	bIsInitialized_ = true;
 }

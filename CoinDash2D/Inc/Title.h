@@ -20,9 +20,9 @@ public:
 private:
 	TTFont* font_ = nullptr;
 
-	GameMath::Vec2f textPos_;
-	GameMath::Vec4f textColor_;
-	GameMath::Vec2f textShadowPos_;
-	GameMath::Vec4f textShadowColor_;
+	Vec2f textPos_;
+	Vec4f textColor_;
+	Vec2f textShadowPos_;
+	Vec4f textShadowColor_;
 	std::wstring text_;
 };

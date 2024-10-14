@@ -16,10 +16,10 @@ CoinViewer::CoinViewer()
 	font_ = ResourceManager::Get().GetByName<TTFont>("Font64");
 
 	numCoin_ = -1;
-	textColor_ = GameMath::Vec4f(1.0f, 1.0f, 1.0f, 1.0f);
-	textShadowColor_ = GameMath::Vec4f(0.5f, 0.5f, 0.5f, 0.5f);
-	textPos_ = GameMath::Vec2f(-235.0f, 350.0f);
-	textShadowPos_ = textPos_ + GameMath::Vec2f(+3.0f, -3.0f);
+	textColor_ = Vec4f(1.0f, 1.0f, 1.0f, 1.0f);
+	textShadowColor_ = Vec4f(0.5f, 0.5f, 0.5f, 0.5f);
+	textPos_ = Vec2f(-235.0f, 350.0f);
+	textShadowPos_ = textPos_ + Vec2f(+3.0f, -3.0f);
 
 	bIsInitialized_ = true;
 }

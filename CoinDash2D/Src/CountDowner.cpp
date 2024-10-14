@@ -17,8 +17,8 @@ CountDowner::CountDowner()
 	font_ = ResourceManager::Get().GetByName<TTFont>("Font64");
 
 	time_ = 31.0f;
-	textColor_ = GameMath::Vec4f(1.0f, 1.0f, 1.0f, 1.0f);
-	textShadowColor_ = GameMath::Vec4f(0.5f, 0.5f, 0.5f, 0.5f);
+	textColor_ = Vec4f(1.0f, 1.0f, 1.0f, 1.0f);
+	textShadowColor_ = Vec4f(0.5f, 0.5f, 0.5f, 0.5f);
 
 	bIsInitialized_ = true;
 }
@@ -59,16 +59,16 @@ void CountDowner::Tick(float deltaSeconds)
 		remainTime_ = static_cast<int32_t>(time_);
 		text_ = GameUtils::PrintF(L"%d", remainTime_);
 
-		textPos_ = GameMath::Vec2f(240.0f, 350.0f);
+		textPos_ = Vec2f(240.0f, 350.0f);
 
-		GameMath::Vec2f size;
+		Vec2f size;
 		font_->MeasureText(text_, size.x, size.y);
 
 		textPos_.x -= (size.x + 5.0f);
-		textShadowPos_ = textPos_ + GameMath::Vec2f(+3.0f, -3.0f);
+		textShadowPos_ = textPos_ + Vec2f(+3.0f, -3.0f);
 	}
 
-	textColor_ = (time_ <= 6.0f) ? GameMath::Vec4f(1.0f, 0.3f, 0.3f, 1.0f) : GameMath::Vec4f(1.0f, 1.0f, 1.0f, 1.0f);
+	textColor_ = (time_ <= 6.0f) ? Vec4f(1.0f, 0.3f, 0.3f, 1.0f) : Vec4f(1.0f, 1.0f, 1.0f, 1.0f);
 }
 
 void CountDowner::Render()

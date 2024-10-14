@@ -86,7 +86,7 @@ void PowerUpCoin::Tick(float deltaSeconds)
 
 				float x = GameMath::GenerateRandomFloat(MIN_X_POS, MAX_X_POS);
 				float y = GameMath::GenerateRandomFloat(MIN_Y_POS, MAX_Y_POS);
-				bound_.center = GameMath::Vec2f(x, y);
+				bound_.center = Vec2f(x, y);
 
 				if (bound_.Intersect(player_->GetCollisionBound()))
 				{
