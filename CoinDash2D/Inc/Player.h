@@ -5,7 +5,7 @@
 #include "Collision2D.h"
 #include "Entity2D.h"
 
-class Camera;
+class Camera2D;
 class IApp;
 class Sound;
 class SpriteAnim2D;
@@ -48,7 +48,7 @@ private:
 	
 private:
 	IApp* app_ = nullptr;
-	Camera* camera_ = nullptr;
+	Camera2D* camera_ = nullptr;
 	Sound* coinSound_ = nullptr;
 	Sound* powerUpSound_ = nullptr;
 	

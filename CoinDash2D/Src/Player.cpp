@@ -7,7 +7,6 @@
 #include "SpriteAnim2D.h"
 #include "Sound.h"
 
-#include "Camera.h"
 #include "Player.h"
 #include "PlayerMessenger.h"
 
@@ -19,10 +18,12 @@ static const std::map<Key, Vec2f> KEY_DIRECTIONS =
 	{ Key::KEY_DOWN,  Vec2f(+0.0f, -1.0f) },
 };
 
+static RenderManager2D::SpriteRenderOptions option_;
+
 Player::Player()
 {
 	app_ = IApp::Get();
-	camera_ = EntityManager::Get().GetByName<Camera>("Camera"); 
+	camera_ = EntityManager::Get().GetByName<Camera2D>("Camera"); 
 	coinSound_ = ResourceManager::Get().GetByName<Sound>("Coin");
 	powerUpSound_ = ResourceManager::Get().GetByName<Sound>("PowerUp");
 
@@ -78,10 +79,12 @@ void Player::Tick(float deltaSeconds)
 void Player::Render()
 {
 	SpriteAnim2D* anim = anims_.at(status_);
-	RenderManager2D::Get().DrawSprite(anim->GetAtlas(), anim->GetCurrentClip(), spriteBound_.center, spriteBound_.size.x, spriteBound_.size.y, 0.0f, bIsFlipH_);
+
+	option_.bIsFlipH = bIsFlipH_;
+	RenderManager2D::Get().DrawSprite(anim->GetAtlas(), anim->GetCurrentClip(), spriteBound_.center, spriteBound_.size.x, spriteBound_.size.y, 0.0f, option_);
 	
-	RenderManager2D::Get().DrawRect(powerUpBar_.center, powerUpBar_.size.x, powerUpBar_.size.y, powerUpBarColor_);
-	RenderManager2D::Get().DrawRect(remainBar_.center, remainBar_.size.x, remainBar_.size.y, remainBarColor_);
+	RenderManager2D::Get().DrawRect(powerUpBar_.center, powerUpBar_.size.x, powerUpBar_.size.y, powerUpBarColor_, 0.0f);
+	RenderManager2D::Get().DrawRect(remainBar_.center, remainBar_.size.x, remainBar_.size.y, remainBarColor_, 0.0f);
 }
 
 void Player::Release()
