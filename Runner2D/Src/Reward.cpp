@@ -5,14 +5,14 @@
 #include "ResourceManager.h"
 #include "Sound.h"
 
-#include "Camera.h"
+#include "Camera2D.h"
 #include "Player.h"
 #include "Reward.h"
 #include "SpriteAnimation.h"
 
 Reward::Reward(const Circle2D& bound, const Type& type)
 	: player_(EntityManager::Get().GetByName<Player>("Player"))
-	, camera_(EntityManager::Get().GetByName<Camera>("Camera"))
+	, camera_(EntityManager::Get().GetByName<Camera2D>("Camera"))
 	, type_(type)
 	, bound_(bound)
 	, bCanMove_(true)

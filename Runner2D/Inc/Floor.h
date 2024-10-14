@@ -5,7 +5,7 @@
 #include "Entity2D.h"
 
 class Atlas2D;
-class Camera;
+class Camera2D;
 class Player;
 
 class Floor : public Entity2D
@@ -31,7 +31,7 @@ private:
 	static const uint32_t MAX_BLOCK_SIZE = 21;
 
 	Player* player_ = nullptr;
-	Camera* camera_ = nullptr;
+	Camera2D* camera_ = nullptr;
 	Atlas2D* atlas_ = nullptr;
 
 	Rect2D floor_;

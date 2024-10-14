@@ -1,17 +1,17 @@
 #include "Assertion.h"
 #include "Atlas2D.h"
+#include "Camera2D.h"
 #include "EntityManager.h"
 #include "RenderManager2D.h"
 #include "ResourceManager.h"
 #include "IApp.h"
 
-#include "Camera.h"
 #include "Floor.h"
 #include "Player.h"
 
 Floor::Floor() 
 	: player_(EntityManager::Get().GetByName<Player>("Player"))
-	, camera_(EntityManager::Get().GetByName<Camera>("Camera"))
+	, camera_(EntityManager::Get().GetByName<Camera2D>("Camera"))
 	, bCanMove_(false)
 {
 	atlas_ = ResourceManager::Get().GetByName<Atlas2D>("Atlas");

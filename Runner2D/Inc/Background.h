@@ -5,7 +5,7 @@
 #include "Entity2D.h"
 
 class Atlas2D;
-class Camera;
+class Camera2D;
 class Player;
 
 class Background : public Entity2D
@@ -28,7 +28,7 @@ private:
 
 private:
 	Player* player_ = nullptr;
-	Camera* camera_ = nullptr;
+	Camera2D* camera_ = nullptr;
 	Atlas2D* atlas_ = nullptr;
 	std::array<Rect2D, 2> rects_;
 

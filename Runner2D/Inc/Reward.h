@@ -5,7 +5,7 @@
 #include "Entity2D.h"
 
 class Atlas2D;
-class Camera;
+class Camera2D;
 class Player;
 class SpriteAnimation;
 
@@ -51,7 +51,7 @@ private:
 
 private:
 	Player* player_ = nullptr;
-	Camera* camera_ = nullptr;
+	Camera2D* camera_ = nullptr;
 	Atlas2D* atlas_ = nullptr;
 
 	Type type_ = Type::CHERRY;
