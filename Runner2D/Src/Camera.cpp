@@ -5,11 +5,11 @@
 
 Camera::Camera()
 {
-	IApp::Get()->GetScreenSize<float>(width_, height_);
+	IApp::Get()->GetScreenSize<float>(size_.x, size_.y);
 
-	center_ = GameMath::Vec2f(0.0f);
-	ortho_ = CalculateOrtho(center_, width_, height_);
-	rect_ = Rect2D(center_, GameMath::Vec2f(width_, height_));
+	center_ = Vec2f(0.0f);
+	ortho_ = CalculateOrtho(center_, size_.x, size_.y);
+	rect_ = Rect2D(center_, Vec2f(size_.x, size_.y));
 
 	bIsInitialized_ = true;
 }
