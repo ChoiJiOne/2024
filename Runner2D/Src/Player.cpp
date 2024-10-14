@@ -83,7 +83,8 @@ void Player::Render()
 		return;
 	}
 
-	RenderManager2D::Get().DrawSprite(atlas_, animations_.at(status_)->GetCurrentClip(), spriteBound_.center, spriteBound_.size.x, spriteBound_.size.y);
+	static RenderManager2D::SpriteRenderOptions option;
+	RenderManager2D::Get().DrawSprite(atlas_, animations_.at(status_)->GetCurrentClip(), spriteBound_.center, spriteBound_.size.x, spriteBound_.size.y, 0.0f, option);
 }
 
 void Player::Release()
