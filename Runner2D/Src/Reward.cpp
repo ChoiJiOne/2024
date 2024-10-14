@@ -106,7 +106,9 @@ void Reward::Render()
 	}
 
 	SpriteAnimation* anim = animations_.at(status_);
-	RenderManager2D::Get().DrawSprite(atlas_, anim->GetCurrentClip(), bound_.center, bound_.radius * 2.0f, bound_.radius * 2.0f);
+
+	static RenderManager2D::SpriteRenderOptions option;
+	RenderManager2D::Get().DrawSprite(atlas_, anim->GetCurrentClip(), bound_.center, bound_.radius * 2.0f, bound_.radius * 2.0f, 0.0f, option);
 }
 
 void Reward::Release()
