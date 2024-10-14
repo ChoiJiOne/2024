@@ -1,5 +1,6 @@
 #include "Assertion.h"
 #include "Atlas2D.h"
+#include "Camera2D.h"
 #include "EntityManager.h"
 #include "RenderManager2D.h"
 #include "ResourceManager.h"
@@ -10,7 +11,6 @@
 #include "Background.h"
 #include "Button.h"
 #include "Cactus.h"
-#include "Camera.h"
 #include "CoinSpawner.h"
 #include "CoinViewer.h"
 #include "CountDowner.h"
@@ -46,7 +46,7 @@ void GameApp::Startup()
 	AddWindowEventAction(WindowEvent::FOCUS_LOST, pauseEvent, true);
 	AddWindowEventAction(WindowEvent::MOVED, pauseEvent, true);
 
-	camera_ = EntityManager::Get().Create<Camera>();
+	camera_ = Camera2D::CreateScreenCamera();
 	EntityManager::Get().Register("Camera", camera_);
 
 	Background* background = EntityManager::Get().Create<Background>();

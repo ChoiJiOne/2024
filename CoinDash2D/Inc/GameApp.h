@@ -6,7 +6,7 @@
 #include "IApp.h"
 #include "IEntity.h"
 
-class Camera;
+class Camera2D;
 class Entity2D;
 
 class GameApp : public IApp
@@ -43,7 +43,7 @@ private:
 	void LoadResource();
 
 private:
-	Camera* camera_ = nullptr;
+	Camera2D* camera_ = nullptr;
 
 	Status status_ = Status::READY;
 	std::map<Status, StatusEntities> statusEntities_;
