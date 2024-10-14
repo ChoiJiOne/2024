@@ -60,9 +60,12 @@ void Background::Tick(float deltaSeconds)
 
 void Background::Render()
 {
+	RenderManager2D& renderMgr = RenderManager2D::Get();
+	static RenderManager2D::SpriteRenderOptions option;
+
 	for (const auto& rect : rects_)
 	{
-		RenderManager2D::Get().DrawSprite(atlas_, "Background", rect.center, rect.size.x, rect.size.y);
+		renderMgr.DrawSprite(atlas_, "Background", rect.center, rect.size.x, rect.size.y, 0.0f, option);
 	}
 }
 
