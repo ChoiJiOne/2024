@@ -14,12 +14,12 @@ GameOver::GameOver()
 
 	font_->MeasureText(text_, textSize_.x, textSize_.y);
 
-	textOriginPos_ = GameMath::Vec2f(0.0f, 50.0f) + GameMath::Vec2f(-textSize_.x * 0.5f, +textSize_.y * 0.5f);
+	textOriginPos_ = Vec2f(0.0f, 50.0f) + Vec2f(-textSize_.x * 0.5f, +textSize_.y * 0.5f);
 	textPos_ = textOriginPos_;
-	textColor_ = GameMath::Vec4f(0.0f, 0.0f, 0.0f, 1.0f);
+	textColor_ = Vec4f(0.0f, 0.0f, 0.0f, 1.0f);
 
-	shadowOffset_ = GameMath::Vec2f(+3.0f, -3.0f);
-	shadowColor_ = GameMath::Vec4f(0.5f, 0.5f, 0.5f, 0.5f);
+	shadowOffset_ = Vec2f(+3.0f, -3.0f);
+	shadowColor_ = Vec4f(0.5f, 0.5f, 0.5f, 0.5f);
 
 	maxTime_ = 1.0f;
 	moveLength_ = 50.0f;

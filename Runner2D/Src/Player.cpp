@@ -18,12 +18,12 @@ Player::Player()
 	app_ = IApp::Get();
 	atlas_ = ResourceManager::Get().GetByName<Atlas2D>("Atlas");
 
-	spriteBound_.size = GameMath::Vec2f(60.0f, 60.0f);
-	spriteBound_.center = GameMath::Vec2f(-200.0f, -200.0f + spriteBound_.size.y * 0.5f);
+	spriteBound_.size = Vec2f(60.0f, 60.0f);
+	spriteBound_.center = Vec2f(-200.0f, -200.0f + spriteBound_.size.y * 0.5f);
 	originSpriteBound_ = spriteBound_;
 
 	collisionBound_.radius = 20.0f;
-	collisionBound_.center = GameMath::Vec2f(-200.0f, -200.0f + collisionBound_.radius);
+	collisionBound_.center = Vec2f(-200.0f, -200.0f + collisionBound_.radius);
 	originCollisionBound_ = collisionBound_;
 
 	speed_ = MIN_SPEED;
@@ -121,17 +121,17 @@ void Player::PickupGem()
 	}
 
 	PlayerMessenger* playerMessenger = EntityManager::Get().GetByName<PlayerMessenger>("PlayerMessenger");
-	playerMessenger->Send(message, GameMath::Vec4f(0.0f, 0.0f, 0.0f, 1.0f), messageTime);
+	playerMessenger->Send(message, Vec4f(0.0f, 0.0f, 0.0f, 1.0f), messageTime);
 }
 
 void Player::Reset()
 {
-	spriteBound_.size = GameMath::Vec2f(60.0f, 60.0f);
-	spriteBound_.center = GameMath::Vec2f(-200.0f, -200.0f + spriteBound_.size.y * 0.5f);
+	spriteBound_.size = Vec2f(60.0f, 60.0f);
+	spriteBound_.center = Vec2f(-200.0f, -200.0f + spriteBound_.size.y * 0.5f);
 	originSpriteBound_ = spriteBound_;
 
 	collisionBound_.radius = 20.0f;
-	collisionBound_.center = GameMath::Vec2f(-200.0f, -200.0f + collisionBound_.radius);
+	collisionBound_.center = Vec2f(-200.0f, -200.0f + collisionBound_.radius);
 	originCollisionBound_ = collisionBound_;
 
 	speed_ = MIN_SPEED;

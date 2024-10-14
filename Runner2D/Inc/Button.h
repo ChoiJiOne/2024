@@ -15,14 +15,14 @@ class Button : public Entity2D
 public:
 	struct Layout
 	{
-		GameMath::Vec4f textColor;
-		GameMath::Vec4f disableColor;
-		GameMath::Vec4f enableColor;
-		GameMath::Vec4f pressColor;
-		GameMath::Vec4f releaseColor;
+		Vec4f textColor;
+		Vec4f disableColor;
+		Vec4f enableColor;
+		Vec4f pressColor;
+		Vec4f releaseColor;
 
-		GameMath::Vec2f center;
-		GameMath::Vec2f size;
+		Vec2f center;
+		Vec2f size;
 		Mouse mouse;
 
 		TTFont* font;
@@ -59,9 +59,9 @@ private:
 	Rect2D bound_;
 	State state_ = State::DISABLED;
 
-	GameMath::Vec2f textPos_;
+	Vec2f textPos_;
 
 	std::function<void()> clickEvent_ = nullptr;
 
-	std::map<State, GameMath::Vec4f> stateColors_;
+	std::map<State, Vec4f> stateColors_;
 };

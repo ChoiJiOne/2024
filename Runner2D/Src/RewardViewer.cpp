@@ -14,16 +14,16 @@ RewardViewer::RewardViewer()
 	atlas_ = ResourceManager::Get().GetByName<Atlas2D>("Atlas");
 	font_ = ResourceManager::Get().GetByName<TTFont>("Font32");
 
-	spriteSize_ = GameMath::Vec2f(40.0f, 40.0f);
-	cherrySpritePos_ = GameMath::Vec2f(300.0f, 260.0f);
-	gemSpritePos_ = GameMath::Vec2f(300.0f, 220.0f);
+	spriteSize_ = Vec2f(40.0f, 40.0f);
+	cherrySpritePos_ = Vec2f(300.0f, 260.0f);
+	gemSpritePos_ = Vec2f(300.0f, 220.0f);
 
-	pickupCherryTextPos_ = cherrySpritePos_ + spriteSize_ * 0.5f + GameMath::Vec2f(0.0f, -10.0f);
-	pickupGemTextPos_ = gemSpritePos_ + spriteSize_ * 0.5f + GameMath::Vec2f(0.0f, -10.0f);
+	pickupCherryTextPos_ = cherrySpritePos_ + spriteSize_ * 0.5f + Vec2f(0.0f, -10.0f);
+	pickupGemTextPos_ = gemSpritePos_ + spriteSize_ * 0.5f + Vec2f(0.0f, -10.0f);
 
-	backgroundPos_ = GameMath::Vec2f(330.0f, 240.0f);
-	backgroundSize_ = GameMath::Vec2f(120.0f, 100.0f);
-	backgroundColor_ = GameMath::Vec4f(0.5f, 0.5f, 0.5f, 0.3f);
+	backgroundPos_ = Vec2f(330.0f, 240.0f);
+	backgroundSize_ = Vec2f(120.0f, 100.0f);
+	backgroundColor_ = Vec4f(0.5f, 0.5f, 0.5f, 0.3f);
 	backgroundSide_ = 10.0f;
 
 	bIsInitialized_ = true;

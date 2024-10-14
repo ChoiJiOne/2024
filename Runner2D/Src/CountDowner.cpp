@@ -15,8 +15,8 @@ CountDowner::CountDowner()
 	font_ = ResourceManager::Get().GetByName<TTFont>("Font64");
 
 	time_ = 4.0f;
-	messageCenter_ = GameMath::Vec2f(0.0f, 0.0f);
-	messageColor_ = GameMath::Vec4f(0.0f, 0.0f, 0.0f, 1.0f);
+	messageCenter_ = Vec2f(0.0f, 0.0f);
+	messageColor_ = Vec4f(0.0f, 0.0f, 0.0f, 1.0f);
 
 	bIsInitialized_ = true;
 }
@@ -49,10 +49,10 @@ void CountDowner::Tick(float deltaSeconds)
 		remainTime_ = static_cast<int32_t>(time_);
 		message_ = GameUtils::PrintF(L"%d", remainTime_);
 
-		GameMath::Vec2f size;
+		Vec2f size;
 		font_->MeasureText(message_, size.x, size.y);
 
-		messagePos_ = messageCenter_ + GameMath::Vec2f(-size.x * 0.5f, +size.y * 0.5f);
+		messagePos_ = messageCenter_ + Vec2f(-size.x * 0.5f, +size.y * 0.5f);
 	}
 
 	float alpha = time_ - static_cast<float>(remainTime_);
@@ -86,8 +86,8 @@ void CountDowner::Start()
 
 	message_ = GameUtils::PrintF(L"%d", remainTime_);
 
-	GameMath::Vec2f size;
+	Vec2f size;
 	font_->MeasureText(message_, size.x, size.y);
 
-	messagePos_ = messageCenter_ + GameMath::Vec2f(-size.x * 0.5f, +size.y * 0.5f);
+	messagePos_ = messageCenter_ + Vec2f(-size.x * 0.5f, +size.y * 0.5f);
 }

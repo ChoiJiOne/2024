@@ -19,8 +19,8 @@ Background::Background()
 	atlas_ = ResourceManager::Get().GetByName<Atlas2D>("Atlas");
 	rects_ =
 	{ 
-		Rect2D(GameMath::Vec2f(-camera_->GetWidth() * 0.5f + OFFSET, 0.0f), GameMath::Vec2f(camera_->GetWidth(), camera_->GetHeight())),
-		Rect2D(GameMath::Vec2f(+camera_->GetWidth() * 0.5f - OFFSET, 0.0f), GameMath::Vec2f(camera_->GetWidth(), camera_->GetHeight())),
+		Rect2D(Vec2f(-camera_->GetWidth() * 0.5f + OFFSET, 0.0f), Vec2f(camera_->GetWidth(), camera_->GetHeight())),
+		Rect2D(Vec2f(+camera_->GetWidth() * 0.5f - OFFSET, 0.0f), Vec2f(camera_->GetWidth(), camera_->GetHeight())),
 	};
 	
 	bIsInitialized_ = true;

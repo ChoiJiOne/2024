@@ -23,9 +23,9 @@ private:
 	TTFont* font_ = nullptr;
 	std::wstring title_;
 
-	GameMath::Vec2f position_;
-	GameMath::Vec2f shadowPosition_;
+	Vec2f position_;
+	Vec2f shadowPosition_;
 
-	GameMath::Vec4f titleColor_;
-	GameMath::Vec4f shadowColor_;
+	Vec4f titleColor_;
+	Vec4f shadowColor_;
 };

@@ -16,10 +16,10 @@ Button::Button(const Layout& layout, const std::function<void()>& clickEvent)
 
 	bound_ = Rect2D(layout_.center, layout_.size);
 
-	GameMath::Vec2f textSize;
+	Vec2f textSize;
 	layout_.font->MeasureText(layout_.text, textSize.x, textSize.y);
 
-	textPos_ = layout_.center + GameMath::Vec2f(-textSize.x * 0.5f, +textSize.y * 0.5f);
+	textPos_ = layout_.center + Vec2f(-textSize.x * 0.5f, +textSize.y * 0.5f);
 	stateColors_ = 
 	{
 		{ State::DISABLED, layout_.disableColor },
@@ -52,7 +52,7 @@ void Button::Tick(float deltaSeconds)
 
 void Button::Render()
 {
-	RenderManager2D::Get().DrawRoundRect(bound_.center, bound_.size.x, bound_.size.y, layout_.side, stateColors_.at(state_));
+	RenderManager2D::Get().DrawRoundRect(bound_.center, bound_.size.x, bound_.size.y, layout_.side, stateColors_.at(state_), 0.0f);
 	RenderManager2D::Get().DrawString(layout_.font, layout_.text, textPos_, layout_.textColor);
 }
 
@@ -135,7 +135,7 @@ bool Button::IsDetectMouseCursor()
 {
 	GameMath::Vec2i currPos = app_->GetCurrMousePos();
 
-	GameMath::Vec2f screenSize;
+	Vec2f screenSize;
 	app_->GetScreenSize<float>(screenSize.x, screenSize.y);
 	
 	Point2D mouseCursor;

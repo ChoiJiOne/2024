@@ -15,8 +15,8 @@ Floor::Floor()
 	, bCanMove_(false)
 {
 	atlas_ = ResourceManager::Get().GetByName<Atlas2D>("Atlas");
-	floor_.size = GameMath::Vec2f(camera_->GetWidth() + 2.0f, 100.0f);
-	floor_.center = GameMath::Vec2f(0.0f, (-camera_->GetHeight() + floor_.size.y) * 0.5f);
+	floor_.size = Vec2f(camera_->GetWidth() + 2.0f, 100.0f);
+	floor_.center = Vec2f(0.0f, (-camera_->GetHeight() + floor_.size.y) * 0.5f);
 
 	ResetBlocks();
 
@@ -82,8 +82,8 @@ void Floor::Release()
 
 void Floor::ResetBlocks()
 {
-	GameMath::Vec2f center = GameMath::Vec2f(-camera_->GetWidth() * 0.5f, -220.0f);
-	GameMath::Vec2f size = GameMath::Vec2f(40.0f, 40.0f);
+	Vec2f center = Vec2f(-camera_->GetWidth() * 0.5f, -220.0f);
+	Vec2f size = Vec2f(40.0f, 40.0f);
 	
 	for (auto& block : blocks_)
 	{

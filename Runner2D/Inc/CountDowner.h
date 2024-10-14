@@ -29,8 +29,8 @@ private:
 	float time_ = 0.0f;
 	int32_t remainTime_ = 0;
 
-	GameMath::Vec2f messageCenter_;
-	GameMath::Vec2f messagePos_;
-	GameMath::Vec4f messageColor_;
+	Vec2f messageCenter_;
+	Vec2f messagePos_;
+	Vec4f messageColor_;
 	std::wstring message_;
 };

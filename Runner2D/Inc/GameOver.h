@@ -28,11 +28,11 @@ private:
 	float moveLength_ = 0.0f;
 
 	std::wstring text_;	
-	GameMath::Vec2f textSize_;
-	GameMath::Vec2f textPos_;
-	GameMath::Vec2f textOriginPos_;
-	GameMath::Vec4f textColor_;
+	Vec2f textSize_;
+	Vec2f textPos_;
+	Vec2f textOriginPos_;
+	Vec4f textColor_;
 
-	GameMath::Vec2f shadowOffset_;
-	GameMath::Vec4f shadowColor_;
+	Vec2f shadowOffset_;
+	Vec4f shadowColor_;
 };

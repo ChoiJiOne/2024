@@ -13,15 +13,15 @@ Title::Title()
 	font_ = ResourceManager::Get().GetByName<TTFont>("Font128");
 	title_ = L"Runner2D";
 
-	GameMath::Vec2f size;
+	Vec2f size;
 	font_->MeasureText(title_, size.x, size.y);
 
-	position_ = GameMath::Vec2f(0.0f, 100.0f);
-	position_ += GameMath::Vec2f(-size.x * 0.5f, +size.y * 0.5f);
-	shadowPosition_ = position_ + GameMath::Vec2f(5.0f, -5.0f);
+	position_ = Vec2f(0.0f, 100.0f);
+	position_ += Vec2f(-size.x * 0.5f, +size.y * 0.5f);
+	shadowPosition_ = position_ + Vec2f(5.0f, -5.0f);
 
-	titleColor_ = GameMath::Vec4f(0.0f, 0.0f, 0.0f, 1.0f);
-	shadowColor_ = GameMath::Vec4f(0.5f, 0.5f, 0.5f, 0.5f);
+	titleColor_ = Vec4f(0.0f, 0.0f, 0.0f, 1.0f);
+	shadowColor_ = Vec4f(0.5f, 0.5f, 0.5f, 0.5f);
 
 	bIsInitialized_ = true;
 }

@@ -28,18 +28,18 @@ private:
 	int32_t numPickupCherry_ = -1;
 	int32_t numPickupGem_ = -1;
 
-	GameMath::Vec2f spriteSize_;
-	GameMath::Vec2f cherrySpritePos_;
-	GameMath::Vec2f gemSpritePos_;
+	Vec2f spriteSize_;
+	Vec2f cherrySpritePos_;
+	Vec2f gemSpritePos_;
 
-	GameMath::Vec4f textColor_ = GameMath::Vec4f(0.0f, 0.0f, 0.0f, 1.0f);
+	Vec4f textColor_ = Vec4f(0.0f, 0.0f, 0.0f, 1.0f);
 	std::wstring pickupCherryText_;
-	GameMath::Vec2f pickupCherryTextPos_;
+	Vec2f pickupCherryTextPos_;
 	std::wstring pickupGemText_;
-	GameMath::Vec2f pickupGemTextPos_;
+	Vec2f pickupGemTextPos_;
 
-	GameMath::Vec2f backgroundPos_;
-	GameMath::Vec2f backgroundSize_;
-	GameMath::Vec4f backgroundColor_;
+	Vec2f backgroundPos_;
+	Vec2f backgroundSize_;
+	Vec4f backgroundColor_;
 	float backgroundSide_ = 0.0f;
 };

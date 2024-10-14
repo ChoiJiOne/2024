@@ -82,13 +82,13 @@ void GameApp::Startup()
 	EntityManager::Get().Register("GameOver", gameOver);
 
 	Button::Layout startButtonLayout;
-	startButtonLayout.textColor = GameMath::Vec4f(0.0f, 0.0f, 0.0f, 1.0f);
-	startButtonLayout.disableColor = GameMath::Vec4f(1.0f, 1.0f, 1.0f, 0.4f);
-	startButtonLayout.enableColor = GameMath::Vec4f(1.0f, 1.0f, 1.0f, 0.6f);
-	startButtonLayout.pressColor = GameMath::Vec4f(1.0f, 1.0f, 1.0f, 0.9f);
-	startButtonLayout.releaseColor = GameMath::Vec4f(1.0f, 1.0f, 1.0f, 1.0f);
-	startButtonLayout.center = GameMath::Vec2f(0.0f, -100.0f);
-	startButtonLayout.size = GameMath::Vec2f(200.0f, 50.0f);
+	startButtonLayout.textColor = Vec4f(0.0f, 0.0f, 0.0f, 1.0f);
+	startButtonLayout.disableColor = Vec4f(1.0f, 1.0f, 1.0f, 0.4f);
+	startButtonLayout.enableColor = Vec4f(1.0f, 1.0f, 1.0f, 0.6f);
+	startButtonLayout.pressColor = Vec4f(1.0f, 1.0f, 1.0f, 0.9f);
+	startButtonLayout.releaseColor = Vec4f(1.0f, 1.0f, 1.0f, 1.0f);
+	startButtonLayout.center = Vec2f(0.0f, -100.0f);
+	startButtonLayout.size = Vec2f(200.0f, 50.0f);
 	startButtonLayout.mouse = Mouse::LEFT;
 	startButtonLayout.font = ResourceManager::Get().GetByName<TTFont>("Font32");
 	startButtonLayout.text = L"START";
@@ -96,7 +96,7 @@ void GameApp::Startup()
 	Button* startButton = EntityManager::Get().Create<Button>(startButtonLayout, 
 		[&]() 
 		{ 
-			EntityManager::Get().GetByName<PlayerMessenger>("PlayerMessenger")->Send(L"PRESS SPACE KEY!", GameMath::Vec4f(0.0f, 0.0f, 0.0f, 1.0f), 6.0f);
+			EntityManager::Get().GetByName<PlayerMessenger>("PlayerMessenger")->Send(L"PRESS SPACE KEY!", Vec4f(0.0f, 0.0f, 0.0f, 1.0f), 6.0f);
 			EntityManager::Get().GetByName<CountDowner>("CountDowner")->Start();
 			status_ = EStatus::PLAY;
 
@@ -107,13 +107,13 @@ void GameApp::Startup()
 	EntityManager::Get().Register("StartButton", startButton);
 
 	Button::Layout quitButtonLayout;
-	quitButtonLayout.textColor = GameMath::Vec4f(0.0f, 0.0f, 0.0f, 1.0f);
-	quitButtonLayout.disableColor = GameMath::Vec4f(1.0f, 1.0f, 1.0f, 0.4f);
-	quitButtonLayout.enableColor = GameMath::Vec4f(1.0f, 1.0f, 1.0f, 0.6f);
-	quitButtonLayout.pressColor = GameMath::Vec4f(1.0f, 1.0f, 1.0f, 0.9f);
-	quitButtonLayout.releaseColor = GameMath::Vec4f(1.0f, 1.0f, 1.0f, 1.0f);
-	quitButtonLayout.center = GameMath::Vec2f(0.0f, -180.0f);
-	quitButtonLayout.size = GameMath::Vec2f(200.0f, 50.0f);
+	quitButtonLayout.textColor = Vec4f(0.0f, 0.0f, 0.0f, 1.0f);
+	quitButtonLayout.disableColor = Vec4f(1.0f, 1.0f, 1.0f, 0.4f);
+	quitButtonLayout.enableColor = Vec4f(1.0f, 1.0f, 1.0f, 0.6f);
+	quitButtonLayout.pressColor = Vec4f(1.0f, 1.0f, 1.0f, 0.9f);
+	quitButtonLayout.releaseColor = Vec4f(1.0f, 1.0f, 1.0f, 1.0f);
+	quitButtonLayout.center = Vec2f(0.0f, -180.0f);
+	quitButtonLayout.size = Vec2f(200.0f, 50.0f);
 	quitButtonLayout.mouse = Mouse::LEFT;
 	quitButtonLayout.font = ResourceManager::Get().GetByName<TTFont>("Font32");
 	quitButtonLayout.text = L"QUIT";
@@ -122,13 +122,13 @@ void GameApp::Startup()
 	EntityManager::Get().Register("QuitButton", quitButton);
 
 	Button::Layout resumeButtonLayout;
-	resumeButtonLayout.textColor = GameMath::Vec4f(0.0f, 0.0f, 0.0f, 1.0f);
-	resumeButtonLayout.disableColor = GameMath::Vec4f(1.0f, 1.0f, 1.0f, 0.4f);
-	resumeButtonLayout.enableColor = GameMath::Vec4f(1.0f, 1.0f, 1.0f, 0.6f);
-	resumeButtonLayout.pressColor = GameMath::Vec4f(1.0f, 1.0f, 1.0f, 0.9f);
-	resumeButtonLayout.releaseColor = GameMath::Vec4f(1.0f, 1.0f, 1.0f, 1.0f);
-	resumeButtonLayout.center = GameMath::Vec2f(0.0f, -100.0f);
-	resumeButtonLayout.size = GameMath::Vec2f(200.0f, 50.0f);
+	resumeButtonLayout.textColor = Vec4f(0.0f, 0.0f, 0.0f, 1.0f);
+	resumeButtonLayout.disableColor = Vec4f(1.0f, 1.0f, 1.0f, 0.4f);
+	resumeButtonLayout.enableColor = Vec4f(1.0f, 1.0f, 1.0f, 0.6f);
+	resumeButtonLayout.pressColor = Vec4f(1.0f, 1.0f, 1.0f, 0.9f);
+	resumeButtonLayout.releaseColor = Vec4f(1.0f, 1.0f, 1.0f, 1.0f);
+	resumeButtonLayout.center = Vec2f(0.0f, -100.0f);
+	resumeButtonLayout.size = Vec2f(200.0f, 50.0f);
 	resumeButtonLayout.mouse = Mouse::LEFT;
 	resumeButtonLayout.font = ResourceManager::Get().GetByName<TTFont>("Font32");
 	resumeButtonLayout.text = L"RESUME";
@@ -148,13 +148,13 @@ void GameApp::Startup()
 	EntityManager::Get().Register("ResumeButton", resumeButton);
 
 	Button::Layout resetButtonLayout;
-	resetButtonLayout.textColor = GameMath::Vec4f(0.0f, 0.0f, 0.0f, 1.0f);
-	resetButtonLayout.disableColor = GameMath::Vec4f(1.0f, 1.0f, 1.0f, 0.4f);
-	resetButtonLayout.enableColor = GameMath::Vec4f(1.0f, 1.0f, 1.0f, 0.6f);
-	resetButtonLayout.pressColor = GameMath::Vec4f(1.0f, 1.0f, 1.0f, 0.9f);
-	resetButtonLayout.releaseColor = GameMath::Vec4f(1.0f, 1.0f, 1.0f, 1.0f);
-	resetButtonLayout.center = GameMath::Vec2f(0.0f, -100.0f);
-	resetButtonLayout.size = GameMath::Vec2f(200.0f, 50.0f);
+	resetButtonLayout.textColor = Vec4f(0.0f, 0.0f, 0.0f, 1.0f);
+	resetButtonLayout.disableColor = Vec4f(1.0f, 1.0f, 1.0f, 0.4f);
+	resetButtonLayout.enableColor = Vec4f(1.0f, 1.0f, 1.0f, 0.6f);
+	resetButtonLayout.pressColor = Vec4f(1.0f, 1.0f, 1.0f, 0.9f);
+	resetButtonLayout.releaseColor = Vec4f(1.0f, 1.0f, 1.0f, 1.0f);
+	resetButtonLayout.center = Vec2f(0.0f, -100.0f);
+	resetButtonLayout.size = Vec2f(200.0f, 50.0f);
 	resetButtonLayout.mouse = Mouse::LEFT;
 	resetButtonLayout.font = ResourceManager::Get().GetByName<TTFont>("Font32");
 	resetButtonLayout.text = L"RESET";
@@ -168,7 +168,7 @@ void GameApp::Startup()
 			Spawner* spawner = EntityManager::Get().GetByName<Spawner>("Spawner");
 			spawner->Reset();
 
-			EntityManager::Get().GetByName<PlayerMessenger>("PlayerMessenger")->Send(L"PRESS SPACE KEY!", GameMath::Vec4f(0.0f, 0.0f, 0.0f, 1.0f), 6.0f);
+			EntityManager::Get().GetByName<PlayerMessenger>("PlayerMessenger")->Send(L"PRESS SPACE KEY!", Vec4f(0.0f, 0.0f, 0.0f, 1.0f), 6.0f);
 			EntityManager::Get().GetByName<CountDowner>("CountDowner")->Start();
 			status_ = EStatus::PLAY;
 

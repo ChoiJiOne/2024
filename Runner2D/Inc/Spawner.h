@@ -34,8 +34,8 @@ private:
 	std::list<Box*> boxes_;
 	std::list<Reward*> rewards_;
 
-	GameMath::Vec2f spawnPosition_;
-	GameMath::Vec2f boxSize_;
+	Vec2f spawnPosition_;
+	Vec2f boxSize_;
 
 	float spawnTime_ = 0.0f;
 	

@@ -19,7 +19,7 @@ public:
 	virtual void Render() override;
 	virtual void Release() override;
 
-	void Send(const std::wstring& message, const GameMath::Vec4f& color, float time);
+	void Send(const std::wstring& message, const Vec4f& color, float time);
 
 private:
 	void CalcMessagePosFromPlayer();
@@ -31,9 +31,9 @@ private:
 	bool bIsDetectMessage_ = false;
 
 	std::wstring message_; 
-	GameMath::Vec2f messageSize_;
-	GameMath::Vec2f messagePos_;
-	GameMath::Vec4f messageColor_;
+	Vec2f messageSize_;
+	Vec2f messagePos_;
+	Vec4f messageColor_;
 	float remainTime_ = 0.0f;
 	float messageTime_ = 0.0f;
 };
