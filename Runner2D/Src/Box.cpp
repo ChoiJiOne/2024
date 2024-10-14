@@ -68,7 +68,8 @@ void Box::Tick(float deltaSeconds)
 
 void Box::Render()
 {
-	RenderManager2D::Get().DrawSprite(atlas_, "Box", bound_.center, bound_.size.x, bound_.size.y);
+	static RenderManager2D::SpriteRenderOptions option;
+	RenderManager2D::Get().DrawSprite(atlas_, "Box", bound_.center, bound_.size.x, bound_.size.y, 0.0f, option);
 }
 
 void Box::Release()
