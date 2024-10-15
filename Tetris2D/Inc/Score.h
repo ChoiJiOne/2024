@@ -23,10 +23,6 @@ public:
 private:
 	TTFont* font_ = nullptr;
 	
-	std::wstring text_;
-	Vec2f textPos_;
-	Vec4f textColor_;
-
 	std::wstring scoreText_;
 	Vec2f scoreTextPos_;
 	Vec4f scoreTextColor_;
