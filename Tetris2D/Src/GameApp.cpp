@@ -3,6 +3,7 @@
 #include "EntityManager.h"
 #include "ResourceManager.h"
 #include "RenderManager2D.h"
+#include "TextUI.h"
 #include "TTFont.h"
 #include "UIManager.h"
 
@@ -15,7 +16,6 @@
 #include "Score.h"
 #include "Tetromino.h"
 #include "TetrominoController.h"
-#include "Title.h"
 
 GameApp::GameApp() : IApp("Tetris2D", 200, 200, 600, 800, false, false)
 {
@@ -93,26 +93,21 @@ void GameApp::LoadTitleStatusEntities()
 {
 	EntityManager& entityMgr = EntityManager::Get();
 
-	Title* title = entityMgr.Create<Title>();
+	TTFont* font32 = ResourceManager::Get().GetByName<TTFont>("Font32");
+	TTFont* font128 = ResourceManager::Get().GetByName<TTFont>("Font128");
 
-	TTFont* font = ResourceManager::Get().GetByName<TTFont>("Font32");
-	ButtonUI* startBtn = UIManager::Get().Create("Tetris2D\\Res\\Button\\Start.button", Mouse::LEFT, font, [&]() { status_ = Status::GAMEPLAY; });
-	ButtonUI* quitBtn = UIManager::Get().Create("Tetris2D\\Res\\Button\\Quit.button", Mouse::LEFT, font, [&]() { bIsQuit_ = true; });
+	TextUI* title = UIManager::Get().Create(L"TETRIS2D", font128, Vec2f(0.0f, 200.0f), Vec4f(1.0f, 1.0f, 1.0f, 1.0f));
+	ButtonUI* startBtn = UIManager::Get().Create("Tetris2D\\Res\\Button\\Start.button", Mouse::LEFT, font32, [&]() { status_ = Status::GAMEPLAY; });
+	ButtonUI* quitBtn = UIManager::Get().Create("Tetris2D\\Res\\Button\\Quit.button", Mouse::LEFT, font32, [&]() { bIsQuit_ = true; });
 
 	StatusEntities statusEntities;
 	statusEntities.updateEntities_ = 
 	{
 		mainCamera_,
-		title,
-		startBtn,
-		quitBtn,
-	};
-	statusEntities.renderEntities_ = 
-	{
-		title,
 	};
 	statusEntities.uiEntities_ =
-	{
+	{ 
+		title,
 		startBtn,
 		quitBtn,
 	};
