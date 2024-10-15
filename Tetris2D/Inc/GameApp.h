@@ -14,7 +14,6 @@ public:
 	enum class Status
 	{
 		TITLE    = 0x00,
-		READY    = 0x01,
 		GAMEPLAY = 0x01,
 		PAUSE    = 0x02,
 		GAMEOVER = 0x03,
