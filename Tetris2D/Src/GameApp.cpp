@@ -137,6 +137,9 @@ void GameApp::LoadGamePlayStatusEntities()
 	TetrominoController* tetrominoController = entityMgr.Create<TetrominoController>();
 	entityMgr.Register("TetrominoController", tetrominoController);
 
+	TTFont* font32 = ResourceManager::Get().GetByName<TTFont>("Font32");
+	TextUI* scoreText = UIManager::Get().Create(L"SCORE", font32, Vec2f(195.0f, 0.0f), Vec4f(1.0f, 1.0f, 1.0f, 1.0f));
+
 	StatusEntities statusEntities;
 	statusEntities.updateEntities_ =
 	{
@@ -155,6 +158,10 @@ void GameApp::LoadGamePlayStatusEntities()
 		score,
 		particleScheduler,
 		messenger,
+	};
+	statusEntities.uiEntities_ =
+	{
+		scoreText,
 	};
 
 	statusEntities_.insert({ Status::GAMEPLAY, statusEntities });
