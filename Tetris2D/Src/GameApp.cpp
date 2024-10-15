@@ -5,6 +5,7 @@
 #include "TTFont.h"
 
 #include "Board.h"
+#include "Button.h"
 #include "GameApp.h"
 #include "GameAppStatusController.h"
 #include "MainCamera2D.h"
@@ -88,6 +89,8 @@ void GameApp::LoadTitleStatusEntities()
 	EntityManager& entityMgr = EntityManager::Get();
 
 	Title* title = entityMgr.Create<Title>();
+	Button* startBtn = Button::CreateFromFile("Tetris2D\\Res\\Button\\Start.button", Mouse::LEFT, ResourceManager::Get().GetByName<TTFont>("Font32"), [&]() {});
+	Button* quitBtn = Button::CreateFromFile("Tetris2D\\Res\\Button\\Quit.button", Mouse::LEFT, ResourceManager::Get().GetByName<TTFont>("Font32"), [&]() {});
 
 	StatusEntities statusEntities;
 	statusEntities.updateEntities_ = 
@@ -95,10 +98,14 @@ void GameApp::LoadTitleStatusEntities()
 		mainCamera_,
 		gameAppStatusController_,
 		title,
+		startBtn,
+		quitBtn,
 	};
 	statusEntities.renderEntities_ = 
 	{
 		title,
+		startBtn,
+		quitBtn,
 	};
 
 	statusEntities_.insert({ Status::TITLE, statusEntities });
