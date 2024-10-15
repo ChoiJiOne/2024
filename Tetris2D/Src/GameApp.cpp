@@ -14,6 +14,7 @@
 #include "Score.h"
 #include "Tetromino.h"
 #include "TetrominoController.h"
+#include "Title.h"
 
 GameApp::GameApp() : IApp("Tetris2D", 200, 200, 600, 800, false, false)
 {
@@ -74,7 +75,7 @@ void GameApp::LoadResource()
 	std::string resourcePath = "Tetris2D\\Res\\";
 
 	std::string fontPath = resourcePath + "Font\\SeoulNamsanEB.ttf";
-	std::array<int32_t, 2> fontSizes = { 32, 64, };
+	std::array<int32_t, 2> fontSizes = { 32, 128, };
 	for (const auto& fontSize : fontSizes)
 	{
 		TTFont* font = resourceMgr.Create<TTFont>(fontPath, 0x00, 0x128, static_cast<float>(fontSize));
@@ -86,15 +87,18 @@ void GameApp::LoadTitleStatusEntities()
 {
 	EntityManager& entityMgr = EntityManager::Get();
 
+	Title* title = entityMgr.Create<Title>();
+
 	StatusEntities statusEntities;
 	statusEntities.updateEntities_ = 
 	{
 		mainCamera_,
 		gameAppStatusController_,
+		title,
 	};
 	statusEntities.renderEntities_ = 
 	{
-
+		title,
 	};
 
 	statusEntities_.insert({ Status::TITLE, statusEntities });
