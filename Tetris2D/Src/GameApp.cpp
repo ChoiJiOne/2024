@@ -74,7 +74,7 @@ void GameApp::LoadResource()
 	std::string resourcePath = "Tetris2D\\Res\\";
 
 	std::string fontPath = resourcePath + "Font\\SeoulNamsanEB.ttf";
-	std::array<int32_t, 1> fontSizes = { 32, };
+	std::array<int32_t, 2> fontSizes = { 32, 64, };
 	for (const auto& fontSize : fontSizes)
 	{
 		TTFont* font = resourceMgr.Create<TTFont>(fontPath, 0x00, 0x128, static_cast<float>(fontSize));
