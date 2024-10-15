@@ -40,6 +40,7 @@ private:
 
 	void LoadResource();
 	void LoadTitleStatusEntities();
+	void LoadGamePlayStatusEntities();
 
 private:
 	MainCamera2D* mainCamera_ = nullptr;
