@@ -13,7 +13,7 @@ ParticleScheduler::ParticleScheduler()
 		particles_[index] = entityMgr.Create<Particle>();
 	}
 
-	particleSpeed_ = 300.0f;
+	particleSpeed_ = 500.0f;
 	particleScale_ = 0.3f;
 
 	bIsInitialized_ = true;
