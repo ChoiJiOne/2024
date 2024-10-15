@@ -1,11 +1,12 @@
 #include "Assertion.h"
+#include "ButtonUI.h"
 #include "EntityManager.h"
 #include "ResourceManager.h"
 #include "RenderManager2D.h"
 #include "TTFont.h"
+#include "UIManager.h"
 
 #include "Board.h"
-#include "Button.h"
 #include "GameApp.h"
 #include "MainCamera2D.h"
 #include "Messenger.h"
@@ -50,18 +51,25 @@ void GameApp::Run()
 		{
 			StatusEntities& statusEntities = statusEntities_.at(status_);
 
+			// 2D 엔티티 업데이트
 			for (auto& entity : statusEntities.updateEntities_)
 			{
 				entity->Tick(deltaSeconds);
 			}
 
+			// UI 엔티티 업데이트
+			IEntityUI** uiEntities = statusEntities.uiEntities_.data();
+			uint32_t uiEntityCount = static_cast<uint32_t>(statusEntities.uiEntities_.size());
+			UIManager::Get().BatchTickUIEntity(uiEntities, uiEntityCount, deltaSeconds);
+
 			BeginFrame(0.0f, 0.0f, 0.0f, 1.0f);
 
 			IEntity2D** renderEntities = statusEntities.renderEntities_.data();
-			uint32_t count = static_cast<uint32_t>(statusEntities.renderEntities_.size());
+			uint32_t renderEntityCount = static_cast<uint32_t>(statusEntities.renderEntities_.size());
 
-			RenderManager2D::Get().BatchRenderEntities(mainCamera_, renderEntities, count);
-
+			RenderManager2D::Get().BatchRenderEntities(mainCamera_, renderEntities, renderEntityCount);
+			UIManager::Get().BatchRenderUIEntity(uiEntities, uiEntityCount);
+			
 			EndFrame();
 		}
 	);
@@ -88,18 +96,8 @@ void GameApp::LoadTitleStatusEntities()
 	Title* title = entityMgr.Create<Title>();
 
 	TTFont* font = ResourceManager::Get().GetByName<TTFont>("Font32");
-	Button* startBtn = Button::CreateFromFile("Tetris2D\\Res\\Button\\Start.button", Mouse::LEFT, font, 
-		[&]() 
-		{
-			status_ = Status::GAMEPLAY;
-		}
-	);
-	Button* quitBtn = Button::CreateFromFile("Tetris2D\\Res\\Button\\Quit.button", Mouse::LEFT, font, 
-		[&]() 
-		{
-			bIsQuit_ = true;
-		}
-	);
+	ButtonUI* startBtn = UIManager::Get().Create("Tetris2D\\Res\\Button\\Start.button", Mouse::LEFT, font, [&]() { status_ = Status::GAMEPLAY; });
+	ButtonUI* quitBtn = UIManager::Get().Create("Tetris2D\\Res\\Button\\Quit.button", Mouse::LEFT, font, [&]() { bIsQuit_ = true; });
 
 	StatusEntities statusEntities;
 	statusEntities.updateEntities_ = 
@@ -112,6 +110,9 @@ void GameApp::LoadTitleStatusEntities()
 	statusEntities.renderEntities_ = 
 	{
 		title,
+	};
+	statusEntities.uiEntities_ =
+	{
 		startBtn,
 		quitBtn,
 	};

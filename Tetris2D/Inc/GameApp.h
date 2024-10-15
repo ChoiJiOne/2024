@@ -7,6 +7,7 @@
 class MainCamera2D;
 class IEntity;
 class IEntity2D;
+class IEntityUI;
 
 class GameApp : public IApp 
 {
@@ -34,6 +35,7 @@ private:
 	{
 		std::vector<IEntity*> updateEntities_;
 		std::vector<IEntity2D*> renderEntities_;
+		std::vector<IEntityUI*> uiEntities_;
 	};
 
 	void LoadResource();
