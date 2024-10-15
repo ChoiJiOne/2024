@@ -30,8 +30,6 @@ public:
 	virtual void Run() override;
 
 private:
-	friend class GameAppStatusController;
-
 	struct StatusEntities
 	{
 		std::vector<IEntity*> updateEntities_;
@@ -44,7 +42,6 @@ private:
 
 private:
 	MainCamera2D* mainCamera_ = nullptr;
-	GameAppStatusController* gameAppStatusController_ = nullptr;
 
 	Status status_ = Status::TITLE;
 	std::map<Status, StatusEntities> statusEntities_;

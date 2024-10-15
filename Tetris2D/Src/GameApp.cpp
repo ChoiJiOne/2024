@@ -7,7 +7,6 @@
 #include "Board.h"
 #include "Button.h"
 #include "GameApp.h"
-#include "GameAppStatusController.h"
 #include "MainCamera2D.h"
 #include "Messenger.h"
 #include "Next.h"
@@ -33,9 +32,6 @@ void GameApp::Startup()
 
 	mainCamera_ = entityMgr.Create<MainCamera2D>();
 	entityMgr.Register("MainCamera", mainCamera_);
-
-	gameAppStatusController_ = entityMgr.Create<GameAppStatusController>();
-	entityMgr.Register("GameAppStatusController", gameAppStatusController_);
 	
 	LoadTitleStatusEntities();
 	LoadGamePlayStatusEntities();
@@ -91,7 +87,6 @@ void GameApp::LoadTitleStatusEntities()
 
 	Title* title = entityMgr.Create<Title>();
 
-
 	TTFont* font = ResourceManager::Get().GetByName<TTFont>("Font32");
 	Button* startBtn = Button::CreateFromFile("Tetris2D\\Res\\Button\\Start.button", Mouse::LEFT, font, 
 		[&]() 
@@ -110,7 +105,6 @@ void GameApp::LoadTitleStatusEntities()
 	statusEntities.updateEntities_ = 
 	{
 		mainCamera_,
-		gameAppStatusController_,
 		title,
 		startBtn,
 		quitBtn,
@@ -156,7 +150,6 @@ void GameApp::LoadGamePlayStatusEntities()
 		score,
 		particleScheduler,
 		messenger,
-		gameAppStatusController_,
 	};
 	statusEntities.renderEntities_ =
 	{ 
