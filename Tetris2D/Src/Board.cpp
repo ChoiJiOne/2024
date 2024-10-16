@@ -1,11 +1,11 @@
 #include "Assertion.h"
 #include "EntityManager.h"
+#include "PanelUI.h"
 #include "RenderManager2D.h"
 
 #include "Board.h"
 #include "Messenger.h"
 #include "ParticleScheduler.h"
-#include "Score.h"
 
 Board::Board(const Vec2f& center, float cellSize, uint32_t row, uint32_t col)
 	: cellSize_(cellSize)
@@ -39,6 +39,7 @@ Board::Board(const Vec2f& center, float cellSize, uint32_t row, uint32_t col)
 
 	maxFillStepTime_ = 0.3f;
 
+	score_ = 0;
 	scoreScale_ = 10;
 	gainScoreMessagePos_ = Vec2f(195.0f, -100.0f);
 	gainScoreMessageColor_ = Vec3f(1.0f, 0.5f, 0.5f);
@@ -53,7 +54,6 @@ Board::Board(const Vec2f& center, float cellSize, uint32_t row, uint32_t col)
 
 	messenger_ = EntityManager::Get().GetByName<Messenger>("Messenger");
 	particleScheduler_ = EntityManager::Get().GetByName<ParticleScheduler>("ParticleScheduler");
-	score_ = EntityManager::Get().GetByName<Score>("Score");
 
 	bIsInitialized_ = true;
 }
@@ -131,7 +131,6 @@ void Board::Release()
 	CHECK(bIsInitialized_);
 
 	particleScheduler_ = nullptr;
-	score_ = nullptr;
 	messenger_ = nullptr;
 
 	bIsInitialized_ = false;
@@ -368,9 +367,10 @@ void Board::UpdateRemoveStatus(float deltaSeconds)
 	int32_t gainScore = scoreScale_ * numRemoveCol_;
 	messenger_->Send(GameUtils::PrintF(L"+%d", gainScore), gainScoreMessagePos_, gainScoreMessageColor_, gainScoreMessageTime_);
 
-	int32_t score = score_->GetScore();
-	score += gainScore;
-	score_->SetScore(score);
+	score_ += gainScore;
+	
+	PanelUI* scoreUI = EntityManager::Get().GetByName<PanelUI>("Score");
+	scoreUI->SetText(GameUtils::PrintF(L"%d", score_));
 
 	status_ = Status::CONFIRM;
 }

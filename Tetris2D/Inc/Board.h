@@ -11,7 +11,6 @@
 
 class Messenger;
 class ParticleScheduler;
-class Score;
 
 class Board : public IEntity2D
 {
@@ -88,6 +87,7 @@ private:
 
 	Status status_ = Status::WAIT;
 
+	int32_t score_ = 0;
 	int32_t scoreScale_ = 0;
 	Vec2f gainScoreMessagePos_;
 	Vec3f gainScoreMessageColor_;
@@ -102,5 +102,4 @@ private:
 
 	Messenger* messenger_ = nullptr;
 	ParticleScheduler* particleScheduler_ = nullptr;
-	Score* score_ = nullptr;
 };
