@@ -96,9 +96,9 @@ void GameApp::LoadTitleStatusEntities()
 	TTFont* font32 = ResourceManager::Get().GetByName<TTFont>("Font32");
 	TTFont* font128 = ResourceManager::Get().GetByName<TTFont>("Font128");
 
-	TextUI* title = UIManager::Get().Create(L"TETRIS2D", font128, Vec2f(0.0f, 200.0f), Vec4f(1.0f, 1.0f, 1.0f, 1.0f));
-	ButtonUI* startBtn = UIManager::Get().Create("Tetris2D\\Res\\Button\\Start.button", Mouse::LEFT, font32, [&]() { status_ = Status::GAMEPLAY; });
-	ButtonUI* quitBtn = UIManager::Get().Create("Tetris2D\\Res\\Button\\Quit.button", Mouse::LEFT, font32, [&]() { bIsQuit_ = true; });
+	TextUI* title = UIManager::Get().CreateTextUI("Tetris2D\\Res\\UI\\Title.ui", font128);
+	ButtonUI* startBtn = UIManager::Get().CreateButtonUI("Tetris2D\\Res\\UI\\Start.ui", Mouse::LEFT, font32, [&]() { status_ = Status::GAMEPLAY; });
+	ButtonUI* quitBtn = UIManager::Get().CreateButtonUI("Tetris2D\\Res\\UI\\Quit.ui", Mouse::LEFT, font32, [&]() { bIsQuit_ = true; });
 
 	StatusEntities statusEntities;
 	statusEntities.updateEntities_ = 
@@ -135,9 +135,9 @@ void GameApp::LoadGamePlayStatusEntities()
 	entityMgr.Register("TetrominoController", tetrominoController);
 
 	TTFont* font32 = ResourceManager::Get().GetByName<TTFont>("Font32");
-	TextUI* nextText = UIManager::Get().Create(L"NEXT", font32, Vec2f(195.0f, 140.0f), Vec4f(1.0f, 1.0f, 1.0f, 1.0f));
-	TextUI* scoreText = UIManager::Get().Create(L"SCORE", font32, Vec2f(195.0f, 0.0f), Vec4f(1.0f, 1.0f, 1.0f, 1.0f));
-	PanelUI* score = UIManager::Get().Create("Tetris2D\\Res\\Panel\\Score.panel", font32);
+	TextUI* nextText = UIManager::Get().CreateTextUI("Tetris2D\\Res\\UI\\Next.ui", font32);
+	TextUI* scoreText = UIManager::Get().CreateTextUI("Tetris2D\\Res\\UI\\ScoreText.ui", font32);
+	PanelUI* score = UIManager::Get().CreatePanelUI("Tetris2D\\Res\\UI\\ScorePanel.ui", font32);
 	entityMgr.Register("Score", score);
 
 	StatusEntities statusEntities;
