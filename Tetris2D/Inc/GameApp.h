@@ -42,7 +42,12 @@ private:
 	void LoadTitleStatusEntities();
 	void LoadGamePlayStatusEntities();
 
-private:
+private:	
+	class EntityManager* entityMgr_ = nullptr;
+	class RenderManager2D* render2dMgr_ = nullptr;
+	class ResourceManager* resourceMgr_ = nullptr;
+	class UIManager* uiMgr_ = nullptr;
+
 	MainCamera2D* mainCamera_ = nullptr;
 
 	Status status_ = Status::TITLE;

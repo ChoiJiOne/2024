@@ -19,20 +19,26 @@
 
 GameApp::GameApp() : IApp("Tetris2D", 200, 200, 600, 800, false, false)
 {
+	entityMgr_ = EntityManager::GetPtr();
+	render2dMgr_ = RenderManager2D::GetPtr();
+	resourceMgr_ = ResourceManager::GetPtr();
+	uiMgr_ = UIManager::GetPtr();
 }
 
 GameApp::~GameApp()
 {
+	uiMgr_ = nullptr;
+	resourceMgr_ = nullptr;
+	render2dMgr_ = nullptr;
+	entityMgr_ = nullptr;
 }
 
 void GameApp::Startup()
 {
 	LoadResource();
 
-	EntityManager& entityMgr = EntityManager::Get();
-
-	mainCamera_ = entityMgr.Create<MainCamera2D>();
-	entityMgr.Register("MainCamera", mainCamera_);
+	mainCamera_ = entityMgr_->Create<MainCamera2D>();
+	entityMgr_->Register("MainCamera", mainCamera_);
 	
 	LoadTitleStatusEntities();
 	LoadGamePlayStatusEntities();
@@ -40,7 +46,7 @@ void GameApp::Startup()
 
 void GameApp::Shutdown()
 {
-	EntityManager::Get().Destroy(mainCamera_);
+	entityMgr_->Destroy(mainCamera_);
 	mainCamera_ = nullptr;
 }
 
@@ -60,15 +66,15 @@ void GameApp::Run()
 			// UI 엔티티 업데이트
 			IEntityUI** uiEntities = statusEntities.uiEntities_.data();
 			uint32_t uiEntityCount = static_cast<uint32_t>(statusEntities.uiEntities_.size());
-			UIManager::Get().BatchTickUIEntity(uiEntities, uiEntityCount, deltaSeconds);
+			uiMgr_->BatchTickUIEntity(uiEntities, uiEntityCount, deltaSeconds);
 
 			BeginFrame(0.0f, 0.0f, 0.0f, 1.0f);
 
 			IEntity2D** renderEntities = statusEntities.renderEntities_.data();
 			uint32_t renderEntityCount = static_cast<uint32_t>(statusEntities.renderEntities_.size());
 
-			RenderManager2D::Get().BatchRenderEntities(mainCamera_, renderEntities, renderEntityCount);
-			UIManager::Get().BatchRenderUIEntity(uiEntities, uiEntityCount);
+			render2dMgr_->BatchRenderEntities(mainCamera_, renderEntities, renderEntityCount);
+			uiMgr_->BatchRenderUIEntity(uiEntities, uiEntityCount);
 			
 			EndFrame();
 		}
@@ -77,28 +83,24 @@ void GameApp::Run()
 
 void GameApp::LoadResource()
 {
-	ResourceManager& resourceMgr = ResourceManager::Get();
 	std::string resourcePath = "Tetris2D\\Res\\";
-
 	std::string fontPath = resourcePath + "Font\\SeoulNamsanEB.ttf";
 	std::array<int32_t, 2> fontSizes = { 32, 128, };
 	for (const auto& fontSize : fontSizes)
 	{
-		TTFont* font = resourceMgr.Create<TTFont>(fontPath, 0x00, 0x128, static_cast<float>(fontSize));
-		resourceMgr.Register(GameUtils::PrintF("Font%d", fontSize), font);
+		TTFont* font = resourceMgr_->Create<TTFont>(fontPath, 0x00, 0x128, static_cast<float>(fontSize));
+		resourceMgr_->Register(GameUtils::PrintF("Font%d", fontSize), font);
 	}
 }
 
 void GameApp::LoadTitleStatusEntities()
 {
-	EntityManager& entityMgr = EntityManager::Get();
+	TTFont* font32 = resourceMgr_->GetByName<TTFont>("Font32");
+	TTFont* font128 = resourceMgr_->GetByName<TTFont>("Font128");
 
-	TTFont* font32 = ResourceManager::Get().GetByName<TTFont>("Font32");
-	TTFont* font128 = ResourceManager::Get().GetByName<TTFont>("Font128");
-
-	TextUI* title = UIManager::Get().CreateTextUI("Tetris2D\\Res\\UI\\Title.ui", font128);
-	ButtonUI* startBtn = UIManager::Get().CreateButtonUI("Tetris2D\\Res\\UI\\Start.ui", Mouse::LEFT, font32, [&]() { status_ = Status::GAMEPLAY; });
-	ButtonUI* quitBtn = UIManager::Get().CreateButtonUI("Tetris2D\\Res\\UI\\Quit.ui", Mouse::LEFT, font32, [&]() { bIsQuit_ = true; });
+	TextUI* title = uiMgr_->CreateTextUI("Tetris2D\\Res\\UI\\Title.ui", font128);
+	ButtonUI* startBtn = uiMgr_->CreateButtonUI("Tetris2D\\Res\\UI\\Start.ui", Mouse::LEFT, font32, [&]() { status_ = Status::GAMEPLAY; });
+	ButtonUI* quitBtn = uiMgr_->CreateButtonUI("Tetris2D\\Res\\UI\\Quit.ui", Mouse::LEFT, font32, [&]() { bIsQuit_ = true; });
 
 	StatusEntities statusEntities;
 	statusEntities.updateEntities_ = 
@@ -117,28 +119,26 @@ void GameApp::LoadTitleStatusEntities()
 
 void GameApp::LoadGamePlayStatusEntities()
 {
-	EntityManager& entityMgr = EntityManager::Get();
+	ParticleScheduler* particleScheduler = entityMgr_->Create<ParticleScheduler>();
+	entityMgr_->Register("ParticleScheduler", particleScheduler);
+
+	Next* next = entityMgr_->Create<Next>();
+	entityMgr_->Register("Next", next);
 	
-	ParticleScheduler* particleScheduler = entityMgr.Create<ParticleScheduler>();
-	entityMgr.Register("ParticleScheduler", particleScheduler);
+	Messenger* messenger = entityMgr_->Create<Messenger>();
+	entityMgr_->Register("Messenger", messenger);
 
-	Next* next = entityMgr.Create<Next>();
-	entityMgr.Register("Next", next);
-	
-	Messenger* messenger = entityMgr.Create<Messenger>();
-	entityMgr.Register("Messenger", messenger);
+	Board* board = entityMgr_->Create<Board>(Vec2f(-50.0f, 0.0f), 30.0f, 10, 20);
+	entityMgr_->Register("Board", board);
 
-	Board* board = entityMgr.Create<Board>(Vec2f(-50.0f, 0.0f), 30.0f, 10, 20);
-	entityMgr.Register("Board", board);
+	TetrominoController* tetrominoController = entityMgr_->Create<TetrominoController>();
+	entityMgr_->Register("TetrominoController", tetrominoController);
 
-	TetrominoController* tetrominoController = entityMgr.Create<TetrominoController>();
-	entityMgr.Register("TetrominoController", tetrominoController);
-
-	TTFont* font32 = ResourceManager::Get().GetByName<TTFont>("Font32");
-	TextUI* nextText = UIManager::Get().CreateTextUI("Tetris2D\\Res\\UI\\Next.ui", font32);
-	TextUI* scoreText = UIManager::Get().CreateTextUI("Tetris2D\\Res\\UI\\ScoreText.ui", font32);
-	PanelUI* score = UIManager::Get().CreatePanelUI("Tetris2D\\Res\\UI\\ScorePanel.ui", font32);
-	entityMgr.Register("Score", score);
+	TTFont* font32 = resourceMgr_->GetByName<TTFont>("Font32");
+	TextUI* nextText = uiMgr_->CreateTextUI("Tetris2D\\Res\\UI\\Next.ui", font32);
+	TextUI* scoreText = uiMgr_->CreateTextUI("Tetris2D\\Res\\UI\\ScoreText.ui", font32);
+	PanelUI* score = uiMgr_->CreatePanelUI("Tetris2D\\Res\\UI\\ScorePanel.ui", font32);
+	entityMgr_->Register("Score", score);
 
 	StatusEntities statusEntities;
 	statusEntities.updateEntities_ =
