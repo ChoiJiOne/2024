@@ -11,7 +11,7 @@ Particle::Particle()
 {
 	if (!camera_)
 	{
-		camera_ = EntityManager::Get().GetByName<Camera2D>("MainCamera");
+		camera_ = EntityManager::GetRef().GetByName<Camera2D>("MainCamera");
 	}
 
 	directionFactor_ = 2.0f;
@@ -26,7 +26,7 @@ Particle::Particle(const Rect2D& bound, const Vec2f& direction, const Vec4f& col
 {
 	if (!camera_)
 	{
-		camera_ = EntityManager::Get().GetByName<Camera2D>("MainCamera");
+		camera_ = EntityManager::GetRef().GetByName<Camera2D>("MainCamera");
 	}
 
 	directionFactor_ = 2.0f;
@@ -65,7 +65,7 @@ void Particle::Render()
 		return;
 	}
 
-	RenderManager2D::Get().DrawRect(bound_.center, bound_.size.x, bound_.size.y, color_, 0.0f);
+	RenderManager2D::GetRef().DrawRect(bound_.center, bound_.size.x, bound_.size.y, color_, 0.0f);
 }
 
 void Particle::Release()

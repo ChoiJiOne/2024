@@ -7,7 +7,7 @@
 
 Messenger::Messenger()
 {
-	font_ = ResourceManager::Get().GetByName<TTFont>("Font32");
+	font_ = ResourceManager::GetRef().GetByName<TTFont>("Font32");
 	removeEvent_ = [&](const Message& message) { return message.remainTime <= 0.0f; };
 
 	bIsInitialized_ = true;
@@ -34,7 +34,7 @@ void Messenger::Tick(float deltaSeconds)
 
 void Messenger::Render()
 {
-	RenderManager2D& renderMgr = RenderManager2D::Get();
+	RenderManager2D& renderMgr = RenderManager2D::GetRef();
 	for (const auto& message : messages_)
 	{
 		renderMgr.DrawString(font_, message.text, message.position, message.color);

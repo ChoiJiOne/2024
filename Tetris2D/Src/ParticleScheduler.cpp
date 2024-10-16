@@ -7,7 +7,7 @@
 
 ParticleScheduler::ParticleScheduler()
 {
-	EntityManager& entityMgr = EntityManager::Get();
+	EntityManager& entityMgr = EntityManager::GetRef();
 	for (uint32_t index = 0; index < MAX_PARTICLE_SIZE; ++index)
 	{
 		particles_[index] = entityMgr.Create<Particle>();
@@ -68,7 +68,7 @@ void ParticleScheduler::Release()
 {
 	CHECK(bIsInitialized_);
 
-	EntityManager& entityMgr = EntityManager::Get();
+	EntityManager& entityMgr = EntityManager::GetRef();
 	for (uint32_t index = 0; index < MAX_PARTICLE_SIZE; ++index)
 	{
 		entityMgr.Destroy(particles_[index]);

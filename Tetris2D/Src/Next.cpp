@@ -40,7 +40,7 @@ void Next::Tick(float deltaSeconds)
 
 void Next::Render()
 {
-	RenderManager2D& renderMgr = RenderManager2D::Get();
+	RenderManager2D& renderMgr = RenderManager2D::GetRef();
 	for (uint32_t index = 0; index < lines_.size(); index += 2)
 	{
 		renderMgr.DrawLine(lines_[index + 0], lines_[index + 1], lineColor_);

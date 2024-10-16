@@ -28,12 +28,12 @@ Tetromino::Tetromino(const Vec2f& startPos, float blockSize, float stride, const
 	
 	if (!board_)
 	{
-		board_ = EntityManager::Get().GetByName<Board>("Board");
+		board_ = EntityManager::GetRef().GetByName<Board>("Board");
 	}
 
 	if (!camera_)
 	{
-		camera_ = EntityManager::Get().GetByName<MainCamera2D>("MainCamera");
+		camera_ = EntityManager::GetRef().GetByName<MainCamera2D>("MainCamera");
 	}
 
 	CreateBlocks(blocks_, rotatePos_, startPos, blockSize, color);
@@ -87,7 +87,7 @@ void Tetromino::Render()
 		return;
 	}
 
-	RenderManager2D& renderMgr = RenderManager2D::Get();
+	RenderManager2D& renderMgr = RenderManager2D::GetRef();
 	if (status_ == Status::ACTIVE)
 	{
 		for (const auto& shadowBlock : shadowBlocks_)

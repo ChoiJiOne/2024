@@ -52,8 +52,8 @@ Board::Board(const Vec2f& center, float cellSize, uint32_t row, uint32_t col)
 	warningMessagePos_ = center + Vec2f(0.0f, 0.55f * static_cast<float>(col_) * cellSize_ );
 	warningMessageColor_ = Vec3f(1.0f, 0.0f, 0.0f);
 
-	messenger_ = EntityManager::Get().GetByName<Messenger>("Messenger");
-	particleScheduler_ = EntityManager::Get().GetByName<ParticleScheduler>("ParticleScheduler");
+	messenger_ = EntityManager::GetRef().GetByName<Messenger>("Messenger");
+	particleScheduler_ = EntityManager::GetRef().GetByName<ParticleScheduler>("ParticleScheduler");
 
 	bIsInitialized_ = true;
 }
@@ -90,7 +90,7 @@ void Board::Tick(float deltaSeconds)
 
 void Board::Render()
 {
-	RenderManager2D& renderMgr = RenderManager2D::Get();
+	RenderManager2D& renderMgr = RenderManager2D::GetRef();
 
 	renderMgr.DrawRectWireframe(bound_.center, bound_.size.x, bound_.size.y, outlineColor_, 0.0f);
 	for (uint32_t index = 0; index < inlines_.size(); index += 2)
@@ -369,7 +369,7 @@ void Board::UpdateRemoveStatus(float deltaSeconds)
 
 	score_ += gainScore;
 	
-	PanelUI* scoreUI = EntityManager::Get().GetByName<PanelUI>("Score");
+	PanelUI* scoreUI = EntityManager::GetRef().GetByName<PanelUI>("Score");
 	scoreUI->SetText(GameUtils::PrintF(L"%d", score_));
 
 	status_ = Status::CONFIRM;
