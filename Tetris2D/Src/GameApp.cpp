@@ -14,7 +14,6 @@
 #include "Messenger.h"
 #include "Next.h"
 #include "ParticleScheduler.h"
-#include "Score.h"
 #include "Tetromino.h"
 #include "TetrominoController.h"
 
@@ -125,10 +124,7 @@ void GameApp::LoadGamePlayStatusEntities()
 
 	Next* next = entityMgr.Create<Next>();
 	entityMgr.Register("Next", next);
-
-	Score* score = entityMgr.Create<Score>();
-	entityMgr.Register("Score", score);
-
+	
 	Messenger* messenger = entityMgr.Create<Messenger>();
 	entityMgr.Register("Messenger", messenger);
 
@@ -141,7 +137,8 @@ void GameApp::LoadGamePlayStatusEntities()
 	TTFont* font32 = ResourceManager::Get().GetByName<TTFont>("Font32");
 	TextUI* nextText = UIManager::Get().Create(L"NEXT", font32, Vec2f(195.0f, 140.0f), Vec4f(1.0f, 1.0f, 1.0f, 1.0f));
 	TextUI* scoreText = UIManager::Get().Create(L"SCORE", font32, Vec2f(195.0f, 0.0f), Vec4f(1.0f, 1.0f, 1.0f, 1.0f));
-	PanelUI* scorePanel = UIManager::Get().Create("Tetris2D\\Res\\Panel\\Score.panel", font32);
+	PanelUI* score = UIManager::Get().Create("Tetris2D\\Res\\Panel\\Score.panel", font32);
+	entityMgr.Register("Score", score);
 
 	StatusEntities statusEntities;
 	statusEntities.updateEntities_ =
@@ -149,7 +146,6 @@ void GameApp::LoadGamePlayStatusEntities()
 		mainCamera_,
 		tetrominoController,
 		board,
-		score,
 		particleScheduler,
 		messenger,
 	};
@@ -158,7 +154,6 @@ void GameApp::LoadGamePlayStatusEntities()
 		board,
 		next,
 		tetrominoController,
-		score,
 		particleScheduler,
 		messenger,
 	};
@@ -166,7 +161,7 @@ void GameApp::LoadGamePlayStatusEntities()
 	{
 		nextText,
 		scoreText,
-		scorePanel,
+		score,
 	};
 
 	statusEntities_.insert({ Status::GAMEPLAY, statusEntities });
