@@ -1,6 +1,7 @@
 #include "Assertion.h"
 #include "ButtonUI.h"
 #include "EntityManager.h"
+#include "PanelUI.h"
 #include "ResourceManager.h"
 #include "RenderManager2D.h"
 #include "TextUI.h"
@@ -140,6 +141,7 @@ void GameApp::LoadGamePlayStatusEntities()
 	TTFont* font32 = ResourceManager::Get().GetByName<TTFont>("Font32");
 	TextUI* nextText = UIManager::Get().Create(L"NEXT", font32, Vec2f(195.0f, 140.0f), Vec4f(1.0f, 1.0f, 1.0f, 1.0f));
 	TextUI* scoreText = UIManager::Get().Create(L"SCORE", font32, Vec2f(195.0f, 0.0f), Vec4f(1.0f, 1.0f, 1.0f, 1.0f));
+	PanelUI* scorePanel = UIManager::Get().Create("Tetris2D\\Res\\Panel\\Score.panel", font32);
 
 	StatusEntities statusEntities;
 	statusEntities.updateEntities_ =
@@ -164,6 +166,7 @@ void GameApp::LoadGamePlayStatusEntities()
 	{
 		nextText,
 		scoreText,
+		scorePanel,
 	};
 
 	statusEntities_.insert({ Status::GAMEPLAY, statusEntities });
