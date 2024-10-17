@@ -1,5 +1,6 @@
 #include "Assertion.h"
 #include "EntityManager.h"
+#include "GameUtils.h"
 #include "PanelUI.h"
 #include "RenderManager2D.h"
 
