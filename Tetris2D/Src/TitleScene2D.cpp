@@ -1,6 +1,7 @@
 #include "Assertion.h"
 #include "ButtonUI.h"
 #include "EntityManager.h"
+#include "IApp.h"
 #include "IEntity.h"
 #include "IEntity2D.h"
 #include "IEntityUI.h"
@@ -11,6 +12,7 @@
 #include "TTFont.h"
 #include "UIManager.h"
 
+#include "GamePlayScene2D.h"
 #include "MainCamera2D.h"
 #include "TitleScene2D.h"
 
@@ -25,7 +27,12 @@ TitleScene2D::TitleScene2D()
 	ButtonUI* startBtn = uiMgr_->CreateButtonUI("Tetris2D\\Res\\UI\\Start.ui", Mouse::LEFT, font32, 
 		[&]() 
 		{ 
-			//status_ = Status::GAMEPLAY; 
+			bIsSwitched_ = true;
+			if (!switchScene_)
+			{
+				GamePlayScene2D* scene = IApp::Get()->GetSceneByName<GamePlayScene2D>("GamePlayScene");
+				switchScene_ = scene;
+			}
 		}
 	);
 	ButtonUI* quitBtn = uiMgr_->CreateButtonUI("Tetris2D\\Res\\UI\\Quit.ui", Mouse::LEFT, font32, 
@@ -81,18 +88,12 @@ void TitleScene2D::Render()
 
 void TitleScene2D::Enter()
 {
+	bIsEnter_ = true;
+	bIsSwitched_ = false;
 }
 
 void TitleScene2D::Exit()
 {
-}
-
-bool TitleScene2D::IsSceneSwitched()
-{
-	return false;
-}
-
-IGameScene* TitleScene2D::GetSwitchScene()
-{
-	return nullptr;
+	bIsEnter_ = false;
+	bIsSwitched_ = false;
 }
