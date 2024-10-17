@@ -14,7 +14,4 @@ public:
 	virtual void Render() override;
 	virtual void Enter() override;
 	virtual void Exit() override;
-
-	virtual bool IsSceneSwitched() override;
-	virtual IGameScene* GetSwitchScene() override;
 };

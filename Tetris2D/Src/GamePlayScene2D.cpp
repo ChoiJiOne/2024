@@ -108,13 +108,3 @@ void GamePlayScene2D::Enter()
 void GamePlayScene2D::Exit()
 {
 }
-
-bool GamePlayScene2D::IsSceneSwitched()
-{
-	return false;
-}
-
-IGameScene* GamePlayScene2D::GetSwitchScene()
-{
-	return nullptr;
-}
