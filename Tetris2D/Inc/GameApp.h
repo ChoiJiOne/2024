@@ -5,7 +5,6 @@
 
 #include "IApp.h"
 
-class MainCamera2D;
 class IEntity;
 class IEntity2D;
 class IEntityUI;
@@ -21,7 +20,6 @@ public:
 
 	virtual void Startup() override;
 	virtual void Shutdown() override;
-	virtual void Run() override;
 
 private:
 	void LoadResource();
@@ -29,8 +27,6 @@ private:
 private:
 	class EntityManager* entityMgr_ = nullptr;
 	class ResourceManager* resourceMgr_ = nullptr;
-
-	MainCamera2D* mainCamera_ = nullptr;
 
 	IGameScene* currentScene_ = nullptr;
 	std::unique_ptr<class TitleScene2D> titleScene_ = nullptr;

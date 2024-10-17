@@ -1,6 +1,7 @@
 #include "Assertion.h"
 #include "ButtonUI.h"
 #include "EntityManager.h"
+#include "GameUtils.h"
 #include "PanelUI.h"
 #include "ResourceManager.h"
 #include "RenderManager2D.h"
@@ -28,38 +29,17 @@ void GameApp::Startup()
 {
 	LoadResource();
 
-	mainCamera_ = entityMgr_->Create<MainCamera2D>();
-	entityMgr_->Register("MainCamera", mainCamera_);
+	MainCamera2D* mainCamera = entityMgr_->Create<MainCamera2D>();
+	entityMgr_->Register("MainCamera", mainCamera);
 
 	titleScene_ = std::make_unique<TitleScene2D>();
 
-	currentScene_ = titleScene_.get();
+	SetCurrentScene(titleScene_.get());
 }
 
 void GameApp::Shutdown()
 {
-	entityMgr_->Destroy(mainCamera_);
-	mainCamera_ = nullptr;
-}
-
-void GameApp::Run()
-{
-	currentScene_->Enter();
-
-	RunLoop(
-		[&](float deltaSeconds)
-		{
-			currentScene_->Tick(deltaSeconds);
-			currentScene_->Render();
-
-			if (currentScene_->IsSceneSwitched())
-			{
-				currentScene_->Exit();
-				currentScene_ = currentScene_->GetSwitchScene();
-				currentScene_->Enter();
-			}
-		}
-	);
+	titleScene_.reset();
 }
 
 void GameApp::LoadResource()
