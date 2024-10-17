@@ -29,11 +29,11 @@ TitleScene2D::TitleScene2D()
 		[&]() 
 		{ 
 			bIsSwitched_ = true;
-			if (!switchScene_)
-			{
-				GamePlayScene2D* scene = IApp::Get()->GetSceneByName<GamePlayScene2D>("GamePlayScene");
-				switchScene_ = scene;
-			}
+
+			GamePlayScene2D* scene = IApp::Get()->GetSceneByName<GamePlayScene2D>("GamePlayScene");
+			scene->Reset();
+
+			switchScene_ = scene;
 		}
 	);
 	ButtonUI* quitBtn = uiMgr_->CreateButtonUI("Tetris2D\\Res\\UI\\Quit_TitleScene2D.ui", Mouse::LEFT, font32, 
