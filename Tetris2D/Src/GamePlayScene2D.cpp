@@ -145,3 +145,18 @@ void GamePlayScene2D::Exit()
 	bIsSwitched_ = false;
 	bIsEnter_ = false;
 }
+
+void GamePlayScene2D::Reset()
+{
+	ParticleScheduler* particleScheduler = entityMgr_->GetByName<ParticleScheduler>("ParticleScheduler");
+	particleScheduler->Reset();
+
+	Messenger* messenger = entityMgr_->GetByName<Messenger>("Messenger");
+	messenger->Reset();
+
+	Board* board = entityMgr_->GetByName<Board>("Board");
+	board->Reset();
+
+	TetrominoController* tetrominoController = entityMgr_->GetByName<TetrominoController>("TetrominoController");
+	tetrominoController->Reset();
+}

@@ -19,6 +19,8 @@ public:
 	virtual void Enter() override;
 	virtual void Exit() override;
 
+	void Reset();
+
 private:
 	std::array<WindowEventID, 3> windowEventIDs_;
 };
