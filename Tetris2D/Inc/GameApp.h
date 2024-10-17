@@ -28,6 +28,6 @@ private:
 	class EntityManager* entityMgr_ = nullptr;
 	class ResourceManager* resourceMgr_ = nullptr;
 
-	IGameScene* currentScene_ = nullptr;
 	std::unique_ptr<class TitleScene2D> titleScene_ = nullptr;
+	std::unique_ptr<class GamePlayScene2D> gamePlayScene_ = nullptr;
 };
