@@ -146,6 +146,9 @@ void Board::Reset()
 	bEnableWarning_ = false;
 	warningStepTime_ = 0.0f;
 	status_ = Status::WAIT;
+
+	PanelUI* scoreUI = EntityManager::GetRef().GetByName<PanelUI>("Score");
+	scoreUI->SetText(GameUtils::PrintF(L"%d", score_));
 }
 
 bool Board::IsBlocksInside(const Block* blocks, uint32_t count)
