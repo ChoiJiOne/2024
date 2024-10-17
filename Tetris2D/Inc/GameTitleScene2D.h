@@ -2,13 +2,13 @@
 
 #include "IGameScene2D.h"
 
-class TitleScene2D : public IGameScene2D
+class GameTitleScene2D : public IGameScene2D
 {
 public:
-	TitleScene2D();
-	virtual ~TitleScene2D();
+	GameTitleScene2D();
+	virtual ~GameTitleScene2D();
 
-	DISALLOW_COPY_AND_ASSIGN(TitleScene2D);
+	DISALLOW_COPY_AND_ASSIGN(GameTitleScene2D);
 
 	virtual void Tick(float deltaSeconds) override;
 	virtual void Render() override;

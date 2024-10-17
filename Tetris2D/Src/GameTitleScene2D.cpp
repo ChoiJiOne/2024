@@ -14,10 +14,10 @@
 #include "UIManager.h"
 
 #include "GamePlayScene2D.h"
+#include "GameTitleScene2D.h"
 #include "MainCamera2D.h"
-#include "TitleScene2D.h"
 
-TitleScene2D::TitleScene2D()
+GameTitleScene2D::GameTitleScene2D()
 {
 	mainCamera_ = entityMgr_->GetByName<MainCamera2D>("MainCamera");
 
@@ -36,7 +36,7 @@ TitleScene2D::TitleScene2D()
 			switchScene_ = scene;
 		}
 	);
-	ButtonUI* quitBtn = uiMgr_->CreateButtonUI("Tetris2D\\Res\\UI\\Quit_TitleScene2D.ui", Mouse::LEFT, font32, 
+	ButtonUI* quitBtn = uiMgr_->CreateButtonUI("Tetris2D\\Res\\UI\\Quit_GameTitleScene2D.ui", Mouse::LEFT, font32, 
 		[&]() 
 		{  
 			InputManager::GetRef().RequestQuit();
@@ -49,11 +49,11 @@ TitleScene2D::TitleScene2D()
 	uiEntities_.push_back(quitBtn);
 }
 
-TitleScene2D::~TitleScene2D()
+GameTitleScene2D::~GameTitleScene2D()
 {
 }
 
-void TitleScene2D::Tick(float deltaSeconds)
+void GameTitleScene2D::Tick(float deltaSeconds)
 {
 	for (auto& entity : updateEntities_)
 	{
@@ -66,7 +66,7 @@ void TitleScene2D::Tick(float deltaSeconds)
 	}
 }
 
-void TitleScene2D::Render()
+void GameTitleScene2D::Render()
 {
 	renderStateMgr_->BeginFrame(0.0f, 0.0f, 0.0f, 1.0f);
 	{// 2D 엔티티 렌더링
@@ -87,12 +87,12 @@ void TitleScene2D::Render()
 	renderStateMgr_->EndFrame();
 }
 
-void TitleScene2D::Enter()
+void GameTitleScene2D::Enter()
 {
 	bIsEnter_ = true;
 }
 
-void TitleScene2D::Exit()
+void GameTitleScene2D::Exit()
 {
 	bIsSwitched_ = false;
 	bIsEnter_ = false;
