@@ -23,6 +23,7 @@
 #include "ParticleScheduler.h"
 #include "Tetromino.h"
 #include "TetrominoController.h"
+#include "TitleScene2D.h"
 
 GamePauseScene2D::GamePauseScene2D()
 {
@@ -47,11 +48,24 @@ GamePauseScene2D::GamePauseScene2D()
 			switchScene_ = scene;
 		}
 	);
-	ButtonUI* resetBtn = uiMgr_->CreateButtonUI("Tetris2D\\Res\\UI\\Reset.ui", Mouse::LEFT, font32, [&]() {});
+	ButtonUI* resetBtn = uiMgr_->CreateButtonUI("Tetris2D\\Res\\UI\\Reset.ui", Mouse::LEFT, font32, 
+		[&]() 
+		{			
+			bIsSwitched_ = true;
+
+			GamePlayScene2D* scene = IApp::Get()->GetSceneByName<GamePlayScene2D>("GamePlayScene");
+			scene->Reset();
+
+			switchScene_ = scene;
+		}
+	);
 	ButtonUI* quitBtn = uiMgr_->CreateButtonUI("Tetris2D\\Res\\UI\\Quit_GamePauseScene2D.ui", Mouse::LEFT, font32,
 		[&]()
 		{
-			InputManager::GetRef().RequestQuit();
+			bIsSwitched_ = true;
+
+			TitleScene2D* scene = IApp::Get()->GetSceneByName<TitleScene2D>("TitleScene");
+			switchScene_ = scene;
 		}
 	);
 
