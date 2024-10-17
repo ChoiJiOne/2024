@@ -1,5 +1,9 @@
 #pragma once
 
+#include <array>
+
+#include "InputManager.h"
+
 #include "IGameScene2D.h"
 
 class GamePlayScene2D : public IGameScene2D
@@ -14,4 +18,7 @@ public:
 	virtual void Render() override;
 	virtual void Enter() override;
 	virtual void Exit() override;
+
+private:
+	std::array<WindowEventID, 3> windowEventIDs_;
 };

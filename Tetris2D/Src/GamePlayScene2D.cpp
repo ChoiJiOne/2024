@@ -1,5 +1,6 @@
 #include "Assertion.h"
 #include "EntityManager.h"
+#include "IApp.h"
 #include "IEntity.h"
 #include "IEntity2D.h"
 #include "IEntityUI.h"
@@ -12,6 +13,7 @@
 
 #include "Block.h"
 #include "Board.h"
+#include "GamePauseScene2D.h"
 #include "GamePlayScene2D.h"
 #include "MainCamera2D.h"
 #include "Messenger.h"
@@ -23,6 +25,23 @@
 
 GamePlayScene2D::GamePlayScene2D()
 {
+	auto gamePauseEvent = [&]() 
+		{
+			bIsSwitched_ = true;
+			if (!switchScene_)
+			{
+				GamePauseScene2D* scene = IApp::Get()->GetSceneByName<GamePauseScene2D>("GamePauseScene");
+				switchScene_ = scene;
+			}
+		};
+
+	windowEventIDs_ = 
+	{
+		InputManager::GetRef().AddWindowEventAction(WindowEvent::FOCUS_LOST, gamePauseEvent, false),
+		InputManager::GetRef().AddWindowEventAction(WindowEvent::MOVED, gamePauseEvent, false),
+		InputManager::GetRef().AddWindowEventAction(WindowEvent::MINIMIZED, gamePauseEvent, false),
+	};
+
 	mainCamera_ = entityMgr_->GetByName<MainCamera2D>("MainCamera");
 
 	ParticleScheduler* particleScheduler = entityMgr_->Create<ParticleScheduler>();
@@ -41,8 +60,13 @@ GamePlayScene2D::GamePlayScene2D()
 	entityMgr_->Register("TetrominoController", tetrominoController);
 
 	TTFont* font32 = resourceMgr_->GetByName<TTFont>("Font32");
+
 	TextUI* nextText = uiMgr_->CreateTextUI("Tetris2D\\Res\\UI\\Next.ui", font32);
+	entityMgr_->Register("NextText", nextText);
+
 	TextUI* scoreText = uiMgr_->CreateTextUI("Tetris2D\\Res\\UI\\ScoreText.ui", font32);
+	entityMgr_->Register("ScoreText", scoreText);
+
 	PanelUI* score = uiMgr_->CreatePanelUI("Tetris2D\\Res\\UI\\ScorePanel.ui", font32);
 	entityMgr_->Register("Score", score);
 
@@ -103,10 +127,20 @@ void GamePlayScene2D::Render()
 
 void GamePlayScene2D::Enter()
 {
+	for (const auto& windowEventID : windowEventIDs_)
+	{
+		InputManager::GetRef().SetActiveWindowEventAction(windowEventID, true);
+	}
+
 	bIsEnter_ = true;
 }
 
 void GamePlayScene2D::Exit()
 {
+	for (const auto& windowEventID : windowEventIDs_)
+	{
+		InputManager::GetRef().SetActiveWindowEventAction(windowEventID, false);
+	}
+
 	bIsEnter_ = false;
 }
