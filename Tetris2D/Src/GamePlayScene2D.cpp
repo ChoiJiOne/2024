@@ -23,6 +23,8 @@
 
 GamePlayScene2D::GamePlayScene2D()
 {
+	mainCamera_ = entityMgr_->GetByName<MainCamera2D>("MainCamera");
+
 	ParticleScheduler* particleScheduler = entityMgr_->Create<ParticleScheduler>();
 	entityMgr_->Register("ParticleScheduler", particleScheduler);
 
