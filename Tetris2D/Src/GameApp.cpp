@@ -13,8 +13,8 @@
 #include "GameApp.h"
 #include "GamePauseScene2D.h"
 #include "GamePlayScene2D.h"
+#include "GameTitleScene2D.h"
 #include "MainCamera2D.h"
-#include "TitleScene2D.h"
 
 GameApp::GameApp() : IApp("Tetris2D", 200, 200, 600, 800, false, false)
 {}
@@ -31,8 +31,8 @@ void GameApp::Startup()
 	MainCamera2D* mainCamera = EntityManager::GetRef().Create<MainCamera2D>();
 	EntityManager::GetRef().Register("MainCamera", mainCamera);
 
-	titleScene_ = std::make_unique<TitleScene2D>();
-	AddSceneByName("TitleScene", titleScene_.get());
+	gameTitleScene_ = std::make_unique<GameTitleScene2D>();
+	AddSceneByName("GameTitleScene", gameTitleScene_.get());
 
 	gamePlayScene_ = std::make_unique<GamePlayScene2D>();
 	AddSceneByName("GamePlayScene", gamePlayScene_.get());
@@ -40,14 +40,14 @@ void GameApp::Startup()
 	gamePauseScene_ = std::make_unique<class GamePauseScene2D>();
 	AddSceneByName("GamePauseScene", gamePauseScene_.get());
 
-	SetCurrentScene(titleScene_.get());
+	SetCurrentScene(gameTitleScene_.get());
 }
 
 void GameApp::Shutdown()
 {
 	gamePauseScene_.reset();
 	gamePlayScene_.reset();
-	titleScene_.reset();
+	gameTitleScene_.reset();
 }
 
 void GameApp::LoadResource()
