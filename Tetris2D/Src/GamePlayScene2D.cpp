@@ -142,5 +142,6 @@ void GamePlayScene2D::Exit()
 		InputManager::GetRef().SetActiveWindowEventAction(windowEventID, false);
 	}
 
+	bIsSwitched_ = false;
 	bIsEnter_ = false;
 }

@@ -1,6 +1,7 @@
 #include "Assertion.h"
 #include "ButtonUI.h"
 #include "EntityManager.h"
+#include "IApp.h"
 #include "IEntity.h"
 #include "IEntity2D.h"
 #include "IEntityUI.h"
@@ -37,7 +38,15 @@ GamePauseScene2D::GamePauseScene2D()
 	PanelUI* score = entityMgr_->GetByName<PanelUI>("Score");
 	
 	TTFont* font32 = resourceMgr_->GetByName<TTFont>("Font32");
-	ButtonUI* continueBtn = uiMgr_->CreateButtonUI("Tetris2D\\Res\\UI\\Continue.ui", Mouse::LEFT, font32, [&]() {});
+	ButtonUI* continueBtn = uiMgr_->CreateButtonUI("Tetris2D\\Res\\UI\\Continue.ui", Mouse::LEFT, font32, 
+		[&]() 
+		{
+			bIsSwitched_ = true;
+
+			GamePlayScene2D* scene = IApp::Get()->GetSceneByName<GamePlayScene2D>("GamePlayScene");
+			switchScene_ = scene;
+		}
+	);
 	ButtonUI* resetBtn = uiMgr_->CreateButtonUI("Tetris2D\\Res\\UI\\Reset.ui", Mouse::LEFT, font32, [&]() {});
 	ButtonUI* quitBtn = uiMgr_->CreateButtonUI("Tetris2D\\Res\\UI\\Quit_GamePauseScene2D.ui", Mouse::LEFT, font32,
 		[&]()
@@ -104,5 +113,6 @@ void GamePauseScene2D::Enter()
 
 void GamePauseScene2D::Exit()
 {
+	bIsSwitched_ = false;
 	bIsEnter_ = false;
 }
