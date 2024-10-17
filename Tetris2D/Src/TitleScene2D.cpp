@@ -30,7 +30,7 @@ TitleScene2D::TitleScene2D()
 	);
 	ButtonUI* quitBtn = uiMgr_->CreateButtonUI("Tetris2D\\Res\\UI\\Quit.ui", Mouse::LEFT, font32, 
 		[&]() 
-		{ 
+		{  
 			//bIsQuit_ = true; 
 		}
 	);
@@ -61,18 +61,21 @@ void TitleScene2D::Tick(float deltaSeconds)
 void TitleScene2D::Render()
 {
 	renderStateMgr_->BeginFrame(0.0f, 0.0f, 0.0f, 1.0f);
-	render2dMgr_->Begin(mainCamera_);
-	{
-		for (auto& entity : renderEntities_)
+	{// 2D ¿£Æ¼Æ¼ ·»´õ¸µ
+		render2dMgr_->Begin(mainCamera_);
 		{
-			entity->Render();
+			for (auto& entity : renderEntities_)
+			{
+				entity->Render();
+			}
 		}
+		render2dMgr_->End();
 	}
-	render2dMgr_->End();
-
-	IEntityUI** uiEntities = uiEntities_.data();
-	uint32_t uiEntityCount = static_cast<uint32_t>(uiEntities_.size());
-	uiMgr_->BatchRenderUIEntity(uiEntities, uiEntityCount);
+	{// UI ·»´õ¸µ
+		IEntityUI** uiEntities = uiEntities_.data();
+		uint32_t uiEntityCount = static_cast<uint32_t>(uiEntities_.size());
+		uiMgr_->BatchRenderUIEntity(uiEntities, uiEntityCount);
+	}
 	renderStateMgr_->EndFrame();
 }
 
