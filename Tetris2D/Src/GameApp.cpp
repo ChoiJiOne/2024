@@ -5,6 +5,7 @@
 #include "PanelUI.h"
 #include "ResourceManager.h"
 #include "RenderManager2D.h"
+#include "RenderStateManager.h"
 #include "TextUI.h"
 #include "TTFont.h"
 #include "UIManager.h"
@@ -17,6 +18,8 @@ GameApp::GameApp() : IApp("Tetris2D", 200, 200, 600, 800, false, false)
 {
 	entityMgr_ = EntityManager::GetPtr();
 	resourceMgr_ = ResourceManager::GetPtr();
+
+	RenderStateManager::GetRef().SetAlphaBlendMode(true);
 }
 
 GameApp::~GameApp()
