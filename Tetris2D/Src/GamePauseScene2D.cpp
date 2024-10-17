@@ -16,6 +16,7 @@
 #include "Board.h"
 #include "GamePauseScene2D.h"
 #include "GamePlayScene2D.h"
+#include "GameTitleScene2D.h"
 #include "MainCamera2D.h"
 #include "Messenger.h"
 #include "Next.h"
@@ -23,7 +24,6 @@
 #include "ParticleScheduler.h"
 #include "Tetromino.h"
 #include "TetrominoController.h"
-#include "TitleScene2D.h"
 
 GamePauseScene2D::GamePauseScene2D()
 {
@@ -64,7 +64,7 @@ GamePauseScene2D::GamePauseScene2D()
 		{
 			bIsSwitched_ = true;
 
-			TitleScene2D* scene = IApp::Get()->GetSceneByName<TitleScene2D>("TitleScene");
+			GameTitleScene2D* scene = IApp::Get()->GetSceneByName<GameTitleScene2D>("GameTitleScene");
 			switchScene_ = scene;
 		}
 	);
