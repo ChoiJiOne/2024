@@ -16,25 +16,19 @@
 #include "TitleScene2D.h"
 
 GameApp::GameApp() : IApp("Tetris2D", 200, 200, 600, 800, false, false)
-{
-	entityMgr_ = EntityManager::GetPtr();
-	resourceMgr_ = ResourceManager::GetPtr();
-
-	RenderStateManager::GetRef().SetAlphaBlendMode(true);
-}
+{}
 
 GameApp::~GameApp()
-{
-	resourceMgr_ = nullptr;
-	entityMgr_ = nullptr;
-}
+{}
 
 void GameApp::Startup()
 {
+	RenderStateManager::GetRef().SetAlphaBlendMode(true);
+
 	LoadResource();
 
-	MainCamera2D* mainCamera = entityMgr_->Create<MainCamera2D>();
-	entityMgr_->Register("MainCamera", mainCamera);
+	MainCamera2D* mainCamera = EntityManager::GetRef().Create<MainCamera2D>();
+	EntityManager::GetRef().Register("MainCamera", mainCamera);
 
 	titleScene_ = std::make_unique<TitleScene2D>();
 	AddSceneByName("TitleScene", titleScene_.get());
@@ -58,7 +52,7 @@ void GameApp::LoadResource()
 	std::array<int32_t, 2> fontSizes = { 32, 128, };
 	for (const auto& fontSize : fontSizes)
 	{
-		TTFont* font = resourceMgr_->Create<TTFont>(fontPath, 0x00, 0x128, static_cast<float>(fontSize));
-		resourceMgr_->Register(GameUtils::PrintF("Font%d", fontSize), font);
+		TTFont* font = ResourceManager::GetRef().Create<TTFont>(fontPath, 0x00, 0x128, static_cast<float>(fontSize));
+		ResourceManager::GetRef().Register(GameUtils::PrintF("Font%d", fontSize), font);
 	}
 }
