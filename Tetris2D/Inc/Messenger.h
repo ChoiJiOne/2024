@@ -20,6 +20,7 @@ public:
 	virtual void Render() override;
 	virtual void Release() override;
 
+	void Reset();
 	void Send(const std::wstring& text, const Vec2f& position, const Vec3f& color, float time);
 
 private:

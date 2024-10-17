@@ -50,6 +50,11 @@ void Messenger::Release()
 	bIsInitialized_ = false;
 }
 
+void Messenger::Reset()
+{
+	messages_.clear();
+}
+
 void Messenger::Send(const std::wstring& text, const Vec2f& position, const Vec3f& color, float time)
 {
 	Vec2f textSize;
