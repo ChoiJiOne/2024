@@ -60,6 +60,7 @@ void TitleScene2D::Tick(float deltaSeconds)
 
 void TitleScene2D::Render()
 {
+	renderStateMgr_->BeginFrame(0.0f, 0.0f, 0.0f, 1.0f);
 	render2dMgr_->Begin(mainCamera_);
 	{
 		for (auto& entity : renderEntities_)
@@ -72,6 +73,7 @@ void TitleScene2D::Render()
 	IEntityUI** uiEntities = uiEntities_.data();
 	uint32_t uiEntityCount = static_cast<uint32_t>(uiEntities_.size());
 	uiMgr_->BatchRenderUIEntity(uiEntities, uiEntityCount);
+	renderStateMgr_->EndFrame();
 }
 
 void TitleScene2D::Enter()
