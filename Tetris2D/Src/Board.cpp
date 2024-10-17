@@ -137,6 +137,17 @@ void Board::Release()
 	bIsInitialized_ = false;
 }
 
+void Board::Reset()
+{
+	CleanupCells(cells_);
+
+	fillStepTime_ = 0.0f;
+	score_ = 0;
+	bEnableWarning_ = false;
+	warningStepTime_ = 0.0f;
+	status_ = Status::WAIT;
+}
+
 bool Board::IsBlocksInside(const Block* blocks, uint32_t count)
 {
 	bool bIsBlockInside = false;
