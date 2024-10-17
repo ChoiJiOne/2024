@@ -32,6 +32,7 @@ public:
 	void Start();
 
 	const Status& GetStatus() const { return status_; }
+	void SetStatus(const Status& status) { status_ = status; }
 
 private:
 	Rect2D bound_;
