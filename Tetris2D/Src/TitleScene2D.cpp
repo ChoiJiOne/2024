@@ -90,11 +90,10 @@ void TitleScene2D::Render()
 void TitleScene2D::Enter()
 {
 	bIsEnter_ = true;
-	bIsSwitched_ = false;
 }
 
 void TitleScene2D::Exit()
 {
-	bIsEnter_ = false;
 	bIsSwitched_ = false;
+	bIsEnter_ = false;
 }
