@@ -77,6 +77,19 @@ void ParticleScheduler::Release()
 	bIsInitialized_ = false;
 }
 
+void ParticleScheduler::Reset()
+{
+	for (uint32_t index = 0; index < numActiveParticle_; ++index)
+	{
+		particles_[index]->SetStatus(Particle::Status::WAIT);
+	}
+	
+	bIsActive_ = false;
+	particleSpeed_ = 500.0f;
+	particleScale_ = 0.3f;
+	numActiveParticle_ = 0;
+}
+
 void ParticleScheduler::Start(const Block* blocks, uint32_t count)
 {
 	static const uint32_t NUM_DIRECTIONS = 4;
