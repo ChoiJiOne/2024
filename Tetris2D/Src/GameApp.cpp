@@ -11,6 +11,7 @@
 #include "UIManager.h"
 
 #include "GameApp.h"
+#include "GamePauseScene2D.h"
 #include "GamePlayScene2D.h"
 #include "MainCamera2D.h"
 #include "TitleScene2D.h"
@@ -36,11 +37,15 @@ void GameApp::Startup()
 	gamePlayScene_ = std::make_unique<GamePlayScene2D>();
 	AddSceneByName("GamePlayScene", gamePlayScene_.get());
 
+	gamePauseScene_ = std::make_unique<class GamePauseScene2D>();
+	AddSceneByName("GamePauseScene", gamePauseScene_.get());
+
 	SetCurrentScene(titleScene_.get());
 }
 
 void GameApp::Shutdown()
 {
+	gamePauseScene_.reset();
 	gamePlayScene_.reset();
 	titleScene_.reset();
 }

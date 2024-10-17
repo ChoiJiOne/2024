@@ -27,4 +27,5 @@ private:
 private:
 	std::unique_ptr<class TitleScene2D> titleScene_ = nullptr;
 	std::unique_ptr<class GamePlayScene2D> gamePlayScene_ = nullptr;
+	std::unique_ptr<class GamePauseScene2D> gamePauseScene_ = nullptr;
 };
