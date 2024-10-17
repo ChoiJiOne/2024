@@ -2,7 +2,7 @@
 
 #include <array>
 
-#include "IApp.h"
+#include "InputManager.h"
 #include "IEntity2D.h"
 #include "GameMath.h"
 
@@ -107,7 +107,7 @@ private:
 	Vec4f shadowColor_;
 	bool bNeedUpdateShadow_ = true;
 
-	static GameApp* app_;
+	static InputManager* inputMgr_;
 	static Board* board_;
 	static MainCamera2D* camera_;
 	static std::map<Key, Direction> keyDirections_;

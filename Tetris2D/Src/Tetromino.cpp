@@ -3,11 +3,10 @@
 #include "RenderManager2D.h"
 
 #include "Board.h"
-#include "GameApp.h"
 #include "MainCamera2D.h"
 #include "Tetromino.h"
 
-GameApp* Tetromino::app_ = nullptr;
+InputManager* Tetromino::inputMgr_ = nullptr;
 Board* Tetromino::board_ = nullptr;
 MainCamera2D* Tetromino::camera_ = nullptr;
 std::map<Key, Tetromino::Direction> Tetromino::keyDirections_ =
@@ -21,9 +20,9 @@ Tetromino::Tetromino(const Vec2f& startPos, float blockSize, float stride, const
 	: stride_(stride)
 	, type_(type)
 {
-	if (!app_)
+	if (!inputMgr_)
 	{
-		app_ = reinterpret_cast<GameApp*>(IApp::Get());
+		inputMgr_ = InputManager::GetPtr();
 	}
 	
 	if (!board_)
@@ -192,7 +191,7 @@ void Tetromino::UpdateActiveStatus(float deltaSeconds)
 {
 	for (const auto& keyDirection : keyDirections_)
 	{
-		Press press = app_->GetKeyPress(keyDirection.first);
+		Press press = inputMgr_->GetKeyPress(keyDirection.first);
 
 		if (press == Press::PRESSED)
 		{
@@ -226,12 +225,12 @@ void Tetromino::UpdateActiveStatus(float deltaSeconds)
 		}
 	}
 
-	if (app_->GetKeyPress(Key::KEY_UP) == Press::PRESSED)
+	if (inputMgr_->GetKeyPress(Key::KEY_UP) == Press::PRESSED)
 	{
 		Rotate();
 	}
 
-	if (app_->GetKeyPress(Key::KEY_SPACE) == Press::PRESSED)
+	if (inputMgr_->GetKeyPress(Key::KEY_SPACE) == Press::PRESSED)
 	{
 		while (CanMoveBlocks(Tetromino::Direction::DOWN, blocks_, rotatePos_))
 		{
@@ -243,7 +242,7 @@ void Tetromino::UpdateActiveStatus(float deltaSeconds)
 		return;
 	}
 
-	Press press = app_->GetKeyPress(Key::KEY_DOWN);
+	Press press = inputMgr_->GetKeyPress(Key::KEY_DOWN);
 	if (press == Press::PRESSED || press == Press::HELD)
 	{
 		moveStepTime_ = maxMoveStepTime_;
