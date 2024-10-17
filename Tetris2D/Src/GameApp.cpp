@@ -50,10 +50,7 @@ void GameApp::Run()
 		[&](float deltaSeconds)
 		{
 			currentScene_->Tick(deltaSeconds);
-
-			BeginFrame(0.0f, 0.0f, 0.0f, 1.0f);
 			currentScene_->Render();
-			EndFrame();
 
 			if (currentScene_->IsSceneSwitched())
 			{
