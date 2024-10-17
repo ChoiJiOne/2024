@@ -1,4 +1,5 @@
 #include "Assertion.h"
+#include "ButtonUI.h"
 #include "EntityManager.h"
 #include "IEntity.h"
 #include "IEntity2D.h"
@@ -34,6 +35,16 @@ GamePauseScene2D::GamePauseScene2D()
 	TextUI* nextText = entityMgr_->GetByName<TextUI>("NextText");
 	TextUI* scoreText = entityMgr_->GetByName<TextUI>("ScoreText");
 	PanelUI* score = entityMgr_->GetByName<PanelUI>("Score");
+	
+	TTFont* font32 = resourceMgr_->GetByName<TTFont>("Font32");
+	ButtonUI* continueBtn = uiMgr_->CreateButtonUI("Tetris2D\\Res\\UI\\Continue.ui", Mouse::LEFT, font32, [&]() {});
+	ButtonUI* resetBtn = uiMgr_->CreateButtonUI("Tetris2D\\Res\\UI\\Reset.ui", Mouse::LEFT, font32, [&]() {});
+	ButtonUI* quitBtn = uiMgr_->CreateButtonUI("Tetris2D\\Res\\UI\\Quit_GamePauseScene2D.ui", Mouse::LEFT, font32,
+		[&]()
+		{
+			InputManager::GetRef().RequestQuit();
+		}
+	);
 
 	renderEntities_.push_back(board);
 	renderEntities_.push_back(next);
@@ -43,6 +54,9 @@ GamePauseScene2D::GamePauseScene2D()
 	uiEntities_.push_back(nextText);
 	uiEntities_.push_back(scoreText);
 	uiEntities_.push_back(score);
+	uiEntities_.push_back(continueBtn);
+	uiEntities_.push_back(resetBtn);
+	uiEntities_.push_back(quitBtn);
 }
 
 GamePauseScene2D::~GamePauseScene2D()
