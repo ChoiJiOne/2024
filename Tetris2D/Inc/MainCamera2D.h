@@ -16,9 +16,6 @@ public:
 	void Shake();
 
 private:
-
-
-private:
 	float shakeTime_ = 0.0f;
 	float maxShakeTime_ = 0.0f;
 	
