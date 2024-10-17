@@ -82,6 +82,28 @@ void TetrominoController::Release()
 	bIsInitialized_ = false;
 }
 
+void TetrominoController::Reset()
+{
+	if (nextTetromino_)
+	{
+		EntityManager::GetRef().Destroy(nextTetromino_);
+		nextTetromino_ = nullptr;
+	}
+
+	if (currentTetromino_)
+	{
+		EntityManager::GetRef().Destroy(currentTetromino_);
+		currentTetromino_ = nullptr;
+	}
+
+	currentTetromino_ = CreateRandomTetromino(startPos_, blockSize_, blockStride_);
+	currentTetromino_->status_ = Tetromino::Status::ACTIVE; /** 여기만 예외적으로 접근! */
+
+	nextTetromino_ = CreateRandomTetromino(waitPos_, blockSize_, blockStride_);
+
+	status_ = Status::ACTIVE;
+}
+
 Tetromino* TetrominoController::CreateRandomTetromino(const Vec2f& startPos, float blockSize, float stride)
 {
 	static const std::array<Tetromino::Type, 7> types = 

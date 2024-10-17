@@ -27,6 +27,8 @@ public:
 	virtual void Render() override;
 	virtual void Release() override;
 
+	void Reset();
+
 private:
 	Tetromino* CreateRandomTetromino(const Vec2f& startPos, float blockSize, float stride);
 
