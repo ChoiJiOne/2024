@@ -1,11 +1,11 @@
 #include "Assertion.h"
-#include "IApp.h"
+#include "RenderStateManager.h"
 
 #include "MainCamera2D.h"
 
 MainCamera2D::MainCamera2D()
 {
-	IApp::Get()->GetScreenSize<float>(size_.x, size_.y);
+	RenderStateManager::GetRef().GetScreenSize<float>(size_.x, size_.y);
 	
 	ortho_ = CalculateOrtho(center_, size_);
 	collision_ = Rect2D(center_, size_);
