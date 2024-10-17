@@ -2,6 +2,7 @@
 #include "ButtonUI.h"
 #include "EntityManager.h"
 #include "IApp.h"
+#include "InputManager.h"
 #include "IEntity.h"
 #include "IEntity2D.h"
 #include "IEntityUI.h"
@@ -38,7 +39,7 @@ TitleScene2D::TitleScene2D()
 	ButtonUI* quitBtn = uiMgr_->CreateButtonUI("Tetris2D\\Res\\UI\\Quit.ui", Mouse::LEFT, font32, 
 		[&]() 
 		{  
-			//bIsQuit_ = true; 
+			InputManager::GetRef().RequestQuit();
 		}
 	);
 
