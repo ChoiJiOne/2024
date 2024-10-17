@@ -103,8 +103,10 @@ void GamePlayScene2D::Render()
 
 void GamePlayScene2D::Enter()
 {
+	bIsEnter_ = true;
 }
 
 void GamePlayScene2D::Exit()
 {
+	bIsEnter_ = false;
 }
