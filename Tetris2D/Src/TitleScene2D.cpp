@@ -36,7 +36,7 @@ TitleScene2D::TitleScene2D()
 			}
 		}
 	);
-	ButtonUI* quitBtn = uiMgr_->CreateButtonUI("Tetris2D\\Res\\UI\\Quit.ui", Mouse::LEFT, font32, 
+	ButtonUI* quitBtn = uiMgr_->CreateButtonUI("Tetris2D\\Res\\UI\\Quit_TitleScene2D.ui", Mouse::LEFT, font32, 
 		[&]() 
 		{  
 			InputManager::GetRef().RequestQuit();
