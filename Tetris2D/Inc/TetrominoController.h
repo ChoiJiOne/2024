@@ -29,6 +29,8 @@ public:
 
 	void Reset();
 
+	const Status& GetStatus() const { return status_; }
+
 private:
 	Tetromino* CreateRandomTetromino(const Vec2f& startPos, float blockSize, float stride);
 
