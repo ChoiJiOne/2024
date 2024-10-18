@@ -127,6 +127,9 @@ void GamePlayScene2D::Exit()
 
 void GamePlayScene2D::Reset()
 {
+	MainCamera2D* mainCamera = entityMgr_->GetByName<MainCamera2D>("MainCamera");
+	mainCamera->Reset();
+
 	ParticleScheduler* particleScheduler = entityMgr_->GetByName<ParticleScheduler>("ParticleScheduler");
 	particleScheduler->Reset();
 
