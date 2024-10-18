@@ -69,6 +69,12 @@ GamePlayScene2D::GamePlayScene2D()
 	PanelUI* score = uiMgr_->CreatePanelUI("Tetris2D\\Res\\UI\\ScorePanel.ui", font32);
 	entityMgr_->Register("Score", score);
 
+	TextUI* levelText = uiMgr_->CreateTextUI("Tetris2D\\Res\\UI\\LevelText.ui", font32);
+	entityMgr_->Register("LevelText", levelText);
+
+	PanelUI* level = uiMgr_->CreatePanelUI("Tetris2D\\Res\\UI\\LevelPanel.ui", font32);
+	entityMgr_->Register("Level", level);
+
 	updateEntities_.push_back(mainCamera_);
 	updateEntities_.push_back(tetrominoController);
 	updateEntities_.push_back(board);
@@ -84,6 +90,8 @@ GamePlayScene2D::GamePlayScene2D()
 	uiEntities_.push_back(nextText);
 	uiEntities_.push_back(scoreText);
 	uiEntities_.push_back(score);
+	uiEntities_.push_back(levelText);
+	uiEntities_.push_back(level);
 
 	tetrominoController_ = tetrominoController;
 }
