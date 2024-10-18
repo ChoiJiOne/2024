@@ -21,6 +21,7 @@
 #include "Next.h"
 #include "Particle.h"
 #include "ParticleScheduler.h"
+#include "UserState.h"
 #include "Tetromino.h"
 #include "TetrominoController.h"
 
@@ -58,6 +59,9 @@ GamePlayScene2D::GamePlayScene2D()
 	TetrominoController* tetrominoController = entityMgr_->Create<TetrominoController>();
 	entityMgr_->Register("TetrominoController", tetrominoController);
 
+	UserState* userState = entityMgr_->Create<UserState>();
+	entityMgr_->Register("UserState", userState);
+
 	TTFont* font32 = resourceMgr_->GetByName<TTFont>("Font32");
 
 	TextUI* nextText = uiMgr_->CreateTextUI("Tetris2D\\Res\\UI\\Next.ui", font32);
@@ -79,6 +83,7 @@ GamePlayScene2D::GamePlayScene2D()
 	updateEntities_.push_back(tetrominoController);
 	updateEntities_.push_back(board);
 	updateEntities_.push_back(particleScheduler);
+	updateEntities_.push_back(userState);
 	updateEntities_.push_back(messenger);
 
 	renderEntities_.push_back(board);
@@ -149,4 +154,7 @@ void GamePlayScene2D::Reset()
 
 	TetrominoController* tetrominoController = entityMgr_->GetByName<TetrominoController>("TetrominoController");
 	tetrominoController->Reset();
+
+	UserState* userState = entityMgr_->GetByName<UserState>("UserState");
+	userState->Reset();
 }
