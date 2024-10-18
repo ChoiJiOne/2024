@@ -14,6 +14,7 @@
 #include "Block.h"
 #include "Board.h"
 #include "GamePauseScene2D.h"
+#include "GameOverScene2D.h"
 #include "GamePlayScene2D.h"
 #include "MainCamera2D.h"
 #include "Messenger.h"
@@ -28,11 +29,9 @@ GamePlayScene2D::GamePlayScene2D()
 	auto gamePauseEvent = [&]() 
 		{
 			bIsSwitched_ = true;
-			if (!switchScene_)
-			{
-				GamePauseScene2D* scene = IApp::Get()->GetSceneByName<GamePauseScene2D>("GamePauseScene");
-				switchScene_ = scene;
-			}
+
+			GamePauseScene2D* scene = IApp::Get()->GetSceneByName<GamePauseScene2D>("GamePauseScene");
+			switchScene_ = scene;
 		};
 
 	windowEventIDs_ = 
@@ -85,10 +84,25 @@ GamePlayScene2D::GamePlayScene2D()
 	uiEntities_.push_back(nextText);
 	uiEntities_.push_back(scoreText);
 	uiEntities_.push_back(score);
+
+	tetrominoController_ = tetrominoController;
 }
 
 GamePlayScene2D::~GamePlayScene2D()
 {
+}
+
+void GamePlayScene2D::Tick(float deltaSeconds)
+{
+	IGameScene2D::Tick(deltaSeconds);
+
+	if (tetrominoController_->GetStatus() == TetrominoController::Status::DONE)
+	{
+		bIsSwitched_ = true;
+
+		GameOverScene2D* scene = IApp::Get()->GetSceneByName<GameOverScene2D>("GameOverScene");
+		switchScene_ = scene;
+	}
 }
 
 void GamePlayScene2D::Enter()

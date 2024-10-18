@@ -14,6 +14,7 @@ public:
 
 	DISALLOW_COPY_AND_ASSIGN(GamePlayScene2D);
 
+	virtual void Tick(float deltaSeconds) override;
 	virtual void Enter() override;
 	virtual void Exit() override;
 
@@ -21,4 +22,6 @@ public:
 
 private:
 	std::array<WindowEventID, 3> windowEventIDs_;
+
+	class TetrominoController* tetrominoController_ = nullptr;
 };
