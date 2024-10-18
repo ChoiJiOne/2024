@@ -42,7 +42,7 @@ Board::Board(const Vec2f& center, float cellSize, uint32_t row, uint32_t col)
 
 	score_ = 0;
 	scoreScale_ = 10;
-	gainScoreMessagePos_ = Vec2f(195.0f, -100.0f);
+	gainScoreMessagePos_ = center - Vec2f(0.65f * static_cast<float>(row_) * cellSize_, 0.0f);
 	gainScoreMessageColor_ = Vec3f(1.0f, 0.5f, 0.5f);
 	gainScoreMessageTime_ = 1.0f;
 
@@ -378,6 +378,16 @@ void Board::UpdateRemoveStatus(float deltaSeconds)
 	{
 		return;
 	}
+
+	for (uint32_t col = 0; col < col_; ++col)
+	{
+		if (removeColumn_[col])
+		{
+			gainScoreMessagePos_.y = CalculateCellPos(0, col).y;
+			break;
+		}
+	}
+
 
 	int32_t gainScore = scoreScale_ * numRemoveCol_;
 	messenger_->Send(GameUtils::PrintF(L"+%d", gainScore), gainScoreMessagePos_, gainScoreMessageColor_, gainScoreMessageTime_);
