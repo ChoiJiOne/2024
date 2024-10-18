@@ -48,9 +48,10 @@ public:
 	void DeployBlocks(const Block* blocks, uint32_t count);
 
 private:
+	friend class UserState;
+
 	void CleanupCells(std::vector<std::pair<Block, bool>>& cells);
 	Vec2f CalculateCellPos(uint32_t row, uint32_t col);
-	bool IsDetectWarning();
 
 	/** 열(Column) 관련 기능. */
 	bool UpdateRemoveColumn();
@@ -58,7 +59,6 @@ private:
 	void GotoColumn(float t, int32_t fromFillColumn, int32_t toFillColumn, std::vector<std::pair<Block, bool>>& fillBlocks);
 
 	/** 상태에 따른 로직 업데이트. */
-	void UpdateWaitStatus(float deltaSeconds);
 	void UpdateRemoveStatus(float deltaSeconds);
 	void UpdateConfirmStatus(float deltaSeconds);
 	void UpdateFillStatus(float deltaSeconds);
@@ -89,19 +89,5 @@ private:
 
 	Status status_ = Status::WAIT;
 
-	int32_t score_ = 0;
-	int32_t scoreScale_ = 0;
-	Vec2f gainScoreMessagePos_;
-	Vec3f gainScoreMessageColor_;
-	float gainScoreMessageTime_ = 0.0f;
-
-	bool bEnableWarning_ = false;
-	int32_t warningCol_ = 0;
-	float warningStepTime_ = 0.0f;
-	float maxWarningStepTime_ = 0.5f;
-	Vec2f warningMessagePos_;
-	Vec3f warningMessageColor_;
-
-	Messenger* messenger_ = nullptr;
 	ParticleScheduler* particleScheduler_ = nullptr;
 };

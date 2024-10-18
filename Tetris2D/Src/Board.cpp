@@ -5,8 +5,8 @@
 #include "RenderManager2D.h"
 
 #include "Board.h"
-#include "Messenger.h"
 #include "ParticleScheduler.h"
+#include "UserState.h"
 
 Board::Board(const Vec2f& center, float cellSize, uint32_t row, uint32_t col)
 	: cellSize_(cellSize)
@@ -40,20 +40,6 @@ Board::Board(const Vec2f& center, float cellSize, uint32_t row, uint32_t col)
 
 	maxFillStepTime_ = 0.3f;
 
-	score_ = 0;
-	scoreScale_ = 10;
-	gainScoreMessagePos_ = center - Vec2f(0.65f * static_cast<float>(row_) * cellSize_, 0.0f);
-	gainScoreMessageColor_ = Vec3f(1.0f, 0.5f, 0.5f);
-	gainScoreMessageTime_ = 1.0f;
-
-	bEnableWarning_ = false;
-	warningCol_ = 3;
-	warningStepTime_ = 0.0f;
-	maxWarningStepTime_ = 0.5f;
-	warningMessagePos_ = center + Vec2f(0.0f, 0.55f * static_cast<float>(col_) * cellSize_ );
-	warningMessageColor_ = Vec3f(1.0f, 0.0f, 0.0f);
-
-	messenger_ = EntityManager::GetRef().GetByName<Messenger>("Messenger");
 	particleScheduler_ = EntityManager::GetRef().GetByName<ParticleScheduler>("ParticleScheduler");
 
 	bIsInitialized_ = true;
@@ -72,7 +58,7 @@ void Board::Tick(float deltaSeconds)
 	switch (status_)
 	{
 	case Status::WAIT:
-		UpdateWaitStatus(deltaSeconds);
+		// Nothing...
 		break;
 
 	case Status::REMOVE:
@@ -132,7 +118,6 @@ void Board::Release()
 	CHECK(bIsInitialized_);
 
 	particleScheduler_ = nullptr;
-	messenger_ = nullptr;
 
 	bIsInitialized_ = false;
 }
@@ -142,13 +127,7 @@ void Board::Reset()
 	CleanupCells(cells_);
 
 	fillStepTime_ = 0.0f;
-	score_ = 0;
-	bEnableWarning_ = false;
-	warningStepTime_ = 0.0f;
 	status_ = Status::WAIT;
-
-	PanelUI* scoreUI = EntityManager::GetRef().GetByName<PanelUI>("Score");
-	scoreUI->SetText(GameUtils::PrintF(L"%d", score_));
 }
 
 bool Board::IsBlocksInside(const Block* blocks, uint32_t count)
@@ -283,19 +262,6 @@ Vec2f Board::CalculateCellPos(uint32_t row, uint32_t col)
 	return cellPos;
 }
 
-bool Board::IsDetectWarning()
-{
-	for (uint32_t col = 0; col < warningCol_; ++col)
-	{
-		if (!IsEmptyColumn(col))
-		{
-			return true;
-		}
-	}
-
-	return false;
-}
-
 bool Board::UpdateRemoveColumn()
 {
 	bool bNeedUpdateRemoveColumn = false;
@@ -353,25 +319,6 @@ void Board::GotoColumn(float t, int32_t fromFillColumn, int32_t toFillColumn, st
 	}
 }
 
-void Board::UpdateWaitStatus(float deltaSeconds)
-{
-	if (bEnableWarning_)
-	{
-		warningStepTime_ += deltaSeconds;
-		if (warningStepTime_ >= maxWarningStepTime_)
-		{
-			warningStepTime_ = 0.0f;
-			bEnableWarning_ = false;
-		}
-	}
-
-	if (!bEnableWarning_ && IsDetectWarning())
-	{
-		bEnableWarning_ = true;
-		messenger_->Send(L"WARNING!", warningMessagePos_, warningMessageColor_, maxWarningStepTime_);
-	}
-}
-
 void Board::UpdateRemoveStatus(float deltaSeconds)
 {
 	if (particleScheduler_->IsActive())
@@ -379,23 +326,8 @@ void Board::UpdateRemoveStatus(float deltaSeconds)
 		return;
 	}
 
-	for (uint32_t col = 0; col < col_; ++col)
-	{
-		if (removeColumn_[col])
-		{
-			gainScoreMessagePos_.y = CalculateCellPos(0, col).y;
-			break;
-		}
-	}
-
-
-	int32_t gainScore = scoreScale_ * numRemoveCol_;
-	messenger_->Send(GameUtils::PrintF(L"+%d", gainScore), gainScoreMessagePos_, gainScoreMessageColor_, gainScoreMessageTime_);
-
-	score_ += gainScore;
-	
-	PanelUI* scoreUI = EntityManager::GetRef().GetByName<PanelUI>("Score");
-	scoreUI->SetText(GameUtils::PrintF(L"%d", score_));
+	UserState* userState = EntityManager::GetRef().GetByName<UserState>("UserState");
+	userState->GainScore(numRemoveCol_);
 
 	status_ = Status::CONFIRM;
 }
