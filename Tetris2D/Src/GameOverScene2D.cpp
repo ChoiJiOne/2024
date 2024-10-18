@@ -34,6 +34,12 @@ GameOverScene2D::GameOverScene2D()
 	Board* board = entityMgr_->GetByName<Board>("Board");
 	TetrominoController* tetrominoController = entityMgr_->GetByName<TetrominoController>("TetrominoController");
 
+	TextUI* nextText = entityMgr_->GetByName<TextUI>("NextText");
+	TextUI* scoreText = entityMgr_->GetByName<TextUI>("ScoreText");
+	PanelUI* score = entityMgr_->GetByName<PanelUI>("Score");
+	TextUI* levelText = entityMgr_->GetByName<TextUI>("LevelText");
+	PanelUI* level = entityMgr_->GetByName<PanelUI>("Level");
+
 	TTFont* font64 = resourceMgr_->GetByName<TTFont>("Font64");
 	TextUI* gameOver = uiMgr_->CreateTextUI("Tetris2D\\Res\\UI\\GameOver.ui", font64);
 
@@ -64,6 +70,11 @@ GameOverScene2D::GameOverScene2D()
 	renderEntities_.push_back(tetrominoController);
 	renderEntities_.push_back(particleScheduler);
 
+	uiEntities_.push_back(nextText);
+	uiEntities_.push_back(scoreText);
+	uiEntities_.push_back(score);
+	uiEntities_.push_back(levelText);
+	uiEntities_.push_back(level);
 	uiEntities_.push_back(gameOver);
 	uiEntities_.push_back(resetBtn);
 	uiEntities_.push_back(quitBtn);
