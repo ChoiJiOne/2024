@@ -48,7 +48,7 @@ GamePauseScene2D::GamePauseScene2D()
 			switchScene_ = scene;
 		}
 	);
-	ButtonUI* resetBtn = uiMgr_->CreateButtonUI("Tetris2D\\Res\\UI\\Reset.ui", Mouse::LEFT, font32, 
+	ButtonUI* resetBtn = uiMgr_->CreateButtonUI("Tetris2D\\Res\\UI\\Reset_GamePauseScene2D.ui", Mouse::LEFT, font32, 
 		[&]() 
 		{			
 			bIsSwitched_ = true;
