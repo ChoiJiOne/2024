@@ -91,40 +91,6 @@ GamePlayScene2D::~GamePlayScene2D()
 {
 }
 
-void GamePlayScene2D::Tick(float deltaSeconds)
-{
-	for (auto& entity : updateEntities_)
-	{
-		entity->Tick(deltaSeconds);
-	}
-
-	for (auto& uiEntity : uiEntities_)
-	{
-		uiEntity->Tick(deltaSeconds);
-	}
-}
-
-void GamePlayScene2D::Render()
-{
-	renderStateMgr_->BeginFrame(0.0f, 0.0f, 0.0f, 1.0f);
-	{// 2D ¿£Æ¼Æ¼ ·»´õ¸µ
-		render2dMgr_->Begin(mainCamera_);
-		{
-			for (auto& entity : renderEntities_)
-			{
-				entity->Render();
-			}
-		}
-		render2dMgr_->End();
-	}
-	{// UI ·»´õ¸µ
-		IEntityUI** uiEntities = uiEntities_.data();
-		uint32_t uiEntityCount = static_cast<uint32_t>(uiEntities_.size());
-		uiMgr_->BatchRenderUIEntity(uiEntities, uiEntityCount);
-	}
-	renderStateMgr_->EndFrame();
-}
-
 void GamePlayScene2D::Enter()
 {
 	for (const auto& windowEventID : windowEventIDs_)
@@ -132,7 +98,7 @@ void GamePlayScene2D::Enter()
 		InputManager::GetRef().SetActiveWindowEventAction(windowEventID, true);
 	}
 
-	bIsEnter_ = true;
+	IGameScene2D::Enter();
 }
 
 void GamePlayScene2D::Exit()
@@ -142,8 +108,7 @@ void GamePlayScene2D::Exit()
 		InputManager::GetRef().SetActiveWindowEventAction(windowEventID, false);
 	}
 
-	bIsSwitched_ = false;
-	bIsEnter_ = false;
+	IGameScene2D::Exit();
 }
 
 void GamePlayScene2D::Reset()
