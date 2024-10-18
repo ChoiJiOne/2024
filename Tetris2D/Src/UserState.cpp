@@ -71,7 +71,6 @@ void UserState::Reset()
 {
 	level_ = 1;
 	score_ = 0;
-	gainScoreMessageTime_ = 0.0f;
 	bEnableWarning_ = false;
 	warningStepTime_ = 0.0f;
 
