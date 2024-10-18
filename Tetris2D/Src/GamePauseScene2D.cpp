@@ -37,6 +37,8 @@ GamePauseScene2D::GamePauseScene2D()
 	TextUI* nextText = entityMgr_->GetByName<TextUI>("NextText");
 	TextUI* scoreText = entityMgr_->GetByName<TextUI>("ScoreText");
 	PanelUI* score = entityMgr_->GetByName<PanelUI>("Score");
+	TextUI* levelText = entityMgr_->GetByName<TextUI>("LevelText");
+	PanelUI* level = entityMgr_->GetByName<PanelUI>("Level");
 	
 	TTFont* font32 = resourceMgr_->GetByName<TTFont>("Font32");
 	ButtonUI* continueBtn = uiMgr_->CreateButtonUI("Tetris2D\\Res\\UI\\Continue.ui", Mouse::LEFT, font32, 
@@ -77,6 +79,8 @@ GamePauseScene2D::GamePauseScene2D()
 	uiEntities_.push_back(nextText);
 	uiEntities_.push_back(scoreText);
 	uiEntities_.push_back(score);
+	uiEntities_.push_back(levelText);
+	uiEntities_.push_back(level);
 	uiEntities_.push_back(continueBtn);
 	uiEntities_.push_back(resetBtn);
 	uiEntities_.push_back(quitBtn);
