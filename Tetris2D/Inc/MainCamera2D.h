@@ -13,6 +13,7 @@ public:
 	virtual void Tick(float deltaSeconds) override;
 	virtual void Release() override;
 
+	void Reset();
 	void Shake();
 
 private:

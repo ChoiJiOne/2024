@@ -52,6 +52,13 @@ void MainCamera2D::Release()
 	bIsInitialized_ = false;
 }
 
+void MainCamera2D::Reset()
+{
+	bStartShake_ = false;
+	collision_ = originCollision_;
+	ortho_ = CalculateOrtho(collision_.center, collision_.size);
+}
+
 void MainCamera2D::Shake()
 {
 	shakeTime_ = 0.0f;
