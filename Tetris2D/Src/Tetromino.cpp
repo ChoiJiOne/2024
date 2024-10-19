@@ -6,6 +6,7 @@
 #include "MainCamera2D.h"
 #include "Tetromino.h"
 
+float Tetromino::maxMoveStepTime_ = 0.1f;
 InputManager* Tetromino::inputMgr_ = nullptr;
 Board* Tetromino::board_ = nullptr;
 MainCamera2D* Tetromino::camera_ = nullptr;
@@ -37,7 +38,6 @@ Tetromino::Tetromino(const Vec2f& startPos, float blockSize, float stride, const
 
 	CreateBlocks(blocks_, rotatePos_, startPos, blockSize, color);
 
-	maxMoveStepTime_ = 1.0f;
 	moveStepTime_ = maxMoveStepTime_;
 
 	shadowColor_ = Vec4f(1.0f, 1.0f, 1.0f, 0.3f);
@@ -128,6 +128,11 @@ void Tetromino::GotoPosition(const Vec2f& gotoPos)
 	CreateBlocks(gotoBlocks_, gotoRotatePos_, startPos, blockSize, color);
 	
 	status_ = Status::GOTO;
+}
+
+void Tetromino::SetMaxMoveStepTime(float maxMoveStepTime)
+{
+	maxMoveStepTime_ = maxMoveStepTime;
 }
 
 void Tetromino::Move(const Direction& direction)

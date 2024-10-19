@@ -53,6 +53,8 @@ public:
 
 	void GotoPosition(const Vec2f& gotoPos);
 
+	static void SetMaxMoveStepTime(float maxMoveStepTime);
+
 private:
 	enum class Direction
 	{
@@ -79,7 +81,7 @@ private:
 	bool CanMoveBlocks(const Direction& direction, const std::array<Block, NUM_BLOCKS>& blocks, const Vec2f& rotatePos);
 	void RotateBlocks(std::array<Block, NUM_BLOCKS>& blocks, Vec2f& rotatePos);
 	bool CanRotateBlocks(const std::array<Block, NUM_BLOCKS>& blocks, const Vec2f& rotatePos);
-
+	
 private:
 	float stride_ = 0.0f;
 	Type type_ = Type::NONE;
@@ -90,7 +92,6 @@ private:
 	std::array<Block, NUM_BLOCKS> shadowBlocks_;
 
 	float moveStepTime_ = 0.0f;
-	float maxMoveStepTime_ = 0.0f;
 
 	float gotoStepTime_ = 0.0f;
 	float maxGotoStepTime_ = 0.0f;
@@ -107,6 +108,7 @@ private:
 	Vec4f shadowColor_;
 	bool bNeedUpdateShadow_ = true;
 
+	static float maxMoveStepTime_;
 	static InputManager* inputMgr_;
 	static Board* board_;
 	static MainCamera2D* camera_;
