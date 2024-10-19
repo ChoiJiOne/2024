@@ -153,3 +153,15 @@ bool UserState::IsDetectWarning()
 
 	return false;
 }
+
+void UserState::RequestUpdateScoreUI()
+{
+	PanelUI* scoreUI = EntityManager::GetRef().GetByName<PanelUI>("Score");
+	scoreUI->SetText(GameUtils::PrintF(L"%d", score_));
+}
+
+void UserState::RequestUpdateLevelUI()
+{
+	PanelUI* levelUI = EntityManager::GetRef().GetByName<PanelUI>("Level");
+	levelUI->SetText(GameUtils::PrintF(L"%d", static_cast<int32_t>(level_)));
+}

@@ -42,6 +42,9 @@ public:
 private:
 	bool IsDetectWarning();
 
+	void RequestUpdateScoreUI();
+	void RequestUpdateLevelUI();
+
 private:
 	Messenger* messenger_ = nullptr;
 	Board* board_ = nullptr;
