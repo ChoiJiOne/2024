@@ -9,4 +9,6 @@ public:
 	virtual ~GameOverScene2D();
 
 	DISALLOW_COPY_AND_ASSIGN(GameOverScene2D);
+
+	virtual void Enter() override;
 };
