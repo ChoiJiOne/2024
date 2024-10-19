@@ -37,6 +37,8 @@ public:
 	void Reset();
 	void GainScore(uint32_t removeLines);
 
+	const Level& GetLevel() const { return level_; }
+
 private:
 	bool IsDetectWarning();
 
