@@ -94,11 +94,8 @@ void UserState::Reset()
 	warningStepTime_ = 0.0f;
 	accumulateGainScore_ = 0;
 	
-	PanelUI* scoreUI = EntityManager::GetRef().GetByName<PanelUI>("Score");
-	scoreUI->SetText(GameUtils::PrintF(L"%d", score_));
-
-	PanelUI* levelUI = EntityManager::GetRef().GetByName<PanelUI>("Level");
-	levelUI->SetText(GameUtils::PrintF(L"%d", static_cast<int32_t>(level_)));
+	RequestUpdateScoreUI();
+	RequestUpdateLevelUI();
 
 	Tetromino::SetMaxMoveStepTime(maxStepTimeLevels_.at(level_));
 }
@@ -119,8 +116,7 @@ void UserState::GainScore(uint32_t removeLines)
 	
 	score_ += gainScore;
 
-	PanelUI* scoreUI = EntityManager::GetRef().GetByName<PanelUI>("Score");
-	scoreUI->SetText(GameUtils::PrintF(L"%d", score_));
+	RequestUpdateScoreUI();
 
 	if (level_ < Level::LEVEL_10)
 	{
@@ -135,8 +131,7 @@ void UserState::GainScore(uint32_t removeLines)
 
 			messenger_->Send(L"LEVEL UP!", levelUpMessagePos_, levelUPMessageColor_, levelUpMessageTime_);
 
-			PanelUI* levelUI = EntityManager::GetRef().GetByName<PanelUI>("Level");
-			levelUI->SetText(GameUtils::PrintF(L"%d", static_cast<int32_t>(level_)));
+			RequestUpdateLevelUI();
 		}
 	}
 }
