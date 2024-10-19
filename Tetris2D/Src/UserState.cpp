@@ -14,6 +14,19 @@ UserState::UserState()
 	board_ = EntityManager::GetRef().GetByName<Board>("Board");
 
 	level_ = Level::LEVEL_1;
+	maxStepTimeLevels_ =
+	{
+		{ Level::LEVEL_1,  1.0f },
+		{ Level::LEVEL_2,  0.9f },
+		{ Level::LEVEL_3,  0.8f },
+		{ Level::LEVEL_4,  0.7f },
+		{ Level::LEVEL_5,  0.6f },
+		{ Level::LEVEL_6,  0.5f },
+		{ Level::LEVEL_7,  0.4f },
+		{ Level::LEVEL_8,  0.3f },
+		{ Level::LEVEL_9,  0.2f },
+		{ Level::LEVEL_10, 0.1f },
+	};
 
 	score_ = 0;
 	scoreScale_ = 10;
@@ -81,7 +94,7 @@ void UserState::Reset()
 	PanelUI* levelUI = EntityManager::GetRef().GetByName<PanelUI>("Level");
 	levelUI->SetText(GameUtils::PrintF(L"%d", static_cast<int32_t>(level_)));
 
-	Tetromino::SetMaxMoveStepTime(1.0f);
+	Tetromino::SetMaxMoveStepTime(maxStepTimeLevels_.at(level_));
 }
 
 void UserState::GainScore(uint32_t removeLines)

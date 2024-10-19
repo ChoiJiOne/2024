@@ -1,5 +1,7 @@
 #pragma once
 
+#include <map>
+
 #include "GameMath.h"
 #include "IEntity.h"
 
@@ -43,6 +45,7 @@ private:
 	Board* board_ = nullptr;
 
 	Level level_ = Level::LEVEL_1;
+	std::map<Level, float> maxStepTimeLevels_;
 
 	int32_t score_ = 0;
 	int32_t scoreScale_ = 0;
