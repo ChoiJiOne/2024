@@ -32,9 +32,30 @@ void GameHistoryTracker::Release()
 
 void GameHistoryTracker::AddScore(int32_t score)
 {
-	Histroy history;
-	history.score = score;
-	history.time = GameTimer::GetCurrentSystemTimeAsWString();
+	Histroy newHistory;
+	newHistory.score = score;
+	newHistory.time = GameTimer::GetCurrentSystemTimeAsWString();
 
-	histories_.push_back(history);
+	recentScore_ = score;
+
+	if (histories_.empty())
+	{
+		highScore_ = score;
+		bIsHighScoreBroken_ = true;
+	}
+	else
+	{
+		bIsHighScoreBroken_ = false;
+		for (const auto& history : histories_)
+		{
+			if (score > history.score)
+			{
+				highScore_ = score;
+				bIsHighScoreBroken_ = true;
+				break;
+			}
+		}
+	}
+	
+	histories_.push_back(newHistory);
 }
