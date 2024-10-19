@@ -13,6 +13,7 @@
 #include "TTFont.h"
 #include "UIManager.h"
 
+#include "GameHistoryScene2D.h"
 #include "GamePlayScene2D.h"
 #include "GameTitleScene2D.h"
 #include "MainCamera2D.h"
@@ -32,6 +33,12 @@ GameTitleScene2D::GameTitleScene2D()
 			scene->Reset();
 		}
 	);
+	ButtonUI* historyBtn = uiMgr_->CreateButtonUI("Tetris2D\\Res\\UI\\History.ui", Mouse::LEFT, font32,
+		[&] 
+		{
+			Switch<GameHistoryScene2D>("GameHistoryScene");
+		}
+	);
 	ButtonUI* quitBtn = uiMgr_->CreateButtonUI("Tetris2D\\Res\\UI\\Quit_GameTitleScene2D.ui", Mouse::LEFT, font32, 
 		[&]() 
 		{  
@@ -42,6 +49,7 @@ GameTitleScene2D::GameTitleScene2D()
 	updateEntities_.push_back(mainCamera_);
 	uiEntities_.push_back(title);
 	uiEntities_.push_back(startBtn);
+	uiEntities_.push_back(historyBtn);
 	uiEntities_.push_back(quitBtn);
 }
 
