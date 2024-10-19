@@ -11,6 +11,7 @@
 #include "UIManager.h"
 
 #include "GameApp.h"
+#include "GameHistoryScene2D.h"
 #include "GameHistoryTracker.h"
 #include "GameOverScene2D.h"
 #include "GamePauseScene2D.h"
@@ -48,11 +49,15 @@ void GameApp::Startup()
 	gameOverScene_ = std::make_unique<GameOverScene2D>();
 	AddSceneByName("GameOverScene", gameOverScene_.get());
 
+	gameHistoryScene_ = std::make_unique<class GameHistoryScene2D>();
+	AddSceneByName("GameHistoryScene", gameHistoryScene_.get());
+
 	SetCurrentScene(gameTitleScene_.get());
 }
 
 void GameApp::Shutdown()
 {
+	gameHistoryScene_.reset();
 	gameOverScene_.reset();
 	gamePauseScene_.reset();
 	gamePlayScene_.reset();
