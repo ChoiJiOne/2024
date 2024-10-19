@@ -28,9 +28,7 @@ GameTitleScene2D::GameTitleScene2D()
 	ButtonUI* startBtn = uiMgr_->CreateButtonUI("Tetris2D\\Res\\UI\\Start.ui", Mouse::LEFT, font32, 
 		[&]() 
 		{
-			Switch<GamePlayScene2D>("GamePlayScene");
-
-			GamePlayScene2D* scene = IApp::Get()->GetSceneByName<GamePlayScene2D>("GamePlayScene");
+			GamePlayScene2D* scene = Switch<GamePlayScene2D>("GamePlayScene");
 			scene->Reset();
 		}
 	);

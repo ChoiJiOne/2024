@@ -45,9 +45,7 @@ GamePauseScene2D::GamePauseScene2D()
 	ButtonUI* resetBtn = uiMgr_->CreateButtonUI("Tetris2D\\Res\\UI\\Reset_GamePauseScene2D.ui", Mouse::LEFT, font32, 
 		[&]() 
 		{
-			Switch<GamePlayScene2D>("GamePlayScene");
-
-			GamePlayScene2D* scene = IApp::Get()->GetSceneByName<GamePlayScene2D>("GamePlayScene");
+			GamePlayScene2D* scene = Switch<GamePlayScene2D>("GamePlayScene");
 			scene->Reset();
 		}
 	);
