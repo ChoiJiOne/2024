@@ -116,6 +116,14 @@ void GamePlayScene2D::Tick(float deltaSeconds)
 		GameOverScene2D* scene = IApp::Get()->GetSceneByName<GameOverScene2D>("GameOverScene");
 		switchScene_ = scene;
 	}
+
+	if (IsPauseGame())
+	{
+		bIsSwitched_ = true;
+
+		GamePauseScene2D* scene = IApp::Get()->GetSceneByName<GamePauseScene2D>("GamePauseScene");
+		switchScene_ = scene;
+	}
 }
 
 void GamePlayScene2D::Enter()
@@ -157,4 +165,9 @@ void GamePlayScene2D::Reset()
 
 	TetrominoController* tetrominoController = entityMgr_->GetByName<TetrominoController>("TetrominoController");
 	tetrominoController->Reset();
+}
+
+bool GamePlayScene2D::IsPauseGame()
+{
+	return InputManager::GetRef().GetKeyPress(Key::KEY_ESCAPE) == Press::PRESSED;
 }

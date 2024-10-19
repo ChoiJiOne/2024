@@ -21,6 +21,9 @@ public:
 	void Reset();
 
 private:
+	bool IsPauseGame();
+
+private:
 	std::array<WindowEventID, 3> windowEventIDs_;
 
 	class TetrominoController* tetrominoController_ = nullptr;
