@@ -11,6 +11,7 @@
 #include "UIManager.h"
 
 #include "GameApp.h"
+#include "GameHistoryTracker.h"
 #include "GameOverScene2D.h"
 #include "GamePauseScene2D.h"
 #include "GamePlayScene2D.h"
@@ -31,6 +32,9 @@ void GameApp::Startup()
 
 	MainCamera2D* mainCamera = EntityManager::GetRef().Create<MainCamera2D>();
 	EntityManager::GetRef().Register("MainCamera", mainCamera);
+
+	GameHistoryTracker* gameHistoryTracker = EntityManager::GetRef().Create<GameHistoryTracker>();
+	EntityManager::GetRef().Register("GameHistoryTracker", gameHistoryTracker);
 
 	gameTitleScene_ = std::make_unique<GameTitleScene2D>();
 	AddSceneByName("GameTitleScene", gameTitleScene_.get());
