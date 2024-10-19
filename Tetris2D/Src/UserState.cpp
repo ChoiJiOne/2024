@@ -115,24 +115,12 @@ void UserState::GainScore(uint32_t removeLines)
 	messenger_->Send(GameUtils::PrintF(L"+%d", gainScore), gainScoreMessagePos_, gainScoreMessageColor_, gainScoreMessageTime_);
 	
 	score_ += gainScore;
-
 	RequestUpdateScoreUI();
 
-	if (level_ < Level::LEVEL_10)
+	if (LevelUp(gainScore))
 	{
-		accumulateGainScore_ += gainScore;
-		if (accumulateGainScore_ >= levelUpScore_)
-		{
-			accumulateGainScore_ -= levelUpScore_;
-
-			int32_t level = static_cast<int32_t>(level_);
-			level_ = static_cast<Level>(level + 1);
-			Tetromino::SetMaxMoveStepTime(maxStepTimeLevels_.at(level_));
-
-			messenger_->Send(L"LEVEL UP!", levelUpMessagePos_, levelUPMessageColor_, levelUpMessageTime_);
-
-			RequestUpdateLevelUI();
-		}
+		messenger_->Send(L"LEVEL UP!", levelUpMessagePos_, levelUPMessageColor_, levelUpMessageTime_);
+		RequestUpdateLevelUI();
 	}
 }
 
@@ -147,6 +135,27 @@ bool UserState::IsDetectWarning()
 	}
 
 	return false;
+}
+
+bool UserState::LevelUp(int32_t gainScore)
+{
+	if (level_ >= Level::LEVEL_10)
+	{
+		return false;
+	}
+
+	accumulateGainScore_ += gainScore;
+	if (accumulateGainScore_ < levelUpScore_)
+	{
+		return false;
+	}
+	
+	accumulateGainScore_ -= levelUpScore_;
+	int32_t level = static_cast<int32_t>(level_);
+	level_ = static_cast<Level>(level + 1);
+	Tetromino::SetMaxMoveStepTime(maxStepTimeLevels_.at(level_));
+
+	return true;
 }
 
 void UserState::RequestUpdateScoreUI()

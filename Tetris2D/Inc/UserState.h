@@ -41,6 +41,7 @@ public:
 
 private:
 	bool IsDetectWarning();
+	bool LevelUp(int32_t gainScore);
 
 	void RequestUpdateScoreUI();
 	void RequestUpdateLevelUI();
