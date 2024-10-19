@@ -13,6 +13,7 @@
 
 #include "Block.h"
 #include "Board.h"
+#include "GameHistoryTracker.h"
 #include "GamePauseScene2D.h"
 #include "GameOverScene2D.h"
 #include "GamePlayScene2D.h"
@@ -96,6 +97,8 @@ GamePlayScene2D::GamePlayScene2D()
 	uiEntities_.push_back(level);
 
 	tetrominoController_ = tetrominoController;
+	userState_ = userState;
+	gameHistoryTracker_ = entityMgr_->GetByName<GameHistoryTracker>("GameHistoryTracker");
 }
 
 GamePlayScene2D::~GamePlayScene2D()
@@ -108,6 +111,7 @@ void GamePlayScene2D::Tick(float deltaSeconds)
 
 	if (tetrominoController_->GetStatus() == TetrominoController::Status::DONE)
 	{
+		gameHistoryTracker_->AddScore(userState_->GetScore());
 		Switch<GameOverScene2D>("GameOverScene");
 	}
 

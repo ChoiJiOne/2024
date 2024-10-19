@@ -25,6 +25,8 @@ private:
 
 private:
 	std::array<WindowEventID, 3> windowEventIDs_;
-
+	
 	class TetrominoController* tetrominoController_ = nullptr;
+	class UserState* userState_ = nullptr;
+	class GameHistoryTracker* gameHistoryTracker_ = nullptr;
 };
