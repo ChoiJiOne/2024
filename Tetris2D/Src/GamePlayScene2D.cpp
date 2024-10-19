@@ -152,9 +152,9 @@ void GamePlayScene2D::Reset()
 	Board* board = entityMgr_->GetByName<Board>("Board");
 	board->Reset();
 
-	TetrominoController* tetrominoController = entityMgr_->GetByName<TetrominoController>("TetrominoController");
-	tetrominoController->Reset();
-
 	UserState* userState = entityMgr_->GetByName<UserState>("UserState");
 	userState->Reset();
+
+	TetrominoController* tetrominoController = entityMgr_->GetByName<TetrominoController>("TetrominoController");
+	tetrominoController->Reset();
 }
