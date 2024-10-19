@@ -28,11 +28,8 @@
 GamePlayScene2D::GamePlayScene2D()
 {
 	auto gamePauseEvent = [&]() 
-		{
-			bIsSwitched_ = true;
-
-			GamePauseScene2D* scene = IApp::Get()->GetSceneByName<GamePauseScene2D>("GamePauseScene");
-			switchScene_ = scene;
+		{ 
+			SwitchGameScene<GamePauseScene2D>("GamePauseScene");
 		};
 
 	windowEventIDs_ = 
@@ -111,18 +108,12 @@ void GamePlayScene2D::Tick(float deltaSeconds)
 
 	if (tetrominoController_->GetStatus() == TetrominoController::Status::DONE)
 	{
-		bIsSwitched_ = true;
-
-		GameOverScene2D* scene = IApp::Get()->GetSceneByName<GameOverScene2D>("GameOverScene");
-		switchScene_ = scene;
+		SwitchGameScene<GameOverScene2D>("GameOverScene");
 	}
 
 	if (IsPauseGame())
 	{
-		bIsSwitched_ = true;
-
-		GamePauseScene2D* scene = IApp::Get()->GetSceneByName<GamePauseScene2D>("GamePauseScene");
-		switchScene_ = scene;
+		SwitchGameScene<GamePauseScene2D>("GamePauseScene");
 	}
 }
 

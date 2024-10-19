@@ -23,6 +23,15 @@ public:
 private:
 	bool IsPauseGame();
 
+	template <typename TGameScene2D>
+	void SwitchGameScene(const std::string& sceneName)
+	{
+		bIsSwitched_ = true;
+
+		TGameScene2D* scene = IApp::Get()->GetSceneByName<TGameScene2D>(sceneName);
+		switchScene_ = scene;
+	}
+
 private:
 	std::array<WindowEventID, 3> windowEventIDs_;
 
