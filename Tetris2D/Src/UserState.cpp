@@ -102,14 +102,7 @@ void UserState::Reset()
 
 void UserState::GainScore(uint32_t removeLines)
 {
-	for (uint32_t col = 0; col < board_->col_; ++col)
-	{
-		if (board_->removeColumn_[col])
-		{
-			gainScoreMessagePos_.y = board_->CalculateCellPos(0, col).y;
-			break;
-		}
-	}
+	UpdateGainScoreMessagePos();
 
 	int32_t gainScore = scoreScale_ * removeLines;
 	messenger_->Send(GameUtils::PrintF(L"+%d", gainScore), gainScoreMessagePos_, gainScoreMessageColor_, gainScoreMessageTime_);
@@ -135,6 +128,18 @@ bool UserState::IsDetectWarning()
 	}
 
 	return false;
+}
+
+void UserState::UpdateGainScoreMessagePos()
+{
+	for (uint32_t col = 0; col < board_->col_; ++col)
+	{
+		if (board_->removeColumn_[col])
+		{
+			gainScoreMessagePos_.y = board_->CalculateCellPos(0, col).y;
+			break;
+		}
+	}
 }
 
 bool UserState::LevelUp(int32_t gainScore)
