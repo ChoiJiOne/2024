@@ -9,6 +9,21 @@ class Board;
 class UserState : public IEntity
 {
 public:
+	enum class Level
+	{
+		LEVEL_1  = 0x01,
+		LEVEL_2  = 0x02,
+		LEVEL_3  = 0x03,
+		LEVEL_4  = 0x04,
+		LEVEL_5  = 0x05,
+		LEVEL_6  = 0x06,
+		LEVEL_7  = 0x07,
+		LEVEL_8  = 0x08,
+		LEVEL_9  = 0x09,
+		LEVEL_10 = 0x0A,
+	};
+
+public:
 	UserState();
 	virtual ~UserState();
 
@@ -27,7 +42,7 @@ private:
 	Messenger* messenger_ = nullptr;
 	Board* board_ = nullptr;
 
-	int32_t level_ = 0;
+	Level level_ = Level::LEVEL_1;
 
 	int32_t score_ = 0;
 	int32_t scoreScale_ = 0;

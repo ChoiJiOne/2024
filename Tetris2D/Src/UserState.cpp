@@ -5,6 +5,7 @@
 
 #include "Board.h"
 #include "Messenger.h"
+#include "Tetromino.h"
 #include "UserState.h"
 
 UserState::UserState()
@@ -12,7 +13,7 @@ UserState::UserState()
 	messenger_ = EntityManager::GetRef().GetByName<Messenger>("Messenger");
 	board_ = EntityManager::GetRef().GetByName<Board>("Board");
 
-	level_ = 1;
+	level_ = Level::LEVEL_1;
 
 	score_ = 0;
 	scoreScale_ = 10;
@@ -69,7 +70,7 @@ void UserState::Release()
 
 void UserState::Reset()
 {
-	level_ = 1;
+	level_ = Level::LEVEL_1;
 	score_ = 0;
 	bEnableWarning_ = false;
 	warningStepTime_ = 0.0f;
@@ -78,7 +79,9 @@ void UserState::Reset()
 	scoreUI->SetText(GameUtils::PrintF(L"%d", score_));
 
 	PanelUI* levelUI = EntityManager::GetRef().GetByName<PanelUI>("Level");
-	levelUI->SetText(GameUtils::PrintF(L"%d", level_));
+	levelUI->SetText(GameUtils::PrintF(L"%d", static_cast<int32_t>(level_)));
+
+	Tetromino::SetMaxMoveStepTime(1.0f);
 }
 
 void UserState::GainScore(uint32_t removeLines)
