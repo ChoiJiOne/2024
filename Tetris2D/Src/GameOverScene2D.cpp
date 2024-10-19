@@ -47,23 +47,13 @@ GameOverScene2D::GameOverScene2D()
 	ButtonUI* resetBtn = uiMgr_->CreateButtonUI("Tetris2D\\Res\\UI\\Reset_GameOverScene2D.ui", Mouse::LEFT, font32,
 		[&]()
 		{
-			bIsSwitched_ = true;
+			Switch<GamePlayScene2D>("GamePlayScene");
 
 			GamePlayScene2D* scene = IApp::Get()->GetSceneByName<GamePlayScene2D>("GamePlayScene");
 			scene->Reset();
-
-			switchScene_ = scene;
 		}
 	);
-	ButtonUI* quitBtn = uiMgr_->CreateButtonUI("Tetris2D\\Res\\UI\\Quit_GameOverScene2D.ui", Mouse::LEFT, font32,
-		[&]()
-		{
-			bIsSwitched_ = true;
-
-			GameTitleScene2D* scene = IApp::Get()->GetSceneByName<GameTitleScene2D>("GameTitleScene");
-			switchScene_ = scene;
-		}
-	);
+	ButtonUI* quitBtn = uiMgr_->CreateButtonUI("Tetris2D\\Res\\UI\\Quit_GameOverScene2D.ui", Mouse::LEFT, font32, [&]() { Switch<GameTitleScene2D>("GameTitleScene"); });
 
 	renderEntities_.push_back(board);
 	renderEntities_.push_back(next);

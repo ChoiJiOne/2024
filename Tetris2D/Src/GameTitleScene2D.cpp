@@ -27,13 +27,11 @@ GameTitleScene2D::GameTitleScene2D()
 	TextUI* title = uiMgr_->CreateTextUI("Tetris2D\\Res\\UI\\Title.ui", font128);
 	ButtonUI* startBtn = uiMgr_->CreateButtonUI("Tetris2D\\Res\\UI\\Start.ui", Mouse::LEFT, font32, 
 		[&]() 
-		{ 
-			bIsSwitched_ = true;
+		{
+			Switch<GamePlayScene2D>("GamePlayScene");
 
 			GamePlayScene2D* scene = IApp::Get()->GetSceneByName<GamePlayScene2D>("GamePlayScene");
 			scene->Reset();
-
-			switchScene_ = scene;
 		}
 	);
 	ButtonUI* quitBtn = uiMgr_->CreateButtonUI("Tetris2D\\Res\\UI\\Quit_GameTitleScene2D.ui", Mouse::LEFT, font32, 
