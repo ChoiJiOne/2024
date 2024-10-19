@@ -6,7 +6,7 @@
 #include "MainCamera2D.h"
 #include "Tetromino.h"
 
-float Tetromino::maxMoveStepTime_ = 0.1f;
+float Tetromino::maxMoveStepTime_ = 0.0f;
 InputManager* Tetromino::inputMgr_ = nullptr;
 Board* Tetromino::board_ = nullptr;
 MainCamera2D* Tetromino::camera_ = nullptr;
