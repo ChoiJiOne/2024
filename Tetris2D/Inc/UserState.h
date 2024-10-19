@@ -55,6 +55,12 @@ private:
 	Vec3f gainScoreMessageColor_;
 	float gainScoreMessageTime_ = 0.0f;
 
+	int32_t accumulateGainScore_ = 0;
+	int32_t levelUpScore_ = 0;
+	Vec2f levelUpMessagePos_;
+	Vec3f levelUPMessageColor_;
+	float levelUpMessageTime_ = 0.0f;
+
 	bool bEnableWarning_ = false;
 	int32_t warningCol_ = 0;
 	float warningStepTime_ = 0.0f;

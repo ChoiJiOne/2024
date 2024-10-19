@@ -41,6 +41,11 @@ UserState::UserState()
 	warningMessagePos_ = board_->bound_.center + Vec2f(0.0f, 0.55f * static_cast<float>(board_->col_) * board_->cellSize_);
 	warningMessageColor_ = Vec3f(1.0f, 0.0f, 0.0f);
 
+	levelUpScore_ = 100;
+	levelUpMessagePos_ = Vec2f(195.0f, -200.0f);
+	levelUPMessageColor_ = Vec3f(1.0f, 0.5f, 0.5f);
+	levelUpMessageTime_ = 2.0f;
+
 	bIsInitialized_ = true;
 }
 
@@ -87,7 +92,8 @@ void UserState::Reset()
 	score_ = 0;
 	bEnableWarning_ = false;
 	warningStepTime_ = 0.0f;
-
+	accumulateGainScore_ = 0;
+	
 	PanelUI* scoreUI = EntityManager::GetRef().GetByName<PanelUI>("Score");
 	scoreUI->SetText(GameUtils::PrintF(L"%d", score_));
 
@@ -110,11 +116,29 @@ void UserState::GainScore(uint32_t removeLines)
 
 	int32_t gainScore = scoreScale_ * removeLines;
 	messenger_->Send(GameUtils::PrintF(L"+%d", gainScore), gainScoreMessagePos_, gainScoreMessageColor_, gainScoreMessageTime_);
-
+	
 	score_ += gainScore;
 
 	PanelUI* scoreUI = EntityManager::GetRef().GetByName<PanelUI>("Score");
 	scoreUI->SetText(GameUtils::PrintF(L"%d", score_));
+
+	if (level_ < Level::LEVEL_10)
+	{
+		accumulateGainScore_ += gainScore;
+		if (accumulateGainScore_ >= levelUpScore_)
+		{
+			accumulateGainScore_ -= levelUpScore_;
+
+			int32_t level = static_cast<int32_t>(level_);
+			level_ = static_cast<Level>(level + 1);
+			Tetromino::SetMaxMoveStepTime(maxStepTimeLevels_.at(level_));
+
+			messenger_->Send(L"LEVEL UP!", levelUpMessagePos_, levelUPMessageColor_, levelUpMessageTime_);
+
+			PanelUI* levelUI = EntityManager::GetRef().GetByName<PanelUI>("Level");
+			levelUI->SetText(GameUtils::PrintF(L"%d", static_cast<int32_t>(level_)));
+		}
+	}
 }
 
 bool UserState::IsDetectWarning()
