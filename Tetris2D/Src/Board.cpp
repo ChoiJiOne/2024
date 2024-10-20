@@ -18,7 +18,8 @@ Board::Board(const Vec2f& center, float cellSize, uint32_t row, uint32_t col)
 	, removeColumn_(col_)
 	, fillBlocks_(row_)
 	, outlineColor_(Vec4f(1.0f, 1.0f, 1.0f, 1.0f))
-	, inlineColor_(Vec4f(0.3f, 0.3f, 0.3f, 0.3f))
+	, backgroundColor_(Vec4f(0.0f, 0.0f, 0.0f, 0.5f))
+	, inlineColor_(Vec4f(0.5f, 0.5f, 0.5f, 0.5f))
 {
 	bound_ = Rect2D(center, Vec2f(static_cast<float>(row_) * cellSize_, static_cast<float>(col_) * cellSize_));
 
@@ -80,6 +81,7 @@ void Board::Render()
 	RenderManager2D& renderMgr = RenderManager2D::GetRef();
 
 	renderMgr.DrawRectWireframe(bound_.center, bound_.size.x, bound_.size.y, outlineColor_, 0.0f);
+	renderMgr.DrawRect(bound_.center, bound_.size.x, bound_.size.y, backgroundColor_, 0.0f);
 	for (uint32_t index = 0; index < inlines_.size(); index += 2)
 	{
 		renderMgr.DrawLine(inlines_[index + 0], inlines_[index + 1], inlineColor_);

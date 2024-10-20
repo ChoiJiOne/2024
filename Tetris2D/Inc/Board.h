@@ -71,6 +71,7 @@ private:
 	Vec2f startPos_;
 
 	Vec4f outlineColor_;
+	Vec4f backgroundColor_;
 	Vec4f inlineColor_;
 
 	std::vector<Vec2f> inlines_;
