@@ -142,6 +142,9 @@ void GamePlayScene2D::Exit()
 		InputManager::GetRef().SetActiveWindowEventAction(windowEventID, false);
 	}
 
+	MainCamera2D* mainCamera = entityMgr_->GetByName<MainCamera2D>("MainCamera");
+	mainCamera->Reset();
+
 	IGameScene2D::Exit();
 }
 
