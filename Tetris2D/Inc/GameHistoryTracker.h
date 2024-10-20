@@ -29,6 +29,10 @@ public:
 	const int32_t& GetHighScore() const { return highScore_; }
 	const std::list<History>& GetHistories() const { return histories_; }
 	bool IsHighScoreBroken() const { return bIsHighScoreBroken_; }
+
+private:
+	void LoadGameHistoryFile(const std::wstring& path);
+	void SaveGameHistoryFile(const std::wstring& path);
 	
 private:
 	std::list<History> histories_;
@@ -36,4 +40,5 @@ private:
 	int32_t recentScore_ = 0;
 	int32_t highScore_ = -1;
 	bool bIsHighScoreBroken_ = false;
+	bool bSucceedLoadGameHistoryFile_ = false;
 };
