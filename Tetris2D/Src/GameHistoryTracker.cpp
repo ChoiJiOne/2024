@@ -21,6 +21,17 @@ struct GameHistoryChunk
 GameHistoryTracker::GameHistoryTracker()
 {
 	LoadGameHistoryFile(L"Cache\\GameHistory.bin");
+	if (bSucceedLoadGameHistoryFile_)
+	{
+		for (const auto& history : histories_)
+		{
+			if (history.score > highScore_)
+			{
+				highScore_ = history.score;
+			}
+		}
+	}
+
 	bIsInitialized_ = true;
 }
 
