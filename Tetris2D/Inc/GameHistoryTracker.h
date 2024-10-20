@@ -8,6 +8,13 @@
 class GameHistoryTracker : public IEntity
 {
 public:
+	struct Histroy
+	{
+		std::wstring time;
+		int32_t score;
+	};
+
+public:
 	GameHistoryTracker();
 	virtual ~GameHistoryTracker();
 
@@ -21,14 +28,7 @@ public:
 	const int32_t& GetRecentScore() const { return recentScore_; }
 	const int32_t& GetHighScore() const { return highScore_; }
 	bool IsHighScoreBroken() const { return bIsHighScoreBroken_; }
-
-private:
-	struct Histroy
-	{
-		std::wstring time;
-		int32_t score;
-	};
-
+	
 private:
 	std::list<Histroy> histories_;
 	
