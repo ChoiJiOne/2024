@@ -43,7 +43,7 @@ UserState::UserState()
 
 	levelUpScore_ = 100;
 	levelUpMessagePos_ = Vec2f(195.0f, -200.0f);
-	levelUPMessageColor_ = Vec3f(1.0f, 0.5f, 0.5f);
+	levelUPMessageColor_ = Vec3f(1.0f, 1.0f, 1.0f);
 	levelUpMessageTime_ = 2.0f;
 
 	bIsInitialized_ = true;
