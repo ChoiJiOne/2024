@@ -11,4 +11,7 @@ public:
 	DISALLOW_COPY_AND_ASSIGN(GameHistoryScene2D);
 
 	virtual void Enter() override;
+
+private:
+	class HistoryViewer* historyViewer_ = nullptr;
 };
