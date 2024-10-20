@@ -102,7 +102,7 @@ private:
 
 	bool bIsHoldKey_ = false;
 	float holdKeyStepTime_ = 0.0f;
-	float holdWaitTime_ = 0.5f;
+	float holdWaitTime_ = 0.1f;
 	float maxHoldKeyStepTime_ = 0.05f;
 
 	Vec4f shadowColor_;
