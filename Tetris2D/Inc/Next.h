@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Collision2D.h"
 #include "IEntity2D.h"
 #include "GameMath.h"
 
@@ -16,6 +17,8 @@ public:
 	virtual void Release() override;
 
 private:
+	Vec4f backgroundColor_;
 	Vec4f lineColor_;
+	Rect2D background_;
 	std::vector<Vec2f> lines_;
 };
