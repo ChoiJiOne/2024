@@ -2,6 +2,7 @@
 
 #include <array>
 
+#include "Collision2D.h"
 #include "IEntity2D.h"
 
 class GameHistoryTracker;
@@ -24,6 +25,10 @@ public:
 private:
 	TTFont* font_ = nullptr;
 	GameHistoryTracker* gameHistoryTracker_ = nullptr;
+
+	Rect2D background_;
+	Vec4f backgroundColor_;
+	float backgroundSide_ = 0.0f;
 
 	Vec2f startHistoryTextPos_;
 	Vec4f historyTextColor_;

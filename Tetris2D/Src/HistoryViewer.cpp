@@ -13,6 +13,10 @@ HistoryViewer::HistoryViewer()
 	font_ = ResourceManager::GetRef().GetByName<TTFont>("Font24");
 	gameHistoryTracker_ = EntityManager::GetRef().GetByName<GameHistoryTracker>("GameHistoryTracker");
 
+	background_ = Rect2D(Vec2f(0.0f, 120.0f), Vec2f(340.0f, 400.0f));
+	backgroundColor_ = Vec4f(0.0f, 0.0f, 0.0f, 0.7f);
+	backgroundSide_ = 10.0f;
+
 	startHistoryTextPos_ = Vec2f(-150.0f, 250.0f);
 	historyTextColor_ = Vec4f(1.0f, 1.0f, 1.0f, 1.0f);
 	historyTextStride_ = 30.0f;
@@ -34,12 +38,14 @@ void HistoryViewer::Tick(float deltaSeconds)
 
 void HistoryViewer::Render()
 {
-	const std::list<GameHistoryTracker::History>& histories = gameHistoryTracker_->GetHistories();
+	RenderManager2D& renderMgr = RenderManager2D::GetRef();
+
+	renderMgr.DrawRoundRect(background_.center, background_.size.x, background_.size.y, backgroundSide_, backgroundColor_, 0.0f);
 
 	Vec2f historyTextPos = startHistoryTextPos_;
 	for (int32_t index = 0; index < currentHistoryTextSize_; ++index)
 	{
-		RenderManager2D::GetRef().DrawString(font_, historyTexts_[index], historyTextPos, historyTextColor_);
+		renderMgr.DrawString(font_, historyTexts_[index], historyTextPos, historyTextColor_);
 		historyTextPos.y -= historyTextStride_;
 	}
 }
