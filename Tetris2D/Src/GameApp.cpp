@@ -54,7 +54,7 @@ void GameApp::Startup()
 	gameOverScene_ = std::make_unique<GameOverScene2D>();
 	AddSceneByName("GameOverScene", gameOverScene_.get());
 
-	gameHistoryScene_ = std::make_unique<class GameHistoryScene2D>();
+	gameHistoryScene_ = std::make_unique<GameHistoryScene2D>();
 	AddSceneByName("GameHistoryScene", gameHistoryScene_.get());
 
 	SetCurrentScene(gameTitleScene_.get());
