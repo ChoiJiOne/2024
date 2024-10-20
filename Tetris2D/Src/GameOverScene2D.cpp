@@ -15,6 +15,7 @@
 #include "Background.h"
 #include "Block.h"
 #include "Board.h"
+#include "EmptyPanel.h"
 #include "GameOverScene2D.h"
 #include "GamePlayScene2D.h"
 #include "GameTitleScene2D.h"
@@ -32,6 +33,7 @@ GameOverScene2D::GameOverScene2D()
 	mainCamera_ = entityMgr_->GetByName<MainCamera2D>("MainCamera");
 
 	Background* background = entityMgr_->GetByName<Background>("Background");
+	EmptyPanel* emptyPanel = entityMgr_->GetByName<EmptyPanel>("EmptyPanel");
 	ParticleScheduler* particleScheduler = entityMgr_->GetByName<ParticleScheduler>("ParticleScheduler");
 	Next* next = entityMgr_->GetByName<Next>("Next");
 	Board* board = entityMgr_->GetByName<Board>("Board");
@@ -62,6 +64,7 @@ GameOverScene2D::GameOverScene2D()
 	updateEntities_.push_back(highScoreViewer);
 
 	renderEntities_.push_back(background);
+	renderEntities_.push_back(emptyPanel);
 	renderEntities_.push_back(board);
 	renderEntities_.push_back(next);
 	renderEntities_.push_back(tetrominoController);
