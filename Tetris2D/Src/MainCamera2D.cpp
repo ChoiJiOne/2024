@@ -12,7 +12,7 @@ MainCamera2D::MainCamera2D()
 	originCollision_ = collision_;
 
 	maxShakeTime_ = 0.05f;
-	shakeMoveLength_ = 100.0f;
+	shakeMoveLength_ = 80.0f;
 
 	bIsInitialized_ = true;
 }
