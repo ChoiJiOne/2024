@@ -32,7 +32,7 @@ void GameHistoryTracker::Release()
 
 void GameHistoryTracker::AddScore(int32_t score)
 {
-	Histroy newHistory;
+	History newHistory;
 	newHistory.score = score;
 	newHistory.time = GameTimer::GetCurrentSystemTimeAsWString();
 
