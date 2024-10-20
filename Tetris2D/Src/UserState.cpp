@@ -31,8 +31,8 @@ UserState::UserState()
 	score_ = 0;
 	scoreScale_ = 10;
 	gainScoreMessagePos_ = board_->bound_.center - Vec2f(0.65f * static_cast<float>(board_->row_) * board_->cellSize_, 0.0f);
-	gainScoreMessageColor_ = Vec3f(1.0f, 0.5f, 0.5f);
-	gainScoreMessageTime_ = 1.0f;
+	gainScoreMessageColor_ = Vec3f(1.0f, 1.0f, 1.0f);
+	gainScoreMessageTime_ = 2.0f;
 
 	bEnableWarning_ = false;
 	warningCol_ = 3;
