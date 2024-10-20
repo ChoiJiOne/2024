@@ -13,6 +13,7 @@
 #include "TTFont.h"
 #include "UIManager.h"
 
+#include "Background.h"
 #include "GameHistoryScene2D.h"
 #include "GamePlayScene2D.h"
 #include "GameTitleScene2D.h"
@@ -21,6 +22,8 @@
 GameTitleScene2D::GameTitleScene2D()
 {
 	mainCamera_ = entityMgr_->GetByName<MainCamera2D>("MainCamera");
+
+	Background* background = entityMgr_->GetByName<Background>("Background");
 
 	TTFont* font32 = resourceMgr_->GetByName<TTFont>("Font32");
 	TTFont* font128 = resourceMgr_->GetByName<TTFont>("Font128");
@@ -47,6 +50,9 @@ GameTitleScene2D::GameTitleScene2D()
 	);
 
 	updateEntities_.push_back(mainCamera_);
+
+	renderEntities_.push_back(background);
+	
 	uiEntities_.push_back(title);
 	uiEntities_.push_back(startBtn);
 	uiEntities_.push_back(historyBtn);

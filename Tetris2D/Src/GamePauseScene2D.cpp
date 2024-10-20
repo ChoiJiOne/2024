@@ -12,6 +12,7 @@
 #include "TTFont.h"
 #include "UIManager.h"
 
+#include "Background.h"
 #include "Block.h"
 #include "Board.h"
 #include "GamePauseScene2D.h"
@@ -29,6 +30,7 @@ GamePauseScene2D::GamePauseScene2D()
 {
 	mainCamera_ = entityMgr_->GetByName<MainCamera2D>("MainCamera");
 
+	Background* background = entityMgr_->GetByName<Background>("Background");
 	ParticleScheduler* particleScheduler = entityMgr_->GetByName<ParticleScheduler>("ParticleScheduler");
 	Next* next = entityMgr_->GetByName<Next>("Next");
 	Board* board = entityMgr_->GetByName<Board>("Board");
@@ -51,6 +53,7 @@ GamePauseScene2D::GamePauseScene2D()
 	);
 	ButtonUI* quitBtn = uiMgr_->CreateButtonUI("Tetris2D\\Res\\UI\\Quit_GamePauseScene2D.ui", Mouse::LEFT, font32, [&]() { Switch<GameTitleScene2D>("GameTitleScene"); });
 
+	renderEntities_.push_back(background);
 	renderEntities_.push_back(board);
 	renderEntities_.push_back(next);
 	renderEntities_.push_back(tetrominoController);
