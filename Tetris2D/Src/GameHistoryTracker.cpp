@@ -46,14 +46,10 @@ void GameHistoryTracker::AddScore(int32_t score)
 	else
 	{
 		bIsHighScoreBroken_ = false;
-		for (const auto& history : histories_)
+		if (score > highScore_)
 		{
-			if (score > history.score)
-			{
-				highScore_ = score;
-				bIsHighScoreBroken_ = true;
-				break;
-			}
+			highScore_ = score;
+			bIsHighScoreBroken_ = true;
 		}
 	}
 	
