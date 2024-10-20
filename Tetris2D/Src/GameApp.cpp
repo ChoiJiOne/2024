@@ -8,8 +8,10 @@
 #include "RenderStateManager.h"
 #include "TextUI.h"
 #include "TTFont.h"
+#include "Texture2D.h"
 #include "UIManager.h"
 
+#include "Background.h"
 #include "GameApp.h"
 #include "GameHistoryScene2D.h"
 #include "GameHistoryTracker.h"
@@ -33,6 +35,9 @@ void GameApp::Startup()
 
 	MainCamera2D* mainCamera = EntityManager::GetRef().Create<MainCamera2D>();
 	EntityManager::GetRef().Register("MainCamera", mainCamera);
+
+	Background* background = EntityManager::GetRef().Create<Background>();
+	EntityManager::GetRef().Register("Background", background);
 
 	GameHistoryTracker* gameHistoryTracker = EntityManager::GetRef().Create<GameHistoryTracker>();
 	EntityManager::GetRef().Register("GameHistoryTracker", gameHistoryTracker);
@@ -74,4 +79,7 @@ void GameApp::LoadResource()
 		TTFont* font = ResourceManager::GetRef().Create<TTFont>(fontPath, 0x00, 0x128, static_cast<float>(fontSize));
 		ResourceManager::GetRef().Register(GameUtils::PrintF("Font%d", fontSize), font);
 	}
+
+	Texture2D* background = ResourceManager::GetRef().Create<Texture2D>(resourcePath + "Texture\\Background.png", Texture2D::Filter::NEAREST);
+	ResourceManager::GetRef().Register("Background", background);
 }
