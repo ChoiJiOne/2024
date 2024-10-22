@@ -65,7 +65,15 @@ void GameHistoryTracker::AddScore(int32_t score)
 {
 	History newHistory;
 	newHistory.score = score;
-	newHistory.time = GameTimer::GetCurrentSystemTimeAsWString();
+
+	int32_t year = 0;
+	int32_t month = 0;
+	int32_t day = 0;
+	int32_t hour = 0;
+	int32_t minute = 0;
+	int32_t second = 0;
+	GameTimer::GetCurrentSystemTime(year, month, day, hour, minute, second);
+	newHistory.time = GameUtils::PrintF(L"%d.%02d.%02d %02d:%02d:%02d", year, month, day, hour, minute, second);
 
 	recentScore_ = score;
 
