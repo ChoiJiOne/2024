@@ -12,13 +12,13 @@ HighScoreViewer::HighScoreViewer()
 {
 	font_ = ResourceManager::GetRef().GetByName<TTFont>("Font64");
 	gameHistoryTracker_ = EntityManager::GetRef().GetByName<GameHistoryTracker>("GameHistoryTracker");
-	scoreTextPos_ = Vec2f(-150.0f, 120.0f);
-	scoreTextColor_ = Vec4f(0.0f, 0.0f, 0.0f, 1.0f);
-	highScoreTextPos_ = Vec2f(-150.0f, 40.0f);
+	scoreTextPos_ = Vec2f(-160.0f, 120.0f);
+	scoreTextColor_ = Vec4f(1.0f, 1.0f, 1.0f, 1.0f);
+	highScoreTextPos_ = Vec2f(-160.0f, 40.0f);
 
 	background_ = Rect2D(Vec2f(0.0f, 50.0f), Vec2f(440.0f, 200.0f));
-	backgroundOutlineColor_ = Vec4f(1.0f, 1.0f, 1.0f, 1.0f);
-	backgroundColor_ = Vec4f(0.5f, 0.5f, 0.5f, 0.5f);
+	backgroundOutlineColor_ = Vec4f(0.5f, 0.5f, 0.5f, 0.5f);
+	backgroundColor_ = Vec4f(0.0f, 0.0f, 0.0f, 0.8f);
 	backgroundSide_ = 10.0f;
 
 	bIsInitialized_ = true;
@@ -67,6 +67,6 @@ void HighScoreViewer::UpdateRecentState()
 	}
 	else
 	{
-		highScoreTextColor_ = Vec4f(0.0f, 0.0f, 0.0f, 1.0f);
+		highScoreTextColor_ = Vec4f(1.0f, 1.0f, 1.0f, 1.0f);
 	}
 }
