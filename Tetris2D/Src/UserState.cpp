@@ -136,6 +136,7 @@ void UserState::UpdateGainScoreMessagePos()
 	{
 		if (board_->removeColumn_[col])
 		{
+			gainScoreMessagePos_.x = board_->bound_.center.x;
 			gainScoreMessagePos_.y = board_->CalculateCellPos(0, col).y;
 			break;
 		}
