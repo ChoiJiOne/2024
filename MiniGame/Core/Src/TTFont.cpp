@@ -65,8 +65,7 @@ bool TTFont::IsValidCodePoint(int32_t codePoint) const
 void TTFont::MeasureText(const std::wstring& text, float& outWidth, float& outHeight) const
 {
 	float width = 0;
-	float minY = +1.0f;
-	float maxY = -1.0f;
+	float height = -FLT_MAX;
 
 	for (uint32_t index = 0; index < text.size(); ++index)
 	{
@@ -81,15 +80,14 @@ void TTFont::MeasureText(const std::wstring& text, float& outWidth, float& outHe
 			width += glyph.xadvance;
 		}
 
-		float y0 = glyph.yoff;
-		float y1 = static_cast<float>(glyph.pos1.y - glyph.pos0.y) + 2.0f * glyph.yoff;
+		float y0 = static_cast<float>(glyph.pos0.y);
+		float y1 = static_cast<float>(glyph.pos1.y);
 
-		minY = GameMath::Min<float>(y0, minY);
-		maxY = GameMath::Max<float>(y1, maxY);
+		height = GameMath::Max<float>(height, GameMath::Abs(y1 - y0));
 	}
 
 	outWidth = width;
-	outHeight = static_cast<float>(GameMath::Abs(maxY - minY));
+	outHeight = height;
 }
 
 std::shared_ptr<uint8_t[]> TTFont::CreateGlyphAtlasBitmap(const std::vector<uint8_t>& buffer)
