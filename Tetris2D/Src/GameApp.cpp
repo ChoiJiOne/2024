@@ -72,7 +72,7 @@ void GameApp::Shutdown()
 void GameApp::LoadResource()
 {
 	std::string resourcePath = "Tetris2D\\Res\\";
-	std::string fontPath = resourcePath + "Font\\SeoulNamsanEB.ttf";
+	std::string fontPath = resourcePath + "Font\\PixelFont.ttf";
 	std::array<int32_t, 4> fontSizes = { 24, 32, 64, 128, };
 	for (const auto& fontSize : fontSizes)
 	{
