@@ -30,11 +30,13 @@ private:
 	Vec4f backgroundColor_;
 	float backgroundSide_ = 0.0f;
 
-	Vec2f startHistoryTextPos_;
+	Vec2f startTimeTextPos_;
+	Vec2f startScoreTextPos_;
 	Vec4f historyTextColor_;
 	float historyTextStride_ = 0.0f;
 
 	static const uint32_t MAX_VIEW_HISTORY = 10;
 	uint32_t currentHistoryTextSize_ = 0;
-	std::array<std::wstring, MAX_VIEW_HISTORY> historyTexts_;
+	std::array<std::wstring, MAX_VIEW_HISTORY> timeHistoryTexts_;
+	std::array<std::wstring, MAX_VIEW_HISTORY> scoreHistoryTexts_;
 };

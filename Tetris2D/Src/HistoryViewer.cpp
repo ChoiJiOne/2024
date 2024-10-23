@@ -13,11 +13,12 @@ HistoryViewer::HistoryViewer()
 	font_ = ResourceManager::GetRef().GetByName<TTFont>("Font24");
 	gameHistoryTracker_ = EntityManager::GetRef().GetByName<GameHistoryTracker>("GameHistoryTracker");
 
-	background_ = Rect2D(Vec2f(0.0f, 120.0f), Vec2f(340.0f, 400.0f));
+	background_ = Rect2D(Vec2f(0.0f, 120.0f), Vec2f(400.0f, 400.0f));
 	backgroundColor_ = Vec4f(0.0f, 0.0f, 0.0f, 0.7f);
 	backgroundSide_ = 10.0f;
 
-	startHistoryTextPos_ = Vec2f(-150.0f, 250.0f);
+	startTimeTextPos_ = Vec2f(-190.0f, 250.0f);
+	startScoreTextPos_ = Vec2f(50.0f, 250.0f);
 	historyTextColor_ = Vec4f(1.0f, 1.0f, 1.0f, 1.0f);
 	historyTextStride_ = 30.0f;
 
@@ -42,11 +43,14 @@ void HistoryViewer::Render()
 
 	renderMgr.DrawRoundRect(background_.center, background_.size.x, background_.size.y, backgroundSide_, backgroundColor_, 0.0f);
 
-	Vec2f historyTextPos = startHistoryTextPos_;
+	Vec2f timeTextPos = startTimeTextPos_;
+	Vec2f scoreTextPos = startScoreTextPos_;
 	for (int32_t index = 0; index < currentHistoryTextSize_; ++index)
 	{
-		renderMgr.DrawString(font_, historyTexts_[index], historyTextPos, historyTextColor_);
-		historyTextPos.y -= historyTextStride_;
+		renderMgr.DrawString(font_, timeHistoryTexts_[index], timeTextPos, historyTextColor_);
+		renderMgr.DrawString(font_, scoreHistoryTexts_[index], scoreTextPos, historyTextColor_);
+		timeTextPos.y -= historyTextStride_;
+		scoreTextPos.y -= historyTextStride_;
 	}
 }
 
@@ -73,7 +77,10 @@ void HistoryViewer::UpdateRecentHistory()
 	{
 		const GameHistoryTracker::History& recent = *rit;
 
-		historyTexts_[currentHistoryTextSize_++] = GameUtils::PrintF(L"%s | %4d", recent.time.c_str(), recent.score);
+		timeHistoryTexts_[currentHistoryTextSize_] = GameUtils::PrintF(L"TIME: %s", recent.time.c_str());
+		scoreHistoryTexts_[currentHistoryTextSize_] = GameUtils::PrintF(L"SCORE: %d", recent.score);
+		currentHistoryTextSize_++;
+
 		if (currentHistoryTextSize_ >= MAX_VIEW_HISTORY)
 		{
 			break;
