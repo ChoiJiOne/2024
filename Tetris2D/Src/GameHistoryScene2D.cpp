@@ -30,6 +30,7 @@ GameHistoryScene2D::GameHistoryScene2D()
 
 	ButtonUI* backBtn = uiMgr_->CreateButtonUI("Tetris2D\\Res\\UI\\Back.ui", Mouse::LEFT, font32, [&]() { Switch<GameTitleScene2D>("GameTitleScene"); });
 	TextUI* historyText = uiMgr_->CreateTextUI("Tetris2D\\Res\\UI\\HistoryText.ui", font32);
+	TextUI* bestText = uiMgr_->CreateTextUI("Tetris2D\\Res\\UI\\BestText.ui", font32);
 
 	HistoryViewer* historyViewer = entityMgr_->Create<HistoryViewer>();
 	entityMgr_->Register("HistoryViewer", historyViewer);
@@ -41,6 +42,7 @@ GameHistoryScene2D::GameHistoryScene2D()
 	renderEntities_.push_back(historyViewer);
 
 	uiEntities_.push_back(historyText);
+	uiEntities_.push_back(bestText);
 	uiEntities_.push_back(backBtn);
 
 	historyViewer_ = historyViewer;
