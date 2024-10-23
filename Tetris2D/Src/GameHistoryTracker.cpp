@@ -20,14 +20,17 @@ struct GameHistoryChunk
 
 GameHistoryTracker::GameHistoryTracker()
 {
+	high_.score = -1;
+
 	LoadGameHistoryFile(L"Cache\\GameHistory.bin");
 	if (bSucceedLoadGameHistoryFile_)
 	{
 		for (const auto& history : histories_)
 		{
-			if (history.score > highScore_)
+			if (history.score > high_.score)
 			{
-				highScore_ = history.score;
+				high_.score = history.score;
+				high_.time = history.time;
 			}
 		}
 	}
@@ -75,19 +78,22 @@ void GameHistoryTracker::AddScore(int32_t score)
 	GameTimer::GetCurrentSystemTime(year, month, day, hour, minute, second);
 	newHistory.time = GameUtils::PrintF(L"%d.%02d.%02d %02d:%02d:%02d", year, month, day, hour, minute, second);
 
-	recentScore_ = score;
+	recent_.score = score;
+	recent_.time = newHistory.time;
 
 	if (histories_.empty())
 	{
-		highScore_ = score;
+		high_.score = score;
+		high_.time = newHistory.time;
 		bIsHighScoreBroken_ = true;
 	}
 	else
 	{
 		bIsHighScoreBroken_ = false;
-		if (score > highScore_)
+		if (score > high_.score)
 		{
-			highScore_ = score;
+			high_.score = score;
+			high_.time = newHistory.time;
 			bIsHighScoreBroken_ = true;
 		}
 	}
