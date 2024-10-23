@@ -35,6 +35,12 @@ private:
 	Vec4f historyTextColor_;
 	float historyTextStride_ = 0.0f;
 
+	Vec2f bestTimeTextPos_;
+	Vec2f bestScoreTextPos_;
+	Vec4f bestTextColor_;
+	std::wstring bestTimeText_;
+	std::wstring bestScoreText_;
+
 	static const uint32_t MAX_VIEW_HISTORY = 10;
 	uint32_t currentHistoryTextSize_ = 0;
 	std::array<std::wstring, MAX_VIEW_HISTORY> timeHistoryTexts_;

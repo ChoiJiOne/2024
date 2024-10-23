@@ -13,7 +13,7 @@ HistoryViewer::HistoryViewer()
 	font_ = ResourceManager::GetRef().GetByName<TTFont>("Font24");
 	gameHistoryTracker_ = EntityManager::GetRef().GetByName<GameHistoryTracker>("GameHistoryTracker");
 
-	background_ = Rect2D(Vec2f(0.0f, 120.0f), Vec2f(400.0f, 400.0f));
+	background_ = Rect2D(Vec2f(0.0f, 80.0f), Vec2f(400.0f, 480.0f));
 	backgroundColor_ = Vec4f(0.0f, 0.0f, 0.0f, 0.7f);
 	backgroundSide_ = 10.0f;
 
@@ -21,6 +21,10 @@ HistoryViewer::HistoryViewer()
 	startScoreTextPos_ = Vec2f(50.0f, 250.0f);
 	historyTextColor_ = Vec4f(1.0f, 1.0f, 1.0f, 1.0f);
 	historyTextStride_ = 30.0f;
+
+	bestTimeTextPos_ = Vec2f(-190.0f, -120.0f);
+	bestScoreTextPos_ = Vec2f(50.0f, -120.0f);
+	bestTextColor_ = Vec4f(1.0f, 0.3f, 0.3f, 1.0f);
 
 	bIsInitialized_ = true;
 }
@@ -52,6 +56,9 @@ void HistoryViewer::Render()
 		timeTextPos.y -= historyTextStride_;
 		scoreTextPos.y -= historyTextStride_;
 	}
+
+	renderMgr.DrawString(font_, bestTimeText_, bestTimeTextPos_, bestTextColor_);
+	renderMgr.DrawString(font_, bestScoreText_, bestScoreTextPos_, bestTextColor_);
 }
 
 void HistoryViewer::Release()
@@ -86,4 +93,8 @@ void HistoryViewer::UpdateRecentHistory()
 			break;
 		}
 	}
+
+	const GameHistoryTracker::History& high = gameHistoryTracker_->GetHigh();
+	bestTimeText_ = GameUtils::PrintF(L"TIME: %s", high.time.c_str());
+	bestScoreText_ = GameUtils::PrintF(L"SCORE: %d", high.score);
 }
