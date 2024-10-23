@@ -55,8 +55,8 @@ void HighScoreViewer::Release()
 
 void HighScoreViewer::UpdateRecentState()
 {
-	int32_t score = gameHistoryTracker_->GetRecentScore();
-	int32_t highScore = gameHistoryTracker_->GetHighScore();
+	int32_t score = gameHistoryTracker_->GetRecent().score;
+	int32_t highScore = gameHistoryTracker_->GetHigh().score;
 
 	scoreText_ = GameUtils::PrintF(L"SCORE: %d", score);
 	highScoreText_ = GameUtils::PrintF(L"HIGH: %d", highScore);
