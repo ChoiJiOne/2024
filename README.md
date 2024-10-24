@@ -86,6 +86,10 @@ This project supports generating an exe file that allows the project to be insta
   Package_MinSizeRel.bat
   ```
 
+## Download
+
+If you want to download a 2D Tetris game that is ready to play right away, you can download it [here](https://choijione.itch.io/tetris2d).
+
 ## License
 
 ```
