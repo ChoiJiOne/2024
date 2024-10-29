@@ -1474,18 +1474,6 @@ void RenderManager2D::DrawString(TTFont* font, const std::wstring& text, const V
 	commandQueue_.push(command);
 }
 
-void RenderManager2D::BatchRenderEntities(const Camera2D* camera, IEntity2D** entites, uint32_t count)
-{
-	Begin(camera);
-	{
-		for (uint32_t index = 0; index < count; ++index)
-		{
-			entites[index]->Render();
-		}
-	}
-	End();
-}
-
 void RenderManager2D::Flush()
 {
 	if (commandQueue_.empty()) /** Command Queue가 비어있으면 동작X */
