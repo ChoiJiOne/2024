@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Macro.h"
+
 /** UI 매니저는 싱글턴입니다. */
 class UIManager
 {
