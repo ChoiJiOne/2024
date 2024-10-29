@@ -23,7 +23,6 @@ public:
 	bool IsSceneSwitched() { return bIsSwitched_; }
 	IGameScene* GetSwitchScene() { return switchScene_; }
 
-
 protected:
 	template <typename TGameScene>
 	TGameScene* Switch(const std::string& name)
