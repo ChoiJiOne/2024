@@ -169,8 +169,6 @@ void RenderStateManager::PreStartup()
 		{ SDL_GL_DEPTH_SIZE,            GL_DEPTH_SIZE                          },
 		{ SDL_GL_STENCIL_SIZE,          GL_STENCIL_SIZE                        },
 		{ SDL_GL_DOUBLEBUFFER,          GL_DOUBLE_BUFFER                       },
-		{ SDL_GL_MULTISAMPLEBUFFERS,    GL_MULTISAMPLE_BUFFERS                 },
-		{ SDL_GL_MULTISAMPLESAMPLES,    GL_MULTISAMPLE_SAMPLES                 },
 	};
 
 	for (const auto& attribute : attributes)
