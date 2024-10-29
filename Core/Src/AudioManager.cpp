@@ -16,16 +16,6 @@ static int32_t size_ = 0;
 static std::array<ma_sound, MAX_SOUND_RESOURCE_SIZE> sounds_;
 static std::array<bool, MAX_SOUND_RESOURCE_SIZE> usage_;
 
-AudioManager& AudioManager::GetRef()
-{
-	return instance_;
-}
-
-AudioManager* AudioManager::GetPtr()
-{
-	return &instance_;
-}
-
 void* AudioMalloc(size_t sz, void* pUserData)
 {
 	(void)(pUserData); /** 무시. 사용하지 않음 */
@@ -42,6 +32,16 @@ void AudioFree(void* p, void* pUserData)
 {
 	(void)(pUserData); /** 무시. 사용하지 않음 */
 	return mi_free(p);
+}
+
+AudioManager& AudioManager::GetRef()
+{
+	return instance_;
+}
+
+AudioManager* AudioManager::GetPtr()
+{
+	return &instance_;
 }
 
 void AudioManager::Startup()
