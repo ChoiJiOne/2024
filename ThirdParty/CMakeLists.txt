@@ -1,9 +1,8 @@
 cmake_minimum_required(VERSION 3.27)
 
-add_subdirectory(SDL)
+add_subdirectory(glfw)
 
 set_target_properties(
-    SDL_uclibc
-    SDL3-shared
+    glfw
     PROPERTIES FOLDER "ThirdParty"
 )
