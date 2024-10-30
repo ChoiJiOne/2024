@@ -26,6 +26,7 @@ target_link_libraries(
     ${PROJECT_NAME} PUBLIC 
     glad
     glfw
+    imgui
 )
 
 target_compile_definitions(
