@@ -1,22 +1,25 @@
-#include <iostream>
-
 #include <SDL3/SDL.h>
-
-#include <ft2build.h>
-#include FT_FREETYPE_H
 
 int main(int argc, char* argv[])
 {
     SDL_Init(SDL_INIT_VIDEO);
 
-	FT_Library ft;
-	if (FT_Init_FreeType(&ft))
-	{
-		std::cout << "ERROR::FREETYPE: Could not init FreeType Library" << std::endl;
-		return -1;
-	}
+    SDL_Window* window = SDL_CreateWindow("HyperCoinDash2D", 1000, 800, 0);
+    
+    bool bIsDone = false;
+    while (!bIsDone)
+    {
+        SDL_Event event;
+        while (SDL_PollEvent(&event))
+        {
+            if (event.type == SDL_EVENT_QUIT)
+            {
+                bIsDone = true;
+            }
+        }
+    }
 
-
+    SDL_DestroyWindow(window);
     SDL_Quit();
     return 0;
 }
