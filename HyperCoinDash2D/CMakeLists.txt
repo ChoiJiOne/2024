@@ -24,7 +24,7 @@ add_executable(${PROJECT_NAME} ${PROJECT_INCLUDE_FILE} ${PROJECT_SOURCE_FILE} ${
 target_include_directories(${PROJECT_NAME} PUBLIC ${PROJECT_INCLUDE_PATH})
 target_link_libraries(
     ${PROJECT_NAME} PUBLIC 
-    SDL3-shared
+    glfw
 )
 
 target_compile_definitions(
