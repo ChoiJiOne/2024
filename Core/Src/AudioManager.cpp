@@ -11,10 +11,15 @@ ma_engine* audioEnginePtr_ = nullptr;
 
 AudioManager AudioManager::instance_;
 
-static const uint32_t MAX_SOUND_RESOURCE_SIZE = 30;
-static int32_t size_ = 0;
-static std::array<ma_sound, MAX_SOUND_RESOURCE_SIZE> sounds_;
-static std::array<bool, MAX_SOUND_RESOURCE_SIZE> usage_;
+struct AudioResource
+{
+	ma_sound sound;
+	bool bUsage;
+};
+
+static const uint32_t MAX_AUDIO_POOL_SIZE = 30;
+static int32_t audioPoolSize_ = 0;
+static std::array<AudioResource, MAX_AUDIO_POOL_SIZE> audioPool_;
 
 void* AudioMalloc(size_t sz, void* pUserData)
 {
@@ -46,8 +51,6 @@ AudioManager* AudioManager::GetPtr()
 
 void AudioManager::Startup()
 {
-	size_ = 0;
-
 	audioEngine_ = std::make_unique<ma_engine>();
 	audioEnginePtr_ = audioEngine_.get();
 
@@ -64,36 +67,38 @@ void AudioManager::Startup()
 
 	ma_result result = ma_engine_init(&config, audioEnginePtr_);
 	ASSERT(result == MA_SUCCESS, "Failed to initialize miniaudio engine.");
+
+	audioPoolSize_ = 0;
 }
 
 void AudioManager::Shutdown()
 {
-	for (uint32_t index = 0; index < size_; ++index)
+	for (uint32_t index = 0; index < audioPoolSize_; ++index)
 	{
-		if (usage_[index])
+		if (audioPool_[index].bUsage)
 		{
-			ma_sound_uninit(&sounds_[index]);
-			usage_[index] = false;
+			ma_sound_uninit(&audioPool_[index].sound);
+			audioPool_[index].bUsage = false;
 		}
 	}
 
+	audioPoolSize_ = 0;
+
 	ma_engine_uninit(audioEngine_.get());
 	audioEngine_.reset();
-
-	size_ = 0;
 }
 
 void* AudioManager::CreateSound(const std::string& path)
 {
-	if (!(0 <= size_ && size_ < MAX_SOUND_RESOURCE_SIZE))
+	if (!(0 <= audioPoolSize_ && audioPoolSize_ < MAX_AUDIO_POOL_SIZE))
 	{
 		return nullptr;
 	}
 
 	int32_t soundID = -1;
-	for (uint32_t index = 0; index < size_; ++index)
+	for (uint32_t index = 0; index < audioPoolSize_; ++index)
 	{
-		if (!usage_[index])
+		if (!audioPool_[index].bUsage)
 		{
 			soundID = static_cast<int32_t>(index);
 			break;
@@ -102,17 +107,17 @@ void* AudioManager::CreateSound(const std::string& path)
 
 	if (soundID == -1)
 	{
-		soundID = size_++;
+		soundID = audioPoolSize_++;
 	}
 
-	usage_[soundID] = true;
+	audioPool_[soundID].bUsage = true;
 
-	ma_sound* sound = &sounds_[soundID];
+	ma_sound* sound = &audioPool_[soundID].sound;
 	ma_result result = ma_sound_init_from_file(audioEnginePtr_, path.c_str(), 0, nullptr, nullptr, sound);
 	
 	if (result != MA_SUCCESS)
 	{
-		usage_[soundID] = false;
+		audioPool_[soundID].bUsage = false;
 		sound = nullptr;
 	}
 	
@@ -124,18 +129,18 @@ void AudioManager::DestroySound(void* sound)
 	ASSERT(sound != nullptr, "Invalid sound resource pointer.");
 
 	int32_t soundID = -1;
-	for (uint32_t index = 0; index < size_; ++index)
+	for (uint32_t index = 0; index < audioPoolSize_; ++index)
 	{
-		if (sound == &sounds_[index])
+		if (sound == &audioPool_[index].sound)
 		{
 			soundID = static_cast<int32_t>(index);
 			break;
 		}
 	}
 
-	if ((0 <= soundID && soundID < MAX_SOUND_RESOURCE_SIZE) && usage_[soundID])
+	if ((0 <= soundID && soundID < MAX_AUDIO_POOL_SIZE) && audioPool_[soundID].bUsage)
 	{
-		ma_sound_uninit(&sounds_[soundID]);
-		usage_[soundID] = false;
+		ma_sound_uninit(&audioPool_[soundID].sound);
+		audioPool_[soundID].bUsage = false;
 	}
 }
