@@ -23,7 +23,10 @@ add_executable(${PROJECT_NAME} ${PROJECT_INCLUDE_FILE} ${PROJECT_SOURCE_FILE} ${
 # add_executable(${PROJECT_NAME} WIN32 ${PROJECT_INCLUDE_FILE} ${PROJECT_SOURCE_FILE} ${PROJECT_RESOURCE_FILE})
 
 target_include_directories(${PROJECT_NAME} PUBLIC ${PROJECT_INCLUDE_PATH})
-# target_link_libraries(${PROJECT_NAME} PUBLIC <blank>)
+target_link_libraries(
+    ${PROJECT_NAME} PUBLIC 
+    SDL3-shared
+)
 
 target_compile_definitions(
     ${PROJECT_NAME}
