@@ -26,7 +26,11 @@ target_link_libraries(
     ${PROJECT_NAME} PUBLIC 
     glad
     glfw
+    glm
     imgui
+    mimalloc
+    miniaudio
+    stb
 )
 
 target_compile_definitions(
