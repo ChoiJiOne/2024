@@ -263,7 +263,7 @@ endif()
 set_option(SDL_DISABLE_INSTALL    "Disable installation of SDL3" ${SDL3_SUBPROJECT})
 cmake_dependent_option(SDL_DISABLE_INSTALL_CPACK "Create binary SDL3 archive using CPack" ${SDL3_SUBPROJECT} "NOT SDL_DISABLE_INSTALL" ON)
 cmake_dependent_option(SDL_DISABLE_INSTALL_DOCS "Install docs for SDL3" ON "NOT SDL_DISABLE_INSTALL;NOT SDL_FRAMEWORK" ON)
-set_option(SDL_DISABLE_UNINSTALL  "Disable uninstallation of SDL3" OFF)
+set_option(SDL_DISABLE_UNINSTALL  "Disable uninstallation of SDL3" ON)
 cmake_dependent_option(SDL_PRESEED "Preseed CMake cache to speed up configuration" ON "${SDL_PRESEED_AVAILABLE}" OFF)
 
 cmake_dependent_option(SDL_DISABLE_ANDROID_JAR  "Disable creation of SDL3.jar" ${SDL3_SUBPROJECT} "ANDROID" ON)
@@ -358,7 +358,7 @@ set(SDL_VENDOR_INFO "" CACHE STRING "Vendor name and/or version to add to SDL_RE
 
 cmake_dependent_option(SDL_SHARED "Build a shared version of the library" ${SDL_SHARED_DEFAULT} ${SDL_SHARED_AVAILABLE} OFF)
 cmake_dependent_option(SDL_STATIC "Build a static version of the library" ${SDL_STATIC_DEFAULT} ${SDL_STATIC_AVAILABLE} OFF)
-option(SDL_TEST_LIBRARY   "Build the SDL3_test library" ON)
+option(SDL_TEST_LIBRARY   "Build the SDL3_test library" OFF)
 
 dep_option(SDL_TESTS           "Build the test directory" OFF SDL_TEST_LIBRARY OFF)
 dep_option(SDL_INSTALL_TESTS   "Install test-cases" OFF "NOT SDL_DISABLE_INSTALL;NOT SDL_FRAMEWORK" OFF)
