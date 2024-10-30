@@ -26,6 +26,7 @@ target_link_libraries(
     ${PROJECT_NAME} PUBLIC 
     SDL3-shared
     freetype
+    zlib
 )
 
 target_compile_definitions(
