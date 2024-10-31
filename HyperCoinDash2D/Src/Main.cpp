@@ -7,9 +7,15 @@
 const uint32_t WINDOW_WIDTH = 1000;
 const uint32_t WINDOW_HEIGHT = 800;
 
+void ErrorCallback(int32_t errorCode, const char* description)
+{
+
+}
+
 int32_t WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPWSTR pCmdLine, _In_ int32_t nCmdShow)
 {
 	glfwInit();
+
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
 	glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
@@ -20,12 +26,15 @@ int32_t WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstan
 	glfwMakeContextCurrent(window);
 	
 	gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
-
+	
 	while (!glfwWindowShouldClose(window))
 	{
 		glfwPollEvents();
 		if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 			glfwSetWindowShouldClose(window, true);
+
+		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT);
 
 		glfwSwapBuffers(window);
 	}
