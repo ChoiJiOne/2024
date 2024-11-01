@@ -1,47 +1,22 @@
 #include <cstdint>
 #include <Windows.h>
 
-#include <glad/glad.h>
-#include <glfw/glfw3.h>
+#if defined(DEBUG_MODE) || defined(RELEASE_MODE) || defined(DEVELOPMENT_MODE)
+#include <crtdbg.h>
+#endif
 
-const uint32_t WINDOW_WIDTH = 1000;
-const uint32_t WINDOW_HEIGHT = 800;
-
-void ErrorCallback(int32_t errorCode, const char* description)
-{
-
-}
+#include "GameApp.h"
 
 int32_t WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPWSTR pCmdLine, _In_ int32_t nCmdShow)
 {
-	glfwInit();
+#if defined(DEBUG_MODE) || defined(RELEASE_MODE) || defined(DEVELOPMENT_MODE)
+	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+#endif
 
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
-	glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
-	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-
-	GLFWwindow* window = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "HyperCoinDash2D", nullptr, nullptr);
-
-	glfwMakeContextCurrent(window);
-	
-	gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
-	
-	while (!glfwWindowShouldClose(window))
-	{
-		glfwPollEvents();
-		if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-			glfwSetWindowShouldClose(window, true);
-
-		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT);
-
-		glfwSwapBuffers(window);
-	}
-	glfwDestroyWindow(window);
-	window = nullptr;
-
-	glfwTerminate();
+	std::unique_ptr<GameApp> app = std::make_unique<GameApp>();
+	app->Startup();
+	app->Run();
+	app->Shutdown();
 
 	return 0;
 }
