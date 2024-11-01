@@ -27,6 +27,15 @@ public:
 	/** 에러 발생 여부를 확인합니다. */
 	bool IsDetectError() const { return bIsDetectError_; }
 
+	/** GLFW 에러에 대한 코드 값을 얻습니다. */
+	const int32_t GetErrorCode() const { return errorCode_; }
+
+	/** GLFW 에러에 대한 설명을 C 스타일 문자열로 얻습니다. */
+	const char* GetErrorDescriptione() const { return errorDescription_.c_str(); }
+
+	/** GLFW 에러에 대한 메시지를 C 스타일 문자열로 얻습니다. */
+	const char* GetErrorMessage() const { return errorMessage_.c_str(); }
+
 private:
 	/** GameApp에서 GLFWManager의 내부에 접근할 수 있도록 설정. */
 	friend class GameApp;
