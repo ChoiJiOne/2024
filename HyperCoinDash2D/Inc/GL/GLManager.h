@@ -1,6 +1,8 @@
 #pragma once
 
+#include <cstdint>
 #include <map>
+#include <string>
 
 #include <glfw/glfw3.h>
 
