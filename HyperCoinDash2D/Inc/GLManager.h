@@ -1,6 +1,5 @@
 #pragma once
 
-#include <glad/glad.h>
 #include <glfw/glfw3.h>
 
 #include "Macro.h"
@@ -19,6 +18,12 @@ public:
 
 	/** GL 매니저의 싱글턴 객체 포인터를 얻습니다. */
 	static GLManager* GetPtr();
+
+	/** 프레임 렌더링을 시작합니다. */
+	void BeginFrame(float red, float green, float blue, float alpha, float depth = 1.0f, uint8_t stencil = 0);
+
+	/** 프레임 렌더링을 종료합니다. */
+	void EndFrame();
 
 private:
 	/** GameApp에서 GLManager의 내부에 접근할 수 있도록 설정. */
