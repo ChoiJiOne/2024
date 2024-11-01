@@ -52,8 +52,8 @@
 {\
 	if (!(bool)(EXP))\
 	{\
-		std::string message = PrintF("> Code: %d\n> Error: %s\n> Description: %s", GLFWManager::GetRef().GetErrorCode(),  GLFWManager::GetRef().GetErrorMessage(),  GLFWManager::GetRef().GetErrorDescription());\
-		MessageBox(NULL, message.c_str(), "Assertion check point failed!", MB_OK);\
+		std::string text = PrintF("> Code: %d\n> Error: %s\n> Description: %s", GLFWManager::GetRef().GetErrorCode(),  GLFWManager::GetRef().GetErrorMessage(),  GLFWManager::GetRef().GetErrorDescription());\
+		MessageBox(NULL, text.c_str(), "Assertion check point failed!", MB_OK);\
 	}\
 }
 #endif
@@ -68,8 +68,8 @@
 	EXP;\
 	if (GLFWManager::GetRef().IsDetectError())\
 	{\
-		std::string message = PrintF("> Code: %d\n> Error: %s\n> Description: %s", GLFWManager::GetRef().GetErrorCode(),  GLFWManager::GetRef().GetErrorMessage(),  GLFWManager::GetRef().GetErrorDescription());\
-		MessageBox(NULL, message.c_str(), "Assertion check point failed!", MB_OK); \
+		std::string text = PrintF("> Code: %d\n> Error: %s\n> Description: %s", GLFWManager::GetRef().GetErrorCode(),  GLFWManager::GetRef().GetErrorMessage(),  GLFWManager::GetRef().GetErrorDescription());\
+		MessageBox(NULL, text.c_str(), "Assertion check point failed!", MB_OK); \
 	}\
 }
 #endif
