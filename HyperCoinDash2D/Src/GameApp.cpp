@@ -2,36 +2,27 @@
 #include <mimalloc-new-delete.h>
 
 #include "GameApp.h"
-#include "MemoryAlloc.h"
+#include "GLFWAssertion.h"
+#include "GLFWManager.h"
+#include "Utils.h"
 
 const uint32_t WINDOW_WIDTH = 1000;
 const uint32_t WINDOW_HEIGHT = 800;
 
 GameApp::GameApp()
 {
-	GLFWallocator allocator;
-	allocator.allocate = MemoryAlloc;
-	allocator.reallocate = MemoryRealloc;
-	allocator.deallocate = MemoryFree;
+	GLFWManager::GetRef().Startup(WINDOW_WIDTH, WINDOW_HEIGHT, "HyperCoinDash2D");
 
-	glfwInitAllocator(&allocator);
-	glfwInit();
-
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
-	glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
-	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+	mainWindow_ = GLFWManager::GetRef().mainWindow_;
 }
 
 GameApp::~GameApp()
 {
-	glfwTerminate();
+	GLFWManager::GetRef().Shutdown();
 }
 
 void GameApp::Startup()
 {
-	mainWindow_ = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "HyperCoinDash2D", nullptr, nullptr);
-
 	glfwMakeContextCurrent(mainWindow_);
 
 	gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
@@ -55,6 +46,4 @@ void GameApp::Run()
 
 void GameApp::Shutdown()
 {
-	glfwDestroyWindow(mainWindow_);
-	mainWindow_ = nullptr;
 }
