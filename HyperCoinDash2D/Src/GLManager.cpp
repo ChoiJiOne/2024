@@ -17,6 +17,8 @@ GLManager* GLManager::GetPtr()
 void GLManager::Startup(GLFWwindow* renderTargetWindow)
 {
 	renderTargetWindow_ = renderTargetWindow;
+
+	GLFW_API_CHECK(glfwMakeContextCurrent(renderTargetWindow_));
 }
 
 void GLManager::Shutdown()
