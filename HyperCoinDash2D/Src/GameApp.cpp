@@ -2,12 +2,19 @@
 #include <mimalloc-new-delete.h>
 
 #include "GameApp.h"
+#include "MemoryAlloc.h"
 
 const uint32_t WINDOW_WIDTH = 1000;
 const uint32_t WINDOW_HEIGHT = 800;
 
 GameApp::GameApp()
 {
+	GLFWallocator allocator;
+	allocator.allocate = MemoryAlloc;
+	allocator.reallocate = MemoryRealloc;
+	allocator.deallocate = MemoryFree;
+
+	glfwInitAllocator(&allocator);
 	glfwInit();
 
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
