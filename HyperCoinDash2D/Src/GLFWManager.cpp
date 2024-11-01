@@ -80,7 +80,7 @@ void GLFWManager::SetLsatError(int32_t code, const char* description)
 	}
 }
 
-void GLFWManager::Startup(int32_t width, int32_t height, const char* title)
+GLFWwindow* GLFWManager::Startup(int32_t width, int32_t height, const char* title)
 {
 	glfwSetErrorCallback(GLFWErrorCallback);
 
@@ -99,6 +99,8 @@ void GLFWManager::Startup(int32_t width, int32_t height, const char* title)
 
 	mainWindow_ = glfwCreateWindow(width, height, title, nullptr, nullptr);
 	GLFW_EXP_CHECK(mainWindow_ != nullptr);
+
+	return mainWindow_;
 }
 
 void GLFWManager::Shutdown()
