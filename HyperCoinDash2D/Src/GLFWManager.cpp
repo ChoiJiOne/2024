@@ -1,6 +1,9 @@
 #include "GLFWManager.h"
 #include "MemoryAlloc.h"
 
+#define GL_MAJOR_VERSION 4
+#define GL_MINOR_VERSION 6
+
 GLFWManager GLFWManager::singleton_;
 
 GLFWManager& GLFWManager::GetRef()
@@ -23,8 +26,8 @@ void GLFWManager::Startup(int32_t width, int32_t height, const char* title)
 	glfwInitAllocator(&allocator);
 	glfwInit();
 
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, GL_MAJOR_VERSION);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, GL_MINOR_VERSION);
 	glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
