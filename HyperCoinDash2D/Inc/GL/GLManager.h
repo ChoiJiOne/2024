@@ -1,5 +1,7 @@
 #pragma once
 
+#include <map>
+
 #include <glfw/glfw3.h>
 
 #include "Macro.h"
@@ -25,6 +27,9 @@ public:
 	/** 프레임 렌더링을 종료합니다. */
 	void EndFrame();
 
+	/** 에러 코드에 대응하는 에러 메시지를 C 스타일로 얻습니다. */
+	const char* GetErrorMessage(uint32_t code) const;
+
 private:
 	/** GameApp에서 GLManager의 내부에 접근할 수 있도록 설정. */
 	friend class GameApp;
@@ -46,4 +51,7 @@ private:
 
 	/** 렌더링 대상이 되는 윈도우입니다. */
 	GLFWwindow* renderTargetWindow_ = nullptr;
+
+	/** OpenGL 에러 코드에 대응하는 에러 메시지입니다. */
+	std::map<uint32_t, std::string> errorMessages_;
 };
