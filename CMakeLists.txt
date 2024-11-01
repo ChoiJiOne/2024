@@ -12,6 +12,10 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 
 set(PROJECT_NAME "HyperCoinDash2D")
 
+if (MSVC)
+    add_compile_options("/wd4819")
+endif()
+
 add_subdirectory(ThirdParty)
 add_subdirectory(${PROJECT_NAME})
 
