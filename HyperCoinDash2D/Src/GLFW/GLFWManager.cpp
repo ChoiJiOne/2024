@@ -1,5 +1,5 @@
-#include "GLFWAssertion.h"
-#include "GLFWManager.h"
+#include "GLFW/GLFWAssertion.h"
+#include "GLFW/GLFWManager.h"
 #include "MemoryAlloc.h"
 
 #define GL_MAJOR_VERSION 4

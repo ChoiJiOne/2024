@@ -2,7 +2,7 @@
 
 #include <Windows.h>
 
-#include "GLFWManager.h"
+#include "GLFW/GLFWManager.h"
 #include "Utils.h"
 
 #if defined(DEBUG_MODE) || defined(RELWITHDEBINFO_MODE)
