@@ -19,5 +19,5 @@ public:
 	void Shutdown();
 
 private:
-	GLFWwindow* mainWindow_ = nullptr;
+	GLFWwindow* window_ = nullptr;
 };

@@ -1,9 +1,11 @@
-#include <glad/glad.h>
 #include <mimalloc-new-delete.h>
+#include <glad/glad.h>
 
+#include "GL/GLAssertion.h"
+#include "GL/GLManager.h"
+#include "GLFW/GLFWManager.h"
+#include "Assertion.h"
 #include "GameApp.h"
-#include "GLFWAssertion.h"
-#include "GLFWManager.h"
 #include "Utils.h"
 
 const uint32_t WINDOW_WIDTH = 1000;
@@ -11,36 +13,30 @@ const uint32_t WINDOW_HEIGHT = 800;
 
 GameApp::GameApp()
 {
-	GLFWManager::GetRef().Startup(WINDOW_WIDTH, WINDOW_HEIGHT, "HyperCoinDash2D");
-
-	mainWindow_ = GLFWManager::GetRef().mainWindow_;
+	window_ = GLFWManager::GetRef().Startup(WINDOW_WIDTH, WINDOW_HEIGHT, "HyperCoinDash2D");
+	GLManager::GetRef().Startup(window_);
 }
 
 GameApp::~GameApp()
 {
+	GLManager::GetRef().Shutdown();
 	GLFWManager::GetRef().Shutdown();
 }
 
 void GameApp::Startup()
 {
-	glfwMakeContextCurrent(mainWindow_);
-
-	gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
 }
-
 
 void GameApp::Run()
 {
-	while (!glfwWindowShouldClose(mainWindow_))
+	while (!glfwWindowShouldClose(window_))
 	{
 		glfwPollEvents();
-		if (glfwGetKey(mainWindow_, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-			glfwSetWindowShouldClose(mainWindow_, true);
+		if (glfwGetKey(window_, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+			glfwSetWindowShouldClose(window_, true);
 
-		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT);
-
-		glfwSwapBuffers(mainWindow_);
+		GLManager::GetRef().BeginFrame(1.0f, 0.0f, 0.0f, 1.0f);
+		GLManager::GetRef().EndFrame();
 	}
 }
 
