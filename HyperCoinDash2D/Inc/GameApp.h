@@ -1,5 +1,7 @@
 #pragma once
 
+#include <memory>
+
 #include <glfw/glfw3.h>
 
 #include "Macro.h"
@@ -13,8 +15,8 @@ public:
 	DISALLOW_COPY_AND_ASSIGN(GameApp);
 
 	void Startup();
-	void Shutdown();
 	void Run();
+	void Shutdown();
 
 private:
 	GLFWwindow* mainWindow_ = nullptr;
