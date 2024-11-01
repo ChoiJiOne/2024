@@ -6,6 +6,11 @@
 
 GLFWManager GLFWManager::singleton_;
 
+void GLFWErrorCallback(int32_t errorCode, const char* description)
+{
+	GLFWManager::GetRef().SetLsatError(errorCode, description);
+}
+
 GLFWManager& GLFWManager::GetRef()
 {
 	return singleton_;
@@ -16,8 +21,17 @@ GLFWManager* GLFWManager::GetPtr()
 	return &singleton_;
 }
 
+void GLFWManager::SetLsatError(int32_t code, const char* message)
+{
+	bIsDetectError_ = true;
+	errorCode_ = code;
+	errorMessage_ = message;
+}
+
 void GLFWManager::Startup(int32_t width, int32_t height, const char* title)
 {
+	glfwSetErrorCallback(GLFWErrorCallback);
+
 	GLFWallocator allocator;
 	allocator.allocate = MemoryAlloc;
 	allocator.reallocate = MemoryRealloc;

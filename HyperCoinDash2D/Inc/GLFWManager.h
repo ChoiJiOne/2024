@@ -1,6 +1,6 @@
 #pragma once
 
-#include <cstdint>
+#include <string>
 
 #include <glfw/glfw3.h>
 
@@ -20,6 +20,12 @@ public:
 	
 	/** GLFW 매니저의 싱글턴 객체 포인터를 얻습니다. */
 	static GLFWManager* GetPtr();
+
+	/** 최근에 발생한 GLFW 에러를 설정합니다. */
+	void SetLsatError(int32_t code, const char* message);
+
+	/** 에러 발생 여부를 확인합니다. */
+	bool IsDetectError() const { return bIsDetectError_; }
 
 private:
 	/** GameApp에서 GLFWManager의 내부에 접근할 수 있도록 설정. */
@@ -42,4 +48,16 @@ private:
 
 	/** GLFW 매니저가 관리하는 메인 윈도우입니다. */
 	GLFWwindow* mainWindow_ = nullptr;
+
+	/** GLFW 에러 발생 여부입니다. */
+	bool bIsDetectError_ = false;
+
+	/**
+	 * GLFW 에러 코드입니다.
+	 * 참조: https://www.glfw.org/docs/3.3/group__errors.html
+	 */
+	int32_t errorCode_ = 0;
+
+	/** GLFW 에러 메시지입니다. */
+	std::string errorMessage_;
 };
