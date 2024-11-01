@@ -1,7 +1,5 @@
 #pragma once
 
-#include <Windows.h>
-
 #include "Utils.h"
 
 #if defined(DEBUG_MODE) || defined(RELWITHDEBINFO_MODE)
