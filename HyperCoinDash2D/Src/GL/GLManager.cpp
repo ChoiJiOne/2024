@@ -1,8 +1,8 @@
 #include <glad/glad.h>
 
+#include "GL/GLManager.h"
 #include "GLFW/GLFWAssertion.h"
 #include "GLFW/GLFWManager.h"
-#include "GLManager.h"
 
 GLManager GLManager::singleton_;
 
