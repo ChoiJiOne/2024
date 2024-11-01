@@ -22,7 +22,7 @@ public:
 	static GLFWManager* GetPtr();
 
 	/** 최근에 발생한 GLFW 에러를 설정합니다. */
-	void SetLsatError(int32_t code, const char* message);
+	void SetLsatError(int32_t code, const char* description);
 
 	/** 에러 발생 여부를 확인합니다. */
 	bool IsDetectError() const { return bIsDetectError_; }
@@ -57,6 +57,9 @@ private:
 	 * 참조: https://www.glfw.org/docs/3.3/group__errors.html
 	 */
 	int32_t errorCode_ = 0;
+
+	/** GLFW 에러에 대한 설명 입니다. */
+	std::string errorDescription_;
 
 	/** GLFW 에러 메시지입니다. */
 	std::string errorMessage_;
