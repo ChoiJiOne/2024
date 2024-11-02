@@ -18,6 +18,7 @@ public:
 	};
 
 public:
+	/** 이 생성자를 이용해서 버텍스 버퍼를 생성하면 나중에 SetBufferData를 이용해서 적절한 값을 채워 넣어야 합니다. */
 	VertexBuffer(uint32_t byteSize, const EUsage& usage);
 	VertexBuffer(const void* bufferPtr, uint32_t byteSize, const EUsage& usage);
 	virtual ~VertexBuffer();
@@ -26,7 +27,10 @@ public:
 
 	virtual void Release() override;
 
+	/** 버텍스 버퍼를 파이프라인에 바인딩합니다. */
 	void Bind();
+
+	/** 바인딩된 버텍스 버퍼를 바인딩 해제합니다. */
 	void Unbind();
 
 	void SetBufferData(const void* bufferPtr, uint32_t bufferSize);
