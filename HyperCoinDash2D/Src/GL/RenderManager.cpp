@@ -22,8 +22,10 @@ RenderManager* RenderManager::GetPtr()
 
 void RenderManager::Startup()
 {
+	glManager_ = GLManager::GetPtr();
 }
 
 void RenderManager::Shutdown()
 {
+	glManager_ = nullptr;
 }

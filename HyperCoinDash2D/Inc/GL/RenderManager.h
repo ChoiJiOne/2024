@@ -41,4 +41,7 @@ private:
 private:
 	/** 렌더 매니저의 싱글턴 객체입니다. */
 	static RenderManager singleton_;
+
+	/** 렌더 매니저 내부에서 사용할 GL 매니저입니다. */
+	class GLManager* glManager_ = nullptr;
 };
