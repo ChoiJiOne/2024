@@ -13,7 +13,6 @@ public:
 
 	virtual void Release() = 0;
 
-	virtual void Release() = 0;
 	bool IsInitialized() const { return bIsInitialized_; }
 
 protected:
