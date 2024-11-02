@@ -5,6 +5,7 @@
 
 #include "GL/GLAssertion.h"
 #include "GL/GLManager.h"
+#include "GL/RenderManager.h"
 #include "GLFW/GLFWManager.h"
 #include "Assertion.h"
 #include "GameApp.h"
@@ -17,12 +18,14 @@ GameApp::GameApp()
 {
 	GLFWManager::GetRef().Startup(WINDOW_WIDTH, WINDOW_HEIGHT, "HyperCoinDash2D");
 	GLManager::GetRef().Startup();
+	RenderManager::GetRef().Startup();
 
 	window_ = GLFWManager::GetRef().mainWindow_;
 }
 
 GameApp::~GameApp()
 {
+	RenderManager::GetRef().Shutdown();
 	GLManager::GetRef().Shutdown();
 	GLFWManager::GetRef().Shutdown();
 }
