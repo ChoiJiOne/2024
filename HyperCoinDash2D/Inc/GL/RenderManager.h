@@ -49,6 +49,34 @@ private:
 		float transparent = 1.0f; /** 렌더링할 대상의 투명도입니다. 1.0에 가까울수록 불투명합니다. */
 	};
 
+	/**
+	 * 렌더 매니저 내부에서만 사용하는 그리기 모드입니다.
+	 * 참조: https://registry.khronos.org/OpenGL-Refpages/gl4/html/glDrawArrays.xhtml
+	 */
+	enum class DrawMode : int32_t
+	{
+		POINTS       = 0x0000,
+		LINES        = 0x0001,
+		LINE_STRIP   = 0x0003,
+		TRIANGLES    = 0x0004,
+		TRIANGLE_FAN = 0x0006,
+		NONE         = 0xFFFF,
+	};
+
+	/** 렌더 매니저 내부에서만 사용하면 그리기 명령입니다. */
+	struct RenderCommand
+	{
+		enum class EType
+		{
+			GEOMETRY = 0x00,
+		};
+
+		DrawMode drawMode;
+		uint32_t startVertexIndex;
+		uint32_t vertexCount;
+		EType type;
+	};
+
 	/** 렌더 매니저의 초기화 및 해제는 GameApp 내부에서만 수행됩니다. */
 	void Startup();
 	void Shutdown();
