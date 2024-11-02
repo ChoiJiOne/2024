@@ -49,7 +49,7 @@
 {\
 	if (!(bool)(EXP))\
 	{\
-		MessageBox(NULL, "Assertion check point failed!", "Assertion check point failed!", MB_OK);\
+		MessageBox(NULL, "Common assertion check point failed!", "Assertion check point failed!", MB_OK);\
 	}\
 }
 #endif
