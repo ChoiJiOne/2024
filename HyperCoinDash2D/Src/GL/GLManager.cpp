@@ -93,6 +93,36 @@ const char* GLManager::GetErrorMessage(uint32_t code) const
 	return errorMessages_.at(code).c_str();
 }
 
+void GLManager::Destroy(const GLResource* resource)
+{
+	int32_t resourceID = -1;
+	for (uint32_t index = 0; index < resourceSize_; ++index)
+	{
+		GLResource* resourcePtr = resources_[index].get();
+		if (resource == resourcePtr)
+		{
+			resourceID = static_cast<int32_t>(index);
+			break;
+		}
+	}
+
+	if (resourceID == -1)
+	{
+		return; // 해당 리소스는 이미 할당 해제 되었거나, GLManager에 의해서 생성된 리소스가 아님.
+	}
+
+	if (resources_[resourceID])
+	{
+		if (resources_[resourceID]->IsInitialized())
+		{
+			resources_[resourceID]->Release();
+		}
+
+		resources_[resourceID].reset();
+		usages_[resourceID] = false;
+	}
+}
+
 void GLManager::Startup()
 {
 	errorMessages_ =
