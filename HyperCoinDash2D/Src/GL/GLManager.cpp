@@ -24,6 +24,8 @@ GLManager* GLManager::GetPtr()
 
 void GLManager::BeginFrame(float red, float green, float blue, float alpha, float depth, uint8_t stencil)
 {
+	SetViewport(0, 0, renderTargetWindowWidth_, renderTargetWindowHeight_);
+
 	glClearColor(red, green, blue, alpha);
 	glClearDepth(depth);
 	glClearStencil(stencil);
@@ -33,6 +35,9 @@ void GLManager::BeginFrame(float red, float green, float blue, float alpha, floa
 
 void GLManager::EndFrame()
 {
+	ImGui::Render();
+	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
 	GLFW_API_CHECK(glfwSwapBuffers(renderTargetWindow_));
 }
 
@@ -105,13 +110,18 @@ void GLManager::Startup()
 	};
 
 	renderTargetWindow_ = GLFWManager::GetRef().mainWindow_;
+	renderTargetWindowWidth_ = GLFWManager::GetRef().mainWindowWidth_;
+	renderTargetWindowHeight_ = GLFWManager::GetRef().mainWindowHeight_;
 
 	GLFW_API_CHECK(glfwMakeContextCurrent(renderTargetWindow_));
 
 	ASSERTION(gladLoadGLLoader((GLADloadproc)glfwGetProcAddress), "Failed to initialize OpenGL function.");
+	ASSERTION(ImGui_ImplOpenGL3_Init(), "Failed to initialize ImGui for OpenGL.");
 }
 
 void GLManager::Shutdown()
 {
+	ImGui_ImplOpenGL3_Shutdown();
+
 	renderTargetWindow_ = nullptr;
 }

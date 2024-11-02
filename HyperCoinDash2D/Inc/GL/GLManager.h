@@ -63,6 +63,10 @@ private:
 	/** 렌더링 대상이 되는 윈도우입니다. */
 	GLFWwindow* renderTargetWindow_ = nullptr;
 
+	/** 렌더링 대상이 되는 윈도우의 가로/세로 크기입니다. */
+	int32_t renderTargetWindowWidth_ = 0;
+	int32_t renderTargetWindowHeight_ = 0;
+
 	/** OpenGL 에러 코드에 대응하는 에러 메시지입니다. */
 	std::map<uint32_t, std::string> errorMessages_;
 };
