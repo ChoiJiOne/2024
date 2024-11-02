@@ -1,5 +1,9 @@
 #include <glad/glad.h>
 
+#include <imgui.h>
+#include <imgui_impl_glfw.h>
+#include <imgui_impl_opengl3.h>
+
 #include "GL/GLAssertion.h"
 #include "GL/GLManager.h"
 #include "GLFW/GLFWAssertion.h"
