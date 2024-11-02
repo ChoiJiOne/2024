@@ -1,6 +1,8 @@
 #include <mimalloc-new-delete.h>
 #include <glad/glad.h>
 
+#include <imgui.h>
+
 #include "GL/GLAssertion.h"
 #include "GL/GLManager.h"
 #include "GLFW/GLFWManager.h"
@@ -33,12 +35,23 @@ void GameApp::Run()
 {
 	while (!glfwWindowShouldClose(window_))
 	{
-		glfwPollEvents();
-		if (glfwGetKey(window_, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-			glfwSetWindowShouldClose(window_, true);
+		GLFWManager::GetRef().BeginTick();
+		{
+			// 게임 로직 업데이트.
+			{
+				ImGui::Begin("TEST");
+				ImGui::Text("Hello ImGui!");
+				ImGui::End();
+			}
 
-		GLManager::GetRef().BeginFrame(1.0f, 0.0f, 0.0f, 1.0f);
-		GLManager::GetRef().EndFrame();
+			// 렌더링.
+			GLManager::GetRef().BeginFrame(0.0f, 0.0f, 0.0f, 1.0f);
+			{
+
+			}
+			GLManager::GetRef().EndFrame();
+		}
+		GLFWManager::GetRef().EndTick();
 	}
 }
 
