@@ -4,6 +4,7 @@
 #include "GL/GLManager.h"
 #include "GLFW/GLFWAssertion.h"
 #include "GLFW/GLFWManager.h"
+#include "Assertion.h"
 
 GLManager GLManager::singleton_;
 
@@ -23,7 +24,7 @@ void GLManager::BeginFrame(float red, float green, float blue, float alpha, floa
 	glClearDepth(depth);
 	glClearStencil(stencil);
 
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+	GL_API_CHECK(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT));
 }
 
 void GLManager::EndFrame()
@@ -61,7 +62,7 @@ void GLManager::Startup()
 
 	GLFW_API_CHECK(glfwMakeContextCurrent(renderTargetWindow_));
 
-	gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
+	ASSERTION(gladLoadGLLoader((GLADloadproc)glfwGetProcAddress), "Failed to initialize OpenGL function.");
 }
 
 void GLManager::Shutdown()
