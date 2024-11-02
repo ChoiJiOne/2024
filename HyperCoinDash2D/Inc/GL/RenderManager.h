@@ -34,6 +34,21 @@ private:
 	RenderManager() = default;
 	virtual ~RenderManager() {}
 
+	/** 렌더 매니저 내부에서만 사용하는 버텍스입니다. */
+	struct Vertex
+	{
+		static uint32_t GetStride()
+		{
+			return sizeof(Vertex);
+		}
+
+		glm::vec2 position;
+		glm::vec2 uv;
+		glm::vec4 color;
+		uint32_t unit; /** 텍스처 유닛입니다. */
+		float transparent = 1.0f; /** 렌더링할 대상의 투명도입니다. 1.0에 가까울수록 불투명합니다. */
+	};
+
 	/** 렌더 매니저의 초기화 및 해제는 GameApp 내부에서만 수행됩니다. */
 	void Startup();
 	void Shutdown();
