@@ -153,5 +153,19 @@ void GLManager::Shutdown()
 {
 	ImGui_ImplOpenGL3_Shutdown();
 
+	for (uint32_t index = 0; index < resourceSize_; ++index)
+	{
+		if (resources_[index])
+		{
+			if (resources_[index]->IsInitialized())
+			{
+				resources_[index]->Release();
+			}
+
+			resources_[index].reset();
+			usages_[index] = false;
+		}
+	}
+
 	renderTargetWindow_ = nullptr;
 }
