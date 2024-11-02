@@ -31,6 +31,12 @@ public:
 
 	/** Viewport를 설정합니다. */
 	void SetViewport(int32_t x, int32_t y, int32_t width, int32_t height);
+
+	/** OpenGL의 전역 상태 머신 설정을 수행합니다. */
+	void SetVsyncMode(bool bIsEnable);
+	void SetDepthMode(bool bIsEnable);
+	void SetStencilMode(bool bIsEnable);
+	void SetAlphaBlendMode(bool bIsEnable);
 	
 	/** 에러 코드에 대응하는 에러 메시지를 C 스타일로 얻습니다. */
 	const char* GetErrorMessage(uint32_t code) const;

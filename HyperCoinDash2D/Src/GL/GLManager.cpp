@@ -41,6 +41,48 @@ void GLManager::SetViewport(int32_t x, int32_t y, int32_t width, int32_t height)
 	GL_API_CHECK(glViewport(x, y, width, height));
 }
 
+void GLManager::SetVsyncMode(bool bIsEnable)
+{
+	GLFW_API_CHECK(glfwSwapInterval(static_cast<int32_t>(bIsEnable)));
+}
+
+void GLManager::SetDepthMode(bool bIsEnable)
+{
+	if (bIsEnable)
+	{
+		GL_API_CHECK(glEnable(GL_DEPTH_TEST));
+	}
+	else
+	{
+		GL_API_CHECK(glDisable(GL_DEPTH_TEST));
+	}
+}
+
+void GLManager::SetStencilMode(bool bIsEnable)
+{
+	if (bIsEnable)
+	{
+		GL_API_CHECK(glEnable(GL_STENCIL_TEST));
+	}
+	else
+	{
+		GL_API_CHECK(glDisable(GL_STENCIL_TEST));
+	}
+}
+
+void GLManager::SetAlphaBlendMode(bool bIsEnable)
+{
+	if (bIsEnable)
+	{
+		GL_API_CHECK(glEnable(GL_BLEND));
+		GL_API_CHECK(glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ZERO));
+	}
+	else
+	{
+		GL_API_CHECK(glDisable(GL_BLEND));
+	}
+}
+
 const char* GLManager::GetErrorMessage(uint32_t code) const
 {
 	return errorMessages_.at(code).c_str();
