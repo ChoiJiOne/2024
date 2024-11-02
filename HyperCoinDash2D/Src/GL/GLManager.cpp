@@ -35,7 +35,7 @@ const char* GLManager::GetErrorMessage(uint32_t code) const
 	return errorMessages_.at(code).c_str();
 }
 
-void GLManager::Startup(GLFWwindow* renderTargetWindow)
+void GLManager::Startup()
 {
 	errorMessages_ =
 	{
@@ -51,10 +51,9 @@ void GLManager::Startup(GLFWwindow* renderTargetWindow)
 		{ GL_NONE,                          "Undefined error message."                                                                                               },
 	};
 
-	renderTargetWindow_ = renderTargetWindow;
+	renderTargetWindow_ = GLFWManager::GetRef().mainWindow_;
 
 	GLFW_API_CHECK(glfwMakeContextCurrent(renderTargetWindow_));
-
 
 	gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
 }

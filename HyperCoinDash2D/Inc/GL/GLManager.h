@@ -44,7 +44,7 @@ private:
 	virtual ~GLManager() {}
 
 	/** GL 매니저의 초기화 및 해제는 GameApp 내부에서만 수행됩니다. */
-	void Startup(GLFWwindow* renderTargetWindow);
+	void Startup();
 	void Shutdown();
 
 private:
