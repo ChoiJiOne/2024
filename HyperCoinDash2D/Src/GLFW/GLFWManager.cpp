@@ -5,6 +5,7 @@
 
 #include "GLFW/GLFWAssertion.h"
 #include "GLFW/GLFWManager.h"
+#include "Assertion.h"
 #include "MemoryAlloc.h"
 
 #define GL_MAJOR_VERSION 4
@@ -107,10 +108,21 @@ void GLFWManager::Startup(int32_t width, int32_t height, const char* title)
 
 	mainWindow_ = glfwCreateWindow(width, height, title, nullptr, nullptr);
 	GLFW_EXP_CHECK(mainWindow_ != nullptr);
+
+	ImGui::CreateContext();
+	ImGuiIO& io = ImGui::GetIO();
+	io.IniFilename = nullptr;
+	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
+	io.ConfigFlags |= ImGuiConfigFlags_NavEnableSetMousePos;
+
+	ASSERTION(ImGui_ImplGlfw_InitForOpenGL(mainWindow_, true), "Failed to initialize ImGui for GLFW");
 }
 
 void GLFWManager::Shutdown()
 {
+	ImGui_ImplGlfw_Shutdown();
+	ImGui::DestroyContext();
+
 	if (mainWindow_)
 	{
 		glfwDestroyWindow(mainWindow_);
