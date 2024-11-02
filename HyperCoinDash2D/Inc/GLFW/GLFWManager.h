@@ -36,6 +36,12 @@ public:
 	/** GLFW 에러에 대한 메시지를 C 스타일 문자열로 얻습니다. */
 	const char* GetErrorMessage() const { return errorMessage_.c_str(); }
 
+	/** 한 프레임을 시작합니다. */
+	void BeginTick();
+
+	/** 한 프레임을 종료합니다. */
+	void EndTick();
+
 private:
 	/** GameApp에서 GLFWManager의 내부에 접근할 수 있도록 설정. */
 	friend class GameApp;

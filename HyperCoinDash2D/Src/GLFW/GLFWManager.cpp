@@ -2,6 +2,7 @@
 
 #include <imgui.h>
 #include <imgui_impl_glfw.h>
+#include <imgui_impl_opengl3.h>
 
 #include "GLFW/GLFWAssertion.h"
 #include "GLFW/GLFWManager.h"
@@ -84,6 +85,19 @@ void GLFWManager::SetLsatError(int32_t code, const char* description)
 		errorMessage_ = "Undefined GLFW error.";
 		break;
 	}
+}
+
+void GLFWManager::BeginTick()
+{
+	glfwPollEvents();
+	ImGui_ImplOpenGL3_NewFrame();
+	ImGui_ImplGlfw_NewFrame();
+	ImGui::NewFrame();
+}
+
+void GLFWManager::EndTick()
+{
+	// TODO: 이 부분은 나중에 씬 전환으로 바꿀 예정.
 }
 
 void GLFWManager::Startup(int32_t width, int32_t height, const char* title)
