@@ -80,11 +80,30 @@ private:
 	/** 렌더 매니저의 초기화 및 해제는 GameApp 내부에서만 수행됩니다. */
 	void Startup();
 	void Shutdown();
-	
+
 private:
 	/** 렌더 매니저의 싱글턴 객체입니다. */
 	static RenderManager singleton_;
 
 	/** 렌더 매니저 내부에서 사용할 GL 매니저입니다. */
 	class GLManager* glManager_ = nullptr;
+
+	/** 렌더 매니저의 렌더링이 시작되었는지 확인합니다. */
+	bool bIsBegin_ = false;
+
+	/** CPU 상의 버텍스 버퍼입니다. */
+	static const int32_t MAX_VERTEX_BUFFER_SIZE = 30000;
+	std::array<Vertex, MAX_VERTEX_BUFFER_SIZE> vertices_;
+
+	/** 버텍스 Array 오브젝트입니다. */
+	uint32_t vertexArrayObject_ = 0;
+
+	/** GPU 상의 버텍스 버퍼입니다. */
+	class VertexBuffer* vertexBuffer_ = nullptr;
+
+	/** 렌더 커맨드 큐입니다. */
+	std::queue<RenderCommand> commandQueue_;
+
+	/** 렌더링 시작 전의 깊이 테스트 상태 여부입니다. */
+	bool originEnableDepth_ = false;
 };
