@@ -1,5 +1,6 @@
 #include <glad/glad.h>
 
+#include "GL/GLAssertion.h"
 #include "GL/GLManager.h"
 #include "GLFW/GLFWAssertion.h"
 #include "GLFW/GLFWManager.h"
@@ -28,6 +29,11 @@ void GLManager::BeginFrame(float red, float green, float blue, float alpha, floa
 void GLManager::EndFrame()
 {
 	GLFW_API_CHECK(glfwSwapBuffers(renderTargetWindow_));
+}
+
+void GLManager::SetViewport(int32_t x, int32_t y, int32_t width, int32_t height)
+{
+	GL_API_CHECK(glViewport(x, y, width, height));
 }
 
 const char* GLManager::GetErrorMessage(uint32_t code) const

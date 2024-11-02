@@ -29,6 +29,9 @@ public:
 	/** 프레임 렌더링을 종료합니다. */
 	void EndFrame();
 
+	/** Viewport를 설정합니다. */
+	void SetViewport(int32_t x, int32_t y, int32_t width, int32_t height);
+	
 	/** 에러 코드에 대응하는 에러 메시지를 C 스타일로 얻습니다. */
 	const char* GetErrorMessage(uint32_t code) const;
 
