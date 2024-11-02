@@ -58,6 +58,10 @@ private:
 	/** GLFW 매니저가 관리하는 메인 윈도우입니다. */
 	GLFWwindow* mainWindow_ = nullptr;
 
+	/** GLFW 매니저가 관리하는 메인 윈도우의 가로/세로 크기입니다. */
+	int32_t mainWindowWidth_ = 0;
+	int32_t mainWindowHeight_ = 0;
+
 	/** GLFW 에러 발생 여부입니다. */
 	bool bIsDetectError_ = false;
 

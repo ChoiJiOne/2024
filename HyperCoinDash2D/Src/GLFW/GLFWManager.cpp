@@ -99,9 +99,12 @@ GLFWwindow* GLFWManager::Startup(int32_t width, int32_t height, const char* titl
 	GLFW_API_CHECK(glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE));
 	GLFW_API_CHECK(glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE));
 
+	mainWindowWidth_ = width;
+	mainWindowHeight_ = height;
+
 	mainWindow_ = glfwCreateWindow(width, height, title, nullptr, nullptr);
 	GLFW_EXP_CHECK(mainWindow_ != nullptr);
-
+	
 	return mainWindow_;
 }
 
