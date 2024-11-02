@@ -1,3 +1,5 @@
+#include <Windows.h>
+
 #include "GLFW/GLFWAssertion.h"
 #include "GLFW/GLFWManager.h"
 #include "MemoryAlloc.h"
