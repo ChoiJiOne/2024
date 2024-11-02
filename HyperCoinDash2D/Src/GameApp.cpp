@@ -13,8 +13,10 @@ const uint32_t WINDOW_HEIGHT = 800;
 
 GameApp::GameApp()
 {
-	window_ = GLFWManager::GetRef().Startup(WINDOW_WIDTH, WINDOW_HEIGHT, "HyperCoinDash2D");
-	GLManager::GetRef().Startup(window_);
+	GLFWManager::GetRef().Startup(WINDOW_WIDTH, WINDOW_HEIGHT, "HyperCoinDash2D");
+	GLManager::GetRef().Startup();
+
+	window_ = GLFWManager::GetRef().mainWindow_;
 }
 
 GameApp::~GameApp()
