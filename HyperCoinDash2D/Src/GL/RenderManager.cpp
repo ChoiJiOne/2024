@@ -73,13 +73,4 @@ void RenderManager::Shutdown()
 	glManager_ = nullptr;
 }
 
-void RenderManager::Flush()
-{
-}
-
-bool RenderManager::IsFullCommandQueue(uint32_t vertexCount)
-{
-	return false;
-}
-
 #pragma warning(pop)
