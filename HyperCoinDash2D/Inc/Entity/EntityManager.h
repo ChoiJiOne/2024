@@ -7,7 +7,7 @@
 #include <string>
 
 #include "Entity/IEntity.h"
-#include "Macro.h"
+#include "Utils/Macro.h"
 
 /**
  * Entity를 생성/질의/삭제를 수행하는 매니저입니다.

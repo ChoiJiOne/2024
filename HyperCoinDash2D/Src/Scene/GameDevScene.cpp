@@ -1,6 +1,6 @@
 #include "GL/GLManager.h"
 #include "Scene/GameDevScene.h"
-#include "Assertion.h"
+#include "Utils/Assertion.h"
 
 GameDevScene::GameDevScene()
 {

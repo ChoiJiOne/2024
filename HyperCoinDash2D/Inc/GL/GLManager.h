@@ -9,7 +9,7 @@
 #include <glfw/glfw3.h>
 
 #include "GL/GLResource.h"
-#include "Macro.h"
+#include "Utils/Macro.h"
 
 /**
  * OpenGL 및 렌더링 관련 처리를 수행하는 매니저입니다.

@@ -2,7 +2,7 @@
 
 #include "GL/GLAssertion.h"
 #include "GL/IndexBuffer.h"
-#include "Assertion.h"
+#include "Utils/Assertion.h"
 
 IndexBuffer::IndexBuffer(const void* bufferPtr, uint32_t indexCount)
 	: indexCount_(indexCount)

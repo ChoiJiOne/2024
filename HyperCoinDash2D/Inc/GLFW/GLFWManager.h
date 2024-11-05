@@ -4,7 +4,7 @@
 
 #include <glfw/glfw3.h>
 
-#include "Macro.h"
+#include "Utils/Macro.h"
 
 /**
  * GLFW 관련 처리를 수행하는 매니저입니다.

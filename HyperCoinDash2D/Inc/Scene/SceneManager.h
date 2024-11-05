@@ -6,7 +6,7 @@
 #include <string>
 
 #include "Scene/IGameScene.h"
-#include "Macro.h"
+#include "Utils/Macro.h"
 
 /**
  * 씬 관리를 수행하는 매니저입니다.

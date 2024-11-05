@@ -1,6 +1,6 @@
 #pragma once
 
-#include "IGameScene.h"
+#include "Scene/IGameScene.h"
 
 /** 게임 개발을 위한 씬입니다. */
 class GameDevScene : public IGameScene

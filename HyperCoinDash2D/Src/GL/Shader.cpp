@@ -2,7 +2,7 @@
 
 #include "GL/GLAssertion.h"
 #include "GL/Shader.h"
-#include "Assertion.h"
+#include "Utils/Assertion.h"
 
 static const uint32_t MAX_STRING_BUFFER = 1024;
 

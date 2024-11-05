@@ -2,7 +2,7 @@
 
 #include "GL/GLAssertion.h"
 #include "GL/UniformBuffer.h"
-#include "Assertion.h"
+#include "Utils/Assertion.h"
 
 UniformBuffer::UniformBuffer(uint32_t byteSize, const EUsage& usage)
 	: byteSize_(byteSize)

@@ -12,7 +12,7 @@
 #include "GL/Shader.h"
 #include "GL/UniformBuffer.h"
 #include "GL/VertexBuffer.h"
-#include "Assertion.h"
+#include "Utils/Assertion.h"
 
 RenderManager RenderManager::singleton_;
 

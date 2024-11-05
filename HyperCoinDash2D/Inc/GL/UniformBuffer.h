@@ -2,7 +2,7 @@
 
 #include <cstdint>
 
-#include "GLResource.h"
+#include "GL/GLResource.h"
 
 /** 렌더링 파이프라인에 바인딩 가능한 유니폼 버퍼입니다. */
 class UniformBuffer : public GLResource

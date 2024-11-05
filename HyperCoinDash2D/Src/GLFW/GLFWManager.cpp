@@ -6,8 +6,8 @@
 
 #include "GLFW/GLFWAssertion.h"
 #include "GLFW/GLFWManager.h"
-#include "Assertion.h"
-#include "MemoryAlloc.h"
+#include "Utils/Assertion.h"
+#include "Utils/MemoryAlloc.h"
 
 #define GL_MAJOR_VERSION 4
 #define GL_MINOR_VERSION 6

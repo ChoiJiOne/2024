@@ -6,7 +6,7 @@
 
 #include <glm/glm.hpp>
 
-#include "Macro.h"
+#include "Utils/Macro.h"
 
 /**
  * 2D 렌더링을 수행하는 매니저입니다.

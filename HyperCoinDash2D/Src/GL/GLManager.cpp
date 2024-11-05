@@ -8,7 +8,7 @@
 #include "GL/GLManager.h"
 #include "GLFW/GLFWAssertion.h"
 #include "GLFW/GLFWManager.h"
-#include "Assertion.h"
+#include "Utils/Assertion.h"
 
 GLManager GLManager::singleton_;
 

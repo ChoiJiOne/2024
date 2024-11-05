@@ -10,9 +10,10 @@
 #include "GLFW/GLFWManager.h"
 #include "Scene/GameDevScene.h"
 #include "Scene/SceneManager.h"
-#include "Assertion.h"
+#include "Utils/Assertion.h"
+#include "Utils/Utils.h"
+
 #include "GameApp.h"
-#include "Utils.h"
 
 const uint32_t WINDOW_WIDTH = 1000;
 const uint32_t WINDOW_HEIGHT = 800;

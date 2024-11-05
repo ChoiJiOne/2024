@@ -1,6 +1,6 @@
 #pragma once
 
-#include "IEntity.h"
+#include "Entity/IEntity.h"
 
 /** 2D 엔티티의 인터페이스입니다. */
 class IEntity2D : public IEntity

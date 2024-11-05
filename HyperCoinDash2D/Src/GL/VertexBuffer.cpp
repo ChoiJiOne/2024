@@ -2,7 +2,7 @@
 
 #include "GL/GLAssertion.h"
 #include "GL/VertexBuffer.h"
-#include "Assertion.h"
+#include "Utils/Assertion.h"
 
 VertexBuffer::VertexBuffer(uint32_t byteSize, const EUsage& usage)
 	: byteSize_(byteSize)

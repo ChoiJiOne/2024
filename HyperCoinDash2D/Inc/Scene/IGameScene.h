@@ -2,7 +2,7 @@
 
 #include <string>
 
-#include "Macro.h"
+#include "Utils/Macro.h"
 
 /** 게임 씬 인터페이스입니다. */
 class IGameScene

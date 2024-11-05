@@ -3,7 +3,7 @@
 #include <string>
 #include <vector>
 
-#include "GLResource.h"
+#include "GL/GLResource.h"
 
 /** OpenGL 셰이더 프로그램 리소스입니다. */
 class Shader : public GLResource

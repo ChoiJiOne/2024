@@ -1,7 +1,7 @@
 #pragma once
 
 #include "GL/GLManager.h"
-#include "Utils.h"
+#include "Utils/Utils.h"
 
 #if defined(DEBUG_MODE) || defined(RELWITHDEBINFO_MODE)
 /**
