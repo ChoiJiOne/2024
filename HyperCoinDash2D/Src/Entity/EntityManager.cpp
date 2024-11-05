@@ -28,7 +28,7 @@ void EntityManager::Destroy(const IEntity* entity)
 
 	if (entityID == -1)
 	{
-		return; // 해당 엔티티는 이미 할당 해제 되었거나, 엔티티 매니저에 의해 
+		return; // 해당 엔티티는 이미 할당 해제 되었거나, 엔티티 매니저에 의해 할당 해제된 엔티티입니다.
 	}
 
 	if (entities_[entityID])
