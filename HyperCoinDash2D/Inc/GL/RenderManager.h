@@ -45,8 +45,6 @@ private:
 		glm::vec2 position;
 		glm::vec2 uv;
 		glm::vec4 color;
-		uint32_t unit; /** 텍스처 유닛입니다. */
-		float transparent = 1.0f; /** 렌더링할 대상의 투명도입니다. 1.0에 가까울수록 불투명합니다. */
 	};
 
 	/**

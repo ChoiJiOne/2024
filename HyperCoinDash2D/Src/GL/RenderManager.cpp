@@ -48,12 +48,6 @@ void RenderManager::Startup()
 		GL_API_CHECK(glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, Vertex::GetStride(), (void*)(offsetof(Vertex, color))));
 		GL_API_CHECK(glEnableVertexAttribArray(2));
 
-		GL_API_CHECK(glVertexAttribIPointer(3, 1, GL_INT, Vertex::GetStride(), (void*)(offsetof(Vertex, unit))));
-		GL_API_CHECK(glEnableVertexAttribArray(3));
-
-		GL_API_CHECK(glVertexAttribPointer(4, 1, GL_FLOAT, GL_FALSE, Vertex::GetStride(), (void*)(offsetof(Vertex, transparent))));
-		GL_API_CHECK(glEnableVertexAttribArray(4));
-
 		vertexBuffer_->Unbind();
 	}
 	GL_API_CHECK(glBindVertexArray(0));
