@@ -43,6 +43,27 @@ void EntityManager::Destroy(const IEntity* entity)
 	}
 }
 
+void EntityManager::Register(const std::string& name, IEntity* entity)
+{
+	auto it = namedEntities_.find(name);
+	ASSERTION(it == namedEntities_.end(), "Already register '%s'", name.c_str());
+
+	namedEntities_.insert({ name, entity });
+}
+
+bool EntityManager::IsRegistration(const std::string& name)
+{
+	return namedEntities_.find(name) != namedEntities_.end();
+}
+
+void EntityManager::Unregister(const std::string& name)
+{
+	auto it = namedEntities_.find(name);
+	ASSERTION(it != namedEntities_.end(), "Can't find '%s' in EntityManager.", name.c_str());
+
+	namedEntities_.erase(it);
+}
+
 void EntityManager::Shutdown()
 {
 	for (std::size_t index = 0; index < entitySize_; ++index)

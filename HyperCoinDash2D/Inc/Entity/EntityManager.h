@@ -57,6 +57,15 @@ public:
 	/** 생성한 엔티티를 파괴합니다. */
 	void Destroy(const IEntity* entity);
 
+	/** 엔티티를 엔티티 매니저에 등록합니다. */
+	void Register(const std::string& name, IEntity* entity);
+
+	/** 엔티티 이름이 등록 되었는지 확인합니다. */
+	bool IsRegistration(const std::string& name);
+
+	/** 엔티티 매니저에 등록을 해제합니다. */
+	void Unregister(const std::string& name);
+
 private:
 	/** GameApp에서 EntityManager의 내부에 접근할 수 있도록 설정 */
 	friend class GameApp;
@@ -84,4 +93,7 @@ private:
 	/** 엔티티와 해당 엔티티의 사용 여부입니다. */
 	std::array<std::unique_ptr<IEntity>, MAX_ENTITY_SIZE> entities_;
 	std::array<bool, MAX_ENTITY_SIZE> usages_;
+
+	/** 이름을 가진 엔티티입니다. */
+	std::map<std::string, IEntity*> namedEntities_;
 };
