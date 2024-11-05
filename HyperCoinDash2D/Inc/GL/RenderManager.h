@@ -6,6 +6,7 @@
 
 #include <glm/glm.hpp>
 
+#include "GL/GLManager.h"
 #include "Utils/Macro.h"
 
 /**
@@ -47,20 +48,6 @@ private:
 		glm::vec4 color;
 	};
 
-	/**
-	 * 렌더 매니저 내부에서만 사용하는 그리기 모드입니다.
-	 * 참조: https://registry.khronos.org/OpenGL-Refpages/gl4/html/glDrawArrays.xhtml
-	 */
-	enum class DrawMode : int32_t
-	{
-		POINTS       = 0x0000,
-		LINES        = 0x0001,
-		LINE_STRIP   = 0x0003,
-		TRIANGLES    = 0x0004,
-		TRIANGLE_FAN = 0x0006,
-		NONE         = 0xFFFF,
-	};
-
 	/** 렌더 매니저 내부에서만 사용하면 그리기 명령입니다. */
 	struct RenderCommand
 	{
@@ -84,7 +71,7 @@ private:
 	static RenderManager singleton_;
 
 	/** 렌더 매니저 내부에서 사용할 GL 매니저입니다. */
-	class GLManager* glManager_ = nullptr;
+	GLManager* glManager_ = nullptr;
 
 	/** 렌더 매니저의 렌더링이 시작되었는지 확인합니다. */
 	bool bIsBegin_ = false;

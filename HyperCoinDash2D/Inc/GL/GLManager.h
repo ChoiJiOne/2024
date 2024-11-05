@@ -12,6 +12,20 @@
 #include "Utils/Macro.h"
 
 /**
+ * 그리기 모드입니다.
+ * 참조: https://registry.khronos.org/OpenGL-Refpages/gl4/html/glDrawArrays.xhtml
+ */
+enum class DrawMode : int32_t
+{
+	POINTS       = 0x0000,
+	LINES        = 0x0001,
+	LINE_STRIP   = 0x0003,
+	TRIANGLES    = 0x0004,
+	TRIANGLE_FAN = 0x0006,
+	NONE         = 0xFFFF,
+};
+
+/**
  * OpenGL 및 렌더링 관련 처리를 수행하는 매니저입니다.
  * 이때, 이 매니저 클래스는 싱글턴입니다.
  */
