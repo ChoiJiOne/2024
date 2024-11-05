@@ -5,6 +5,7 @@
 #include <glfw/glfw3.h>
 
 #include "Utils/Macro.h"
+#include "Utils/Timer.h"
 
 class GameApp
 {
@@ -26,6 +27,9 @@ public:
 private:
 	/** GLFW 메인 윈도우의 포인터입니다. */
 	GLFWwindow* window_ = nullptr;
+
+	/** 게임 앱의 루프 타이머입니다. */
+	Timer loopTimer_;
 	
 	/** 현재 게임 앱의 씬입니다. */
 	class IGameScene* currentScene_ = nullptr;

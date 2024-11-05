@@ -1,7 +1,4 @@
 #include <mimalloc-new-delete.h>
-#include <glad/glad.h>
-
-#include <imgui.h>
 
 #include "Entity/EntityManager.h"
 #include "GL/GLAssertion.h"
@@ -11,6 +8,7 @@
 #include "Scene/GameDevScene.h"
 #include "Scene/SceneManager.h"
 #include "Utils/Assertion.h"
+#include "Utils/Timer.h"
 #include "Utils/Utils.h"
 
 #include "GameApp.h"
@@ -43,13 +41,15 @@ void GameApp::Startup()
 
 void GameApp::Run()
 {
-	currentScene_->Enter();
+	loopTimer_.Reset();
 
+	currentScene_->Enter();
 	while (!glfwWindowShouldClose(window_))
 	{
+		loopTimer_.Tick();
 		GLFWManager::GetRef().Tick();
 
-		currentScene_->Tick(0.0f);
+		currentScene_->Tick(loopTimer_.GetDeltaSeconds());
 		currentScene_->Render();
 
 		if (currentScene_->IsSceneSwitched())
