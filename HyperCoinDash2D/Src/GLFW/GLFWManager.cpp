@@ -87,17 +87,12 @@ void GLFWManager::SetLsatError(int32_t code, const char* description)
 	}
 }
 
-void GLFWManager::BeginTick()
+void GLFWManager::Tick()
 {
 	glfwPollEvents();
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplGlfw_NewFrame();
 	ImGui::NewFrame();
-}
-
-void GLFWManager::EndTick()
-{
-	// TODO: 이 부분은 나중에 씬 전환으로 바꿀 예정.
 }
 
 void GLFWManager::Startup(int32_t width, int32_t height, const char* title)
