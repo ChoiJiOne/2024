@@ -23,6 +23,9 @@ GameApp::GameApp()
 	RenderManager::GetRef().Startup();
 
 	window_ = GLFWManager::GetRef().mainWindow_;
+
+	/** 알파 블랜딩 활성화. */
+	GLManager::GetRef().SetAlphaBlendMode(true);
 }
 
 GameApp::~GameApp()
