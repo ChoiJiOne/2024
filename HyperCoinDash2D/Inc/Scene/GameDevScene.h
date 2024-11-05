@@ -15,4 +15,9 @@ public:
 	virtual void Render() override;
 	virtual void Enter() override;
 	virtual void Exit() override;
+
+private:
+	class VertexBuffer* vertexBuffer_ = nullptr;
+	uint32_t vao_ = 0;
+	class Shader* shader_ = nullptr;
 };
