@@ -27,7 +27,7 @@ public:
 	template <typename TScene, typename... Args>
 	TScene* Create(Args&&... args)
 	{
-		if (!(0 <= sceneSize_ && sceneSize_ < MAX_ENTITY_SIZE))
+		if (!(0 <= sceneSize_ && sceneSize_ < MAX_SCENE_SIZE))
 		{
 			return nullptr;
 		}
