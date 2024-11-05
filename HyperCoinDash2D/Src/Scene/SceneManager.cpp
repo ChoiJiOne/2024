@@ -38,6 +38,27 @@ void SceneManager::Destroy(const IGameScene* scene)
 	}
 }
 
+void SceneManager::Register(const std::string& name, IGameScene* scene)
+{
+	auto it = namedScenes_.find(name);
+	ASSERTION(it == namedScenes_.end(), "Already register '%s'", name.c_str());
+
+	namedScenes_.insert({ name, scene });
+}
+
+bool SceneManager::IsRegistration(const std::string& name)
+{
+	return namedScenes_.find(name) != namedScenes_.end();
+}
+
+void SceneManager::Unregister(const std::string& name)
+{
+	auto it = namedScenes_.find(name);
+	ASSERTION(it != namedScenes_.end(), "Can't find '%s' in SceneManager.", name.c_str());
+
+	namedScenes_.erase(it);
+}
+
 void SceneManager::Shutdown()
 {
 	for (std::size_t index = 0; index < sceneSize_; ++index)

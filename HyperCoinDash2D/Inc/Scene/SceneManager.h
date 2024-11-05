@@ -55,6 +55,28 @@ public:
 
 	/** 생성된 씬을 파괴합니다. */
 	void Destroy(const IGameScene* scene);
+	
+	/** 씬을 씬 매니저에 등록합니다. */
+	void Register(const std::string& name, IGameScene* scene);
+
+	/** 씬 이름이 등록 되었는지 확인합니다. */
+	bool IsRegistration(const std::string& name);
+
+	/** 씬 매니저에 등록을 해제합니다. */
+	void Unregister(const std::string& name);
+
+	/** 이름에 대응하는 씬 얻습니다. */
+	template <typename TScene>
+	TScene* GetByName(const std::string& name)
+	{
+		auto it = namedScenes_.find(name);
+		if (it == namedScenes_.end())
+		{
+			return nullptr;
+		}
+
+		return reinterpret_cast<TScene*>(it->second);
+	}
 
 private:
 	/** GameApp에서 SceneManager의 내부에 접근할 수 있도록 설정. */
@@ -83,4 +105,7 @@ private:
 	/** 씬과 해당 씬의 사용 여부입니다. */
 	std::array<std::unique_ptr<IGameScene>, MAX_SCENE_SIZE> scenes_;
 	std::array<bool, MAX_SCENE_SIZE> usages_;
+
+	/** 이름을 가진 씬입니다. */
+	std::map<std::string, IGameScene*> namedScenes_;
 };
