@@ -66,6 +66,19 @@ public:
 	/** 엔티티 매니저에 등록을 해제합니다. */
 	void Unregister(const std::string& name);
 
+	/** 이름에 대응하는 엔티티를 얻습니다. */
+	template <typename TEntity>
+	TEntity* GetByName(const std::string& name)
+	{
+		auto it = namedEntities_.find(name);
+		if (it == namedEntities_.end())
+		{
+			return nullptr;
+		}
+
+		return reinterpret_cast<TEntity*>(it->second);
+	}
+
 private:
 	/** GameApp에서 EntityManager의 내부에 접근할 수 있도록 설정 */
 	friend class GameApp;
