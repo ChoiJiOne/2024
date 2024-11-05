@@ -8,6 +8,7 @@
 #include "GL/GLManager.h"
 #include "GL/RenderManager.h"
 #include "GLFW/GLFWManager.h"
+#include "Scene/GameDevScene.h"
 #include "Scene/SceneManager.h"
 #include "Assertion.h"
 #include "GameApp.h"
@@ -36,30 +37,30 @@ GameApp::~GameApp()
 
 void GameApp::Startup()
 {
+	currentScene_ = SceneManager::GetRef().Create<GameDevScene>();
 }
 
 void GameApp::Run()
 {
+	currentScene_->Enter();
+
 	while (!glfwWindowShouldClose(window_))
 	{
 		GLFWManager::GetRef().Tick();
 
-		// 게임 로직 업데이트.
-		{
-			ImGui::Begin("TEST");
-			ImGui::Text("Hello ImGui!");
-			ImGui::End();
-		}
+		currentScene_->Tick(0.0f);
+		currentScene_->Render();
 
-		// 렌더링.
-		GLManager::GetRef().BeginFrame(0.0f, 0.0f, 0.0f, 1.0f);
+		if (currentScene_->IsSceneSwitched())
 		{
-
+			currentScene_->Exit();
+			currentScene_ = currentScene_->GetSwitchScene();
+			currentScene_->Enter();
 		}
-		GLManager::GetRef().EndFrame();
 	}
 }
 
 void GameApp::Shutdown()
 {
+	SceneManager::GetRef().Destroy(currentScene_);
 }
