@@ -3,10 +3,12 @@
 
 #include <imgui.h>
 
+#include "Entity/EntityManager.h"
 #include "GL/GLAssertion.h"
 #include "GL/GLManager.h"
 #include "GL/RenderManager.h"
 #include "GLFW/GLFWManager.h"
+#include "Scene/SceneManager.h"
 #include "Assertion.h"
 #include "GameApp.h"
 #include "Utils.h"
@@ -25,6 +27,8 @@ GameApp::GameApp()
 
 GameApp::~GameApp()
 {
+	SceneManager::GetRef().Shutdown();
+	EntityManager::GetRef().Shutdown();
 	RenderManager::GetRef().Shutdown();
 	GLManager::GetRef().Shutdown();
 	GLFWManager::GetRef().Shutdown();
@@ -38,23 +42,21 @@ void GameApp::Run()
 {
 	while (!glfwWindowShouldClose(window_))
 	{
-		GLFWManager::GetRef().BeginTick();
+		GLFWManager::GetRef().Tick();
+
+		// 게임 로직 업데이트.
 		{
-			// 게임 로직 업데이트.
-			{
-				ImGui::Begin("TEST");
-				ImGui::Text("Hello ImGui!");
-				ImGui::End();
-			}
-
-			// 렌더링.
-			GLManager::GetRef().BeginFrame(0.0f, 0.0f, 0.0f, 1.0f);
-			{
-
-			}
-			GLManager::GetRef().EndFrame();
+			ImGui::Begin("TEST");
+			ImGui::Text("Hello ImGui!");
+			ImGui::End();
 		}
-		GLFWManager::GetRef().EndTick();
+
+		// 렌더링.
+		GLManager::GetRef().BeginFrame(0.0f, 0.0f, 0.0f, 1.0f);
+		{
+
+		}
+		GLManager::GetRef().EndFrame();
 	}
 }
 
