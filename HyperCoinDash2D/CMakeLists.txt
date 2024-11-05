@@ -54,3 +54,13 @@ source_group(TREE "${PROJECT_RESOURCE_PATH}" PREFIX "${PROJECT_NAME}/Res" FILES 
 source_group(TREE "${PROJECT_SOURCE_PATH}" PREFIX "${PROJECT_NAME}/Src" FILES ${PROJECT_SOURCE_FILE})
 source_group(TREE "${SCRIPT_PATH}" PREFIX "Script" FILES ${SCRIPT_FILE})
 source_group(TREE "${SHADER_PATH}" PREFIX "Shader" FILES ${SHADER_FILE})
+
+# 셰이더 유효성 검사.
+set(VALIDATOR_PATH "${SCRIPT_PATH}/ShaderValidator.bat")
+foreach (SHADER_SOURCE_FILE IN LISTS SHADER_FILE)
+    add_custom_command(
+        TARGET ${PROJECT_NAME}
+        POST_BUILD
+        COMMAND ${VALIDATOR_PATH} ${SHADER_SOURCE_FILE}
+    )
+endforeach()
