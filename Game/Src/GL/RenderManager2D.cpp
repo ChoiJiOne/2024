@@ -17,16 +17,6 @@
 #include "Utils/Utils.h"
 
 /**
- * 셰이더 상의 매 프레임 바뀌는 유니폼 버퍼입니다.
- * 이 구조체는 2D 렌더 매니저 내부에서만 사용됩니다.
- */
-struct PerFrameUBO
-{
-	static const uint32_t SHADER_BIND_SLOT = 0;
-	glm::mat4 ortho;
-};
-
-/**
  * (0.5f, 0.5f) vs (0.375f, 0.375f)
  * https://community.khronos.org/t/pixel-perfect-drawing/38454
  * https://stackoverflow.com/questions/10040961/opengl-pixel-perfect-2d-drawing
@@ -49,9 +39,12 @@ void RenderManager2D::Begin(const Camera2D* camera2D)
 {
 	CHECK(!bIsBegin_ && camera2D);
 
-	PerFrameUBO ubo;
-	ubo.ortho = camera2D->GetOrtho();
-	uniformBuffer_->SetBufferData(&ubo, sizeof(PerFrameUBO));
+	const glm::mat4& ortho = camera2D->GetOrtho();
+	if (perFrameUBO_.ortho != ortho) /** 행렬이 변경되었을 때만 업데이트. */
+	{
+		perFrameUBO_.ortho = ortho;
+		uniformBuffer_->SetBufferData(&perFrameUBO_, sizeof(PerFrameUBO));
+	}
 
 	GLboolean originEnableDepth;
 	GL_API_CHECK(glGetBooleanv(GL_DEPTH_TEST, &originEnableDepth));

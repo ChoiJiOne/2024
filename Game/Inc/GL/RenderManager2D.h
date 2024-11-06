@@ -76,6 +76,13 @@ private:
 		uint32_t vertexCount;
 		EType type;
 	};
+	
+	/** 셰이더 상의 매 프레임 바뀌는 유니폼 버퍼입니다. */
+	struct PerFrameUBO
+	{
+		static const uint32_t SHADER_BIND_SLOT = 0;
+		glm::mat4 ortho;
+	};
 
 	/** 2D 렌더 매니저의 초기화 및 해제는 GameApp 내부에서만 수행됩니다. */
 	void Startup();
@@ -104,6 +111,9 @@ private:
 
 	/** 셰이더 끼리 공유 가능한 유니폼 버퍼입니다. */
 	class UniformBuffer* uniformBuffer_ = nullptr;
+
+	/** 셰이더 상의 매 프레임 바뀌는 유니폼 버퍼 원본입니다. */
+	PerFrameUBO perFrameUBO_;
 
 	/** 정점 버퍼의 최대 개수입니다. */
 	static const int32_t MAX_VERTEX_BUFFER_SIZE = 30000;
