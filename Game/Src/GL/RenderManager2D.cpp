@@ -107,7 +107,7 @@ void RenderManager2D::DrawPoint(const glm::vec2& point, const glm::vec4& color, 
 	if (!commandQueue_.empty())
 	{
 		RenderCommand& prevCommand = commandQueue_.back();
-		if (prevCommand.drawMode == DrawMode::TRIANGLES && prevCommand.type == RenderCommand::EType::GEOMETRY)
+		if (prevCommand.drawMode == EDrawMode::TRIANGLES && prevCommand.type == RenderCommand::EType::GEOMETRY)
 		{
 			uint32_t startVertexIndex = prevCommand.startVertexIndex + prevCommand.vertexCount;
 			prevCommand.vertexCount += static_cast<uint32_t>(vertices.size());
@@ -130,7 +130,7 @@ void RenderManager2D::DrawPoint(const glm::vec2& point, const glm::vec4& color, 
 	}
 
 	RenderCommand command;
-	command.drawMode = DrawMode::TRIANGLES;
+	command.drawMode = EDrawMode::TRIANGLES;
 	command.startVertexIndex = startVertexIndex;
 	command.vertexCount = static_cast<uint32_t>(vertices.size());
 	command.type = RenderCommand::EType::GEOMETRY;
@@ -162,7 +162,7 @@ void RenderManager2D::DrawLine(const glm::vec2& startPos, const glm::vec2& endPo
 	{
 		RenderCommand& prevCommand = commandQueue_.back();
 
-		if (prevCommand.drawMode == DrawMode::LINES && prevCommand.type == RenderCommand::EType::GEOMETRY)
+		if (prevCommand.drawMode == EDrawMode::LINES && prevCommand.type == RenderCommand::EType::GEOMETRY)
 		{
 			uint32_t startVertexIndex = prevCommand.startVertexIndex + prevCommand.vertexCount;
 			prevCommand.vertexCount += static_cast<uint32_t>(vertices.size());
@@ -185,7 +185,7 @@ void RenderManager2D::DrawLine(const glm::vec2& startPos, const glm::vec2& endPo
 	}
 
 	RenderCommand command;
-	command.drawMode = DrawMode::LINES;
+	command.drawMode = EDrawMode::LINES;
 	command.startVertexIndex = startVertexIndex;
 	command.vertexCount = static_cast<uint32_t>(vertices.size());
 	command.type = RenderCommand::EType::GEOMETRY;

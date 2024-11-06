@@ -71,7 +71,7 @@ private:
 			GEOMETRY = 0x00,
 		};
 
-		DrawMode drawMode;
+		EDrawMode drawMode;
 		uint32_t startVertexIndex;
 		uint32_t vertexCount;
 		EType type;

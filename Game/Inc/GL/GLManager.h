@@ -15,7 +15,7 @@
  * 그리기 모드입니다.
  * 참조: https://registry.khronos.org/OpenGL-Refpages/gl4/html/glDrawArrays.xhtml
  */
-enum class DrawMode : int32_t
+enum class EDrawMode : int32_t
 {
 	POINTS       = 0x0000,
 	LINES        = 0x0001,
