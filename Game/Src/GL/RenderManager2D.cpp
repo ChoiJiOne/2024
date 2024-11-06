@@ -29,12 +29,31 @@ RenderManager2D* RenderManager2D::GetPtr()
 
 void RenderManager2D::Begin(const Camera2D* camera2D)
 {
+	CHECK(!bIsBegin_ && !camera2D);
 
+	GLboolean originEnableDepth;
+	GL_API_CHECK(glGetBooleanv(GL_DEPTH_TEST, &originEnableDepth));
+
+	GLboolean originEnableCull;
+	GL_API_CHECK(glGetBooleanv(GL_CULL_FACE, &originEnableCull));
+
+	originEnableDepth_ = static_cast<bool>(originEnableDepth);
+	originEnableCull_ = static_cast<bool>(originEnableCull);
+
+	glManager_->SetDepthMode(false);
+	glManager_->SetCullFaceMode(false);
+
+	bIsBegin_ = true;
 }
 
 void RenderManager2D::End()
 {
+	CHECK(bIsBegin_);
 
+	glManager_->SetCullFaceMode(originEnableCull_);
+	glManager_->SetDepthMode(originEnableDepth_);
+
+	bIsBegin_ = false;
 }
 
 void RenderManager2D::Startup()

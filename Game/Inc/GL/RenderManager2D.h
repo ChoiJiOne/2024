@@ -34,7 +34,7 @@ public:
 
 	/** 2D 렌더링을 종료합니다. */
 	void End();
-	
+		
 private:
 	/** GameApp에서 2D 렌더 매니저의 내부에 접근할 수 있도록 설정. */
 	friend class GameApp;
@@ -81,7 +81,7 @@ private:
 	/** 2D 렌더 매니저의 싱글턴 객체입니다. */
 	static RenderManager2D singleton_;
 
-	/** 렌더 매니저 내부에서 사용할 GL 매니저입니다. */
+	/** 2D 렌더 매니저 내부에서 사용할 GL 매니저입니다. */
 	GLManager* glManager_ = nullptr;
 
 	/** 정점 Array 오브젝트입니다. */
@@ -98,4 +98,13 @@ private:
 
 	/** 정점 버퍼입니다. */
 	std::array<Vertex, MAX_VERTEX_BUFFER_SIZE> vertices_;
+
+	/** 2D 렌더링이 시작되었는지 확인합니다. */
+	bool bIsBegin_ = false;
+
+	/** 2D 렌더링 시작 이전의 깊이 테스트 활성화 여부입니다. */
+	bool originEnableDepth_ = false;
+
+	/** 2D 렌더링 시작 이전의 컬링 테스트 활성화 여부입니다.  */
+	bool originEnableCull_ = false;
 };
