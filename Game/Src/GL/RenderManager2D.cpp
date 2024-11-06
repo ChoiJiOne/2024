@@ -52,13 +52,21 @@ void RenderManager2D::Startup()
 		vertexBuffer_->Unbind();
 	}
 	GL_API_CHECK(glBindVertexArray(0));
-
 }
 
 void RenderManager2D::Shutdown()
 {
-	glManager_->Destroy(vertexBuffer_);
-	vertexBuffer_ = nullptr;
+	if (vertexBuffer_)
+	{
+		glManager_->Destroy(vertexBuffer_);
+		vertexBuffer_ = nullptr;
+	}
+
+	if (uniformBuffer_)
+	{
+		glManager_->Destroy(uniformBuffer_);
+		uniformBuffer_ = nullptr;
+	}
 	
 	GL_API_CHECK(glDeleteVertexArrays(1, &vertexArrayObject_));
 
