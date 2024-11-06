@@ -3,7 +3,7 @@
 #include "Entity/EntityManager.h"
 #include "GL/GLAssertion.h"
 #include "GL/GLManager.h"
-#include "GL/RenderManager.h"
+#include "GL/RenderManager2D.h"
 #include "GLFW/GLFWManager.h"
 #include "Scene/GameDevScene.h"
 #include "Scene/SceneManager.h"
@@ -20,7 +20,7 @@ GameApp::GameApp()
 {
 	GLFWManager::GetRef().Startup(WINDOW_WIDTH, WINDOW_HEIGHT, "HyperCoinDash2D");
 	GLManager::GetRef().Startup();
-	RenderManager::GetRef().Startup();
+	RenderManager2D::GetRef().Startup();
 
 	window_ = GLFWManager::GetRef().mainWindow_;
 
@@ -32,7 +32,7 @@ GameApp::~GameApp()
 {
 	SceneManager::GetRef().Shutdown();
 	EntityManager::GetRef().Shutdown();
-	RenderManager::GetRef().Shutdown();
+	RenderManager2D::GetRef().Shutdown();
 	GLManager::GetRef().Shutdown();
 	GLFWManager::GetRef().Shutdown();
 }
