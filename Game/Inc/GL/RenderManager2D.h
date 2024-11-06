@@ -34,6 +34,10 @@ public:
 
 	/** 2D 렌더링을 종료합니다. */
 	void End();
+
+	/** 2D 기하 도형 (점, 선, 삼각형, 사각형, 원 등등)을 렌더링합니다. */
+	void DrawPoint(const glm::vec2& point, const glm::vec4& color, float pointSize);
+	void DrawLine(const glm::vec2& startPos, const glm::vec2& endPos, const glm::vec4& color);
 		
 private:
 	/** GameApp에서 2D 렌더 매니저의 내부에 접근할 수 있도록 설정. */
@@ -62,7 +66,7 @@ private:
 	/** 2D 렌더 매니저 내부에서 사용할 렌더링 명령입니다. */
 	struct RenderCommand
 	{
-		enum class Type
+		enum class EType
 		{
 			GEOMETRY = 0x00,
 		};
@@ -70,12 +74,20 @@ private:
 		DrawMode drawMode;
 		uint32_t startVertexIndex;
 		uint32_t vertexCount;
-		Type type;
+		EType type;
 	};
 
 	/** 2D 렌더 매니저의 초기화 및 해제는 GameApp 내부에서만 수행됩니다. */
 	void Startup();
 	void Shutdown();
+
+	/** 2D 렌더 매니저 내부의 프로퍼티를 초기화합니다. */
+	void LoadBuffers();
+	void LoadShaders();
+
+	/** 2D 렌더 매니저 내의 커멘드 큐와 관련된 기능들입니다. */
+	void Flush();
+	bool IsFullCommandQueue(uint32_t vertexCount);
 
 private:
 	/** 2D 렌더 매니저의 싱글턴 객체입니다. */
@@ -107,4 +119,10 @@ private:
 
 	/** 2D 렌더링 시작 이전의 컬링 테스트 활성화 여부입니다.  */
 	bool originEnableCull_ = false;
+
+	/** 2D 렌더링할 때 사용할 셰이더입니다. */
+	std::map<RenderCommand::EType, class Shader*> shaders_;
+
+	/** 2D 렌더링 명령을 저장하는 커맨드 큐입니다. */
+	std::queue<RenderCommand> commandQueue_;
 };
