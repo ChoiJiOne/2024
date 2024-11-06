@@ -2,6 +2,8 @@
 #include <glm/glm.hpp>
 #include <imgui.h>
 
+#include "Entity/Camera2D.h"
+#include "Entity/EntityManager.h"
 #include "GL/GLAssertion.h"
 #include "GL/GLManager.h"
 #include "GL/Shader.h"
@@ -12,10 +14,12 @@
 
 GameDevScene::GameDevScene()
 {
+	mainCamera_ = EntityManager::GetRef().Create<Camera2D>(glm::vec2(0.0f, 0.0f), glm::vec2(1000.0f, 800.0f));
 }
 
 GameDevScene::~GameDevScene()
 {
+	EntityManager::GetRef().Destroy(mainCamera_);
 }
 
 void GameDevScene::Tick(float deltaSeconds)

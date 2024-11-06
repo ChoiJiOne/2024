@@ -15,4 +15,7 @@ public:
 	virtual void Render() override;
 	virtual void Enter() override;
 	virtual void Exit() override;
+
+private:
+	class Camera2D* mainCamera_ = nullptr;
 };
