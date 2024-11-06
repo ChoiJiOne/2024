@@ -12,6 +12,11 @@
 /**
  * 2D 렌더링을 수행하는 매니저입니다.
  * 이때, 이 매니저 클래스는 싱글턴입니다.
+ * 2D 좌표계의 기준은 카메라를 중심으로 다음과 같습니다.
+ *     +y
+ *     │
+ * ────┼────x+
+ *     │
  */
 class RenderManager2D
 {
@@ -23,7 +28,7 @@ public:
 
 	/** 2D 렌더 매니저의 싱글턴 객체 포인터를 얻습니다. */
 	static RenderManager2D* GetPtr();
-
+	
 private:
 	/** GameApp에서 2D 렌더 매니저의 내부에 접근할 수 있도록 설정. */
 	friend class GameApp;
@@ -34,6 +39,19 @@ private:
 	 */
 	RenderManager2D() = default;
 	virtual ~RenderManager2D() {}
+
+	/** 2D 렌더 매니저 내부에서만 사용하는 정점입니다. */
+	struct Vertex
+	{
+		static uint32_t GetStride()
+		{
+			return sizeof(Vertex);
+		}
+
+		glm::vec2 position;
+		glm::vec2 uv;
+		glm::vec4 color;
+	};
 
 	/** 2D 렌더 매니저의 초기화 및 해제는 GameApp 내부에서만 수행됩니다. */
 	void Startup();

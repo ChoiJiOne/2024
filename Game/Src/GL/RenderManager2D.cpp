@@ -6,6 +6,7 @@
 
 #include <glad/glad.h>
 
+#include "Entity/Camera2D.h"
 #include "GL/GLAssertion.h"
 #include "GL/GLManager.h"
 #include "GL/RenderManager2D.h"
