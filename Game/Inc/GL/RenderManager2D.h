@@ -53,6 +53,20 @@ private:
 		glm::vec4 color;
 	};
 
+	/** 2D 렌더 매니저 내부에서 사용할 렌더링 명령입니다. */
+	struct RenderCommand
+	{
+		enum class Type
+		{
+			GEOMETRY = 0x00,
+		};
+
+		DrawMode drawMode;
+		uint32_t startVertexIndex;
+		uint32_t vertexCount;
+		Type type;
+	};
+
 	/** 2D 렌더 매니저의 초기화 및 해제는 GameApp 내부에서만 수행됩니다. */
 	void Startup();
 	void Shutdown();
