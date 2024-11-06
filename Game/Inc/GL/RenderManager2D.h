@@ -93,6 +93,14 @@ private:
 		glm::mat4 ortho;
 	};
 
+	/** 렌더링 시작 이전의 상태입니다. */
+	struct OriginGLContext
+	{
+		int32_t viewport[4];
+		bool bEnableDepth;
+		bool bEnableCull;
+	};
+
 	/** 2D 렌더 매니저의 초기화 및 해제는 GameApp 내부에서만 수행됩니다. */
 	void Startup();
 	void Shutdown();
@@ -133,12 +141,9 @@ private:
 	/** 2D 렌더링이 시작되었는지 확인합니다. */
 	bool bIsBegin_ = false;
 
-	/** 2D 렌더링 시작 이전의 깊이 테스트 활성화 여부입니다. */
-	bool originEnableDepth_ = false;
-
-	/** 2D 렌더링 시작 이전의 컬링 테스트 활성화 여부입니다.  */
-	bool originEnableCull_ = false;
-
+	/** 2D 렌더링 시작 이전의 컨텍스트입니다. */
+	OriginGLContext originContext_;
+	
 	/** 2D 렌더링할 때 사용할 셰이더입니다. */
 	std::map<RenderCommand::EType, class Shader*> shaders_;
 

@@ -47,17 +47,13 @@ void RenderManager2D::Begin(const Camera2D* camera2D)
 		uniformBuffer_->SetBufferData(&perFrameUBO_, sizeof(PerFrameUBO));
 	}
 
-	GLboolean originEnableDepth;
-	GL_API_CHECK(glGetBooleanv(GL_DEPTH_TEST, &originEnableDepth));
-
-	GLboolean originEnableCull;
-	GL_API_CHECK(glGetBooleanv(GL_CULL_FACE, &originEnableCull));
-
-	originEnableDepth_ = static_cast<bool>(originEnableDepth);
-	originEnableCull_ = static_cast<bool>(originEnableCull);
+	GL_API_CHECK(glGetIntegerv(GL_VIEWPORT, originContext_.viewport));
+	GL_API_CHECK(glGetBooleanv(GL_DEPTH_TEST, reinterpret_cast<GLboolean*>(&originContext_.bEnableDepth)));
+	GL_API_CHECK(glGetBooleanv(GL_CULL_FACE, reinterpret_cast<GLboolean*>(&originContext_.bEnableCull)));
 
 	glManager_->SetDepthMode(false);
 	glManager_->SetCullFaceMode(false);
+	glManager_->SetViewport(0, 0, static_cast<int32_t>(camera2D->GetWidth()), static_cast<int32_t>(camera2D->GetHeight()));
 
 	bIsBegin_ = true;
 }
@@ -68,8 +64,9 @@ void RenderManager2D::End()
 
 	Flush();
 
-	glManager_->SetCullFaceMode(originEnableCull_);
-	glManager_->SetDepthMode(originEnableDepth_);
+	glManager_->SetCullFaceMode(originContext_.bEnableCull);
+	glManager_->SetDepthMode(originContext_.bEnableDepth);
+	glManager_->SetViewport(originContext_.viewport[0], originContext_.viewport[1], originContext_.viewport[2], originContext_.viewport[3]);
 
 	bIsBegin_ = false;
 }
