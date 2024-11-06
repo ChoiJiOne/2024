@@ -47,7 +47,7 @@ private:
 		{
 			return sizeof(Vertex);
 		}
-
+		
 		glm::vec2 position;
 		glm::vec2 uv;
 		glm::vec4 color;
@@ -77,4 +77,19 @@ private:
 
 	/** 렌더 매니저 내부에서 사용할 GL 매니저입니다. */
 	GLManager* glManager_ = nullptr;
+
+	/** 정점 Array 오브젝트입니다. */
+	uint32_t vertexArrayObject_ = 0;
+
+	/** GPU 상의 정점 버퍼입니다. */
+	VertexBuffer* vertexBuffer_ = nullptr;
+
+	/** 셰이더 끼리 공유 가능한 유니폼 버퍼입니다. */
+	UniformBuffer* uniformBuffer_ = nullptr;
+
+	/** 정점 버퍼의 최대 개수입니다. */
+	static const int32_t MAX_VERTEX_BUFFER_SIZE = 30000;
+
+	/** 정점 버퍼입니다. */
+	std::array<Vertex, MAX_VERTEX_BUFFER_SIZE> vertices_;
 };
