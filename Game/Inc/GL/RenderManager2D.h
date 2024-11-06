@@ -30,7 +30,7 @@ public:
 	static RenderManager2D* GetPtr();
 
 	/** 2D 카메라를 기준으로 렌더링을 시작합니다. */
-	void Begin(const Camera2D* camera2D);
+	void Begin(const class Camera2D* camera2D);
 
 	/** 2D 렌더링을 종료합니다. */
 	void End();
