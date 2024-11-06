@@ -38,6 +38,15 @@ public:
 	/** 2D 기하 도형 (점, 선, 삼각형, 사각형, 원 등등)을 렌더링합니다. */
 	void DrawPoint(const glm::vec2& point, const glm::vec4& color, float pointSize);
 	void DrawLine(const glm::vec2& startPos, const glm::vec2& endPos, const glm::vec4& color);
+	void DrawLine(const glm::vec2& startPos, const glm::vec4& startColor, const glm::vec2& endPos, const glm::vec4& endColor);
+	void DrawTriangle(const glm::vec2& fromPos, const glm::vec2& byPos, const glm::vec2& toPos, const glm::vec4& color);
+	void DrawTriangle(const glm::vec2& fromPos, const glm::vec4& fromColor, const glm::vec2& byPos, const glm::vec4& byColor, const glm::vec2& toPos, const glm::vec4& toColor);
+	void DrawTriangleWireframe(const glm::vec2& fromPos, const glm::vec2& byPos, const glm::vec2& toPos, const glm::vec4& color);
+	void DrawTriangleWireframe(const glm::vec2& fromPos, const glm::vec4& fromColor, const glm::vec2& byPos, const glm::vec4& byColor, const glm::vec2& toPos, const glm::vec4& toColor);
+	void DrawRect(const glm::vec2& center, float w, float h, const glm::vec4& color, float rotate);
+	void DrawRectWireframe(const glm::vec2& center, float w, float h, const glm::vec4& color, float rotate);
+	void DrawCircle(const glm::vec2& center, float radius, const glm::vec4& color);
+	void DrawCircleWireframe(const glm::vec2& center, float radius, const glm::vec4& color);
 		
 private:
 	/** GameApp에서 2D 렌더 매니저의 내부에 접근할 수 있도록 설정. */

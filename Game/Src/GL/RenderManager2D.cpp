@@ -5,6 +5,7 @@
 #pragma warning(disable: 6031)
 
 #include <glad/glad.h>
+#include <glm/gtc/constants.hpp>
 
 #include "Entity/Camera2D.h"
 #include "GL/GLAssertion.h"
@@ -150,6 +151,576 @@ void RenderManager2D::DrawLine(const glm::vec2& startPos, const glm::vec2& endPo
 		startPos + PIXEL_OFFSET,
 		  endPos + PIXEL_OFFSET,
 	};
+
+	if (!commandQueue_.empty())
+	{
+		RenderCommand& prevCommand = commandQueue_.back();
+
+		if (prevCommand.drawMode == EDrawMode::LINES && prevCommand.type == RenderCommand::EType::GEOMETRY)
+		{
+			uint32_t startVertexIndex = prevCommand.startVertexIndex + prevCommand.vertexCount;
+			prevCommand.vertexCount += static_cast<uint32_t>(vertices.size());
+
+			for (uint32_t index = 0; index < vertices.size(); ++index)
+			{
+				vertices_[startVertexIndex + index].position = vertices[index];
+				vertices_[startVertexIndex + index].color = color;
+			}
+
+			return;
+		}
+	}
+
+	uint32_t startVertexIndex = 0;
+	if (!commandQueue_.empty())
+	{
+		RenderCommand& prevCommand = commandQueue_.back();
+		startVertexIndex = prevCommand.startVertexIndex + prevCommand.vertexCount;
+	}
+
+	RenderCommand command;
+	command.drawMode = EDrawMode::LINES;
+	command.startVertexIndex = startVertexIndex;
+	command.vertexCount = static_cast<uint32_t>(vertices.size());
+	command.type = RenderCommand::EType::GEOMETRY;
+
+	for (uint32_t index = 0; index < command.vertexCount; ++index)
+	{
+		vertices_[command.startVertexIndex + index].position = vertices[index];
+		vertices_[command.startVertexIndex + index].color = color;
+	}
+
+	commandQueue_.push(command);
+}
+
+void RenderManager2D::DrawLine(const glm::vec2& startPos, const glm::vec4& startColor, const glm::vec2& endPos, const glm::vec4& endColor)
+{
+	static const uint32_t MAX_VERTEX_SIZE = 2;
+	if (IsFullCommandQueue(MAX_VERTEX_SIZE))
+	{
+		Flush();
+	}
+
+	std::array<glm::vec2, MAX_VERTEX_SIZE> vertices =
+	{
+		startPos + PIXEL_OFFSET,
+		  endPos + PIXEL_OFFSET,
+	};
+
+	std::array<glm::vec4, MAX_VERTEX_SIZE> colors =
+	{
+		startColor,
+		endColor,
+	};
+
+	if (!commandQueue_.empty())
+	{
+		RenderCommand& prevCommand = commandQueue_.back();
+
+		if (prevCommand.drawMode == EDrawMode::LINES && prevCommand.type == RenderCommand::EType::GEOMETRY)
+		{
+			uint32_t startVertexIndex = prevCommand.startVertexIndex + prevCommand.vertexCount;
+			prevCommand.vertexCount += static_cast<uint32_t>(vertices.size());
+
+			for (uint32_t index = 0; index < vertices.size(); ++index)
+			{
+				vertices_[startVertexIndex + index].position = vertices[index];
+				vertices_[startVertexIndex + index].color = colors[index];
+			}
+
+			return;
+		}
+	}
+
+	uint32_t startVertexIndex = 0;
+	if (!commandQueue_.empty())
+	{
+		RenderCommand& prevCommand = commandQueue_.back();
+		startVertexIndex = prevCommand.startVertexIndex + prevCommand.vertexCount;
+	}
+
+	RenderCommand command;
+	command.drawMode = EDrawMode::LINES;
+	command.startVertexIndex = startVertexIndex;
+	command.vertexCount = static_cast<uint32_t>(vertices.size());
+	command.type = RenderCommand::EType::GEOMETRY;
+
+	for (uint32_t index = 0; index < command.vertexCount; ++index)
+	{
+		vertices_[command.startVertexIndex + index].position = vertices[index];
+		vertices_[command.startVertexIndex + index].color = colors[index];
+	}
+
+	commandQueue_.push(command);
+}
+
+void RenderManager2D::DrawTriangle(const glm::vec2& fromPos, const glm::vec2& byPos, const glm::vec2& toPos, const glm::vec4& color)
+{
+	static const uint32_t MAX_VERTEX_SIZE = 3;
+	if (IsFullCommandQueue(MAX_VERTEX_SIZE))
+	{
+		Flush();
+	}
+
+	std::array<glm::vec2, MAX_VERTEX_SIZE> vertices =
+	{
+		fromPos + PIXEL_OFFSET,
+		  byPos + PIXEL_OFFSET,
+		  toPos + PIXEL_OFFSET,
+	};
+
+	if (!commandQueue_.empty())
+	{
+		RenderCommand& prevCommand = commandQueue_.back();
+
+		if (prevCommand.drawMode == EDrawMode::TRIANGLES && prevCommand.type == RenderCommand::EType::GEOMETRY)
+		{
+			uint32_t startVertexIndex = prevCommand.startVertexIndex + prevCommand.vertexCount;
+			prevCommand.vertexCount += static_cast<uint32_t>(vertices.size());
+
+			for (uint32_t index = 0; index < vertices.size(); ++index)
+			{
+				vertices_[startVertexIndex + index].position = vertices[index];
+				vertices_[startVertexIndex + index].color = color;
+			}
+
+			return;
+		}
+	}
+
+	uint32_t startVertexIndex = 0;
+	if (!commandQueue_.empty())
+	{
+		RenderCommand& prevCommand = commandQueue_.back();
+		startVertexIndex = prevCommand.startVertexIndex + prevCommand.vertexCount;
+	}
+
+	RenderCommand command;
+	command.drawMode = EDrawMode::TRIANGLES;
+	command.startVertexIndex = startVertexIndex;
+	command.vertexCount = static_cast<uint32_t>(vertices.size());
+	command.type = RenderCommand::EType::GEOMETRY;
+
+	for (uint32_t index = 0; index < command.vertexCount; ++index)
+	{
+		vertices_[command.startVertexIndex + index].position = vertices[index];
+		vertices_[command.startVertexIndex + index].color = color;
+	}
+
+	commandQueue_.push(command);
+}
+
+void RenderManager2D::DrawTriangle(const glm::vec2& fromPos, const glm::vec4& fromColor, const glm::vec2& byPos, const glm::vec4& byColor, const glm::vec2& toPos, const glm::vec4& toColor)
+{
+	static const uint32_t MAX_VERTEX_SIZE = 3;
+	if (IsFullCommandQueue(MAX_VERTEX_SIZE))
+	{
+		Flush();
+	}
+
+	std::array<glm::vec2, MAX_VERTEX_SIZE> vertices =
+	{
+		fromPos + PIXEL_OFFSET,
+		  byPos + PIXEL_OFFSET,
+		  toPos + PIXEL_OFFSET,
+	};
+
+	std::array<glm::vec4, MAX_VERTEX_SIZE> colors =
+	{
+		fromColor,
+		  byColor,
+		  toColor,
+	};
+
+	if (!commandQueue_.empty())
+	{
+		RenderCommand& prevCommand = commandQueue_.back();
+
+		if (prevCommand.drawMode == EDrawMode::TRIANGLES && prevCommand.type == RenderCommand::EType::GEOMETRY)
+		{
+			uint32_t startVertexIndex = prevCommand.startVertexIndex + prevCommand.vertexCount;
+			prevCommand.vertexCount += static_cast<uint32_t>(vertices.size());
+
+			for (uint32_t index = 0; index < vertices.size(); ++index)
+			{
+				vertices_[startVertexIndex + index].position = vertices[index];
+				vertices_[startVertexIndex + index].color = colors[index];
+			}
+
+			return;
+		}
+	}
+
+	uint32_t startVertexIndex = 0;
+	if (!commandQueue_.empty())
+	{
+		RenderCommand& prevCommand = commandQueue_.back();
+		startVertexIndex = prevCommand.startVertexIndex + prevCommand.vertexCount;
+	}
+
+	RenderCommand command;
+	command.drawMode = EDrawMode::TRIANGLES;
+	command.startVertexIndex = startVertexIndex;
+	command.vertexCount = static_cast<uint32_t>(vertices.size());
+	command.type = RenderCommand::EType::GEOMETRY;
+
+	for (uint32_t index = 0; index < command.vertexCount; ++index)
+	{
+		vertices_[command.startVertexIndex + index].position = vertices[index];
+		vertices_[command.startVertexIndex + index].color = colors[index];
+	}
+
+	commandQueue_.push(command);
+}
+
+void RenderManager2D::DrawTriangleWireframe(const glm::vec2& fromPos, const glm::vec2& byPos, const glm::vec2& toPos, const glm::vec4& color)
+{
+	static const uint32_t MAX_VERTEX_SIZE = 6;
+	if (IsFullCommandQueue(MAX_VERTEX_SIZE))
+	{
+		Flush();
+	}
+
+	std::array<glm::vec2, MAX_VERTEX_SIZE> vertices =
+	{
+		fromPos + PIXEL_OFFSET,   byPos + PIXEL_OFFSET,
+		  byPos + PIXEL_OFFSET,   toPos + PIXEL_OFFSET,
+		  toPos + PIXEL_OFFSET, fromPos + PIXEL_OFFSET,
+	};
+
+	if (!commandQueue_.empty())
+	{
+		RenderCommand& prevCommand = commandQueue_.back();
+
+		if (prevCommand.drawMode == EDrawMode::LINES && prevCommand.type == RenderCommand::EType::GEOMETRY)
+		{
+			uint32_t startVertexIndex = prevCommand.startVertexIndex + prevCommand.vertexCount;
+			prevCommand.vertexCount += static_cast<uint32_t>(vertices.size());
+
+			for (uint32_t index = 0; index < vertices.size(); ++index)
+			{
+				vertices_[startVertexIndex + index].position = vertices[index];
+				vertices_[startVertexIndex + index].color = color;
+			}
+
+			return;
+		}
+	}
+
+	uint32_t startVertexIndex = 0;
+	if (!commandQueue_.empty())
+	{
+		RenderCommand& prevCommand = commandQueue_.back();
+		startVertexIndex = prevCommand.startVertexIndex + prevCommand.vertexCount;
+	}
+
+	RenderCommand command;
+	command.drawMode = EDrawMode::LINES;
+	command.startVertexIndex = startVertexIndex;
+	command.vertexCount = static_cast<uint32_t>(vertices.size());
+	command.type = RenderCommand::EType::GEOMETRY;
+
+	for (uint32_t index = 0; index < command.vertexCount; ++index)
+	{
+		vertices_[command.startVertexIndex + index].position = vertices[index];
+		vertices_[command.startVertexIndex + index].color = color;
+	}
+
+	commandQueue_.push(command);
+}
+
+void RenderManager2D::DrawTriangleWireframe(const glm::vec2& fromPos, const glm::vec4& fromColor, const glm::vec2& byPos, const glm::vec4& byColor, const glm::vec2& toPos, const glm::vec4& toColor)
+{
+	static const uint32_t MAX_VERTEX_SIZE = 6;
+	if (IsFullCommandQueue(MAX_VERTEX_SIZE))
+	{
+		Flush();
+	}
+
+	std::array<glm::vec2, MAX_VERTEX_SIZE> vertices =
+	{
+		fromPos + PIXEL_OFFSET,   byPos + PIXEL_OFFSET,
+		  byPos + PIXEL_OFFSET,   toPos + PIXEL_OFFSET,
+		  toPos + PIXEL_OFFSET, fromPos + PIXEL_OFFSET,
+	};
+
+	std::array<glm::vec4, MAX_VERTEX_SIZE> colors =
+	{
+		fromColor,   byColor,
+		  byColor,   toColor,
+		  toColor, fromColor,
+	};
+
+	if (!commandQueue_.empty())
+	{
+		RenderCommand& prevCommand = commandQueue_.back();
+
+		if (prevCommand.drawMode == EDrawMode::LINES && prevCommand.type == RenderCommand::EType::GEOMETRY)
+		{
+			uint32_t startVertexIndex = prevCommand.startVertexIndex + prevCommand.vertexCount;
+			prevCommand.vertexCount += static_cast<uint32_t>(vertices.size());
+
+			for (uint32_t index = 0; index < vertices.size(); ++index)
+			{
+				vertices_[startVertexIndex + index].position = vertices[index];
+				vertices_[startVertexIndex + index].color = colors[index];
+			}
+
+			return;
+		}
+	}
+
+	uint32_t startVertexIndex = 0;
+	if (!commandQueue_.empty())
+	{
+		RenderCommand& prevCommand = commandQueue_.back();
+		startVertexIndex = prevCommand.startVertexIndex + prevCommand.vertexCount;
+	}
+
+	RenderCommand command;
+	command.drawMode = EDrawMode::LINES;
+	command.startVertexIndex = startVertexIndex;
+	command.vertexCount = static_cast<uint32_t>(vertices.size());
+	command.type = RenderCommand::EType::GEOMETRY;
+
+	for (uint32_t index = 0; index < command.vertexCount; ++index)
+	{
+		vertices_[command.startVertexIndex + index].position = vertices[index];
+		vertices_[command.startVertexIndex + index].color = colors[index];
+	}
+
+	commandQueue_.push(command);
+}
+
+void RenderManager2D::DrawRect(const glm::vec2& center, float w, float h, const glm::vec4& color, float rotate)
+{
+	static const uint32_t MAX_VERTEX_SIZE = 6;
+	if (IsFullCommandQueue(MAX_VERTEX_SIZE))
+	{
+		Flush();
+	}
+
+	float w2 = w * 0.5f;
+	float h2 = h * 0.5f;
+
+	std::array<glm::vec2, MAX_VERTEX_SIZE> vertices =
+	{
+		glm::vec2(-w2, -h2),
+		glm::vec2(+w2, +h2),
+		glm::vec2(-w2, +h2),
+		glm::vec2(-w2, -h2),
+		glm::vec2(+w2, -h2),
+		glm::vec2(+w2, +h2),
+	};
+
+	glm::mat2 rotateMat = glm::mat2(
+		+glm::cos(rotate), -glm::sin(rotate),
+		+glm::sin(rotate), +glm::cos(rotate)
+	);
+	for (auto& vertex : vertices)
+	{
+		vertex = vertex * rotateMat;
+		vertex += (center + PIXEL_OFFSET);
+	}
+
+	if (!commandQueue_.empty())
+	{
+		RenderCommand& prevCommand = commandQueue_.back();
+
+		if (prevCommand.drawMode == EDrawMode::TRIANGLES && prevCommand.type == RenderCommand::EType::GEOMETRY)
+		{
+			uint32_t startVertexIndex = prevCommand.startVertexIndex + prevCommand.vertexCount;
+			prevCommand.vertexCount += static_cast<uint32_t>(vertices.size());
+
+			for (uint32_t index = 0; index < vertices.size(); ++index)
+			{
+				vertices_[startVertexIndex + index].position = vertices[index];
+				vertices_[startVertexIndex + index].color = color;
+			}
+
+			return;
+		}
+	}
+
+	uint32_t startVertexIndex = 0;
+	if (!commandQueue_.empty())
+	{
+		RenderCommand& prevCommand = commandQueue_.back();
+		startVertexIndex = prevCommand.startVertexIndex + prevCommand.vertexCount;
+	}
+
+	RenderCommand command;
+	command.drawMode = EDrawMode::TRIANGLES;
+	command.startVertexIndex = startVertexIndex;
+	command.vertexCount = static_cast<uint32_t>(vertices.size());
+	command.type = RenderCommand::EType::GEOMETRY;
+
+	for (uint32_t index = 0; index < command.vertexCount; ++index)
+	{
+		vertices_[command.startVertexIndex + index].position = vertices[index];
+		vertices_[command.startVertexIndex + index].color = color;
+	}
+
+	commandQueue_.push(command);
+}
+
+void RenderManager2D::DrawRectWireframe(const glm::vec2& center, float w, float h, const glm::vec4& color, float rotate)
+{
+	static const uint32_t MAX_VERTEX_SIZE = 8;
+	if (IsFullCommandQueue(MAX_VERTEX_SIZE))
+	{
+		Flush();
+	}
+
+	float w2 = w * 0.5f;
+	float h2 = h * 0.5f;
+
+	std::array<glm::vec2, MAX_VERTEX_SIZE> vertices =
+	{
+		glm::vec2(-w2, -h2), glm::vec2(+w2, -h2),
+		glm::vec2(+w2, -h2), glm::vec2(+w2, +h2),
+		glm::vec2(+w2, +h2), glm::vec2(-w2, +h2),
+		glm::vec2(-w2, +h2), glm::vec2(-w2, -h2),
+	};
+
+	glm::mat2 rotateMat = glm::mat2(
+		+glm::cos(rotate), -glm::sin(rotate),
+		+glm::sin(rotate), +glm::cos(rotate)
+	);
+	for (auto& vertex : vertices)
+	{
+		vertex = vertex * rotateMat;
+		vertex += (center + PIXEL_OFFSET);
+	}
+
+	if (!commandQueue_.empty())
+	{
+		RenderCommand& prevCommand = commandQueue_.back();
+
+		if (prevCommand.drawMode == EDrawMode::LINES && prevCommand.type == RenderCommand::EType::GEOMETRY)
+		{
+			uint32_t startVertexIndex = prevCommand.startVertexIndex + prevCommand.vertexCount;
+			prevCommand.vertexCount += static_cast<uint32_t>(vertices.size());
+
+			for (uint32_t index = 0; index < vertices.size(); ++index)
+			{
+				vertices_[startVertexIndex + index].position = vertices[index];
+				vertices_[startVertexIndex + index].color = color;
+			}
+
+			return;
+		}
+	}
+
+	uint32_t startVertexIndex = 0;
+	if (!commandQueue_.empty())
+	{
+		RenderCommand& prevCommand = commandQueue_.back();
+		startVertexIndex = prevCommand.startVertexIndex + prevCommand.vertexCount;
+	}
+
+	RenderCommand command;
+	command.drawMode = EDrawMode::LINES;
+	command.startVertexIndex = startVertexIndex;
+	command.vertexCount = static_cast<uint32_t>(vertices.size());
+	command.type = RenderCommand::EType::GEOMETRY;
+
+	for (uint32_t index = 0; index < command.vertexCount; ++index)
+	{
+		vertices_[command.startVertexIndex + index].position = vertices[index];
+		vertices_[command.startVertexIndex + index].color = color;
+	}
+
+	commandQueue_.push(command);
+}
+
+void RenderManager2D::DrawCircle(const glm::vec2& center, float radius, const glm::vec4& color)
+{
+	static const uint32_t MAX_VERTEX_SIZE = 300;
+	static const uint32_t MAX_SLICE_SIZE = 100;
+	if (IsFullCommandQueue(MAX_VERTEX_SIZE))
+	{
+		Flush();
+	}
+
+	uint32_t vertexCount = 0;
+	std::array<glm::vec2, MAX_VERTEX_SIZE> vertices;
+
+	for (int32_t slice = 0; slice < MAX_SLICE_SIZE; ++slice)
+	{
+		float radian0 = (static_cast<float>(slice + 0) * glm::pi<float>() * 2.0f) / static_cast<float>(MAX_SLICE_SIZE);
+		float radian1 = (static_cast<float>(slice + 1) * glm::pi<float>() * 2.0f) / static_cast<float>(MAX_SLICE_SIZE);
+
+		vertices[vertexCount + 0] = center + PIXEL_OFFSET;
+		vertices[vertexCount + 1] = center + glm::vec2(radius * glm::cos(radian0), radius * glm::sin(radian0)) + PIXEL_OFFSET;
+		vertices[vertexCount + 2] = center + glm::vec2(radius * glm::cos(radian1), radius * glm::sin(radian1)) + PIXEL_OFFSET;
+
+		vertexCount += 3;
+	}
+
+	if (!commandQueue_.empty())
+	{
+		RenderCommand& prevCommand = commandQueue_.back();
+
+		if (prevCommand.drawMode == EDrawMode::TRIANGLES && prevCommand.type == RenderCommand::EType::GEOMETRY)
+		{
+			uint32_t startVertexIndex = prevCommand.startVertexIndex + prevCommand.vertexCount;
+			prevCommand.vertexCount += static_cast<uint32_t>(vertices.size());
+
+			for (uint32_t index = 0; index < vertices.size(); ++index)
+			{
+				vertices_[startVertexIndex + index].position = vertices[index];
+				vertices_[startVertexIndex + index].color = color;
+			}
+
+			return;
+		}
+	}
+
+	uint32_t startVertexIndex = 0;
+	if (!commandQueue_.empty())
+	{
+		RenderCommand& prevCommand = commandQueue_.back();
+		startVertexIndex = prevCommand.startVertexIndex + prevCommand.vertexCount;
+	}
+
+	RenderCommand command;
+	command.drawMode = EDrawMode::TRIANGLES;
+	command.startVertexIndex = startVertexIndex;
+	command.vertexCount = static_cast<uint32_t>(vertices.size());
+	command.type = RenderCommand::EType::GEOMETRY;
+
+	for (uint32_t index = 0; index < command.vertexCount; ++index)
+	{
+		vertices_[command.startVertexIndex + index].position = vertices[index];
+		vertices_[command.startVertexIndex + index].color = color;
+	}
+
+	commandQueue_.push(command);
+}
+
+void RenderManager2D::DrawCircleWireframe(const glm::vec2& center, float radius, const glm::vec4& color)
+{
+	static const uint32_t MAX_VERTEX_SIZE = 200;
+	static const uint32_t MAX_SLICE_SIZE = 100;
+	if (IsFullCommandQueue(MAX_VERTEX_SIZE))
+	{
+		Flush();
+	}
+
+	uint32_t vertexCount = 0;
+	std::array<glm::vec2, MAX_VERTEX_SIZE> vertices;
+
+	for (int32_t slice = 0; slice < MAX_SLICE_SIZE; ++slice)
+	{
+		float radian0 = (static_cast<float>(slice + 0) * glm::pi<float>() * 2.0f) / static_cast<float>(MAX_SLICE_SIZE);
+		float radian1 = (static_cast<float>(slice + 1) * glm::pi<float>() * 2.0f) / static_cast<float>(MAX_SLICE_SIZE);
+
+		vertices[vertexCount + 0] = center + glm::vec2(radius * glm::cos(radian0), radius * glm::sin(radian0)) + PIXEL_OFFSET;
+		vertices[vertexCount + 1] = center + glm::vec2(radius * glm::cos(radian1), radius * glm::sin(radian1)) + PIXEL_OFFSET;
+
+		vertexCount += 2;
+	}
 
 	if (!commandQueue_.empty())
 	{
