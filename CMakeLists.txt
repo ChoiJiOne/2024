@@ -10,13 +10,11 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 
-set(PROJECT_NAME "HyperCoinDash2D")
-
 if (MSVC)
     add_compile_options("/wd4819")
 endif()
 
 add_subdirectory(ThirdParty)
-add_subdirectory(${PROJECT_NAME})
+add_subdirectory(Game)
 
 set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT ${PROJECT_NAME})
