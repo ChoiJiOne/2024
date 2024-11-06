@@ -27,6 +27,16 @@ RenderManager2D* RenderManager2D::GetPtr()
 	return &singleton_;
 }
 
+void RenderManager2D::Begin(const Camera2D* camera2D)
+{
+
+}
+
+void RenderManager2D::End()
+{
+
+}
+
 void RenderManager2D::Startup()
 {
 	glManager_ = GLManager::GetPtr();

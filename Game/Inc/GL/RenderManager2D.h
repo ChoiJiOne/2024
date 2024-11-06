@@ -28,6 +28,12 @@ public:
 
 	/** 2D 렌더 매니저의 싱글턴 객체 포인터를 얻습니다. */
 	static RenderManager2D* GetPtr();
+
+	/** 2D 카메라를 기준으로 렌더링을 시작합니다. */
+	void Begin(const Camera2D* camera2D);
+
+	/** 2D 렌더링을 종료합니다. */
+	void End();
 	
 private:
 	/** GameApp에서 2D 렌더 매니저의 내부에 접근할 수 있도록 설정. */
@@ -82,10 +88,10 @@ private:
 	uint32_t vertexArrayObject_ = 0;
 
 	/** GPU 상의 정점 버퍼입니다. */
-	VertexBuffer* vertexBuffer_ = nullptr;
+	class VertexBuffer* vertexBuffer_ = nullptr;
 
 	/** 셰이더 끼리 공유 가능한 유니폼 버퍼입니다. */
-	UniformBuffer* uniformBuffer_ = nullptr;
+	class UniformBuffer* uniformBuffer_ = nullptr;
 
 	/** 정점 버퍼의 최대 개수입니다. */
 	static const int32_t MAX_VERTEX_BUFFER_SIZE = 30000;
