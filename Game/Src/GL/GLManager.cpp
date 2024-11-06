@@ -88,6 +88,18 @@ void GLManager::SetAlphaBlendMode(bool bIsEnable)
 	}
 }
 
+void GLManager::SetCullFaceMode(bool bIsEnable)
+{
+	if (bIsEnable)
+	{
+		GL_API_CHECK(glEnable(GL_CULL_FACE));
+	}
+	else
+	{
+		GL_API_CHECK(glDisable(GL_CULL_FACE));
+	}
+}
+
 const char* GLManager::GetErrorMessage(uint32_t code) const
 {
 	return errorMessages_.at(code).c_str();

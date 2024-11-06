@@ -54,6 +54,7 @@ public:
 	void SetDepthMode(bool bIsEnable);
 	void SetStencilMode(bool bIsEnable);
 	void SetAlphaBlendMode(bool bIsEnable);
+	void SetCullFaceMode(bool bIsEnable);
 	
 	/** 에러 코드에 대응하는 에러 메시지를 C 스타일로 얻습니다. */
 	const char* GetErrorMessage(uint32_t code) const;
