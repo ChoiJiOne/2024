@@ -15,4 +15,8 @@ public:
 
 	/** 텍스처를 렌더링 파이프라인에 바인딩하고 활성화합니다. */
 	virtual void Active(uint32_t unit) const = 0;
+
+	/** 텍스처의 가로/세로 크기를 얻습니다. */
+	virtual int32_t GetWidth() const = 0;
+	virtual int32_t GetHeight() const = 0;
 };
