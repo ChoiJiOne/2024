@@ -24,9 +24,9 @@ public:
 	virtual void Release() override;
 
 	virtual void Active(uint32_t unit) const override;
+	virtual int32_t GetWidth() const override { return width_; }
+	virtual int32_t GetHeight() const override { return height_; }
 
-	int32_t GetWidth() const { return width_; }
-	int32_t GetHeight() const { return height_; }
 	int32_t GetChannels() const { return channels_; }
 
 private:
