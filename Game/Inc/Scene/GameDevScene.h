@@ -2,6 +2,8 @@
 
 #include "Scene/IGameScene.h"
 
+#include "GL/RenderManager2D.h"
+
 /** 게임 개발을 위한 씬입니다. */
 class GameDevScene : public IGameScene
 {
@@ -18,4 +20,8 @@ public:
 
 private:
 	class Camera2D* mainCamera_ = nullptr;
+
+	class TTFont* alagard_ = nullptr;
+	class TTFont* lower_ = nullptr;
+	class TTFont* namsan_ = nullptr;
 };

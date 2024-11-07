@@ -1,12 +1,16 @@
 #include <glad/glad.h>
 #include <glm/glm.hpp>
+#include <glm/gtc/type_ptr.hpp>
 #include <imgui.h>
 
 #include "Entity/Camera2D.h"
 #include "Entity/EntityManager.h"
 #include "GL/GLAssertion.h"
 #include "GL/GLManager.h"
+#include "GL/RenderManager2D.h"
 #include "GL/Shader.h"
+#include "GL/Texture2D.h"
+#include "GL/TTFont.h"
 #include "GL/VertexBuffer.h"
 #include "Scene/GameDevScene.h"
 #include "Utils/Assertion.h"
@@ -15,24 +19,51 @@
 GameDevScene::GameDevScene()
 {
 	mainCamera_ = EntityManager::GetRef().Create<Camera2D>(glm::vec2(0.0f, 0.0f), glm::vec2(1000.0f, 800.0f));
+
+	alagard_ = GLManager::GetRef().Create<TTFont>("Game\\Res\\alagard.ttf", 0x00, 0x128, 24.0f);
+	lower_ = GLManager::GetRef().Create<TTFont>("Game\\Res\\lower.ttf", 0x00, 0x128, 24.0f);
+	namsan_ = GLManager::GetRef().Create<TTFont>("Game\\Res\\namsan.ttf", 0x00, 0x128, 24.0f);
 }
 
 GameDevScene::~GameDevScene()
 {
+	GLManager::GetRef().Destroy(namsan_);
+	GLManager::GetRef().Destroy(lower_);
+	GLManager::GetRef().Destroy(alagard_);
+
 	EntityManager::GetRef().Destroy(mainCamera_);
 }
 
 void GameDevScene::Tick(float deltaSeconds)
 {
-	ImGui::Begin("FPS");
-	ImGui::Text("FPS: %f", 1.0f / deltaSeconds);
-	ImGui::End();
 }
 
 void GameDevScene::Render()
 {
+	RenderManager2D& renderMgr = RenderManager2D::GetRef();
+
 	GLManager::GetRef().BeginFrame(0.0f, 0.0f, 0.0f, 1.0f);
 	{
+		renderMgr.Begin(mainCamera_);
+		{
+			for (float x = -500; x <= 500.0f; x += 10.0f)
+			{
+				glm::vec4 color = (x == 0.0f) ? glm::vec4(0.0f, 0.0f, 1.0f, 1.0f) : glm::vec4(1.0f, 1.0f, 1.0f, 0.1f);
+				renderMgr.DrawLine(glm::vec2(x, 400.0f), glm::vec2(x, -400.0f), color);
+			}
+
+			for (float y = -400; y <= 400.0f; y += 10.0f)
+			{
+				glm::vec4 color = (y == 0.0f) ? glm::vec4(1.0f, 0.0f, 0.0f, 1.0f) : glm::vec4(1.0f, 1.0f, 1.0f, 0.1f);
+				renderMgr.DrawLine(glm::vec2(-500.0f, y), glm::vec2(500.0f, y), color);
+			}
+
+			renderMgr.DrawLine(glm::vec2(0.0f, 100.0f), glm::vec2(500.0f, 100.0f), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+			renderMgr.DrawString(alagard_, L"123456789 ABCD gyujq", glm::vec2(0.0f, 100.0f), glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
+			//renderMgr.DrawString(lower_, L"123456789 ABCD gyujq", glm::vec2(0.0f, 50.0f), glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
+			//renderMgr.DrawString(namsan_, L"123456789 ABCD gyujqlkf ?", glm::vec2(0.0f, 0.0f), glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
+		}
+		renderMgr.End();
 	}
 	GLManager::GetRef().EndFrame();
 }
