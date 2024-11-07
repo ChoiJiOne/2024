@@ -55,10 +55,6 @@ if not exist "Game\\Src" (
     mkdir "Game\\Src"
 )
 
-if not exist "Game\\Res" (
-    mkdir "Game\\Res"
-)
-
 SET CURRENT_PATH=%~dp0
 
 PUSHD "%CURRENT_PATH%"
