@@ -9,6 +9,12 @@
 #include "GL/GLManager.h"
 #include "Utils/Macro.h"
 
+/** 클래스 전방 선언. */
+class ITexture;
+class Shader;
+class VertexBuffer;
+class UniformBuffer;
+
 /**
  * 2D 렌더링을 수행하는 매니저입니다.
  * 이때, 이 매니저 클래스는 싱글턴입니다.
@@ -47,7 +53,10 @@ public:
 	void DrawRectWireframe(const glm::vec2& center, float w, float h, const glm::vec4& color, float rotate);
 	void DrawCircle(const glm::vec2& center, float radius, const glm::vec4& color);
 	void DrawCircleWireframe(const glm::vec2& center, float radius, const glm::vec4& color);
-		
+	
+	/** 2D 텍스처를 렌더링합니다. */
+	void DrawTexture(ITexture* texture, const glm::vec2& center, float w, float h, float rotate);
+	
 private:
 	/** GameApp에서 2D 렌더 매니저의 내부에 접근할 수 있도록 설정. */
 	friend class GameApp;
@@ -70,20 +79,26 @@ private:
 		glm::vec2 position;
 		glm::vec2 uv;
 		glm::vec4 color;
+		uint32_t unit; /** 텍스처 유닛입니다. */
+		float transparent = 1.0f; /** 투명도입니다. 1.0에 가까우면 불투명하고 0.0에 가까우면 투명합니다. */
 	};
 
 	/** 2D 렌더 매니저 내부에서 사용할 렌더링 명령입니다. */
 	struct RenderCommand
 	{
+		static const uint32_t MAX_TEXTURE_UNIT = 10;
+
 		enum class EType
 		{
 			GEOMETRY = 0x00,
+			TEXTURE  = 0x01,
 		};
 
 		EDrawMode drawMode;
 		uint32_t startVertexIndex;
 		uint32_t vertexCount;
 		EType type;
+		ITexture* textures[MAX_TEXTURE_UNIT] = { nullptr, };
 	};
 	
 	/** 셰이더 상의 매 프레임 바뀌는 유니폼 버퍼입니다. */
@@ -124,10 +139,10 @@ private:
 	uint32_t vertexArrayObject_ = 0;
 
 	/** GPU 상의 정점 버퍼입니다. */
-	class VertexBuffer* vertexBuffer_ = nullptr;
+	VertexBuffer* vertexBuffer_ = nullptr;
 
 	/** 셰이더 끼리 공유 가능한 유니폼 버퍼입니다. */
-	class UniformBuffer* uniformBuffer_ = nullptr;
+	UniformBuffer* uniformBuffer_ = nullptr;
 
 	/** 셰이더 상의 매 프레임 바뀌는 유니폼 버퍼 원본입니다. */
 	PerFrameUBO perFrameUBO_;
@@ -145,7 +160,7 @@ private:
 	OriginGLContext originContext_;
 	
 	/** 2D 렌더링할 때 사용할 셰이더입니다. */
-	std::map<RenderCommand::EType, class Shader*> shaders_;
+	std::map<RenderCommand::EType, Shader*> shaders_;
 
 	/** 2D 렌더링 명령을 저장하는 커맨드 큐입니다. */
 	std::queue<RenderCommand> commandQueue_;

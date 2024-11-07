@@ -10,6 +10,7 @@
 #include "Entity/Camera2D.h"
 #include "GL/GLAssertion.h"
 #include "GL/GLManager.h"
+#include "GL/ITexture.h"
 #include "GL/RenderManager2D.h"
 #include "GL/Shader.h"
 #include "GL/UniformBuffer.h"
@@ -760,6 +761,137 @@ void RenderManager2D::DrawCircleWireframe(const glm::vec2& center, float radius,
 	commandQueue_.push(command);
 }
 
+void RenderManager2D::DrawTexture(ITexture* texture, const glm::vec2& center, float w, float h, float rotate)
+{
+	static const uint32_t MAX_VERTEX_SIZE = 6;
+	if (IsFullCommandQueue(MAX_VERTEX_SIZE))
+	{
+		Flush();
+	}
+
+	float w2 = w * 0.5f;
+	float h2 = h * 0.5f;
+
+	std::array<glm::vec2, MAX_VERTEX_SIZE> vertices =
+	{
+		glm::vec2(-w2, -h2),
+		glm::vec2(+w2, +h2),
+		glm::vec2(-w2, +h2),
+		glm::vec2(-w2, -h2),
+		glm::vec2(+w2, -h2),
+		glm::vec2(+w2, +h2),
+	};
+
+	std::array<glm::vec2, MAX_VERTEX_SIZE> uvs =
+	{
+		glm::vec2(0.0f, 1.0f),
+		glm::vec2(1.0f, 0.0f),
+		glm::vec2(0.0f, 0.0f),
+		glm::vec2(0.0f, 1.0f),
+		glm::vec2(1.0f, 1.0f),
+		glm::vec2(1.0f, 0.0f),
+	};
+
+	glm::mat2 rotateMat = glm::mat2(
+		+glm::cos(rotate), -glm::sin(rotate),
+		+glm::sin(rotate), +glm::cos(rotate)
+	);
+
+	for (auto& vertex : vertices)
+	{
+		vertex = vertex * rotateMat;
+		vertex += (center + PIXEL_OFFSET);
+	}
+
+	if (!commandQueue_.empty())
+	{
+		RenderCommand& prevCommand = commandQueue_.back();
+		if (prevCommand.drawMode == EDrawMode::TRIANGLES && prevCommand.type == RenderCommand::EType::TEXTURE)
+		{
+			int32_t textureUnit = -1;
+			for (uint32_t unit = 0; unit < RenderCommand::MAX_TEXTURE_UNIT; ++unit)
+			{
+				if (prevCommand.textures[unit] == texture)
+				{
+					textureUnit = unit;
+					break;
+				}
+			}
+
+			if (textureUnit != -1)
+			{
+				uint32_t startVertexIndex = prevCommand.startVertexIndex + prevCommand.vertexCount;
+				prevCommand.vertexCount += static_cast<uint32_t>(vertices.size());
+
+				for (uint32_t index = 0; index < vertices.size(); ++index)
+				{
+					vertices_[startVertexIndex + index].position = vertices[index];
+					vertices_[startVertexIndex + index].uv = uvs[index];
+					vertices_[startVertexIndex + index].color = glm::vec4(0.0f, 0.0f, 0.0f, 0.0f);
+					vertices_[startVertexIndex + index].unit = textureUnit;
+					vertices_[startVertexIndex + index].transparent = 1.0f;
+				}
+
+				return;
+			}
+
+			for (uint32_t unit = 0; unit < RenderCommand::MAX_TEXTURE_UNIT; ++unit)
+			{
+				if (prevCommand.textures[unit] == nullptr)
+				{
+					textureUnit = unit;
+					break;
+				}
+			}
+
+			if (textureUnit != -1)
+			{
+				uint32_t startVertexIndex = prevCommand.startVertexIndex + prevCommand.vertexCount;
+				prevCommand.vertexCount += static_cast<uint32_t>(vertices.size());
+				prevCommand.textures[textureUnit] = texture;
+
+				for (uint32_t index = 0; index < vertices.size(); ++index)
+				{
+					vertices_[startVertexIndex + index].position = vertices[index];
+					vertices_[startVertexIndex + index].uv = uvs[index];
+					vertices_[startVertexIndex + index].color = glm::vec4(0.0f, 0.0f, 0.0f, 0.0f);
+					vertices_[startVertexIndex + index].unit = textureUnit;
+					vertices_[startVertexIndex + index].transparent = 1.0f;
+				}
+
+				return;
+			}
+		}
+	}
+
+	uint32_t startVertexIndex = 0;
+	if (!commandQueue_.empty())
+	{
+		RenderCommand& prevCommand = commandQueue_.back();
+		startVertexIndex = prevCommand.startVertexIndex + prevCommand.vertexCount;
+	}
+
+	uint32_t textureUnit = 0;
+
+	RenderCommand command;
+	command.drawMode = EDrawMode::TRIANGLES;
+	command.startVertexIndex = startVertexIndex;
+	command.vertexCount = static_cast<uint32_t>(vertices.size());
+	command.type = RenderCommand::EType::TEXTURE;
+	command.textures[textureUnit] = texture;
+
+	for (uint32_t index = 0; index < command.vertexCount; ++index)
+	{
+		vertices_[command.startVertexIndex + index].position = vertices[index];
+		vertices_[command.startVertexIndex + index].uv = uvs[index];
+		vertices_[command.startVertexIndex + index].color = glm::vec4(0.0f, 0.0f, 0.0f, 0.0f);
+		vertices_[command.startVertexIndex + index].unit = textureUnit;
+		vertices_[command.startVertexIndex + index].transparent = 1.0f;
+	}
+
+	commandQueue_.push(command);
+}
+
 void RenderManager2D::Startup()
 {
 	glManager_ = GLManager::GetPtr();
@@ -807,6 +939,12 @@ void RenderManager2D::LoadBuffers()
 		GL_API_CHECK(glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, Vertex::GetStride(), (void*)(offsetof(Vertex, color))));
 		GL_API_CHECK(glEnableVertexAttribArray(2));
 
+		GL_API_CHECK(glVertexAttribIPointer(3, 1, GL_INT, Vertex::GetStride(), (void*)(offsetof(Vertex, unit))));
+		GL_API_CHECK(glEnableVertexAttribArray(3));
+
+		GL_API_CHECK(glVertexAttribPointer(4, 1, GL_FLOAT, GL_FALSE, Vertex::GetStride(), (void*)(offsetof(Vertex, transparent))));
+		GL_API_CHECK(glEnableVertexAttribArray(4));
+
 		vertexBuffer_->Unbind();
 	}
 	GL_API_CHECK(glBindVertexArray(0));
@@ -820,17 +958,25 @@ void RenderManager2D::LoadShaders()
 {
 	std::vector<uint8_t> vsBuffer;
 	std::vector<uint8_t> fsBuffer;
+	std::string vsSource;
+	std::string fsSource;
 	std::string outErrMsg;
 
 	ASSERTION(ReadFile("Shader\\Geometry.vert", vsBuffer, outErrMsg), "%s", outErrMsg.c_str());
 	ASSERTION(ReadFile("Shader\\Geometry.frag", fsBuffer, outErrMsg), "%s", outErrMsg.c_str());
 
-	std::string vsSource(vsBuffer.begin(), vsBuffer.end());
-	std::string fsSource(fsBuffer.begin(), fsBuffer.end());
+	vsSource = std::string(vsBuffer.begin(), vsBuffer.end());
+	fsSource = std::string(fsBuffer.begin(), fsBuffer.end());
+	
+	shaders_.insert({ RenderCommand::EType::GEOMETRY, glManager_->Create<Shader>(vsSource, fsSource) });
 
-	Shader* geometry = glManager_->Create<Shader>(vsSource, fsSource);
+	ASSERTION(ReadFile("Shader\\Texture.vert", vsBuffer, outErrMsg), "%s", outErrMsg.c_str());
+	ASSERTION(ReadFile("Shader\\Texture.frag", fsBuffer, outErrMsg), "%s", outErrMsg.c_str());
 
-	shaders_.insert({ RenderCommand::EType::GEOMETRY, geometry });
+	vsSource = std::string(vsBuffer.begin(), vsBuffer.end());
+	fsSource = std::string(fsBuffer.begin(), fsBuffer.end());
+
+	shaders_.insert({ RenderCommand::EType::TEXTURE, glManager_->Create<Shader>(vsSource, fsSource) });
 }
 
 void RenderManager2D::Flush()
@@ -851,6 +997,19 @@ void RenderManager2D::Flush()
 	{
 		RenderCommand command = commandQueue_.front();
 		commandQueue_.pop();
+
+		switch (command.type)
+		{
+		case RenderCommand::EType::TEXTURE:
+			for (uint32_t unit = 0; unit < RenderCommand::MAX_TEXTURE_UNIT; ++unit)
+			{
+				if (command.textures[unit])
+				{
+					command.textures[unit]->Active(unit);
+				}
+			}
+			break;
+		}
 
 		Shader* shader = shaders_.at(command.type);
 		shader->Bind();
