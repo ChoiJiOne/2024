@@ -32,11 +32,11 @@ public:
 
 	virtual void Release() override;
 	virtual void Active(uint32_t unit) const override;
+	virtual int32_t GetWidth() const override { return atlasWidth_; }
+	virtual int32_t GetHeight() const override { return atlasHeight_; }
 
-	/** 트루 타입 폰트 리소스의 프로퍼티에 대한 Getter입니다. */
+	/** 코드 포인트에 대응하는 글리프를 얻습니다. */
 	const Glyph& GetGlyph(int32_t codePoint) const;
-	int32_t GetAtlasWidth() const { return atlasWidth_; }
-	int32_t GetAtlasHeight() const { return atlasHeight_; }
 
 	/** 코드 포인트가 현재 트루 타입 폰트 리소스 내에서 유효한지 검사합니다. */
 	bool IsValidCodePoint(int32_t codePoint) const;
