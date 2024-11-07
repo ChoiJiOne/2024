@@ -892,6 +892,140 @@ void RenderManager2D::DrawTexture(ITexture* texture, const glm::vec2& center, fl
 	commandQueue_.push(command);
 }
 
+void RenderManager2D::DrawTextureEx(ITexture* texture, const glm::vec2& center, float w, float h, float rotate, const TextureDrawOption& option)
+{
+	static const uint32_t MAX_VERTEX_SIZE = 6;
+	if (IsFullCommandQueue(MAX_VERTEX_SIZE))
+	{
+		Flush();
+	}
+
+	float w2 = w * 0.5f;
+	float h2 = h * 0.5f;
+
+	std::array<glm::vec2, MAX_VERTEX_SIZE> vertices =
+	{
+		glm::vec2(-w2, -h2),
+		glm::vec2(+w2, +h2),
+		glm::vec2(-w2, +h2),
+		glm::vec2(-w2, -h2),
+		glm::vec2(+w2, -h2),
+		glm::vec2(+w2, +h2),
+	};
+
+	std::array<glm::vec2, MAX_VERTEX_SIZE> uvs =
+	{
+		glm::vec2(0.0f, 1.0f),
+		glm::vec2(1.0f, 0.0f),
+		glm::vec2(0.0f, 0.0f),
+		glm::vec2(0.0f, 1.0f),
+		glm::vec2(1.0f, 1.0f),
+		glm::vec2(1.0f, 0.0f),
+	};
+
+	glm::mat2 rotateMat = glm::mat2(
+		+glm::cos(rotate), -glm::sin(rotate),
+		+glm::sin(rotate), +glm::cos(rotate)
+	);
+
+	for (auto& vertex : vertices)
+	{
+		vertex.x = option.bIsFlipH ? -vertex.x : vertex.x;
+		vertex.y = option.bIsFlipV ? -vertex.y : vertex.y;
+
+		vertex = vertex * rotateMat;
+		vertex += (center + PIXEL_OFFSET);
+	}
+
+	if (!commandQueue_.empty())
+	{
+		RenderCommand& prevCommand = commandQueue_.back();
+		if (prevCommand.drawMode == EDrawMode::TRIANGLES && prevCommand.type == RenderCommand::EType::TEXTURE)
+		{
+			int32_t textureUnit = -1;
+			for (uint32_t unit = 0; unit < RenderCommand::MAX_TEXTURE_UNIT; ++unit)
+			{
+				if (prevCommand.textures[unit] == texture)
+				{
+					textureUnit = unit;
+					break;
+				}
+			}
+
+			if (textureUnit != -1)
+			{
+				uint32_t startVertexIndex = prevCommand.startVertexIndex + prevCommand.vertexCount;
+				prevCommand.vertexCount += static_cast<uint32_t>(vertices.size());
+
+				for (uint32_t index = 0; index < vertices.size(); ++index)
+				{
+					vertices_[startVertexIndex + index].position = vertices[index];
+					vertices_[startVertexIndex + index].uv = uvs[index];
+					vertices_[startVertexIndex + index].color = glm::vec4(option.blend.x, option.blend.y, option.blend.z, option.factor);
+					vertices_[startVertexIndex + index].unit = textureUnit;
+					vertices_[startVertexIndex + index].transparent = option.transparent;
+				}
+
+				return;
+			}
+
+			for (uint32_t unit = 0; unit < RenderCommand::MAX_TEXTURE_UNIT; ++unit)
+			{
+				if (prevCommand.textures[unit] == nullptr)
+				{
+					textureUnit = unit;
+					break;
+				}
+			}
+
+			if (textureUnit != -1)
+			{
+				uint32_t startVertexIndex = prevCommand.startVertexIndex + prevCommand.vertexCount;
+				prevCommand.vertexCount += static_cast<uint32_t>(vertices.size());
+				prevCommand.textures[textureUnit] = texture;
+
+				for (uint32_t index = 0; index < vertices.size(); ++index)
+				{
+					vertices_[startVertexIndex + index].position = vertices[index];
+					vertices_[startVertexIndex + index].uv = uvs[index];
+					vertices_[startVertexIndex + index].color = glm::vec4(option.blend.x, option.blend.y, option.blend.z, option.factor);
+					vertices_[startVertexIndex + index].unit = textureUnit;
+					vertices_[startVertexIndex + index].transparent = option.transparent;
+				}
+
+				return;
+			}
+		}
+	}
+
+	uint32_t startVertexIndex = 0;
+	if (!commandQueue_.empty())
+	{
+		RenderCommand& prevCommand = commandQueue_.back();
+		startVertexIndex = prevCommand.startVertexIndex + prevCommand.vertexCount;
+	}
+
+	uint32_t textureUnit = 0;
+
+	RenderCommand command;
+	command.drawMode = EDrawMode::TRIANGLES;
+	command.startVertexIndex = startVertexIndex;
+	command.vertexCount = static_cast<uint32_t>(vertices.size());
+	command.type = RenderCommand::EType::TEXTURE;
+	command.textures[textureUnit] = texture;
+
+	for (uint32_t index = 0; index < command.vertexCount; ++index)
+	{
+		vertices_[command.startVertexIndex + index].position = vertices[index];
+		vertices_[command.startVertexIndex + index].uv = uvs[index];
+		vertices_[command.startVertexIndex + index].color = glm::vec4(option.blend.x, option.blend.y, option.blend.z, option.factor);
+		vertices_[command.startVertexIndex + index].unit = textureUnit;
+		vertices_[command.startVertexIndex + index].transparent = option.transparent;
+	}
+
+	commandQueue_.push(command);
+}
+
 void RenderManager2D::Startup()
 {
 	glManager_ = GLManager::GetPtr();
