@@ -47,16 +47,16 @@ if not exist "%~dp0..\Cache" (
     mkdir "%~dp0..\Cache"
 )
 
-if not exist "%PROJECT_NAME%\\Inc" (
-    mkdir "%PROJECT_NAME%\\Inc"
+if not exist "Game\\Inc" (
+    mkdir "Game\\Inc"
 )
 
-if not exist "%PROJECT_NAME%\\Src" (
-    mkdir "%PROJECT_NAME%\\Src"
+if not exist "Game\\Src" (
+    mkdir "Game\\Src"
 )
 
-if not exist "%PROJECT_NAME%\\Res" (
-    mkdir "%PROJECT_NAME%\\Res"
+if not exist "Game\\Res" (
+    mkdir "Game\\Res"
 )
 
 SET CURRENT_PATH=%~dp0
