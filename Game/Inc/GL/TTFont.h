@@ -55,6 +55,9 @@ private:
 	/** 글리프 아틀라스의 최대 크기입니다. */
 	static const uint32_t MAX_GLYPH_ATLAS_SIZE = 4096;
 
+	/** 글리프 아틀라스 내의 문자열 간격입니다. */
+	static const uint32_t GLYPH_PADDING_SIZE = 4;
+
 	/** 폰트의 크기입니다. */
 	float fontSize_ = 0.0f;
 

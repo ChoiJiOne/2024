@@ -82,7 +82,7 @@ std::shared_ptr<uint8_t[]> TTFont::CreateGlyphAtlasBitmap(const std::vector<uint
 	{
 		bitmap = std::make_unique<uint8_t[]>(atlasWidth_ * atlasHeight_);
 
-		int32_t success = stbtt_PackBegin(&packContext, bitmap.get(), atlasWidth_, atlasHeight_, 0, 1, nullptr);
+		int32_t success = stbtt_PackBegin(&packContext, bitmap.get(), atlasWidth_, atlasHeight_, 0, GLYPH_PADDING_SIZE, nullptr);
 		stbtt_PackSetOversampling(&packContext, 1, 1);
 
 		success = stbtt_PackFontRange(&packContext, buffer.data(), 0, fontSize_, beginCodePoint_, static_cast<int>(packedchars.size()), packedchars.data());
