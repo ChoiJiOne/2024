@@ -49,8 +49,11 @@ public:
 	/** 2D 카메라를 기준으로 렌더링을 시작/종료합니다. */
 	void Begin(const class Camera2D* camera2D);
 	void End();
-
-	/** 2D 기하 도형 (점, 선, 삼각형, 사각형, 원 등등)을 렌더링합니다. */
+	
+	/**
+	 * 2D 기하 도형 (점, 선, 삼각형, 사각형, 원 등등)을 렌더링합니다.
+	 * 이때, 메서드 뒤에 Wireframe이라고 붙으면 와이어 프레임 렌더링을 수행합니다.
+	 */
 	void DrawPoint(const glm::vec2& point, const glm::vec4& color, float pointSize);
 	void DrawLine(const glm::vec2& startPos, const glm::vec2& endPos, const glm::vec4& color);
 	void DrawLine(const glm::vec2& startPos, const glm::vec4& startColor, const glm::vec2& endPos, const glm::vec4& endColor);
@@ -67,11 +70,15 @@ public:
 	
 	/** 2D 텍스처를 렌더링합니다. */
 	void DrawTexture(ITexture* texture, const glm::vec2& center, float w, float h, float rotate);
+
+	/** 텍스처 그리기 옵션을 기반으로 2D 텍스처를 렌더링합니다. */
 	void DrawTexture(ITexture* texture, const glm::vec2& center, float w, float h, float rotate, const TextureDrawOption& option);
 	
 	/** 2D 문자열을 렌더링합니다. */
 	void DrawString(TTFont* font, const std::wstring& text, const glm::vec2& basePos, const glm::vec4& color);
-	void DrawStringEx(TTFont* font, const std::wstring& text, const glm::vec2& basePos, const glm::vec4& textColor, const glm::vec4& outlineColor);
+
+	/** 외곽선을 포함한 2D 문자열을 렌더링합니다. */
+	void DrawString(TTFont* font, const std::wstring& text, const glm::vec2& basePos, const glm::vec4& textColor, const glm::vec4& outlineColor);
 
 private:
 	/** GameApp에서 2D 렌더 매니저의 내부에 접근할 수 있도록 설정. */

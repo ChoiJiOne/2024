@@ -1312,7 +1312,7 @@ void RenderManager2D::DrawString(TTFont* font, const std::wstring& text, const g
 	commandQueue_.push(command);
 }
 
-void RenderManager2D::DrawStringEx(TTFont* font, const std::wstring& text, const glm::vec2& basePos, const glm::vec4& textColor, const glm::vec4& outlineColor)
+void RenderManager2D::DrawString(TTFont* font, const std::wstring& text, const glm::vec2& basePos, const glm::vec4& textColor, const glm::vec4& outlineColor)
 {	
 	/** 문자 하나당 정점 6개. */
 	uint32_t vertexCount = 6 * static_cast<uint32_t>(text.size());
