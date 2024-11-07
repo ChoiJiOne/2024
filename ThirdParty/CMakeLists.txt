@@ -4,6 +4,7 @@ add_subdirectory(glad)
 add_subdirectory(glfw)
 add_subdirectory(glm)
 add_subdirectory(imgui)
+add_subdirectory(jsoncpp)
 add_subdirectory(mimalloc)
 add_subdirectory(miniaudio)
 add_subdirectory(stb)
@@ -13,6 +14,7 @@ set_target_properties(
     glfw
     glm
     imgui
+    jsoncpp
     mimalloc
     miniaudio
     stb
