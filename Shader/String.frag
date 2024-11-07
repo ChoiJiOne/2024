@@ -32,38 +32,11 @@ void main()
 {
 	vec3 fragColor = inColor.rgb;
 	float alpha = 0.0f;
-	ivec2 glyphAtlasSize;
-	vec2 texelSize;
 
 	switch(inUnit)
 	{
 	case GLYPH_ATLAS_UNIT_0:
-		alpha = texture(glyphAtlas0, inTexCoords).r;
-		if(alpha < 0.7f)
-		{
-			glyphAtlasSize = textureSize(glyphAtlas0, 0);
-			texelSize = 1.0f / glyphAtlasSize;
-
-			alpha = 0.0f;
-			alpha += texture(glyphAtlas0, inTexCoords + vec2(-texelSize.x,        0.0f)).r;
-			alpha += texture(glyphAtlas0, inTexCoords + vec2(+texelSize.x,        0.0f)).r;
-			alpha += texture(glyphAtlas0, inTexCoords + vec2(        0.0f, -texelSize.y)).r;
-			alpha += texture(glyphAtlas0, inTexCoords + vec2(        0.0f, +texelSize.y)).r;
-			alpha += texture(glyphAtlas0, inTexCoords + vec2(-texelSize.x, -texelSize.y)).r;
-			alpha += texture(glyphAtlas0, inTexCoords + vec2(-texelSize.x, +texelSize.y)).r;
-			alpha += texture(glyphAtlas0, inTexCoords + vec2(+texelSize.x, -texelSize.y)).r;
-			alpha += texture(glyphAtlas0, inTexCoords + vec2(+texelSize.x, +texelSize.y)).r;
-
-			alpha = min(alpha, 1.0f);
-			alpha *= inColor.a;
-
-			fragColor = mix(fragColor, vec3(0.0f, 0.0f, 0.0f), alpha - texture(glyphAtlas0, inTexCoords).r);
-		}
-		else
-		{
-			alpha = 0.0f;
-			alpha += texture(glyphAtlas0, inTexCoords).r;
-		}
+		alpha += texture(glyphAtlas0, inTexCoords).r;
 		break;
 
 	case GLYPH_ATLAS_UNIT_1:
