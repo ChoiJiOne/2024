@@ -32,49 +32,76 @@ void main()
 {
 	vec3 fragColor = inColor.rgb;
 	float alpha = 0.0f;
+	ivec2 glyphAtlasSize;
+	vec2 texelSize;
 
 	switch(inUnit)
 	{
 	case GLYPH_ATLAS_UNIT_0:
-		alpha = inColor.a * texture(glyphAtlas0, inTexCoords).r;
+		alpha = texture(glyphAtlas0, inTexCoords).r;
+		if(alpha < 0.7f)
+		{
+			glyphAtlasSize = textureSize(glyphAtlas0, 0);
+			texelSize = 1.0f / glyphAtlasSize;
+
+			alpha = 0.0f;
+			alpha += texture(glyphAtlas0, inTexCoords + vec2(-texelSize.x,        0.0f)).r;
+			alpha += texture(glyphAtlas0, inTexCoords + vec2(+texelSize.x,        0.0f)).r;
+			alpha += texture(glyphAtlas0, inTexCoords + vec2(        0.0f, -texelSize.y)).r;
+			alpha += texture(glyphAtlas0, inTexCoords + vec2(        0.0f, +texelSize.y)).r;
+			alpha += texture(glyphAtlas0, inTexCoords + vec2(-texelSize.x, -texelSize.y)).r;
+			alpha += texture(glyphAtlas0, inTexCoords + vec2(-texelSize.x, +texelSize.y)).r;
+			alpha += texture(glyphAtlas0, inTexCoords + vec2(+texelSize.x, -texelSize.y)).r;
+			alpha += texture(glyphAtlas0, inTexCoords + vec2(+texelSize.x, +texelSize.y)).r;
+
+			alpha = min(alpha, 1.0f);
+			alpha *= inColor.a;
+
+			fragColor = mix(fragColor, vec3(0.0f, 0.0f, 0.0f), alpha - texture(glyphAtlas0, inTexCoords).r);
+		}
+		else
+		{
+			alpha = 0.0f;
+			alpha += texture(glyphAtlas0, inTexCoords).r;
+		}
 		break;
 
 	case GLYPH_ATLAS_UNIT_1:
-		alpha = inColor.a * texture(glyphAtlas1, inTexCoords).r;
+		alpha += texture(glyphAtlas1, inTexCoords).r;
 		break;
 
 	case GLYPH_ATLAS_UNIT_2:
-		alpha = inColor.a * texture(glyphAtlas2, inTexCoords).r;
+		alpha += texture(glyphAtlas2, inTexCoords).r;
 		break;
 
 	case GLYPH_ATLAS_UNIT_3:
-		alpha = inColor.a * texture(glyphAtlas3, inTexCoords).r;
+		alpha += texture(glyphAtlas3, inTexCoords).r;
 		break;
 
 	case GLYPH_ATLAS_UNIT_4:
-		alpha = inColor.a * texture(glyphAtlas4, inTexCoords).r;
+		alpha += texture(glyphAtlas4, inTexCoords).r;
 		break;
 
 	case GLYPH_ATLAS_UNIT_5:
-		alpha = inColor.a * texture(glyphAtlas5, inTexCoords).r;
+		alpha += texture(glyphAtlas5, inTexCoords).r;
 		break;
 
 	case GLYPH_ATLAS_UNIT_6:
-		alpha = inColor.a * texture(glyphAtlas6, inTexCoords).r;
+		alpha += texture(glyphAtlas6, inTexCoords).r;
 		break;
 
 	case GLYPH_ATLAS_UNIT_7:
-		alpha = inColor.a * texture(glyphAtlas7, inTexCoords).r;
+		alpha += texture(glyphAtlas7, inTexCoords).r;
 		break;
 
 	case GLYPH_ATLAS_UNIT_8:
-		alpha = inColor.a * texture(glyphAtlas8, inTexCoords).r;
+		alpha += texture(glyphAtlas8, inTexCoords).r;
 		break;
 
 	case GLYPH_ATLAS_UNIT_9:
-		alpha = inColor.a * texture(glyphAtlas9, inTexCoords).r;
+		alpha += texture(glyphAtlas9, inTexCoords).r;
 		break;
 	}
-	
+
 	outFragColor = vec4(fragColor, alpha);
 }

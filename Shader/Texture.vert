@@ -3,8 +3,8 @@
 layout(location = 0) in vec2 inPosition;
 layout(location = 1) in vec2 inTexCoords;
 layout(location = 2) in vec4 inColor;
-layout(location = 3) in int inUnit;
-layout(location = 4) in float inTransparent;
+layout(location = 4) in int inUnit;
+layout(location = 5) in float inTransparent;
 
 layout(location = 0) out vec2 outTexCoords;
 layout(location = 1) out vec4 outColor;
