@@ -2,7 +2,7 @@
 
 #include <string>
 
-#include "ITexture.h"
+#include "GL/ITexture.h"
 
 /** 2D 텍스처 리소스입니다. 지원하는 포멧으로는 PNG, JPG, BMP, TGA입니다. */
 class Texture2D : public ITexture
