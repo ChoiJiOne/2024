@@ -20,8 +20,4 @@ public:
 
 private:
 	class Camera2D* mainCamera_ = nullptr;
-
-	class TTFont* alagard_ = nullptr;
-	class TTFont* lower_ = nullptr;
-	class TTFont* namsan_ = nullptr;
 };

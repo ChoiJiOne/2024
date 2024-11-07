@@ -19,18 +19,10 @@
 GameDevScene::GameDevScene()
 {
 	mainCamera_ = EntityManager::GetRef().Create<Camera2D>(glm::vec2(0.0f, 0.0f), glm::vec2(1000.0f, 800.0f));
-
-	alagard_ = GLManager::GetRef().Create<TTFont>("Game\\Res\\alagard.ttf", 0x00, 0x128, 24.0f);
-	lower_ = GLManager::GetRef().Create<TTFont>("Game\\Res\\lower.ttf", 0x00, 0x128, 24.0f);
-	namsan_ = GLManager::GetRef().Create<TTFont>("Game\\Res\\namsan.ttf", 0x00, 0x128, 24.0f);
 }
 
 GameDevScene::~GameDevScene()
 {
-	GLManager::GetRef().Destroy(namsan_);
-	GLManager::GetRef().Destroy(lower_);
-	GLManager::GetRef().Destroy(alagard_);
-
 	EntityManager::GetRef().Destroy(mainCamera_);
 }
 
@@ -57,11 +49,6 @@ void GameDevScene::Render()
 				glm::vec4 color = (y == 0.0f) ? glm::vec4(1.0f, 0.0f, 0.0f, 1.0f) : glm::vec4(1.0f, 1.0f, 1.0f, 0.1f);
 				renderMgr.DrawLine(glm::vec2(-500.0f, y), glm::vec2(500.0f, y), color);
 			}
-
-			renderMgr.DrawLine(glm::vec2(0.0f, 100.0f), glm::vec2(500.0f, 100.0f), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
-			renderMgr.DrawString(alagard_, L"123456789 ABCD gyujq", glm::vec2(0.0f, 100.0f), glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
-			//renderMgr.DrawString(lower_, L"123456789 ABCD gyujq", glm::vec2(0.0f, 50.0f), glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
-			//renderMgr.DrawString(namsan_, L"123456789 ABCD gyujqlkf ?", glm::vec2(0.0f, 0.0f), glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
 		}
 		renderMgr.End();
 	}
