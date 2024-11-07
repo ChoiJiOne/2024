@@ -108,7 +108,7 @@ void RenderManager2D::DrawPoint(const glm::vec2& point, const glm::vec4& color, 
 			for (uint32_t index = 0; index < vertices.size(); ++index)
 			{
 				vertices_[startVertexIndex + index].position = vertices[index];
-				vertices_[startVertexIndex + index].color = color;
+				vertices_[startVertexIndex + index].color0 = color;
 			}
 
 			return;
@@ -131,7 +131,7 @@ void RenderManager2D::DrawPoint(const glm::vec2& point, const glm::vec4& color, 
 	for (uint32_t index = 0; index < command.vertexCount; ++index)
 	{
 		vertices_[command.startVertexIndex + index].position = vertices[index];
-		vertices_[command.startVertexIndex + index].color = color;
+		vertices_[command.startVertexIndex + index].color0 = color;
 	}
 
 	commandQueue_.push(command);
@@ -163,7 +163,7 @@ void RenderManager2D::DrawLine(const glm::vec2& startPos, const glm::vec2& endPo
 			for (uint32_t index = 0; index < vertices.size(); ++index)
 			{
 				vertices_[startVertexIndex + index].position = vertices[index];
-				vertices_[startVertexIndex + index].color = color;
+				vertices_[startVertexIndex + index].color0 = color;
 			}
 
 			return;
@@ -186,7 +186,7 @@ void RenderManager2D::DrawLine(const glm::vec2& startPos, const glm::vec2& endPo
 	for (uint32_t index = 0; index < command.vertexCount; ++index)
 	{
 		vertices_[command.startVertexIndex + index].position = vertices[index];
-		vertices_[command.startVertexIndex + index].color = color;
+		vertices_[command.startVertexIndex + index].color0 = color;
 	}
 
 	commandQueue_.push(command);
@@ -224,7 +224,7 @@ void RenderManager2D::DrawLine(const glm::vec2& startPos, const glm::vec4& start
 			for (uint32_t index = 0; index < vertices.size(); ++index)
 			{
 				vertices_[startVertexIndex + index].position = vertices[index];
-				vertices_[startVertexIndex + index].color = colors[index];
+				vertices_[startVertexIndex + index].color0 = colors[index];
 			}
 
 			return;
@@ -247,7 +247,7 @@ void RenderManager2D::DrawLine(const glm::vec2& startPos, const glm::vec4& start
 	for (uint32_t index = 0; index < command.vertexCount; ++index)
 	{
 		vertices_[command.startVertexIndex + index].position = vertices[index];
-		vertices_[command.startVertexIndex + index].color = colors[index];
+		vertices_[command.startVertexIndex + index].color0 = colors[index];
 	}
 
 	commandQueue_.push(command);
@@ -280,7 +280,7 @@ void RenderManager2D::DrawTriangle(const glm::vec2& fromPos, const glm::vec2& by
 			for (uint32_t index = 0; index < vertices.size(); ++index)
 			{
 				vertices_[startVertexIndex + index].position = vertices[index];
-				vertices_[startVertexIndex + index].color = color;
+				vertices_[startVertexIndex + index].color0 = color;
 			}
 
 			return;
@@ -303,7 +303,7 @@ void RenderManager2D::DrawTriangle(const glm::vec2& fromPos, const glm::vec2& by
 	for (uint32_t index = 0; index < command.vertexCount; ++index)
 	{
 		vertices_[command.startVertexIndex + index].position = vertices[index];
-		vertices_[command.startVertexIndex + index].color = color;
+		vertices_[command.startVertexIndex + index].color0 = color;
 	}
 
 	commandQueue_.push(command);
@@ -343,7 +343,7 @@ void RenderManager2D::DrawTriangle(const glm::vec2& fromPos, const glm::vec4& fr
 			for (uint32_t index = 0; index < vertices.size(); ++index)
 			{
 				vertices_[startVertexIndex + index].position = vertices[index];
-				vertices_[startVertexIndex + index].color = colors[index];
+				vertices_[startVertexIndex + index].color0 = colors[index];
 			}
 
 			return;
@@ -366,7 +366,7 @@ void RenderManager2D::DrawTriangle(const glm::vec2& fromPos, const glm::vec4& fr
 	for (uint32_t index = 0; index < command.vertexCount; ++index)
 	{
 		vertices_[command.startVertexIndex + index].position = vertices[index];
-		vertices_[command.startVertexIndex + index].color = colors[index];
+		vertices_[command.startVertexIndex + index].color0 = colors[index];
 	}
 
 	commandQueue_.push(command);
@@ -399,7 +399,7 @@ void RenderManager2D::DrawTriangleWireframe(const glm::vec2& fromPos, const glm:
 			for (uint32_t index = 0; index < vertices.size(); ++index)
 			{
 				vertices_[startVertexIndex + index].position = vertices[index];
-				vertices_[startVertexIndex + index].color = color;
+				vertices_[startVertexIndex + index].color0 = color;
 			}
 
 			return;
@@ -422,7 +422,7 @@ void RenderManager2D::DrawTriangleWireframe(const glm::vec2& fromPos, const glm:
 	for (uint32_t index = 0; index < command.vertexCount; ++index)
 	{
 		vertices_[command.startVertexIndex + index].position = vertices[index];
-		vertices_[command.startVertexIndex + index].color = color;
+		vertices_[command.startVertexIndex + index].color0 = color;
 	}
 
 	commandQueue_.push(command);
@@ -462,7 +462,7 @@ void RenderManager2D::DrawTriangleWireframe(const glm::vec2& fromPos, const glm:
 			for (uint32_t index = 0; index < vertices.size(); ++index)
 			{
 				vertices_[startVertexIndex + index].position = vertices[index];
-				vertices_[startVertexIndex + index].color = colors[index];
+				vertices_[startVertexIndex + index].color0 = colors[index];
 			}
 
 			return;
@@ -485,7 +485,7 @@ void RenderManager2D::DrawTriangleWireframe(const glm::vec2& fromPos, const glm:
 	for (uint32_t index = 0; index < command.vertexCount; ++index)
 	{
 		vertices_[command.startVertexIndex + index].position = vertices[index];
-		vertices_[command.startVertexIndex + index].color = colors[index];
+		vertices_[command.startVertexIndex + index].color0 = colors[index];
 	}
 
 	commandQueue_.push(command);
@@ -534,7 +534,7 @@ void RenderManager2D::DrawRect(const glm::vec2& center, float w, float h, const 
 			for (uint32_t index = 0; index < vertices.size(); ++index)
 			{
 				vertices_[startVertexIndex + index].position = vertices[index];
-				vertices_[startVertexIndex + index].color = color;
+				vertices_[startVertexIndex + index].color0 = color;
 			}
 
 			return;
@@ -557,7 +557,7 @@ void RenderManager2D::DrawRect(const glm::vec2& center, float w, float h, const 
 	for (uint32_t index = 0; index < command.vertexCount; ++index)
 	{
 		vertices_[command.startVertexIndex + index].position = vertices[index];
-		vertices_[command.startVertexIndex + index].color = color;
+		vertices_[command.startVertexIndex + index].color0 = color;
 	}
 
 	commandQueue_.push(command);
@@ -604,7 +604,7 @@ void RenderManager2D::DrawRectWireframe(const glm::vec2& center, float w, float 
 			for (uint32_t index = 0; index < vertices.size(); ++index)
 			{
 				vertices_[startVertexIndex + index].position = vertices[index];
-				vertices_[startVertexIndex + index].color = color;
+				vertices_[startVertexIndex + index].color0 = color;
 			}
 
 			return;
@@ -627,7 +627,7 @@ void RenderManager2D::DrawRectWireframe(const glm::vec2& center, float w, float 
 	for (uint32_t index = 0; index < command.vertexCount; ++index)
 	{
 		vertices_[command.startVertexIndex + index].position = vertices[index];
-		vertices_[command.startVertexIndex + index].color = color;
+		vertices_[command.startVertexIndex + index].color0 = color;
 	}
 
 	commandQueue_.push(command);
@@ -669,7 +669,7 @@ void RenderManager2D::DrawCircle(const glm::vec2& center, float radius, const gl
 			for (uint32_t index = 0; index < vertices.size(); ++index)
 			{
 				vertices_[startVertexIndex + index].position = vertices[index];
-				vertices_[startVertexIndex + index].color = color;
+				vertices_[startVertexIndex + index].color0 = color;
 			}
 
 			return;
@@ -692,7 +692,7 @@ void RenderManager2D::DrawCircle(const glm::vec2& center, float radius, const gl
 	for (uint32_t index = 0; index < command.vertexCount; ++index)
 	{
 		vertices_[command.startVertexIndex + index].position = vertices[index];
-		vertices_[command.startVertexIndex + index].color = color;
+		vertices_[command.startVertexIndex + index].color0 = color;
 	}
 
 	commandQueue_.push(command);
@@ -733,7 +733,7 @@ void RenderManager2D::DrawCircleWireframe(const glm::vec2& center, float radius,
 			for (uint32_t index = 0; index < vertices.size(); ++index)
 			{
 				vertices_[startVertexIndex + index].position = vertices[index];
-				vertices_[startVertexIndex + index].color = color;
+				vertices_[startVertexIndex + index].color0 = color;
 			}
 
 			return;
@@ -756,7 +756,7 @@ void RenderManager2D::DrawCircleWireframe(const glm::vec2& center, float radius,
 	for (uint32_t index = 0; index < command.vertexCount; ++index)
 	{
 		vertices_[command.startVertexIndex + index].position = vertices[index];
-		vertices_[command.startVertexIndex + index].color = color;
+		vertices_[command.startVertexIndex + index].color0 = color;
 	}
 
 	commandQueue_.push(command);
@@ -828,7 +828,7 @@ void RenderManager2D::DrawTexture(ITexture* texture, const glm::vec2& center, fl
 				{
 					vertices_[startVertexIndex + index].position = vertices[index];
 					vertices_[startVertexIndex + index].uv = uvs[index];
-					vertices_[startVertexIndex + index].color = glm::vec4(0.0f, 0.0f, 0.0f, 0.0f);
+					vertices_[startVertexIndex + index].color0 = glm::vec4(0.0f, 0.0f, 0.0f, 0.0f);
 					vertices_[startVertexIndex + index].unit = textureUnit;
 					vertices_[startVertexIndex + index].transparent = 1.0f;
 				}
@@ -855,7 +855,7 @@ void RenderManager2D::DrawTexture(ITexture* texture, const glm::vec2& center, fl
 				{
 					vertices_[startVertexIndex + index].position = vertices[index];
 					vertices_[startVertexIndex + index].uv = uvs[index];
-					vertices_[startVertexIndex + index].color = glm::vec4(0.0f, 0.0f, 0.0f, 0.0f);
+					vertices_[startVertexIndex + index].color0 = glm::vec4(0.0f, 0.0f, 0.0f, 0.0f);
 					vertices_[startVertexIndex + index].unit = textureUnit;
 					vertices_[startVertexIndex + index].transparent = 1.0f;
 				}
@@ -885,7 +885,7 @@ void RenderManager2D::DrawTexture(ITexture* texture, const glm::vec2& center, fl
 	{
 		vertices_[command.startVertexIndex + index].position = vertices[index];
 		vertices_[command.startVertexIndex + index].uv = uvs[index];
-		vertices_[command.startVertexIndex + index].color = glm::vec4(0.0f, 0.0f, 0.0f, 0.0f);
+		vertices_[command.startVertexIndex + index].color0 = glm::vec4(0.0f, 0.0f, 0.0f, 0.0f);
 		vertices_[command.startVertexIndex + index].unit = textureUnit;
 		vertices_[command.startVertexIndex + index].transparent = 1.0f;
 	}
@@ -962,7 +962,7 @@ void RenderManager2D::DrawTextureEx(ITexture* texture, const glm::vec2& center, 
 				{
 					vertices_[startVertexIndex + index].position = vertices[index];
 					vertices_[startVertexIndex + index].uv = uvs[index];
-					vertices_[startVertexIndex + index].color = glm::vec4(option.blend.x, option.blend.y, option.blend.z, option.factor);
+					vertices_[startVertexIndex + index].color0 = glm::vec4(option.blend.x, option.blend.y, option.blend.z, option.factor);
 					vertices_[startVertexIndex + index].unit = textureUnit;
 					vertices_[startVertexIndex + index].transparent = option.transparent;
 				}
@@ -989,7 +989,7 @@ void RenderManager2D::DrawTextureEx(ITexture* texture, const glm::vec2& center, 
 				{
 					vertices_[startVertexIndex + index].position = vertices[index];
 					vertices_[startVertexIndex + index].uv = uvs[index];
-					vertices_[startVertexIndex + index].color = glm::vec4(option.blend.x, option.blend.y, option.blend.z, option.factor);
+					vertices_[startVertexIndex + index].color0 = glm::vec4(option.blend.x, option.blend.y, option.blend.z, option.factor);
 					vertices_[startVertexIndex + index].unit = textureUnit;
 					vertices_[startVertexIndex + index].transparent = option.transparent;
 				}
@@ -1019,7 +1019,7 @@ void RenderManager2D::DrawTextureEx(ITexture* texture, const glm::vec2& center, 
 	{
 		vertices_[command.startVertexIndex + index].position = vertices[index];
 		vertices_[command.startVertexIndex + index].uv = uvs[index];
-		vertices_[command.startVertexIndex + index].color = glm::vec4(option.blend.x, option.blend.y, option.blend.z, option.factor);
+		vertices_[command.startVertexIndex + index].color0 = glm::vec4(option.blend.x, option.blend.y, option.blend.z, option.factor);
 		vertices_[command.startVertexIndex + index].unit = textureUnit;
 		vertices_[command.startVertexIndex + index].transparent = option.transparent;
 	}
@@ -1055,32 +1055,161 @@ void RenderManager2D::DrawString(TTFont* font, const std::wstring& text, const g
 
 				vertices_[vertexIndex + 0].position = glm::vec2(currPos.x + glyph.xoff, currPos.y - glyph.yoff2);
 				vertices_[vertexIndex + 0].uv = glm::vec2(ux0, uy1);
-				vertices_[vertexIndex + 0].color = color;
+				vertices_[vertexIndex + 0].color0 = color;
 				vertices_[vertexIndex + 0].unit = unit;
 
 				vertices_[vertexIndex + 1].position = glm::vec2(currPos.x + w + glyph.xoff, currPos.y - glyph.yoff);
 				vertices_[vertexIndex + 1].uv = glm::vec2(ux1, uy0);
-				vertices_[vertexIndex + 1].color = color;
+				vertices_[vertexIndex + 1].color0 = color;
 				vertices_[vertexIndex + 1].unit = unit;
 
 				vertices_[vertexIndex + 2].position = glm::vec2(currPos.x + glyph.xoff, currPos.y - glyph.yoff);
 				vertices_[vertexIndex + 2].uv = glm::vec2(ux0, uy0);
-				vertices_[vertexIndex + 2].color = color;
+				vertices_[vertexIndex + 2].color0 = color;
 				vertices_[vertexIndex + 2].unit = unit;
 
 				vertices_[vertexIndex + 3].position = glm::vec2(currPos.x + glyph.xoff, currPos.y - glyph.yoff2);
 				vertices_[vertexIndex + 3].uv = glm::vec2(ux0, uy1);
-				vertices_[vertexIndex + 3].color = color;
+				vertices_[vertexIndex + 3].color0 = color;
 				vertices_[vertexIndex + 3].unit = unit;
 
 				vertices_[vertexIndex + 4].position = glm::vec2(currPos.x + w + glyph.xoff, currPos.y - glyph.yoff2);
 				vertices_[vertexIndex + 4].uv = glm::vec2(ux1, uy1);
-				vertices_[vertexIndex + 4].color = color;
+				vertices_[vertexIndex + 4].color0 = color;
 				vertices_[vertexIndex + 4].unit = unit;
 
 				vertices_[vertexIndex + 5].position = glm::vec2(currPos.x + w + glyph.xoff, currPos.y - glyph.yoff);
 				vertices_[vertexIndex + 5].uv = glm::vec2(ux1, uy0);
-				vertices_[vertexIndex + 5].color = color;
+				vertices_[vertexIndex + 5].color0 = color;
+				vertices_[vertexIndex + 5].unit = unit;
+
+				currPos.x += glyph.xadvance;
+				vertexIndex += 6;
+			}
+		};
+
+
+	if (!commandQueue_.empty())
+	{
+		RenderCommand& prevCommand = commandQueue_.back();
+
+		if (prevCommand.drawMode == EDrawMode::TRIANGLES && prevCommand.type == RenderCommand::EType::STRING)
+		{
+			int32_t atlasUnit = -1;
+			for (uint32_t unit = 0; unit < RenderCommand::MAX_TEXTURE_UNIT; ++unit)
+			{
+				if (prevCommand.fonts[unit] == font)
+				{
+					atlasUnit = unit;
+					break;
+				}
+			}
+
+			if (atlasUnit != -1)
+			{
+				uint32_t startVertexIndex = prevCommand.startVertexIndex + prevCommand.vertexCount;
+				prevCommand.vertexCount += vertexCount;
+
+				composeVertexData(startVertexIndex, atlasUnit);
+				return;
+			}
+
+			for (uint32_t unit = 0; unit < RenderCommand::MAX_TEXTURE_UNIT; ++unit)
+			{
+				if (prevCommand.fonts[unit] == nullptr)
+				{
+					atlasUnit = unit;
+					break;
+				}
+			}
+
+			if (atlasUnit != -1)
+			{
+				uint32_t startVertexIndex = prevCommand.startVertexIndex + prevCommand.vertexCount;
+				prevCommand.vertexCount += vertexCount;
+				prevCommand.fonts[atlasUnit] = font;
+
+				composeVertexData(startVertexIndex, atlasUnit);
+				return;
+			}
+		}
+	}
+
+	uint32_t startVertexIndex = 0;
+	if (!commandQueue_.empty())
+	{
+		RenderCommand& prevCommand = commandQueue_.back();
+		startVertexIndex = prevCommand.startVertexIndex + prevCommand.vertexCount;
+	}
+
+	uint32_t atlasUnit = 0;
+
+	RenderCommand command;
+	command.drawMode = EDrawMode::TRIANGLES;
+	command.startVertexIndex = startVertexIndex;
+	command.vertexCount = vertexCount;
+	command.type = RenderCommand::EType::STRING;
+	command.fonts[atlasUnit] = font;
+
+	composeVertexData(command.startVertexIndex, atlasUnit);
+
+	commandQueue_.push(command);
+}
+
+void RenderManager2D::DrawStringEx(TTFont* font, const std::wstring& text, const glm::vec2& basePos, const glm::vec4& color)
+{	
+	/** 문자 하나당 정점 6개. */
+	uint32_t vertexCount = 6 * static_cast<uint32_t>(text.size());
+	if (IsFullCommandQueue(vertexCount))
+	{
+		Flush();
+	}
+
+	float atlasWidth = static_cast<float>(font->GetAtlasWidth());
+	float atlasHeight = static_cast<float>(font->GetAtlasHeight());
+	glm::vec2 currPos = glm::vec2(basePos.x, basePos.y);
+
+	auto composeVertexData = [&](uint32_t vertexIndex, uint32_t unit)
+		{
+			for (const auto& unicode : text)
+			{
+				const Glyph& glyph = font->GetGlyph(static_cast<int32_t>(unicode));
+
+				float w = static_cast<float>(glyph.pos1.x - glyph.pos0.x);
+				float h = static_cast<float>(glyph.pos1.y - glyph.pos0.y);
+				float ux0 = static_cast<float>(glyph.pos0.x - 1) / atlasWidth;
+				float uy0 = static_cast<float>(glyph.pos0.y - 1) / atlasHeight;
+				float ux1 = static_cast<float>(glyph.pos1.x + 1) / atlasWidth;
+				float uy1 = static_cast<float>(glyph.pos1.y + 1) / atlasHeight;
+
+				vertices_[vertexIndex + 0].position = glm::vec2(currPos.x + glyph.xoff, currPos.y - glyph.yoff2);
+				vertices_[vertexIndex + 0].uv = glm::vec2(ux0, uy1);
+				vertices_[vertexIndex + 0].color0 = color;
+				vertices_[vertexIndex + 0].unit = unit;
+
+				vertices_[vertexIndex + 1].position = glm::vec2(currPos.x + w + glyph.xoff, currPos.y - glyph.yoff);
+				vertices_[vertexIndex + 1].uv = glm::vec2(ux1, uy0);
+				vertices_[vertexIndex + 1].color0 = color;
+				vertices_[vertexIndex + 1].unit = unit;
+
+				vertices_[vertexIndex + 2].position = glm::vec2(currPos.x + glyph.xoff, currPos.y - glyph.yoff);
+				vertices_[vertexIndex + 2].uv = glm::vec2(ux0, uy0);
+				vertices_[vertexIndex + 2].color0 = color;
+				vertices_[vertexIndex + 2].unit = unit;
+
+				vertices_[vertexIndex + 3].position = glm::vec2(currPos.x + glyph.xoff, currPos.y - glyph.yoff2);
+				vertices_[vertexIndex + 3].uv = glm::vec2(ux0, uy1);
+				vertices_[vertexIndex + 3].color0 = color;
+				vertices_[vertexIndex + 3].unit = unit;
+
+				vertices_[vertexIndex + 4].position = glm::vec2(currPos.x + w + glyph.xoff, currPos.y - glyph.yoff2);
+				vertices_[vertexIndex + 4].uv = glm::vec2(ux1, uy1);
+				vertices_[vertexIndex + 4].color0 = color;
+				vertices_[vertexIndex + 4].unit = unit;
+
+				vertices_[vertexIndex + 5].position = glm::vec2(currPos.x + w + glyph.xoff, currPos.y - glyph.yoff);
+				vertices_[vertexIndex + 5].uv = glm::vec2(ux1, uy0);
+				vertices_[vertexIndex + 5].color0 = color;
 				vertices_[vertexIndex + 5].unit = unit;
 
 				currPos.x += glyph.xadvance;
@@ -1200,14 +1329,17 @@ void RenderManager2D::LoadBuffers()
 		GL_API_CHECK(glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, Vertex::GetStride(), (void*)(offsetof(Vertex, uv))));
 		GL_API_CHECK(glEnableVertexAttribArray(1));
 
-		GL_API_CHECK(glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, Vertex::GetStride(), (void*)(offsetof(Vertex, color))));
+		GL_API_CHECK(glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, Vertex::GetStride(), (void*)(offsetof(Vertex, color0))));
 		GL_API_CHECK(glEnableVertexAttribArray(2));
 
-		GL_API_CHECK(glVertexAttribIPointer(3, 1, GL_INT, Vertex::GetStride(), (void*)(offsetof(Vertex, unit))));
+		GL_API_CHECK(glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, Vertex::GetStride(), (void*)(offsetof(Vertex, color1))));
 		GL_API_CHECK(glEnableVertexAttribArray(3));
 
-		GL_API_CHECK(glVertexAttribPointer(4, 1, GL_FLOAT, GL_FALSE, Vertex::GetStride(), (void*)(offsetof(Vertex, transparent))));
+		GL_API_CHECK(glVertexAttribIPointer(4, 1, GL_INT, Vertex::GetStride(), (void*)(offsetof(Vertex, unit))));
 		GL_API_CHECK(glEnableVertexAttribArray(4));
+
+		GL_API_CHECK(glVertexAttribPointer(5, 1, GL_FLOAT, GL_FALSE, Vertex::GetStride(), (void*)(offsetof(Vertex, transparent))));
+		GL_API_CHECK(glEnableVertexAttribArray(5));
 
 		vertexBuffer_->Unbind();
 	}

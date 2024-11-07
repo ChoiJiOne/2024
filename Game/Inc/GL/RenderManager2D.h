@@ -69,6 +69,7 @@ public:
 	
 	/** 2D 문자열을 렌더링합니다. */
 	void DrawString(TTFont* font, const std::wstring& text, const glm::vec2& basePos, const glm::vec4& color);
+	void DrawStringEx(TTFont* font, const std::wstring& text, const glm::vec2& basePos, const glm::vec4& color);
 
 private:
 	/** GameApp에서 2D 렌더 매니저의 내부에 접근할 수 있도록 설정. */
@@ -91,7 +92,8 @@ private:
 		
 		glm::vec2 position;
 		glm::vec2 uv;
-		glm::vec4 color;
+		glm::vec4 color0;
+		glm::vec4 color1;
 		uint32_t unit; /** 텍스처 유닛입니다. */
 		float transparent = 1.0f; /** 투명도입니다. 1.0에 가까우면 불투명하고 0.0에 가까우면 투명합니다. */
 	};
