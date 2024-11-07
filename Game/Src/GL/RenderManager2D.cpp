@@ -13,6 +13,7 @@
 #include "GL/ITexture.h"
 #include "GL/RenderManager2D.h"
 #include "GL/Shader.h"
+#include "GL/TTFont.h"
 #include "GL/UniformBuffer.h"
 #include "GL/VertexBuffer.h"
 #include "Utils/Assertion.h"
@@ -1026,6 +1027,135 @@ void RenderManager2D::DrawTextureEx(ITexture* texture, const glm::vec2& center, 
 	commandQueue_.push(command);
 }
 
+void RenderManager2D::DrawString(TTFont* font, const std::wstring& text, const glm::vec2& pos, const glm::vec4& color)
+{
+	/** 문자 하나당 정점 6개. */
+	uint32_t vertexCount = 6 * static_cast<uint32_t>(text.size());
+	if (IsFullCommandQueue(vertexCount))
+	{
+		Flush();
+	}
+
+	float atlasWidth = static_cast<float>(font->GetAtlasWidth());
+	float atlasHeight = static_cast<float>(font->GetAtlasHeight());
+	glm::vec2 currPos = glm::vec2(pos.x, pos.y);
+
+	auto composeVertexData = [&](uint32_t vertexIndex, uint32_t unit)
+		{
+			for (const auto& unicode : text)
+			{
+				const Glyph& glyph = font->GetGlyph(static_cast<int32_t>(unicode));
+
+				float w = static_cast<float>(glyph.pos1.x - glyph.pos0.x);
+				float h = static_cast<float>(glyph.pos1.y - glyph.pos0.y);
+				float ux0 = static_cast<float>(glyph.pos0.x) / atlasWidth;
+				float uy0 = static_cast<float>(glyph.pos0.y) / atlasHeight;
+				float ux1 = static_cast<float>(glyph.pos1.x) / atlasWidth;
+				float uy1 = static_cast<float>(glyph.pos1.y) / atlasHeight;
+
+				vertices_[vertexIndex + 0].position = glm::vec2(currPos.x + glyph.xoff, currPos.y - glyph.yoff);
+				vertices_[vertexIndex + 0].uv = glm::vec2(ux0, uy0);
+				vertices_[vertexIndex + 0].color = color;
+				vertices_[vertexIndex + 0].unit = unit;
+
+				vertices_[vertexIndex + 1].position = glm::vec2(currPos.x + glyph.xoff, currPos.y - h - glyph.yoff);
+				vertices_[vertexIndex + 1].uv = glm::vec2(ux0, uy1);
+				vertices_[vertexIndex + 1].color = color;
+				vertices_[vertexIndex + 1].unit = unit;
+
+				vertices_[vertexIndex + 2].position = glm::vec2(currPos.x + w + glyph.xoff, currPos.y - glyph.yoff);
+				vertices_[vertexIndex + 2].uv = glm::vec2(ux1, uy0);
+				vertices_[vertexIndex + 2].color = color;
+				vertices_[vertexIndex + 2].unit = unit;
+
+				vertices_[vertexIndex + 3].position = glm::vec2(currPos.x + w + glyph.xoff, currPos.y - glyph.yoff);
+				vertices_[vertexIndex + 3].uv = glm::vec2(ux1, uy0);
+				vertices_[vertexIndex + 3].color = color;
+				vertices_[vertexIndex + 3].unit = unit;
+
+				vertices_[vertexIndex + 4].position = glm::vec2(currPos.x + glyph.xoff, currPos.y - h - glyph.yoff);
+				vertices_[vertexIndex + 4].uv = glm::vec2(ux0, uy1);
+				vertices_[vertexIndex + 4].color = color;
+				vertices_[vertexIndex + 4].unit = unit;
+
+				vertices_[vertexIndex + 5].position = glm::vec2(currPos.x + w + glyph.xoff, currPos.y - h - glyph.yoff);
+				vertices_[vertexIndex + 5].uv = glm::vec2(ux1, uy1);
+				vertices_[vertexIndex + 5].color = color;
+				vertices_[vertexIndex + 5].unit = unit;
+
+				currPos.x += glyph.xadvance;
+				vertexIndex += 6;
+			}
+		};
+
+
+	if (!commandQueue_.empty())
+	{
+		RenderCommand& prevCommand = commandQueue_.back();
+
+		if (prevCommand.drawMode == EDrawMode::TRIANGLES && prevCommand.type == RenderCommand::EType::STRING)
+		{
+			int32_t atlasUnit = -1;
+			for (uint32_t unit = 0; unit < RenderCommand::MAX_TEXTURE_UNIT; ++unit)
+			{
+				if (prevCommand.fonts[unit] == font)
+				{
+					atlasUnit = unit;
+					break;
+				}
+			}
+
+			if (atlasUnit != -1)
+			{
+				uint32_t startVertexIndex = prevCommand.startVertexIndex + prevCommand.vertexCount;
+				prevCommand.vertexCount += vertexCount;
+
+				composeVertexData(startVertexIndex, atlasUnit);
+				return;
+			}
+
+			for (uint32_t unit = 0; unit < RenderCommand::MAX_TEXTURE_UNIT; ++unit)
+			{
+				if (prevCommand.fonts[unit] == nullptr)
+				{
+					atlasUnit = unit;
+					break;
+				}
+			}
+
+			if (atlasUnit != -1)
+			{
+				uint32_t startVertexIndex = prevCommand.startVertexIndex + prevCommand.vertexCount;
+				prevCommand.vertexCount += vertexCount;
+				prevCommand.fonts[atlasUnit] = font;
+
+				composeVertexData(startVertexIndex, atlasUnit);
+				return;
+			}
+		}
+	}
+
+	uint32_t startVertexIndex = 0;
+	if (!commandQueue_.empty())
+	{
+		RenderCommand& prevCommand = commandQueue_.back();
+		startVertexIndex = prevCommand.startVertexIndex + prevCommand.vertexCount;
+	}
+
+	uint32_t atlasUnit = 0;
+
+	RenderCommand command;
+	command.drawMode = EDrawMode::TRIANGLES;
+	command.startVertexIndex = startVertexIndex;
+	command.vertexCount = vertexCount;
+	command.type = RenderCommand::EType::STRING;
+	command.fonts[atlasUnit] = font;
+
+	composeVertexData(command.startVertexIndex, atlasUnit);
+
+	commandQueue_.push(command);
+}
+
 void RenderManager2D::Startup()
 {
 	glManager_ = GLManager::GetPtr();
@@ -1111,6 +1241,14 @@ void RenderManager2D::LoadShaders()
 	fsSource = std::string(fsBuffer.begin(), fsBuffer.end());
 
 	shaders_.insert({ RenderCommand::EType::TEXTURE, glManager_->Create<Shader>(vsSource, fsSource) });
+
+	ASSERTION(ReadFile("Shader\\String.vert", vsBuffer, outErrMsg), "%s", outErrMsg.c_str());
+	ASSERTION(ReadFile("Shader\\String.frag", fsBuffer, outErrMsg), "%s", outErrMsg.c_str());
+
+	vsSource = std::string(vsBuffer.begin(), vsBuffer.end());
+	fsSource = std::string(fsBuffer.begin(), fsBuffer.end());
+
+	shaders_.insert({ RenderCommand::EType::STRING, glManager_->Create<Shader>(vsSource, fsSource) });
 }
 
 void RenderManager2D::Flush()
@@ -1140,6 +1278,16 @@ void RenderManager2D::Flush()
 				if (command.textures[unit])
 				{
 					command.textures[unit]->Active(unit);
+				}
+			}
+			break;
+
+		case RenderCommand::EType::STRING:
+			for (uint32_t unit = 0; unit < RenderCommand::MAX_TEXTURE_UNIT; ++unit)
+			{
+				if (command.fonts[unit])
+				{
+					command.fonts[unit]->Active(unit);
 				}
 			}
 			break;
