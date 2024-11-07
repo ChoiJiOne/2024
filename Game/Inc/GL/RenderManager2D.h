@@ -68,7 +68,7 @@ public:
 	void DrawTextureEx(ITexture* texture, const glm::vec2& center, float w, float h, float rotate, const TextureDrawOption& option);
 	
 	/** 2D 문자열을 렌더링합니다. */
-	void DrawString(TTFont* font, const std::wstring& text, const glm::vec2& pos, const glm::vec4& color);
+	void DrawString(TTFont* font, const std::wstring& text, const glm::vec2& basePos, const glm::vec4& color);
 
 private:
 	/** GameApp에서 2D 렌더 매니저의 내부에 접근할 수 있도록 설정. */

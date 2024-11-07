@@ -1027,7 +1027,7 @@ void RenderManager2D::DrawTextureEx(ITexture* texture, const glm::vec2& center, 
 	commandQueue_.push(command);
 }
 
-void RenderManager2D::DrawString(TTFont* font, const std::wstring& text, const glm::vec2& pos, const glm::vec4& color)
+void RenderManager2D::DrawString(TTFont* font, const std::wstring& text, const glm::vec2& basePos, const glm::vec4& color)
 {
 	/** 문자 하나당 정점 6개. */
 	uint32_t vertexCount = 6 * static_cast<uint32_t>(text.size());
@@ -1038,7 +1038,7 @@ void RenderManager2D::DrawString(TTFont* font, const std::wstring& text, const g
 
 	float atlasWidth = static_cast<float>(font->GetAtlasWidth());
 	float atlasHeight = static_cast<float>(font->GetAtlasHeight());
-	glm::vec2 currPos = glm::vec2(pos.x, pos.y);
+	glm::vec2 currPos = glm::vec2(basePos.x, basePos.y);
 
 	auto composeVertexData = [&](uint32_t vertexIndex, uint32_t unit)
 		{
@@ -1053,32 +1053,32 @@ void RenderManager2D::DrawString(TTFont* font, const std::wstring& text, const g
 				float ux1 = static_cast<float>(glyph.pos1.x) / atlasWidth;
 				float uy1 = static_cast<float>(glyph.pos1.y) / atlasHeight;
 
-				vertices_[vertexIndex + 0].position = glm::vec2(currPos.x + glyph.xoff, currPos.y + h + glyph.yoff);
+				vertices_[vertexIndex + 0].position = glm::vec2(currPos.x + glyph.xoff, currPos.y - glyph.yoff2);
 				vertices_[vertexIndex + 0].uv = glm::vec2(ux0, uy1);
 				vertices_[vertexIndex + 0].color = color;
 				vertices_[vertexIndex + 0].unit = unit;
 
-				vertices_[vertexIndex + 1].position = glm::vec2(currPos.x + w + glyph.xoff, currPos.y + h + glyph.yoff2);
+				vertices_[vertexIndex + 1].position = glm::vec2(currPos.x + w + glyph.xoff, currPos.y - glyph.yoff);
 				vertices_[vertexIndex + 1].uv = glm::vec2(ux1, uy0);
 				vertices_[vertexIndex + 1].color = color;
 				vertices_[vertexIndex + 1].unit = unit;
 
-				vertices_[vertexIndex + 2].position = glm::vec2(currPos.x + glyph.xoff, currPos.y + h + glyph.yoff2);
+				vertices_[vertexIndex + 2].position = glm::vec2(currPos.x + glyph.xoff, currPos.y - glyph.yoff);
 				vertices_[vertexIndex + 2].uv = glm::vec2(ux0, uy0);
 				vertices_[vertexIndex + 2].color = color;
 				vertices_[vertexIndex + 2].unit = unit;
 
-				vertices_[vertexIndex + 3].position = glm::vec2(currPos.x + glyph.xoff, currPos.y + h + glyph.yoff);
+				vertices_[vertexIndex + 3].position = glm::vec2(currPos.x + glyph.xoff, currPos.y - glyph.yoff2);
 				vertices_[vertexIndex + 3].uv = glm::vec2(ux0, uy1);
 				vertices_[vertexIndex + 3].color = color;
 				vertices_[vertexIndex + 3].unit = unit;
 
-				vertices_[vertexIndex + 4].position = glm::vec2(currPos.x + w + glyph.xoff, currPos.y + h + glyph.yoff);
+				vertices_[vertexIndex + 4].position = glm::vec2(currPos.x + w + glyph.xoff, currPos.y - glyph.yoff2);
 				vertices_[vertexIndex + 4].uv = glm::vec2(ux1, uy1);
 				vertices_[vertexIndex + 4].color = color;
 				vertices_[vertexIndex + 4].unit = unit;
 
-				vertices_[vertexIndex + 5].position = glm::vec2(currPos.x + w + glyph.xoff, currPos.y + h + glyph.yoff2);
+				vertices_[vertexIndex + 5].position = glm::vec2(currPos.x + w + glyph.xoff, currPos.y - glyph.yoff);
 				vertices_[vertexIndex + 5].uv = glm::vec2(ux1, uy0);
 				vertices_[vertexIndex + 5].color = color;
 				vertices_[vertexIndex + 5].unit = unit;
