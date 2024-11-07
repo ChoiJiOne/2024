@@ -1049,7 +1049,7 @@ void RenderManager2D::DrawTexture(ITexture* texture, const glm::vec2& center, fl
 	commandQueue_.push(command);
 }
 
-void RenderManager2D::DrawTextureEx(ITexture* texture, const glm::vec2& center, float w, float h, float rotate, const TextureDrawOption& option)
+void RenderManager2D::DrawTexture(ITexture* texture, const glm::vec2& center, float w, float h, float rotate, const TextureDrawOption& option)
 {
 	static const uint32_t MAX_VERTEX_SIZE = 6;
 	if (IsFullCommandQueue(MAX_VERTEX_SIZE))

@@ -67,7 +67,7 @@ public:
 	
 	/** 2D 텍스처를 렌더링합니다. */
 	void DrawTexture(ITexture* texture, const glm::vec2& center, float w, float h, float rotate);
-	void DrawTextureEx(ITexture* texture, const glm::vec2& center, float w, float h, float rotate, const TextureDrawOption& option);
+	void DrawTexture(ITexture* texture, const glm::vec2& center, float w, float h, float rotate, const TextureDrawOption& option);
 	
 	/** 2D 문자열을 렌더링합니다. */
 	void DrawString(TTFont* font, const std::wstring& text, const glm::vec2& basePos, const glm::vec4& color);
