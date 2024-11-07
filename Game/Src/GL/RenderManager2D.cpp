@@ -762,6 +762,162 @@ void RenderManager2D::DrawCircleWireframe(const glm::vec2& center, float radius,
 	commandQueue_.push(command);
 }
 
+void RenderManager2D::DrawEllipse(const glm::vec2& center, float xHalfAxis, float yHalfAxis, float rotate, const glm::vec4& color)
+{
+	static const uint32_t MAX_VERTEX_SIZE = 300;
+	static const uint32_t MAX_SLICE_SIZE = 100;
+	if (IsFullCommandQueue(MAX_VERTEX_SIZE))
+	{
+		Flush();
+	}
+
+	uint32_t vertexCount = 0;
+	std::array<glm::vec2, MAX_VERTEX_SIZE> vertices;
+
+	glm::mat2 rotateMat = glm::mat2(
+		+glm::cos(rotate), -glm::sin(rotate),
+		+glm::sin(rotate), +glm::cos(rotate)
+	);
+	
+	for (int32_t slice = 0; slice < MAX_SLICE_SIZE; ++slice)
+	{
+		float radian0 = (static_cast<float>(slice + 0) * glm::pi<float>() * 2.0f) / static_cast<float>(MAX_SLICE_SIZE);
+		float radian1 = (static_cast<float>(slice + 1) * glm::pi<float>() * 2.0f) / static_cast<float>(MAX_SLICE_SIZE);
+
+		vertices[vertexCount + 0] = glm::vec2(0.0f, 0.0f);
+		vertices[vertexCount + 1] = glm::vec2(xHalfAxis * glm::cos(radian0), yHalfAxis * glm::sin(radian0)) * rotateMat;
+		vertices[vertexCount + 2] = glm::vec2(xHalfAxis * glm::cos(radian1), yHalfAxis * glm::sin(radian1)) * rotateMat;
+
+		for (uint32_t index = 0; index < 3; ++index)
+		{
+			vertices[vertexCount + index] += (center + PIXEL_OFFSET);
+		}
+
+		vertexCount += 3;
+	}
+
+	for (auto& vertex : vertices)
+	{
+		vertex = vertex * rotateMat;
+		vertex += (center + PIXEL_OFFSET);
+	}
+
+	if (!commandQueue_.empty())
+	{
+		RenderCommand& prevCommand = commandQueue_.back();
+
+		if (prevCommand.drawMode == EDrawMode::TRIANGLES && prevCommand.type == RenderCommand::EType::GEOMETRY)
+		{
+			uint32_t startVertexIndex = prevCommand.startVertexIndex + prevCommand.vertexCount;
+			prevCommand.vertexCount += static_cast<uint32_t>(vertices.size());
+
+			for (uint32_t index = 0; index < vertices.size(); ++index)
+			{
+				vertices_[startVertexIndex + index].position = vertices[index];
+				vertices_[startVertexIndex + index].color0 = color;
+			}
+
+			return;
+		}
+	}
+
+	uint32_t startVertexIndex = 0;
+	if (!commandQueue_.empty())
+	{
+		RenderCommand& prevCommand = commandQueue_.back();
+		startVertexIndex = prevCommand.startVertexIndex + prevCommand.vertexCount;
+	}
+
+	RenderCommand command;
+	command.drawMode = EDrawMode::TRIANGLES;
+	command.startVertexIndex = startVertexIndex;
+	command.vertexCount = static_cast<uint32_t>(vertices.size());
+	command.type = RenderCommand::EType::GEOMETRY;
+
+	for (uint32_t index = 0; index < command.vertexCount; ++index)
+	{
+		vertices_[command.startVertexIndex + index].position = vertices[index];
+		vertices_[command.startVertexIndex + index].color0 = color;
+	}
+
+	commandQueue_.push(command);
+
+}
+
+void RenderManager2D::DrawEllipseWireframe(const glm::vec2& center, float xHalfAxis, float yHalfAxis, float rotate, const glm::vec4& color)
+{
+	static const uint32_t MAX_VERTEX_SIZE = 200;
+	static const uint32_t MAX_SLICE_SIZE = 100;
+	if (IsFullCommandQueue(MAX_VERTEX_SIZE))
+	{
+		Flush();
+	}
+
+	uint32_t vertexCount = 0;
+	std::array<glm::vec2, MAX_VERTEX_SIZE> vertices;
+
+	glm::mat2 rotateMat = glm::mat2(
+		+glm::cos(rotate), -glm::sin(rotate),
+		+glm::sin(rotate), +glm::cos(rotate)
+	);
+
+	for (int32_t slice = 0; slice < MAX_SLICE_SIZE; ++slice)
+	{
+		float radian0 = (static_cast<float>(slice + 0) * glm::pi<float>() * 2.0f) / static_cast<float>(MAX_SLICE_SIZE);
+		float radian1 = (static_cast<float>(slice + 1) * glm::pi<float>() * 2.0f) / static_cast<float>(MAX_SLICE_SIZE);
+
+		vertices[vertexCount + 0] = glm::vec2(xHalfAxis * glm::cos(radian0), yHalfAxis * glm::sin(radian0)) * rotateMat;
+		vertices[vertexCount + 1] = glm::vec2(xHalfAxis * glm::cos(radian1), yHalfAxis * glm::sin(radian1)) * rotateMat;
+
+		for (uint32_t index = 0; index < 2; ++index)
+		{
+			vertices[vertexCount + index] += (center + PIXEL_OFFSET);
+		}
+
+		vertexCount += 2;
+	}
+
+	if (!commandQueue_.empty())
+	{
+		RenderCommand& prevCommand = commandQueue_.back();
+
+		if (prevCommand.drawMode == EDrawMode::LINES && prevCommand.type == RenderCommand::EType::GEOMETRY)
+		{
+			uint32_t startVertexIndex = prevCommand.startVertexIndex + prevCommand.vertexCount;
+			prevCommand.vertexCount += static_cast<uint32_t>(vertices.size());
+
+			for (uint32_t index = 0; index < vertices.size(); ++index)
+			{
+				vertices_[startVertexIndex + index].position = vertices[index];
+				vertices_[startVertexIndex + index].color0 = color;
+			}
+
+			return;
+		}
+	}
+
+	uint32_t startVertexIndex = 0;
+	if (!commandQueue_.empty())
+	{
+		RenderCommand& prevCommand = commandQueue_.back();
+		startVertexIndex = prevCommand.startVertexIndex + prevCommand.vertexCount;
+	}
+
+	RenderCommand command;
+	command.drawMode = EDrawMode::LINES;
+	command.startVertexIndex = startVertexIndex;
+	command.vertexCount = static_cast<uint32_t>(vertices.size());
+	command.type = RenderCommand::EType::GEOMETRY;
+
+	for (uint32_t index = 0; index < command.vertexCount; ++index)
+	{
+		vertices_[command.startVertexIndex + index].position = vertices[index];
+		vertices_[command.startVertexIndex + index].color0 = color;
+	}
+
+	commandQueue_.push(command);
+}
+
 void RenderManager2D::DrawTexture(ITexture* texture, const glm::vec2& center, float w, float h, float rotate)
 {
 	static const uint32_t MAX_VERTEX_SIZE = 6;

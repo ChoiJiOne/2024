@@ -62,6 +62,8 @@ public:
 	void DrawRectWireframe(const glm::vec2& center, float w, float h, const glm::vec4& color, float rotate);
 	void DrawCircle(const glm::vec2& center, float radius, const glm::vec4& color);
 	void DrawCircleWireframe(const glm::vec2& center, float radius, const glm::vec4& color);
+	void DrawEllipse(const glm::vec2& center, float xHalfAxis, float yHalfAxis, float rotate, const glm::vec4& color);
+	void DrawEllipseWireframe(const glm::vec2& center, float xHalfAxis, float yHalfAxis, float rotate, const glm::vec4& color);
 	
 	/** 2D 텍스처를 렌더링합니다. */
 	void DrawTexture(ITexture* texture, const glm::vec2& center, float w, float h, float rotate);
