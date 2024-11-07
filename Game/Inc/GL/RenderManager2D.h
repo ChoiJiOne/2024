@@ -69,7 +69,7 @@ public:
 	
 	/** 2D 문자열을 렌더링합니다. */
 	void DrawString(TTFont* font, const std::wstring& text, const glm::vec2& basePos, const glm::vec4& color);
-	void DrawStringEx(TTFont* font, const std::wstring& text, const glm::vec2& basePos, const glm::vec4& color);
+	void DrawStringEx(TTFont* font, const std::wstring& text, const glm::vec2& basePos, const glm::vec4& textColor, const glm::vec4& outlineColor);
 
 private:
 	/** GameApp에서 2D 렌더 매니저의 내부에 접근할 수 있도록 설정. */
@@ -105,9 +105,10 @@ private:
 
 		enum class EType
 		{
-			GEOMETRY = 0x00,
-			TEXTURE  = 0x01,
-			STRING   = 0x02,
+			GEOMETRY  = 0x00,
+			TEXTURE   = 0x01,
+			STRING    = 0x02,
+			STRING_EX = 0x03,
 		};
 
 		EDrawMode drawMode;
@@ -165,7 +166,7 @@ private:
 	PerFrameUBO perFrameUBO_;
 
 	/** 정점 버퍼의 최대 개수입니다. */
-	static const int32_t MAX_VERTEX_BUFFER_SIZE = 6000;
+	static const int32_t MAX_VERTEX_BUFFER_SIZE = 3000;
 
 	/** 정점 버퍼입니다. */
 	std::array<Vertex, MAX_VERTEX_BUFFER_SIZE> vertices_;

@@ -1156,7 +1156,7 @@ void RenderManager2D::DrawString(TTFont* font, const std::wstring& text, const g
 	commandQueue_.push(command);
 }
 
-void RenderManager2D::DrawStringEx(TTFont* font, const std::wstring& text, const glm::vec2& basePos, const glm::vec4& color)
+void RenderManager2D::DrawStringEx(TTFont* font, const std::wstring& text, const glm::vec2& basePos, const glm::vec4& textColor, const glm::vec4& outlineColor)
 {	
 	/** 문자 하나당 정점 6개. */
 	uint32_t vertexCount = 6 * static_cast<uint32_t>(text.size());
@@ -1184,32 +1184,38 @@ void RenderManager2D::DrawStringEx(TTFont* font, const std::wstring& text, const
 
 				vertices_[vertexIndex + 0].position = glm::vec2(currPos.x + glyph.xoff, currPos.y - glyph.yoff2);
 				vertices_[vertexIndex + 0].uv = glm::vec2(ux0, uy1);
-				vertices_[vertexIndex + 0].color0 = color;
+				vertices_[vertexIndex + 0].color0 = textColor;
+				vertices_[vertexIndex + 0].color1 = outlineColor;
 				vertices_[vertexIndex + 0].unit = unit;
 
 				vertices_[vertexIndex + 1].position = glm::vec2(currPos.x + w + glyph.xoff, currPos.y - glyph.yoff);
 				vertices_[vertexIndex + 1].uv = glm::vec2(ux1, uy0);
-				vertices_[vertexIndex + 1].color0 = color;
+				vertices_[vertexIndex + 1].color0 = textColor;
+				vertices_[vertexIndex + 1].color1 = outlineColor;
 				vertices_[vertexIndex + 1].unit = unit;
 
 				vertices_[vertexIndex + 2].position = glm::vec2(currPos.x + glyph.xoff, currPos.y - glyph.yoff);
 				vertices_[vertexIndex + 2].uv = glm::vec2(ux0, uy0);
-				vertices_[vertexIndex + 2].color0 = color;
+				vertices_[vertexIndex + 2].color0 = textColor;
+				vertices_[vertexIndex + 2].color1 = outlineColor;
 				vertices_[vertexIndex + 2].unit = unit;
 
 				vertices_[vertexIndex + 3].position = glm::vec2(currPos.x + glyph.xoff, currPos.y - glyph.yoff2);
 				vertices_[vertexIndex + 3].uv = glm::vec2(ux0, uy1);
-				vertices_[vertexIndex + 3].color0 = color;
+				vertices_[vertexIndex + 3].color0 = textColor;
+				vertices_[vertexIndex + 3].color1 = outlineColor;
 				vertices_[vertexIndex + 3].unit = unit;
 
 				vertices_[vertexIndex + 4].position = glm::vec2(currPos.x + w + glyph.xoff, currPos.y - glyph.yoff2);
 				vertices_[vertexIndex + 4].uv = glm::vec2(ux1, uy1);
-				vertices_[vertexIndex + 4].color0 = color;
+				vertices_[vertexIndex + 4].color0 = textColor;
+				vertices_[vertexIndex + 4].color1 = outlineColor;
 				vertices_[vertexIndex + 4].unit = unit;
 
 				vertices_[vertexIndex + 5].position = glm::vec2(currPos.x + w + glyph.xoff, currPos.y - glyph.yoff);
 				vertices_[vertexIndex + 5].uv = glm::vec2(ux1, uy0);
-				vertices_[vertexIndex + 5].color0 = color;
+				vertices_[vertexIndex + 5].color0 = textColor;
+				vertices_[vertexIndex + 5].color1 = outlineColor;
 				vertices_[vertexIndex + 5].unit = unit;
 
 				currPos.x += glyph.xadvance;
@@ -1222,7 +1228,7 @@ void RenderManager2D::DrawStringEx(TTFont* font, const std::wstring& text, const
 	{
 		RenderCommand& prevCommand = commandQueue_.back();
 
-		if (prevCommand.drawMode == EDrawMode::TRIANGLES && prevCommand.type == RenderCommand::EType::STRING)
+		if (prevCommand.drawMode == EDrawMode::TRIANGLES && prevCommand.type == RenderCommand::EType::STRING_EX)
 		{
 			int32_t atlasUnit = -1;
 			for (uint32_t unit = 0; unit < RenderCommand::MAX_TEXTURE_UNIT; ++unit)
@@ -1277,7 +1283,7 @@ void RenderManager2D::DrawStringEx(TTFont* font, const std::wstring& text, const
 	command.drawMode = EDrawMode::TRIANGLES;
 	command.startVertexIndex = startVertexIndex;
 	command.vertexCount = vertexCount;
-	command.type = RenderCommand::EType::STRING;
+	command.type = RenderCommand::EType::STRING_EX;
 	command.fonts[atlasUnit] = font;
 
 	composeVertexData(command.startVertexIndex, atlasUnit);
@@ -1381,6 +1387,14 @@ void RenderManager2D::LoadShaders()
 	fsSource = std::string(fsBuffer.begin(), fsBuffer.end());
 
 	shaders_.insert({ RenderCommand::EType::STRING, glManager_->Create<Shader>(vsSource, fsSource) });
+
+	ASSERTION(ReadFile("Shader\\StringEx.vert", vsBuffer, outErrMsg), "%s", outErrMsg.c_str());
+	ASSERTION(ReadFile("Shader\\StringEx.frag", fsBuffer, outErrMsg), "%s", outErrMsg.c_str());
+
+	vsSource = std::string(vsBuffer.begin(), vsBuffer.end());
+	fsSource = std::string(fsBuffer.begin(), fsBuffer.end());
+
+	shaders_.insert({ RenderCommand::EType::STRING_EX, glManager_->Create<Shader>(vsSource, fsSource) });
 }
 
 void RenderManager2D::Flush()
@@ -1415,6 +1429,16 @@ void RenderManager2D::Flush()
 			break;
 
 		case RenderCommand::EType::STRING:
+			for (uint32_t unit = 0; unit < RenderCommand::MAX_TEXTURE_UNIT; ++unit)
+			{
+				if (command.fonts[unit])
+				{
+					command.fonts[unit]->Active(unit);
+				}
+			}
+			break;
+
+		case RenderCommand::EType::STRING_EX:
 			for (uint32_t unit = 0; unit < RenderCommand::MAX_TEXTURE_UNIT; ++unit)
 			{
 				if (command.fonts[unit])
