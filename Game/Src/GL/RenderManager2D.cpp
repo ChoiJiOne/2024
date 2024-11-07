@@ -1536,6 +1536,14 @@ void RenderManager2D::LoadShaders()
 
 	shaders_.insert({ RenderCommand::EType::TEXTURE, glManager_->Create<Shader>(vsSource, fsSource) });
 
+	ASSERTION(ReadFile("Shader\\TextureEx.vert", vsBuffer, outErrMsg), "%s", outErrMsg.c_str());
+	ASSERTION(ReadFile("Shader\\TextureEx.frag", fsBuffer, outErrMsg), "%s", outErrMsg.c_str());
+
+	vsSource = std::string(vsBuffer.begin(), vsBuffer.end());
+	fsSource = std::string(fsBuffer.begin(), fsBuffer.end());
+
+	shaders_.insert({ RenderCommand::EType::TEXTURE_EX, glManager_->Create<Shader>(vsSource, fsSource) });
+
 	ASSERTION(ReadFile("Shader\\String.vert", vsBuffer, outErrMsg), "%s", outErrMsg.c_str());
 	ASSERTION(ReadFile("Shader\\String.frag", fsBuffer, outErrMsg), "%s", outErrMsg.c_str());
 
@@ -1575,6 +1583,7 @@ void RenderManager2D::Flush()
 		switch (command.type)
 		{
 		case RenderCommand::EType::TEXTURE:
+		case RenderCommand::EType::TEXTURE_EX:
 			for (uint32_t unit = 0; unit < RenderCommand::MAX_TEXTURE_UNIT; ++unit)
 			{
 				if (command.textures[unit])
@@ -1585,15 +1594,6 @@ void RenderManager2D::Flush()
 			break;
 
 		case RenderCommand::EType::STRING:
-			for (uint32_t unit = 0; unit < RenderCommand::MAX_TEXTURE_UNIT; ++unit)
-			{
-				if (command.fonts[unit])
-				{
-					command.fonts[unit]->Active(unit);
-				}
-			}
-			break;
-
 		case RenderCommand::EType::STRING_EX:
 			for (uint32_t unit = 0; unit < RenderCommand::MAX_TEXTURE_UNIT; ++unit)
 			{

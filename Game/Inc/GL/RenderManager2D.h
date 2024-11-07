@@ -114,10 +114,11 @@ private:
 
 		enum class EType
 		{
-			GEOMETRY  = 0x00,
-			TEXTURE   = 0x01,
-			STRING    = 0x02,
-			STRING_EX = 0x03,
+			GEOMETRY   = 0x00,
+			TEXTURE    = 0x01,
+			TEXTURE_EX = 0x02,
+			STRING     = 0x03,
+			STRING_EX  = 0x04,
 		};
 
 		EDrawMode drawMode;
