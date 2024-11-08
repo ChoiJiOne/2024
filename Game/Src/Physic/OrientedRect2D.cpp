@@ -25,6 +25,36 @@ bool IsOverlapOnAxis(const OrientedRect2D* lhs, const OrientedRect2D* rhs, const
 	return ((min1 <= max0) && (min0 <= max1));
 }
 
+/** OBB客 OBB 尝府狼 面倒 贸府 */
+bool IsCollision(const OrientedRect2D* lhs, const OrientedRect2D* rhs)
+{
+	float rotate0 = lhs->rotate;
+	glm::mat2 roateMat0(glm::cos(rotate0), -glm::sin(rotate0), glm::sin(rotate0), glm::cos(rotate0));
+
+	float rotate1 = rhs->rotate;
+	glm::mat2 roateMat1(glm::cos(rotate1), -glm::sin(rotate1), glm::sin(rotate1), glm::cos(rotate1));
+
+	std::array<glm::vec2, 6> separateAxis =
+	{
+		glm::vec2(1.0f, 0.0f),
+		glm::vec2(0.0f, 1.0f),
+		glm::normalize(glm::vec2(lhs->size.x * 0.5f,               0.0f)) * roateMat0,
+		glm::normalize(glm::vec2(              0.0f, lhs->size.y * 0.5f)) * roateMat0,
+		glm::normalize(glm::vec2(rhs->size.x * 0.5f,               0.0f)) * roateMat1,
+		glm::normalize(glm::vec2(              0.0f, rhs->size.y * 0.5f)) * roateMat1,
+	};
+
+	for (const auto& axis : separateAxis)
+	{
+		if (!IsOverlapOnAxis(lhs, rhs, axis))
+		{
+			return false;
+		}
+	}
+
+	return true;
+}
+
 bool OrientedRect2D::Intersect(const ICollider2D* collider) const
 {
 	CHECK(collider != nullptr);
@@ -58,7 +88,7 @@ bool OrientedRect2D::Intersect(const ICollider2D* collider) const
 	case ICollider2D::EType::OBB:
 	{
 		const OrientedRect2D* other = reinterpret_cast<const OrientedRect2D*>(collider);
-
+		bIsIntersect = IsCollision(this, other);
 	}
 	break;
 
