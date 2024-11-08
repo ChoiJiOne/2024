@@ -23,4 +23,6 @@ private:
 
 	class TextureAtlas2D* atlas_ = nullptr;
 	class SpriteAnimator2D* animator_ = nullptr;
+
+	glm::vec2 mousePos_ = glm::vec2();
 };

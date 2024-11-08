@@ -41,6 +41,10 @@ GameDevScene::~GameDevScene()
 
 void GameDevScene::Tick(float deltaSeconds)
 {
+	ImVec2 mousePos = ImGui::GetMousePos();
+	mousePos_.x = -1000.0f * 0.5f + mousePos.x;
+	mousePos_.y = +800.0f * 0.5f - mousePos.y;
+
 	animator_->Update(deltaSeconds);
 }
 
@@ -65,6 +69,7 @@ void GameDevScene::Render()
 			}
 
 			renderMgr.DrawTextureAtlas(animator_->GetTextureAtlas(), animator_->GetCurrentClipName(), glm::vec2(), 200.0f, 190.0f, 0.0f, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
+			renderMgr.DrawCircle(mousePos_, 10.0f, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
 		}
 		renderMgr.End();
 	}
