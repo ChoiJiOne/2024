@@ -22,7 +22,5 @@ private:
 	class Camera2D* mainCamera_ = nullptr;
 
 	class TextureAtlas2D* atlas_ = nullptr;
-
-	TextureDrawOption option_;
-	glm::vec4 outline_;
+	class SpriteAnimator2D* animator_ = nullptr;
 };
