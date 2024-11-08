@@ -78,11 +78,11 @@ public:
 	/** 2D 텍스처 아틀라스의 요소를 렌더링합니다. */
 	void DrawTextureAtlas(TextureAtlas2D* textureAtlas, const std::string& name, const glm::vec2& center, float w, float h, float rotate);
 	void DrawTextureAtlas(TextureAtlas2D* textureAtlas, const std::string& name, const glm::vec2& center, float w, float h, float rotate, const glm::vec4& outlineColor);
+	void DrawTextureAtlas(TextureAtlas2D* textureAtlas, const std::string& name, const glm::vec2& center, float w, float h, float rotate, const TextureDrawOption& option);
+	void DrawTextureAtlas(TextureAtlas2D* textureAtlas, const std::string& name, const glm::vec2& center, float w, float h, float rotate, const glm::vec4& outlineColor, const TextureDrawOption& option);
 
 	/** 2D 문자열을 렌더링합니다. */
 	void DrawString(TTFont* font, const std::wstring& text, const glm::vec2& basePos, const glm::vec4& color);
-
-	/** 외곽선을 포함한 2D 문자열을 렌더링합니다. */
 	void DrawString(TTFont* font, const std::wstring& text, const glm::vec2& basePos, const glm::vec4& textColor, const glm::vec4& outlineColor);
 
 private:
