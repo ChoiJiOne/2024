@@ -1,5 +1,3 @@
-#include <array>
-
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/gtc/constants.hpp>
 #include <glm/gtc/epsilon.hpp>
