@@ -19,16 +19,29 @@ bool IsCollision(const Circle2D* lhs, const Circle2D* rhs)
 }
 
 /** 원과 AABB 끼리의 충돌 처리 */
-bool IsCollision(const Circle2D* lhs, const Rect2D* rect)
+bool IsCollision(const Circle2D* lhs, const Rect2D* rhs)
 {
-	glm::vec2 minPos = rect->GetMin();
-	glm::vec2 maxPos = rect->GetMax();
+	glm::vec2 minPos = rhs->GetMin();
+	glm::vec2 maxPos = rhs->GetMax();
 	glm::vec2 closest(glm::clamp<float>(lhs->center.x, minPos.x, maxPos.x), glm::clamp<float>(lhs->center.y, minPos.y, maxPos.y));
 
 	float dist = glm::length2(closest - lhs->center);
 	float r2 = lhs->radius * lhs->radius;
 
 	return dist <= r2;
+}
+
+/** 원과 OBB 끼리의 충돌 처리 */
+bool IsCollision(const Circle2D* lhs, const OrientedRect2D* rhs)
+{
+	float rotate = -rhs->rotate;
+	glm::mat2 roateMat(glm::cos(rotate), -glm::sin(rotate), glm::sin(rotate), glm::cos(rotate));
+	glm::vec2 center = (lhs->center - rhs->center) * roateMat;
+
+	Circle2D circle(center, lhs->radius);
+	Rect2D rect(glm::vec2(0.0f, 0.0f), rhs->size);
+	
+	return IsCollision(&circle, &rect);
 }
 
 bool Circle2D::Intersect(const ICollider2D* collider) const
@@ -64,6 +77,7 @@ bool Circle2D::Intersect(const ICollider2D* collider) const
 	case ICollider2D::EType::OBB:
 	{
 		const OrientedRect2D* other = reinterpret_cast<const OrientedRect2D*>(collider);
+		bIsIntersect = IsCollision(this, other);
 	}
 	break;
 
