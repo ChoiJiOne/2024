@@ -796,13 +796,7 @@ void RenderManager2D::DrawEllipse(const glm::vec2& center, float xHalfAxis, floa
 
 		vertexCount += 3;
 	}
-
-	for (auto& vertex : vertices)
-	{
-		vertex = vertex * rotateMat;
-		vertex += (center + PIXEL_OFFSET);
-	}
-
+	
 	if (!commandQueue_.empty())
 	{
 		RenderCommand& prevCommand = commandQueue_.back();
