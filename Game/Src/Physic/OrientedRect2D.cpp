@@ -11,10 +11,62 @@
 #include "Physic/Rect2D.h"
 #include "Utils/Assertion.h"
 
+/** 축을 기준으로 OBB와 OBB가 오버랩(겹치는지) 확인 */
+bool IsOverlapOnAxis(const OrientedRect2D* lhs, const OrientedRect2D* rhs, const glm::vec2& axis)
+{
+	float min0 = 0.0f;
+	float max0 = 0.0f;
+	lhs->GetInterval(axis, min0, max0);
+
+	float min1 = 0.0f;
+	float max1 = 0.0f;
+	rhs->GetInterval(axis, min1, max1);
+
+	return ((min1 <= max0) && (min0 <= max1));
+}
 
 bool OrientedRect2D::Intersect(const ICollider2D* collider) const
 {
-	return false;
+	CHECK(collider != nullptr);
+
+	EType type = collider->GetType();
+	bool bIsIntersect = false;
+
+	switch (type)
+	{
+	case ICollider2D::EType::LINE:
+	{
+		const Line2D* other = reinterpret_cast<const Line2D*>(collider);
+		bIsIntersect = other->Intersect(this);
+	}
+	break;
+
+	case ICollider2D::EType::CIRCLE:
+	{
+		const Circle2D* other = reinterpret_cast<const Circle2D*>(collider);
+		bIsIntersect = other->Intersect(this);
+	}
+	break;
+
+	case ICollider2D::EType::AABB:
+	{
+		const Rect2D* other = reinterpret_cast<const Rect2D*>(collider);
+		bIsIntersect = other->Intersect(this);
+	}
+	break;
+
+	case ICollider2D::EType::OBB:
+	{
+		const OrientedRect2D* other = reinterpret_cast<const OrientedRect2D*>(collider);
+
+	}
+	break;
+
+	default: // ICollider2D::EType::NONE:
+		break;
+	}
+
+	return bIsIntersect;
 }
 
 void OrientedRect2D::GetInterval(const glm::vec2& axis, float& outMin, float& outMax) const
@@ -34,8 +86,8 @@ void OrientedRect2D::GetInterval(const glm::vec2& axis, float& outMin, float& ou
 	glm::mat2 roateMat(glm::cos(rotate), -glm::sin(rotate), glm::sin(rotate), glm::cos(rotate));
 	for (int32_t index = 0; index < vertices.size(); ++index)
 	{
-		glm::vec2 targetPos = (vertices[index] - center) * roateMat;
-		vertices[index] = targetPos + center;
+		glm::vec2 colliderPos = (vertices[index] - center) * roateMat;
+		vertices[index] = colliderPos + center;
 	}
 
 	outMin = +FLT_MAX;
