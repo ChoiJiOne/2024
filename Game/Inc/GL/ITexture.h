@@ -2,7 +2,7 @@
 
 #include <cstdint>
 
-#include "GLResource.h"
+#include "GL/GLResource.h"
 
 /** OpenGL 텍스처 리소스의 인터페이스입니다. */
 class ITexture : public GLResource

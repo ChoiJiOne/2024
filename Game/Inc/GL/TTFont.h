@@ -6,7 +6,7 @@
 
 #include <glm/glm.hpp>
 
-#include "ITexture.h"
+#include "GL/ITexture.h"
 
 /** 문자 글리프입니다. */
 struct Glyph
