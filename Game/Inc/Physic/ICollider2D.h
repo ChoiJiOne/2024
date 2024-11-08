@@ -9,11 +9,10 @@ struct ICollider2D
 	enum class EType
 	{
 		NONE   = 0x00,
-		POINT  = 0x01,
-		LINE   = 0x02,
-		CIRCLE = 0x03,
-		AABB   = 0x04,
-		OBB    = 0x05,
+		LINE   = 0x01,
+		CIRCLE = 0x02,
+		AABB   = 0x03,
+		OBB    = 0x04,
 	};
 
 	/** 2D 물리 충돌 처리를 위한 인터페이스의 기본 생성자와 빈 가상 소멸자입니다. */
