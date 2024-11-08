@@ -38,7 +38,7 @@ struct OrientedRect2D : public ICollider2D
 
 	void GetInterval(const glm::vec2& axis, float& outMin, float& outMax) const;
 
-	glm::vec2 center;
-	glm::vec2 size;
+	glm::vec2 center = glm::vec2(0.0f, 0.0f);
+	glm::vec2 size = glm::vec2(0.0f, 0.0f);
 	float rotate; /** 라디안 각도 기준 */
 };
