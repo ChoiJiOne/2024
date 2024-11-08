@@ -11,6 +11,20 @@
 #include "Physic/Rect2D.h"
 #include "Utils/Assertion.h"
 
+/** 축을 기준으로 AABB와 OBB가 오버랩(겹치는지) 확인 */
+bool IsOverlapOnAxis(const Rect2D* rect, const OrientedRect2D* orientedRect, const glm::vec2& axis)
+{
+	float rectMin = 0.0f;
+	float rectMax = 0.0f;
+	rect->GetInterval(axis, rectMin, rectMax);
+
+	float orientedRectMin = 0.0f;
+	float orientedRectMax = 0.0f;
+	orientedRect->GetInterval(axis, orientedRectMin, orientedRectMax);
+
+	return ((orientedRectMin <= rectMax) && (rectMin <= orientedRectMax));
+}
+
 /** AABB와 AABB 끼리의 충돌 처리 */
 bool IsCollision(const Rect2D* lhs, const Rect2D* rhs)
 {
