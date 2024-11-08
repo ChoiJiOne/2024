@@ -34,6 +34,6 @@ struct Line2D : public ICollider2D
 	virtual EType GetType() const override { return EType::LINE; }
 	virtual bool Intersect(const ICollider2D* collider) const override;
 
-	glm::vec2 start;
-	glm::vec2 end;
+	glm::vec2 start = glm::vec2(0.0f, 0.0f);
+	glm::vec2 end = glm::vec2(0.0f, 0.0f);
 };
