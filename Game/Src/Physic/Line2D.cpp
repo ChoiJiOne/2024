@@ -156,8 +156,8 @@ bool Line2D::Intersect(const ICollider2D* collider) const
 	}
 	break;
 
-	default: 
-		break;// ICollider2D::EType::NONE:
+	default: // ICollider2D::EType::NONE:
+		break;
 	}
 
 	return bIsIntersect;
