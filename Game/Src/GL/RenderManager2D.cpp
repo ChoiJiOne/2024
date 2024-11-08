@@ -13,6 +13,7 @@
 #include "GL/ITexture.h"
 #include "GL/RenderManager2D.h"
 #include "GL/Shader.h"
+#include "GL/TextureAtlas2D.h"
 #include "GL/TTFont.h"
 #include "GL/UniformBuffer.h"
 #include "GL/VertexBuffer.h"
@@ -1455,6 +1456,289 @@ void RenderManager2D::DrawTexture(ITexture* texture, const glm::vec2& center, fl
 		vertices_[command.startVertexIndex + index].color1 = outlineColor;
 		vertices_[command.startVertexIndex + index].unit = textureUnit;
 		vertices_[command.startVertexIndex + index].transparent = option.transparent;
+	}
+
+	commandQueue_.push(command);
+}
+
+void RenderManager2D::DrawTextureAtlas(TextureAtlas2D* textureAtlas, const std::string& name, const glm::vec2& center, float w, float h, float rotate)
+{
+	static const uint32_t MAX_VERTEX_SIZE = 6;
+	if (IsFullCommandQueue(MAX_VERTEX_SIZE))
+	{
+		Flush();
+	}
+
+	float w2 = w * 0.5f;
+	float h2 = h * 0.5f;
+
+	std::array<glm::vec2, MAX_VERTEX_SIZE> vertices =
+	{
+		glm::vec2(-w2, -h2),
+		glm::vec2(+w2, +h2),
+		glm::vec2(-w2, +h2),
+		glm::vec2(-w2, -h2),
+		glm::vec2(+w2, -h2),
+		glm::vec2(+w2, +h2),
+	};
+
+	const TextureAtlas2D::Bound& bound = textureAtlas->GetByName(name);
+	float x0 = static_cast<float>(bound.x);
+	float y0 = static_cast<float>(bound.y);
+	float x1 = static_cast<float>(bound.x + bound.w);
+	float y1 = static_cast<float>(bound.y + bound.h);
+	float atlasWidth = static_cast<float>(textureAtlas->GetWidth());
+	float atlasHeight = static_cast<float>(textureAtlas->GetHeight());
+	
+	std::array<glm::vec2, MAX_VERTEX_SIZE> uvs =
+	{
+		glm::vec2(x0 / atlasWidth, y1 / atlasHeight),
+		glm::vec2(x1 / atlasWidth, y0 / atlasHeight),
+		glm::vec2(x0 / atlasWidth, y0 / atlasHeight),
+		glm::vec2(x0 / atlasWidth, y1 / atlasHeight),
+		glm::vec2(x1 / atlasWidth, y1 / atlasHeight),
+		glm::vec2(x1 / atlasWidth, y0 / atlasHeight),
+	};
+
+	glm::mat2 rotateMat = glm::mat2(
+		+glm::cos(rotate), -glm::sin(rotate),
+		+glm::sin(rotate), +glm::cos(rotate)
+	);
+
+	for (auto& vertex : vertices)
+	{
+		vertex = vertex * rotateMat;
+		vertex += (center + PIXEL_OFFSET);
+	}
+
+	if (!commandQueue_.empty())
+	{
+		RenderCommand& prevCommand = commandQueue_.back();
+		if (prevCommand.drawMode == EDrawMode::TRIANGLES && prevCommand.type == RenderCommand::EType::TEXTURE)
+		{
+			int32_t textureUnit = -1;
+			for (uint32_t unit = 0; unit < RenderCommand::MAX_TEXTURE_UNIT; ++unit)
+			{
+				if (prevCommand.textures[unit] == textureAtlas)
+				{
+					textureUnit = unit;
+					break;
+				}
+			}
+
+			if (textureUnit != -1)
+			{
+				uint32_t startVertexIndex = prevCommand.startVertexIndex + prevCommand.vertexCount;
+				prevCommand.vertexCount += static_cast<uint32_t>(vertices.size());
+
+				for (uint32_t index = 0; index < vertices.size(); ++index)
+				{
+					vertices_[startVertexIndex + index].position = vertices[index];
+					vertices_[startVertexIndex + index].uv = uvs[index];
+					vertices_[startVertexIndex + index].color0 = glm::vec4(0.0f, 0.0f, 0.0f, 0.0f);
+					vertices_[startVertexIndex + index].unit = textureUnit;
+					vertices_[startVertexIndex + index].transparent = 1.0f;
+				}
+
+				return;
+			}
+
+			for (uint32_t unit = 0; unit < RenderCommand::MAX_TEXTURE_UNIT; ++unit)
+			{
+				if (prevCommand.textures[unit] == nullptr)
+				{
+					textureUnit = unit;
+					break;
+				}
+			}
+
+			if (textureUnit != -1)
+			{
+				uint32_t startVertexIndex = prevCommand.startVertexIndex + prevCommand.vertexCount;
+				prevCommand.vertexCount += static_cast<uint32_t>(vertices.size());
+				prevCommand.textures[textureUnit] = textureAtlas;
+
+				for (uint32_t index = 0; index < vertices.size(); ++index)
+				{
+					vertices_[startVertexIndex + index].position = vertices[index];
+					vertices_[startVertexIndex + index].uv = uvs[index];
+					vertices_[startVertexIndex + index].color0 = glm::vec4(0.0f, 0.0f, 0.0f, 0.0f);
+					vertices_[startVertexIndex + index].unit = textureUnit;
+					vertices_[startVertexIndex + index].transparent = 1.0f;
+				}
+
+				return;
+			}
+		}
+	}
+
+	uint32_t startVertexIndex = 0;
+	if (!commandQueue_.empty())
+	{
+		RenderCommand& prevCommand = commandQueue_.back();
+		startVertexIndex = prevCommand.startVertexIndex + prevCommand.vertexCount;
+	}
+
+	uint32_t textureUnit = 0;
+
+	RenderCommand command;
+	command.drawMode = EDrawMode::TRIANGLES;
+	command.startVertexIndex = startVertexIndex;
+	command.vertexCount = static_cast<uint32_t>(vertices.size());
+	command.type = RenderCommand::EType::TEXTURE;
+	command.textures[textureUnit] = textureAtlas;
+
+	for (uint32_t index = 0; index < command.vertexCount; ++index)
+	{
+		vertices_[command.startVertexIndex + index].position = vertices[index];
+		vertices_[command.startVertexIndex + index].uv = uvs[index];
+		vertices_[command.startVertexIndex + index].color0 = glm::vec4(0.0f, 0.0f, 0.0f, 0.0f);
+		vertices_[command.startVertexIndex + index].unit = textureUnit;
+		vertices_[command.startVertexIndex + index].transparent = 1.0f;
+	}
+
+	commandQueue_.push(command);
+}
+
+void RenderManager2D::DrawTextureAtlas(TextureAtlas2D* textureAtlas, const std::string& name, const glm::vec2& center, float w, float h, float rotate, const glm::vec4& outlineColor)
+{
+	static const uint32_t MAX_VERTEX_SIZE = 6;
+	if (IsFullCommandQueue(MAX_VERTEX_SIZE))
+	{
+		Flush();
+	}
+
+	float w2 = w * 0.5f;
+	float h2 = h * 0.5f;
+
+	std::array<glm::vec2, MAX_VERTEX_SIZE> vertices =
+	{
+		glm::vec2(-w2, -h2),
+		glm::vec2(+w2, +h2),
+		glm::vec2(-w2, +h2),
+		glm::vec2(-w2, -h2),
+		glm::vec2(+w2, -h2),
+		glm::vec2(+w2, +h2),
+	};
+
+	const TextureAtlas2D::Bound& bound = textureAtlas->GetByName(name);
+	float x0 = static_cast<float>(bound.x);
+	float y0 = static_cast<float>(bound.y);
+	float x1 = static_cast<float>(bound.x + bound.w);
+	float y1 = static_cast<float>(bound.y + bound.h);
+	float atlasWidth = static_cast<float>(textureAtlas->GetWidth());
+	float atlasHeight = static_cast<float>(textureAtlas->GetHeight());
+	float xoffset = 1.0f / atlasWidth;
+	float yoffset = 1.0f / atlasHeight;
+
+	std::array<glm::vec2, MAX_VERTEX_SIZE> uvs =
+	{
+		glm::vec2(x0 / atlasWidth - xoffset, y1 / atlasHeight + yoffset),
+		glm::vec2(x1 / atlasWidth + xoffset, y0 / atlasHeight - yoffset),
+		glm::vec2(x0 / atlasWidth - xoffset, y0 / atlasHeight - yoffset),
+		glm::vec2(x0 / atlasWidth - xoffset, y1 / atlasHeight + yoffset),
+		glm::vec2(x1 / atlasWidth + xoffset, y1 / atlasHeight + yoffset),
+		glm::vec2(x1 / atlasWidth + xoffset, y0 / atlasHeight - yoffset),
+	};
+
+	glm::mat2 rotateMat = glm::mat2(
+		+glm::cos(rotate), -glm::sin(rotate),
+		+glm::sin(rotate), +glm::cos(rotate)
+	);
+
+	for (auto& vertex : vertices)
+	{
+		vertex = vertex * rotateMat;
+		vertex += (center + PIXEL_OFFSET);
+	}
+
+	if (!commandQueue_.empty())
+	{
+		RenderCommand& prevCommand = commandQueue_.back();
+		if (prevCommand.drawMode == EDrawMode::TRIANGLES && prevCommand.type == RenderCommand::EType::TEXTURE_EX)
+		{
+			int32_t textureUnit = -1;
+			for (uint32_t unit = 0; unit < RenderCommand::MAX_TEXTURE_UNIT; ++unit)
+			{
+				if (prevCommand.textures[unit] == textureAtlas)
+				{
+					textureUnit = unit;
+					break;
+				}
+			}
+
+			if (textureUnit != -1)
+			{
+				uint32_t startVertexIndex = prevCommand.startVertexIndex + prevCommand.vertexCount;
+				prevCommand.vertexCount += static_cast<uint32_t>(vertices.size());
+
+				for (uint32_t index = 0; index < vertices.size(); ++index)
+				{
+					vertices_[startVertexIndex + index].position = vertices[index];
+					vertices_[startVertexIndex + index].uv = uvs[index];
+					vertices_[startVertexIndex + index].color0 = glm::vec4(0.0f, 0.0f, 0.0f, 0.0f);
+					vertices_[startVertexIndex + index].color1 = outlineColor;
+					vertices_[startVertexIndex + index].unit = textureUnit;
+					vertices_[startVertexIndex + index].transparent = 1.0f;
+				}
+
+				return;
+			}
+
+			for (uint32_t unit = 0; unit < RenderCommand::MAX_TEXTURE_UNIT; ++unit)
+			{
+				if (prevCommand.textures[unit] == nullptr)
+				{
+					textureUnit = unit;
+					break;
+				}
+			}
+
+			if (textureUnit != -1)
+			{
+				uint32_t startVertexIndex = prevCommand.startVertexIndex + prevCommand.vertexCount;
+				prevCommand.vertexCount += static_cast<uint32_t>(vertices.size());
+				prevCommand.textures[textureUnit] = textureAtlas;
+
+				for (uint32_t index = 0; index < vertices.size(); ++index)
+				{
+					vertices_[startVertexIndex + index].position = vertices[index];
+					vertices_[startVertexIndex + index].uv = uvs[index];
+					vertices_[startVertexIndex + index].color0 = glm::vec4(0.0f, 0.0f, 0.0f, 0.0f);
+					vertices_[startVertexIndex + index].color1 = outlineColor;
+					vertices_[startVertexIndex + index].unit = textureUnit;
+					vertices_[startVertexIndex + index].transparent = 1.0f;
+				}
+
+				return;
+			}
+		}
+	}
+
+	uint32_t startVertexIndex = 0;
+	if (!commandQueue_.empty())
+	{
+		RenderCommand& prevCommand = commandQueue_.back();
+		startVertexIndex = prevCommand.startVertexIndex + prevCommand.vertexCount;
+	}
+
+	uint32_t textureUnit = 0;
+
+	RenderCommand command;
+	command.drawMode = EDrawMode::TRIANGLES;
+	command.startVertexIndex = startVertexIndex;
+	command.vertexCount = static_cast<uint32_t>(vertices.size());
+	command.type = RenderCommand::EType::TEXTURE_EX;
+	command.textures[textureUnit] = textureAtlas;
+
+	for (uint32_t index = 0; index < command.vertexCount; ++index)
+	{
+		vertices_[command.startVertexIndex + index].position = vertices[index];
+		vertices_[command.startVertexIndex + index].uv = uvs[index];
+		vertices_[command.startVertexIndex + index].color0 = glm::vec4(0.0f, 0.0f, 0.0f, 0.0f);
+		vertices_[command.startVertexIndex + index].color1 = outlineColor;
+		vertices_[command.startVertexIndex + index].unit = textureUnit;
+		vertices_[command.startVertexIndex + index].transparent = 1.0f;
 	}
 
 	commandQueue_.push(command);
