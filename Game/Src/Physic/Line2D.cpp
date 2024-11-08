@@ -106,6 +106,21 @@ bool IsCollision(const Line2D* lhs, const Rect2D* rhs)
 	return t > 0.0f && t * t < glm::length2(lhs->end - lhs->start);
 }
 
+/** 선과 OBB 끼리의 충돌 처리 */
+bool IsCollision(const Line2D* lhs, const OrientedRect2D* rhs)
+{
+	float rotate = -rhs->rotate;
+	glm::mat2 roateMat(glm::cos(rotate), -glm::sin(rotate), glm::sin(rotate), glm::cos(rotate));
+
+	glm::vec2 start = (lhs->start - rhs->center) * roateMat;
+	glm::vec2 end = (lhs->end - rhs->center) * roateMat;
+
+	Line2D line(start, end);
+	Rect2D rect(glm::vec2(0.0f, 0.0f), rhs->size);
+
+	return IsCollision(&line, &rect);
+}
+
 bool Line2D::Intersect(const ICollider2D* collider) const
 {
 	CHECK(collider != nullptr);
@@ -139,6 +154,7 @@ bool Line2D::Intersect(const ICollider2D* collider) const
 	case ICollider2D::EType::OBB:
 	{
 		const OrientedRect2D* other = reinterpret_cast<const OrientedRect2D*>(collider);
+		bIsIntersect = IsCollision(this, other);
 	}
 	break;
 
