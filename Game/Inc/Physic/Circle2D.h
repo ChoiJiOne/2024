@@ -34,6 +34,6 @@ struct Circle2D : public ICollider2D
 	virtual EType GetType() const override { return EType::CIRCLE; }
 	virtual bool Intersect(const ICollider2D* collider) const override;
 
-	glm::vec2 center;
+	glm::vec2 center = glm::vec2(0.0f, 0.0f);
 	float radius;
 };
