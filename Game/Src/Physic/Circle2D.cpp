@@ -18,6 +18,19 @@ bool IsCollision(const Circle2D* lhs, const Circle2D* rhs)
 	return dist <= radiusSum * radiusSum;
 }
 
+/** 원과 AABB 끼리의 충돌 처리 */
+bool IsCollision(const Circle2D* lhs, const Rect2D* rect)
+{
+	glm::vec2 minPos = rect->GetMin();
+	glm::vec2 maxPos = rect->GetMax();
+	glm::vec2 closest(glm::clamp<float>(lhs->center.x, minPos.x, maxPos.x), glm::clamp<float>(lhs->center.y, minPos.y, maxPos.y));
+
+	float dist = glm::length2(closest - lhs->center);
+	float r2 = lhs->radius * lhs->radius;
+
+	return dist <= r2;
+}
+
 bool Circle2D::Intersect(const ICollider2D* collider) const
 {
 	CHECK(collider != nullptr);
@@ -44,6 +57,7 @@ bool Circle2D::Intersect(const ICollider2D* collider) const
 	case ICollider2D::EType::AABB:
 	{
 		const Rect2D* other = reinterpret_cast<const Rect2D*>(collider);
+		bIsIntersect = IsCollision(this, other);
 	}
 	break;
 
