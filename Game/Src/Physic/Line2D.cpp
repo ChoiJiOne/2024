@@ -1,5 +1,7 @@
+#define GLM_ENABLE_EXPERIMENTAL
 #include <glm/gtc/constants.hpp>
 #include <glm/gtc/epsilon.hpp>
+#include <glm/gtx/norm.hpp>
 
 #include "Physic/Circle2D.h"
 #include "Physic/Line2D.h"
@@ -42,6 +44,35 @@ bool IsCollision(const Line2D* lhs, const Line2D* line1)
 	}
 }
 
+/** 선과 원 사이의 충돌 처리 */
+bool IsCollision(const Line2D* lhs, const Circle2D* rhs)
+{
+	static auto checkCircleBound = [](const Circle2D* circle, const glm::vec2& pos)->bool
+		{
+			float dist2 = glm::length2(pos - circle->center);
+			float r2 = circle->radius * circle->radius;
+			return dist2 <= r2;
+		};
+
+	if (checkCircleBound(rhs, lhs->start) || checkCircleBound(rhs, lhs->end))
+	{
+		return true;
+	}
+
+	glm::vec2 d = lhs->end - lhs->start;
+	float t = glm::dot(rhs->center - lhs->start, d) / glm::dot(d, d);
+	if (t < 0.0f || t > 1.0f)
+	{
+		return false;
+	}
+
+	glm::vec2 pos = lhs->start + d * t;
+	pos = pos - rhs->center;
+	float r2 = rhs->radius * rhs->radius;
+
+	return glm::length2(pos) <= r2;
+}
+
 bool Line2D::Intersect(const ICollider2D* collider) const
 {
 	CHECK(collider != nullptr);
@@ -61,6 +92,7 @@ bool Line2D::Intersect(const ICollider2D* collider) const
 	case ICollider2D::EType::CIRCLE:
 	{
 		const Circle2D* other = reinterpret_cast<const Circle2D*>(collider);
+		bIsIntersect = IsCollision(this, other);
 	}
 	break;
 
