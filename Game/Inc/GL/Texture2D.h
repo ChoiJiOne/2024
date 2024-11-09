@@ -19,8 +19,6 @@ public:
 	virtual int32_t GetWidth() const override { return width_; }
 	virtual int32_t GetHeight() const override { return height_; }
 
-	int32_t GetChannels() const { return channels_; }
-
 private:
 	uint32_t CreateTextureFromImage(const std::string& path, const EFilter& filter);
 
