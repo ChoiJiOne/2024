@@ -5,6 +5,7 @@
 
 #include "Entity/Camera2D.h"
 #include "Entity/EntityManager.h"
+#include "GL/FrameBuffer.h"
 #include "GL/GLAssertion.h"
 #include "GL/GLManager.h"
 #include "GL/RenderManager2D.h"
@@ -21,6 +22,11 @@
 GameDevScene::GameDevScene()
 {
 	mainCamera_ = EntityManager::GetRef().Create<Camera2D>(glm::vec2(0.0f, 0.0f), glm::vec2(1000.0f, 800.0f));
+	frameBuffer_ = GLManager::GetRef().Create<FrameBuffer>(1000, 800, FrameBuffer::EPixelFormat::RGBA, ITexture::EFilter::NEAREST);
+
+	alagard_ = GLManager::GetRef().Create<TTFont>("Resource\\alagard.ttf", 0x00, 0x128, 48.0f, ITexture::EFilter::NEAREST);
+	lower_ = GLManager::GetRef().Create<TTFont>("Resource\\lower.ttf", 0x00, 0x128, 48.0f, ITexture::EFilter::NEAREST);
+	namsan_ = GLManager::GetRef().Create<TTFont>("Resource\\namsan.ttf", 0x00, 0x128, 48.0f, ITexture::EFilter::LINEAR);
 
 	atlas_ = GLManager::GetRef().Create<TextureAtlas2D>("Resource\\texture.png", "Resource\\texture.atlas", Texture2D::EFilter::NEAREST);
 
@@ -41,6 +47,15 @@ GameDevScene::~GameDevScene()
 
 void GameDevScene::Tick(float deltaSeconds)
 {
+	ImGui::Begin("OPTION");
+	ImGui::ColorEdit3("Blend", glm::value_ptr(option_.blend));
+	ImGui::ColorEdit4("Outline", glm::value_ptr(outline_));
+	ImGui::SliderFloat("Factor", &option_.factor, 0.0f, 1.0f);
+	ImGui::SliderFloat("Transparent", &option_.transparent, 0.0f, 1.0f);
+	ImGui::Checkbox("bIsFlipH", &option_.bIsFlipH);
+	ImGui::Checkbox("bIsFlipV", &option_.bIsFlipV);
+	ImGui::End();
+
 	ImVec2 mousePos = ImGui::GetMousePos();
 	mousePos_.x = -1000.0f * 0.5f + mousePos.x;
 	mousePos_.y = +800.0f * 0.5f - mousePos.y;
@@ -52,9 +67,9 @@ void GameDevScene::Render()
 {
 	RenderManager2D& renderMgr = RenderManager2D::GetRef();
 
-	GLManager::GetRef().BeginFrame(0.0f, 0.0f, 0.0f, 1.0f);
+	GLManager::GetRef().BeginFrame(0.1f, 0.1f, 0.1f, 1.0f);
 	{
-		renderMgr.Begin(mainCamera_);
+		renderMgr.Begin(mainCamera_, frameBuffer_);
 		{
 			for (float x = -500; x <= 500.0f; x += 10.0f)
 			{
@@ -68,8 +83,18 @@ void GameDevScene::Render()
 				renderMgr.DrawLine(glm::vec2(-500.0f, y), glm::vec2(500.0f, y), color);
 			}
 
-			renderMgr.DrawTextureAtlas(animator_->GetTextureAtlas(), animator_->GetCurrentClipName(), glm::vec2(), 200.0f, 190.0f, 0.0f, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
-			renderMgr.DrawCircle(mousePos_, 10.0f, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+			renderMgr.DrawRectWireframe(glm::vec2(), 200.0f, 190.0f, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), 0.0f);
+			renderMgr.DrawTextureAtlas(animator_->GetTextureAtlas(), animator_->GetCurrentClipName(), glm::vec2(), 200.0f, 190.0f, 0.0f, glm::vec4(outline_, 1.0f), option_);
+
+			renderMgr.DrawString(namsan_, L"ABCDgyujq", glm::vec2(0.0f, 100.0f), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
+		}
+		renderMgr.End();
+
+		renderMgr.Begin(mainCamera_);
+		{
+			TextureDrawOption option;
+			option.bIsFlipV = true;
+			renderMgr.DrawTexture(frameBuffer_, glm::vec2(0.0f, 0.0f), 1000.0f, 800.0f, 0.0f, option);
 		}
 		renderMgr.End();
 	}
