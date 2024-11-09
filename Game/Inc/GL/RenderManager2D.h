@@ -10,6 +10,8 @@
 #include "Utils/Macro.h"
 
 /** 클래스 전방 선언. */
+class Camera2D;
+class FrameBuffer;
 class ITexture;
 class Shader;
 class TextureAtlas2D;
@@ -48,7 +50,8 @@ public:
 	static RenderManager2D* GetPtr();
 
 	/** 2D 카메라를 기준으로 렌더링을 시작/종료합니다. */
-	void Begin(const class Camera2D* camera2D);
+	void Begin(const Camera2D* camera2D);
+	void Begin(const Camera2D* camera2D, FrameBuffer* renderTargetBuffer);
 	void End();
 	
 	/**
@@ -189,6 +192,9 @@ private:
 	/** 2D 렌더링이 시작되었는지 확인합니다. */
 	bool bIsBegin_ = false;
 
+	/** 렌더링 대상 프레임 버퍼입니다. */
+	FrameBuffer* renderTargetBuffer_ = nullptr;
+	
 	/** 2D 렌더링 시작 이전의 컨텍스트입니다. */
 	OriginGLContext originContext_;
 	

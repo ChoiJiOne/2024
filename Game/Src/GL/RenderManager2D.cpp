@@ -8,6 +8,7 @@
 #include <glm/gtc/constants.hpp>
 
 #include "Entity/Camera2D.h"
+#include "GL/FrameBuffer.h"
 #include "GL/GLAssertion.h"
 #include "GL/GLManager.h"
 #include "GL/ITexture.h"
@@ -61,6 +62,33 @@ void RenderManager2D::Begin(const Camera2D* camera2D)
 	bIsBegin_ = true;
 }
 
+void RenderManager2D::Begin(const Camera2D* camera2D, FrameBuffer* renderTargetBuffer)
+{
+	CHECK(!bIsBegin_ && camera2D && renderTargetBuffer);
+
+	const glm::mat4& ortho = camera2D->GetOrtho();
+	if (perFrameUBO_.ortho != ortho) /** 행렬이 변경되었을 때만 업데이트. */
+	{
+		perFrameUBO_.ortho = ortho;
+		uniformBuffer_->SetBufferData(&perFrameUBO_, sizeof(PerFrameUBO));
+	}
+
+	GL_API_CHECK(glGetIntegerv(GL_VIEWPORT, originContext_.viewport));
+	GL_API_CHECK(glGetBooleanv(GL_DEPTH_TEST, reinterpret_cast<GLboolean*>(&originContext_.bEnableDepth)));
+	GL_API_CHECK(glGetBooleanv(GL_CULL_FACE, reinterpret_cast<GLboolean*>(&originContext_.bEnableCull)));
+
+	renderTargetBuffer_ = renderTargetBuffer;
+
+	glManager_->SetDepthMode(false);
+	glManager_->SetCullFaceMode(false);
+	glManager_->SetViewport(0, 0, renderTargetBuffer_->GetWidth(), renderTargetBuffer_->GetHeight());
+
+	renderTargetBuffer_->Bind();
+	renderTargetBuffer_->Clear(0.0f, 0.0f, 0.0f, 0.0f);
+
+	bIsBegin_ = true;
+}
+
 void RenderManager2D::End()
 {
 	CHECK(bIsBegin_);
@@ -70,6 +98,12 @@ void RenderManager2D::End()
 	glManager_->SetCullFaceMode(originContext_.bEnableCull);
 	glManager_->SetDepthMode(originContext_.bEnableDepth);
 	glManager_->SetViewport(originContext_.viewport[0], originContext_.viewport[1], originContext_.viewport[2], originContext_.viewport[3]);
+
+	if (renderTargetBuffer_)
+	{
+		renderTargetBuffer_->Unbind();
+		renderTargetBuffer_ = nullptr;
+	}
 
 	bIsBegin_ = false;
 }
@@ -2412,7 +2446,7 @@ void RenderManager2D::Flush()
 		return;
 	}
 
-	const void* vertexPtr = reinterpret_cast<const void*>(vertices_.data());
+	void* vertexPtr = reinterpret_cast<void*>(vertices_.data());
 	uint32_t bufferByteSize = static_cast<uint32_t>(Vertex::GetStride() * vertices_.size());
 	vertexBuffer_->SetBufferData(vertexPtr, bufferByteSize);
 	uniformBuffer_->BindSlot(PerFrameUBO::SHADER_BIND_SLOT);
