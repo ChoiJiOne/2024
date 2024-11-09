@@ -25,7 +25,7 @@ struct Glyph
 class TTFont : public ITexture
 {
 public:
-	TTFont(const std::string& path, int32_t beginCodePoint, int32_t endCodePoint, float fontSize);
+	TTFont(const std::string& path, int32_t beginCodePoint, int32_t endCodePoint, float fontSize, const EFilter& filter);
 	virtual ~TTFont();
 
 	DISALLOW_COPY_AND_ASSIGN(TTFont);
@@ -46,7 +46,7 @@ private:
 	std::shared_ptr<uint8_t[]> CreateGlyphAtlasBitmap(const std::vector<uint8_t>& buffer);
 
 	/** 글리프 아틀라스의 비트맵을 이용해서 텍스처 리소스를 생성합니다. */
-	uint32_t CreateGlyphTextureAtlas(const std::shared_ptr<uint8_t[]>& bitmap);
+	uint32_t CreateGlyphTextureAtlas(const std::shared_ptr<uint8_t[]>& bitmap, const EFilter& filter);
 
 private:
 	/** 글리프 아틀라스의 최소 크기입니다. */

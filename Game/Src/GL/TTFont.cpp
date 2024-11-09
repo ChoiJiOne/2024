@@ -10,7 +10,7 @@
 #include "Utils/Assertion.h"
 #include "Utils/Utils.h"
 
-TTFont::TTFont(const std::string& path, int32_t beginCodePoint, int32_t endCodePoint, float fontSize)
+TTFont::TTFont(const std::string& path, int32_t beginCodePoint, int32_t endCodePoint, float fontSize, const EFilter& filter)
 	: beginCodePoint_(beginCodePoint)
 	, endCodePoint_(endCodePoint)
 	, fontSize_(fontSize)
@@ -24,7 +24,7 @@ TTFont::TTFont(const std::string& path, int32_t beginCodePoint, int32_t endCodeP
 	ASSERTION((stbtt_InitFont(&info, bufferPtr, stbtt_GetFontOffsetForIndex(bufferPtr, 0)) != 0), "Failed to initialize stb_truetype font.");
 
 	std::shared_ptr<uint8_t[]> bitmap = CreateGlyphAtlasBitmap(buffer);
-	atlasID_ = CreateGlyphTextureAtlas(bitmap);
+	atlasID_ = CreateGlyphTextureAtlas(bitmap, filter);
 
 	bIsInitialized_ = true;
 }
@@ -123,20 +123,19 @@ std::shared_ptr<uint8_t[]> TTFont::CreateGlyphAtlasBitmap(const std::vector<uint
 	return bitmap;
 }
 
-uint32_t TTFont::CreateGlyphTextureAtlas(const std::shared_ptr<uint8_t[]>& bitmap)
+uint32_t TTFont::CreateGlyphTextureAtlas(const std::shared_ptr<uint8_t[]>& bitmap, const EFilter& filter)
 {
 	uint32_t atlasID;
 
+	const void* bufferPtr = reinterpret_cast<const void*>(&bitmap[0]);
+
 	GL_API_CHECK(glGenTextures(1, &atlasID));
 	GL_API_CHECK(glBindTexture(GL_TEXTURE_2D, atlasID));
-
 	GL_API_CHECK(glPixelStorei(GL_UNPACK_ALIGNMENT, 1));
 	GL_API_CHECK(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE));
 	GL_API_CHECK(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE));
-	GL_API_CHECK(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
-	GL_API_CHECK(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
-
-	const void* bufferPtr = reinterpret_cast<const void*>(&bitmap[0]);
+	GL_API_CHECK(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, static_cast<GLint>(filter)));
+	GL_API_CHECK(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, static_cast<GLint>(filter)));
 	GL_API_CHECK(glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, atlasWidth_, atlasHeight_, 0, GL_RED, GL_UNSIGNED_BYTE, bufferPtr));
 
 	GL_API_CHECK(glBindTexture(GL_TEXTURE_2D, 0));
