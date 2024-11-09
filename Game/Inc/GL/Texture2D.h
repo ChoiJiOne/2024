@@ -8,14 +8,6 @@
 class Texture2D : public ITexture
 {
 public:
-	/** https://registry.khronos.org/OpenGL-Refpages/gl4/html/glTexParameter.xhtml */
-	enum class EFilter
-	{
-		NEAREST = 0x2600,
-		LINEAR  = 0x2601,
-	};
-
-public:
 	Texture2D(const std::string& path, const EFilter& filter);
 	virtual ~Texture2D();
 
