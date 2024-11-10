@@ -1,3 +1,5 @@
+#include <Windows.h>
+
 #include "Audio/AudioManager.h"
 #include "Utils/Assertion.h"
 #include "Utils/MemoryAlloc.h"
@@ -14,6 +16,36 @@ AudioManager& AudioManager::GetRef()
 AudioManager* AudioManager::GetPtr()
 {
 	return &singleton_;
+}
+
+void AudioManager::Destroy(const Sound* sound)
+{
+	int32_t soundID = -1;
+	for (uint32_t index = 0; index < soundSize_; ++index)
+	{
+		Sound* soundPtr = sounds_[index].get();
+		if (sound == soundPtr)
+		{
+			soundID = static_cast<int32_t>(index);
+			break;
+		}
+	}
+
+	if (soundID == -1)
+	{
+		return; // 해당 사운드는 이미 할당 해제 되었거나, 오디오 매니저에 의해 할당 해제된 사운드 입니다.
+	}
+
+	if (sounds_[soundID])
+	{
+		if (sounds_[soundID]->IsInitialized())
+		{
+			sounds_[soundID]->Release();
+		}
+
+		sounds_[soundID].reset();
+		usages_[soundID] = false;
+	}
 }
 
 void AudioManager::Startup()
@@ -38,6 +70,20 @@ void AudioManager::Startup()
 
 void AudioManager::Shutdown()
 {
+	for (uint32_t index = 0; index < soundSize_; ++index)
+	{
+		if (sounds_[index])
+		{
+			if (sounds_[index]->IsInitialized())
+			{
+				sounds_[index]->Release();
+			}
+
+			sounds_[index].reset();
+			usages_[index] = false;
+		}
+	}
+
 	ma_engine_uninit(gAudioEnginePtr);
 	audioEngine_.reset();
 	gAudioEnginePtr = nullptr;
