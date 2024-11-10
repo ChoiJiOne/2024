@@ -41,4 +41,7 @@ private:
 private:
 	/** 오디오 매니저의 싱글턴 객체입니다. */
 	static AudioManager singleton_;
+
+	/** 오디오 엔진입니다. */
+	std::unique_ptr<ma_engine> audioEngine_ = nullptr;
 };
