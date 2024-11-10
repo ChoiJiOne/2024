@@ -21,4 +21,7 @@ private:
 
 	class FrameBuffer* frameBuffer_ = nullptr;
 	class PostProcessor* postProcessor_ = nullptr;
+
+	class TextureAtlas2D* atlas_ = nullptr;
+	class SpriteAnimator2D* animator_ = nullptr;
 };

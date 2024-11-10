@@ -25,6 +25,17 @@ GameDevScene::GameDevScene()
 	mainCamera_ = EntityManager::GetRef().Create<Camera2D>(glm::vec2(0.0f, 0.0f), glm::vec2(1000.0f, 800.0f));
 	frameBuffer_ = GLManager::GetRef().Create<FrameBuffer>(1000, 800, FrameBuffer::EPixelFormat::RGBA, ITexture::EFilter::NEAREST);
 
+	atlas_ = GLManager::GetRef().Create<TextureAtlas2D>("Resource\\texture.png", "Resource\\texture.atlas", Texture2D::EFilter::NEAREST);
+
+	std::vector<std::string> names =
+	{
+		"idle-1",
+		"idle-2",
+		"idle-3",
+		"idle-4",
+	};
+	animator_ = GLManager::GetRef().Create<SpriteAnimator2D>(atlas_, names, 0.3f, true);
+
 	std::vector<uint8_t> vsBuffer;
 	std::vector<uint8_t> fsBuffer;
 	std::string vsSource;
@@ -47,6 +58,7 @@ GameDevScene::~GameDevScene()
 
 void GameDevScene::Tick(float deltaSeconds)
 {
+	animator_->Update(deltaSeconds);
 }
 
 void GameDevScene::Render()
@@ -68,6 +80,9 @@ void GameDevScene::Render()
 				glm::vec4 color = (y == 0.0f) ? glm::vec4(1.0f, 0.0f, 0.0f, 1.0f) : glm::vec4(1.0f, 1.0f, 1.0f, 0.1f);
 				renderMgr.DrawLine(glm::vec2(-500.0f, y), glm::vec2(500.0f, y), color);
 			}
+
+			renderMgr.DrawTextureAtlas(animator_->GetTextureAtlas(), animator_->GetCurrentClipName(), glm::vec2(), 200.0f, 190.0f, 0.0f, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+
 		}
 		renderMgr.End();
 
