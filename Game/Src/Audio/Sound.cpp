@@ -8,6 +8,12 @@ extern ma_engine* gAudioEnginePtr;
 
 Sound::Sound(const std::string& path)
 {
+	sound_ = std::make_unique<ma_sound>();
+	soundPtr_ = sound_.get();
+
+	ma_result result = ma_sound_init_from_file(gAudioEnginePtr, path.c_str(), 0, nullptr, nullptr, soundPtr_);
+	ASSERTION(result == MA_SUCCESS, "Failed to load %s sound file.", path.c_str());
+
 	bIsInitialized_ = true;
 }
 
@@ -22,6 +28,11 @@ Sound::~Sound()
 void Sound::Release()
 {
 	CHECK(bIsInitialized_);
+
+	ma_sound_uninit(soundPtr_);
+	soundPtr_ = nullptr;
+
+	sound_.reset();
 
 	bIsInitialized_ = false;
 }

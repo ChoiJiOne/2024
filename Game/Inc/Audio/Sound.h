@@ -52,12 +52,12 @@ public:
 	virtual void Reset();
 
 private:
-	/** 오디오 매니저에서 사운드 내부에 접근할 수 있도록 설정. */
-	friend class AudioManager;
-
 	/** 사운드가 초기화 되었는지 확인합니다. */
 	bool bIsInitialized_ = false;
 
-	/** 사운드 리소스 원본 포인터입니다. */
+	/** 사운드 리소스 원본입니다. */
+	std::unique_ptr<ma_sound> sound_;
+
+	/** 사운드 리소스의 포인터입니다. */
 	ma_sound* soundPtr_ = nullptr;
 };
