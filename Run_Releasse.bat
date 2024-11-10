@@ -1,0 +1,7 @@
+@ECHO OFF
+
+SET PROJECT_NAME=HyperCoinDash2D
+SET MODE=Release
+SET SCRIPT=Script\\Run.bat
+
+%SCRIPT% %PROJECT_NAME% %MODE%

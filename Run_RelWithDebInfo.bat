@@ -1,0 +1,7 @@
+@ECHO OFF
+
+SET PROJECT_NAME=HyperCoinDash2D
+SET MODE=RelWithDebInfo
+SET SCRIPT=Script\\Run.bat
+
+%SCRIPT% %PROJECT_NAME% %MODE%
