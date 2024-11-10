@@ -52,6 +52,9 @@ public:
 	virtual void Reset();
 
 private:
+	/** 오디오 매니저에서 사운드 내부에 접근할 수 있도록 설정. */
+	friend class AudioManager;
+
 	/** 사운드가 초기화 되었는지 확인합니다. */
 	bool bIsInitialized_ = false;
 
