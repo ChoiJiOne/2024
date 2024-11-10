@@ -29,6 +29,13 @@ struct TextureDrawOption
 	bool bIsFlipV = false; /** 텍스처와를 세로로 뒤집을 지 여부입니다. */
 };
 
+/** 렌더링 대상이 되는 프레임 버퍼의 옵션입니다. */
+struct RenderTargetOption
+{
+	glm::vec4 clearColor = glm::vec4(0.0f, 0.0f, 0.0f, 0.0f); /** 렌더 타겟 버퍼 초기화 시 설정할 색상입니다. */
+	bool bIsClearBuffer = true; /** 렌더 타겟 버퍼 초기화 여부입니다. */
+};
+
 /**
  * 2D 렌더링을 수행하는 매니저입니다.
  * 이때, 이 매니저 클래스는 싱글턴입니다.
@@ -51,7 +58,7 @@ public:
 
 	/** 2D 카메라를 기준으로 렌더링을 시작/종료합니다. */
 	void Begin(const Camera2D* camera2D);
-	void Begin(const Camera2D* camera2D, FrameBuffer* renderTargetBuffer);
+	void Begin(const Camera2D* camera2D, FrameBuffer* renderTargetBuffer, const RenderTargetOption& option);
 	void End();
 	
 	/**

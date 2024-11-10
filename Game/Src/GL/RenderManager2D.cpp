@@ -62,7 +62,7 @@ void RenderManager2D::Begin(const Camera2D* camera2D)
 	bIsBegin_ = true;
 }
 
-void RenderManager2D::Begin(const Camera2D* camera2D, FrameBuffer* renderTargetBuffer)
+void RenderManager2D::Begin(const Camera2D* camera2D, FrameBuffer* renderTargetBuffer, const RenderTargetOption& option)
 {
 	CHECK(!bIsBegin_ && camera2D && renderTargetBuffer);
 
@@ -84,7 +84,11 @@ void RenderManager2D::Begin(const Camera2D* camera2D, FrameBuffer* renderTargetB
 	glManager_->SetViewport(0, 0, renderTargetBuffer_->GetWidth(), renderTargetBuffer_->GetHeight());
 
 	renderTargetBuffer_->Bind();
-	renderTargetBuffer_->Clear(0.0f, 0.0f, 0.0f, 0.0f);
+
+	if (option.bIsClearBuffer)
+	{
+		renderTargetBuffer_->Clear(option.clearColor.x, option.clearColor.y, option.clearColor.z, option.clearColor.a);
+	}
 
 	bIsBegin_ = true;
 }
