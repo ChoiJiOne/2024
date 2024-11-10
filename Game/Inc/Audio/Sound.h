@@ -22,34 +22,34 @@ public:
 	bool IsInitialized() const { return bIsInitialized_; }
 
 	/** 사운드의 크기를 설정합니다. 이때, 사운드의 크기 범위는 0.0 ~ 1.0 입니다. */
-	void SetVolume(float volume);
+	virtual void SetVolume(float volume);
 
 	/** 사운드의 크기를 얻습니다. 이때, 사운드의 크기 범위는 0.0 ~ 1.0 입니다. */
-	float GetVolume();
+	virtual float GetVolume();
 
 	/** 사운드 반복 여부를 설정합니다. */
-	void SetLooping(bool bIsLoop);
+	virtual void SetLooping(bool bIsLoop);
 
 	/** 사운드의 반복 여부를 얻습니다. */
-	bool IsLooping();
+	virtual bool IsLooping();
 
 	/** 사운드를 플레이합니다. 이전에 중지한 적이 있다면 중지한 시점부터 플레이됩니다. */
-	void Play();
+	virtual void Play();
 
 	/** 사운드가 플레이 되고 있는지 확인합니다. */
-	bool IsPlaying();
+	virtual bool IsPlaying();
 
 	/** 사운드가 종료되었는지 확인합니다. */
-	bool IsDone();
+	virtual bool IsDone();
 
 	/** 사운드 플레이를 중지합니다. */
-	void Stop();
+	virtual void Stop();
 
 	/** 사운드 플레이가 중단되었는지 확인합니다. */
-	bool IsStopping();
+	virtual bool IsStopping();
 
 	/** 사운드의 상태를 초기화합니다. */
-	void Reset();
+	virtual void Reset();
 
 private:
 	/** 사운드가 초기화 되었는지 확인합니다. */
