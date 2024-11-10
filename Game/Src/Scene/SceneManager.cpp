@@ -28,7 +28,7 @@ void SceneManager::Destroy(const IGameScene* scene)
 
 	if (sceneID == -1)
 	{
-		return; // 해당 씬은 이미 할당 해제 되었거나, 씬 매니저에 의해 할당 해제된 엔티티입니다.
+		return; // 해당 씬은 이미 할당 해제 되었거나, 씬 매니저에 의해 할당 해제된 씬입니다.
 	}
 
 	if (scenes_[sceneID])
