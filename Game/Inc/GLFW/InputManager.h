@@ -20,8 +20,11 @@ public:
 	static InputManager* GetPtr();
 
 private:
-	/** GameApp에서 InputManager의 내부에 접근할 수 있도록 설정.  */
+	/** GameApp에서 입력 처리 매니저의 내부에 접근할 수 있도록 설정.  */
 	friend class GameApp;
+
+	/** GLFW 매니저에서 입력 처리 매니저의 내부에 접근할 수 있도록 설정. */
+	friend class GLFWManager;
 
 	/** 
 	 * 입력 처리 매니저의 기본 생성자와 가상 소멸자입니다. 
