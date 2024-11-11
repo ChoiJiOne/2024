@@ -14,12 +14,13 @@
 
 #include "GameApp.h"
 
-const uint32_t WINDOW_WIDTH = 1000;
-const uint32_t WINDOW_HEIGHT = 800;
-
 GameApp::GameApp()
 {
-	GLFWManager::GetRef().Startup(WINDOW_WIDTH, WINDOW_HEIGHT, "HyperCoinDash2D");
+	const uint32_t windowWidth = 1000;
+	const uint32_t windowHeight = 800;
+	const char* windowTitle = "HyperCoinDash2D";
+
+	GLFWManager::GetRef().Startup(windowWidth, windowHeight, windowTitle);
 	GLManager::GetRef().Startup();
 	RenderManager2D::GetRef().Startup();
 	AudioManager::GetRef().Startup();
