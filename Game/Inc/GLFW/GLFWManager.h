@@ -1,9 +1,9 @@
 #pragma once
 
 #include <string>
-#include <queue>
 
 #include <glfw/glfw3.h>
+#include <glm/glm.hpp>
 
 #include "Utils/Macro.h"
 
@@ -167,10 +167,17 @@ public:
 
 	/** 커서가 윈도우 내부에 있는지 확인합니다. */
 	bool IsEnterCursor() const { return bIsEnterCursor_; }
-	
+
+	/** Tick 호출 이전의 커서 위치를 얻습니다. */
+	const glm::vec2& GetPrevCursorPos() const { return prevCursorPos_; }
+
+	/** Tick 호출 이후의 커서 위치를 얻습니다. */
+	const glm::vec2& GetCurrCursorPos() const { return currCursorPos_; }
+
 public:
 	/** 아래의 메서드는 외부에서 호출하면 안됩니다. */
 	void SetCursorEnter(int32_t entered);
+	void SetCursorPosition(double x, double y);
 
 private:
 	/** GameApp에서 GLFWManager의 내부에 접근할 수 있도록 설정. */
@@ -178,7 +185,7 @@ private:
 
 	/** GLManager에서 GLFWManager의 내부에 접근할 수 있도록 설정. */
 	friend class GLManager;
-	
+
 	/**
 	 * GLFW 매니저의 기본 생성자와 빈 가상 소멸자입니다. 
 	 * 싱글턴으로 구현하기 위해 private으로 숨겼습니다.
@@ -203,6 +210,12 @@ private:
 
 	/** 커서가 윈도우 내부에 있는지 확인합니다. */
 	bool bIsEnterCursor_ = true;
+
+	/** 이전의 커서의 위치입니다. */
+	glm::vec2 prevCursorPos_ = glm::vec2();
+
+	/** 현재 커서의 위치입니다. */
+	glm::vec2 currCursorPos_ = glm::vec2();
 
 	/** GLFW 에러 발생 여부입니다. */
 	bool bIsDetectError_ = false;

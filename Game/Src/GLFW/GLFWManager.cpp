@@ -19,7 +19,6 @@ void GLFWErrorCallback(int32_t errorCode, const char* description)
 	GLFWManager::GetRef().SetLsatError(errorCode, description);
 }
 
-#include "Utils/Utils.h"
 /** 키보드 입력이 감지되었을 때 호출되는 콜백 함수입니다. */
 void GLFWKeyEventCallback(GLFWwindow* window, int32_t key, int32_t scancode, int32_t action, int32_t mods)
 {
@@ -28,6 +27,7 @@ void GLFWKeyEventCallback(GLFWwindow* window, int32_t key, int32_t scancode, int
 /** 마우스 커서가 움직일 때 호출되는 콜백 함수입니다. */
 void GLFWCursorMoveCallback(GLFWwindow* window, double x, double y)
 {
+	GLFWManager::GetRef().SetCursorPosition(x, y);
 }
 
 /** 마우스 커서가 진입했을 때 호출되는 콜백함수입니다. */
@@ -111,6 +111,8 @@ void GLFWManager::SetLsatError(int32_t code, const char* description)
 
 void GLFWManager::Tick()
 {
+	prevCursorPos_ = currCursorPos_;
+
 	glfwPollEvents();
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplGlfw_NewFrame();
@@ -120,6 +122,13 @@ void GLFWManager::Tick()
 void GLFWManager::SetCursorEnter(int32_t entered)
 {
 	bIsEnterCursor_ = static_cast<bool>(entered);
+}
+
+void GLFWManager::SetCursorPosition(double x, double y)
+{
+	float cursorX = -static_cast<float>(mainWindowWidth_) * 0.5f + static_cast<float>(x);
+	float cursorY = +static_cast<float>(mainWindowHeight_) * 0.5f - static_cast<float>(y);
+	currCursorPos_ = glm::vec2(cursorX, cursorY);
 }
 
 void GLFWManager::Startup(int32_t width, int32_t height, const char* title)
@@ -155,6 +164,15 @@ void GLFWManager::Startup(int32_t width, int32_t height, const char* title)
 	glfwSetCursorPosCallback(mainWindow_, GLFWCursorMoveCallback);
 	glfwSetCursorEnterCallback(mainWindow_, GLFWCursorEnterCallback);
 	glfwSetMouseButtonCallback(mainWindow_, GLFWMouseButtonEventCallback);
+
+	double x = 0.0;
+	double y = 0.0;
+	glfwGetCursorPos(mainWindow_, &x, &y);
+
+	float cursorX = -static_cast<float>(mainWindowWidth_) * 0.5f + static_cast<float>(x);
+	float cursorY = +static_cast<float>(mainWindowHeight_) * 0.5f - static_cast<float>(y);
+	currCursorPos_ = glm::vec2(cursorX, cursorY);
+	prevCursorPos_ = currCursorPos_;
 
 	ASSERTION(ImGui_ImplGlfw_InitForOpenGL(mainWindow_, true), "Failed to initialize ImGui for GLFW");
 }
