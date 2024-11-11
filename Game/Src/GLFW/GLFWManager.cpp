@@ -35,6 +35,11 @@ void GLFWCursorEnterCallback(GLFWwindow* window, int32_t entered)
 {
 }
 
+/** 마우스 버튼 입력이 감지되었을 때 호출되는 콜백 함수입니다. */
+void GLFWMouseButtonEventCallback(GLFWwindow* window, int32_t button, int32_t action, int32_t mods)
+{
+}
+
 GLFWManager& GLFWManager::GetRef()
 {
 	return singleton_;
@@ -143,6 +148,7 @@ void GLFWManager::Startup(int32_t width, int32_t height, const char* title)
 	glfwSetKeyCallback(mainWindow_, GLFWKeyEventCallback);
 	glfwSetCursorPosCallback(mainWindow_, GLFWCursorMoveCallback);
 	glfwSetCursorEnterCallback(mainWindow_, GLFWCursorEnterCallback);
+	glfwSetMouseButtonCallback(mainWindow_, GLFWMouseButtonEventCallback);
 
 	ASSERTION(ImGui_ImplGlfw_InitForOpenGL(mainWindow_, true), "Failed to initialize ImGui for GLFW");
 }
