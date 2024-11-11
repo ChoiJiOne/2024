@@ -6,6 +6,7 @@
 
 #include "GLFW/GLFWAssertion.h"
 #include "GLFW/GLFWManager.h"
+#include "GLFW/InputManager.h"
 #include "Utils/Assertion.h"
 #include "Utils/MemoryAlloc.h"
 
@@ -17,6 +18,10 @@ GLFWManager GLFWManager::singleton_;
 void GLFWErrorCallback(int32_t errorCode, const char* description)
 {
 	GLFWManager::GetRef().SetLsatError(errorCode, description);
+}
+
+void GLFWKeyEventCallback(GLFWwindow* window, int32_t key, int32_t scancode, int32_t action, int32_t mods)
+{
 }
 
 GLFWManager& GLFWManager::GetRef()
@@ -123,6 +128,8 @@ void GLFWManager::Startup(int32_t width, int32_t height, const char* title)
 	io.IniFilename = nullptr;
 	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
 	io.ConfigFlags |= ImGuiConfigFlags_NavEnableSetMousePos;
+
+	glfwSetKeyCallback(mainWindow_, GLFWKeyEventCallback);
 
 	ASSERTION(ImGui_ImplGlfw_InitForOpenGL(mainWindow_, true), "Failed to initialize ImGui for GLFW");
 }
