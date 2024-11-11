@@ -1,11 +1,30 @@
 #pragma once
 
+#include <array>
 #include <string>
 
 #include <glfw/glfw3.h>
 #include <glm/glm.hpp>
 
 #include "Utils/Macro.h"
+
+/**
+ * --------------------------------------
+ * | 이전 프레임 | 현재 프레임 | 입력 상태 |
+ * --------------------------------------
+ * |     0      |     0      | NONE     |
+ * |     0      |     1      | PRESSED  |
+ * |     1      |     0      | RELEASED |
+ * |     1      |     1      | HELD     |
+ * --------------------------------------
+ */
+enum class EPress : int32_t
+{
+	NONE     = 0x00,
+	PRESSED  = 0x01,
+	RELEASED = 0x02,
+	HELD     = 0x03
+};
 
 /** 키 코드 값입니다. */
 enum class EKey
@@ -168,6 +187,9 @@ public:
 	/** 커서가 윈도우 내부에 있는지 확인합니다. */
 	bool IsEnterCursor() const { return bIsEnterCursor_; }
 
+	/** 현재 키 값의 입력 상태를 얻습니다. */
+	EPress GetKeyPress(const EKey& key);
+
 	/** Tick 호출 이전의 커서 위치를 얻습니다. */
 	const glm::vec2& GetPrevCursorPos() const { return prevCursorPos_; }
 
@@ -202,6 +224,12 @@ private:
 	/** 현재 커서 위치를 설정합니다. */
 	void SetCursorPosition(double x, double y);
 
+	/** 현재 키 상태 값을 설정합니다. */
+	void SetKeyboardState(int32_t key, int32_t action);
+
+	/** 키가 눌렸는지 확인합니다. */
+	bool IsPressKey(int32_t* keyboardState, const EKey& key);
+
 	/**
 	 * GLFW 매니저의 기본 생성자와 빈 가상 소멸자입니다. 
 	 * 싱글턴으로 구현하기 위해 private으로 숨겼습니다.
@@ -227,11 +255,20 @@ private:
 	/** 커서가 윈도우 내부에 있는지 확인합니다. */
 	bool bIsEnterCursor_ = true;
 
-	/** 이전의 커서의 위치입니다. */
+	/** Tick 호출 이전의 커서 위치입니다. */
 	glm::vec2 prevCursorPos_ = glm::vec2();
 
-	/** 현재 커서의 위치입니다. */
+	/** Tick 호출 이후의 커서 위치입니다. */
 	glm::vec2 currCursorPos_ = glm::vec2();
+
+	/** 키 배열의 최대 값입니다. */
+	static const uint32_t KEY_BOARD_STATE_SIZE = 348;
+
+	/** Tick 호출 이전의 키 상태입니다. */
+	std::array<int32_t, KEY_BOARD_STATE_SIZE> prevKeyboardState_;
+
+	/** Tick 호출 이후의 키 상태입니다. */
+	std::array<int32_t, KEY_BOARD_STATE_SIZE> currKeyboardState_;
 
 	/** GLFW 에러 발생 여부입니다. */
 	bool bIsDetectError_ = false;

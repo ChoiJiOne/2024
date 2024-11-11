@@ -22,7 +22,7 @@ void GLFWManager::ErrorCallback(int32_t errorCode, const char* description)
 /** 키보드 입력이 감지되었을 때 호출되는 콜백 함수입니다. */
 void GLFWManager::KeyEventCallback(GLFWwindow* window, int32_t key, int32_t scancode, int32_t action, int32_t mods)
 {
-
+	singleton_.SetKeyboardState(key, action);
 }
 
 /** 마우스 커서가 움직일 때 호출되는 콜백 함수입니다. */
@@ -114,10 +114,45 @@ void GLFWManager::Tick()
 {
 	prevCursorPos_ = currCursorPos_;
 
+	std::copy(currKeyboardState_.begin(), currKeyboardState_.end(), prevKeyboardState_.begin());
+	uint32_t keyboardStateByteSize = KEY_BOARD_STATE_SIZE * sizeof(int32_t);
+	std::memset(currKeyboardState_.data(), 0, keyboardStateByteSize);
+
 	glfwPollEvents();
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplGlfw_NewFrame();
 	ImGui::NewFrame();
+}
+
+EPress GLFWManager::GetKeyPress(const EKey& key)
+{
+	EPress press = EPress::NONE;
+
+	if (IsPressKey(prevKeyboardState_.data(), key))
+	{
+		if (IsPressKey(currKeyboardState_.data(), key))
+		{
+			press = EPress::HELD;
+		}
+		else
+		{
+			press = EPress::RELEASED;
+		}
+	}
+	else
+	{
+		if (IsPressKey(currKeyboardState_.data(), key))
+		{
+
+			press = EPress::PRESSED;
+		}
+		else
+		{
+			press = EPress::NONE;
+		}
+	}
+
+	return press;
 }
 
 void GLFWManager::SetCursorEnter(int32_t entered)
@@ -130,6 +165,16 @@ void GLFWManager::SetCursorPosition(double x, double y)
 	float cursorX = -static_cast<float>(mainWindowWidth_) * 0.5f + static_cast<float>(x);
 	float cursorY = +static_cast<float>(mainWindowHeight_) * 0.5f - static_cast<float>(y);
 	currCursorPos_ = glm::vec2(cursorX, cursorY);
+}
+
+void GLFWManager::SetKeyboardState(int32_t key, int32_t action)
+{
+	currKeyboardState_[key] = action;
+}
+
+bool GLFWManager::IsPressKey(int32_t* keyboardState, const EKey& key)
+{
+	return keyboardState[static_cast<int32_t>(key)] == 0 ? false : true;
 }
 
 void GLFWManager::Startup(int32_t width, int32_t height, const char* title)
@@ -174,6 +219,10 @@ void GLFWManager::Startup(int32_t width, int32_t height, const char* title)
 	float cursorY = +static_cast<float>(mainWindowHeight_) * 0.5f - static_cast<float>(y);
 	currCursorPos_ = glm::vec2(cursorX, cursorY);
 	prevCursorPos_ = currCursorPos_;
+
+	uint32_t keyboardStateByteSize = KEY_BOARD_STATE_SIZE * sizeof(int32_t);
+	std::memset(prevKeyboardState_.data(), 0, keyboardStateByteSize);
+	std::memset(currKeyboardState_.data(), 0, keyboardStateByteSize);
 
 	ASSERTION(ImGui_ImplGlfw_InitForOpenGL(mainWindow_, true), "Failed to initialize ImGui for GLFW");
 }
