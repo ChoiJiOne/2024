@@ -108,7 +108,11 @@ void GLFWManager::SetLsatError(int32_t code, const char* description)
 
 void GLFWManager::Tick()
 {
-	prevCursorPos_ = currCursorPos_;	
+	prevCursorPos_ = currCursorPos_;
+
+	std::copy(currKeyboardState_.begin(), currKeyboardState_.end(), prevKeyboardState_.begin());
+	uint32_t keyboardStateByteSize = KEY_BOARD_STATE_SIZE * sizeof(int32_t);
+	std::memset(currKeyboardState_.data(), 0, keyboardStateByteSize);
 	
 	glfwPollEvents();
 	ImGui_ImplOpenGL3_NewFrame();
@@ -120,58 +124,30 @@ EPress GLFWManager::GetKeyPress(const EKey& key)
 {
 	EPress press = EPress::NONE;
 
-	if (keyboardState_[static_cast<int32_t>(key)] == GLFW_REPEAT)
+	if (IsPressKey(prevKeyboardState_.data(), key))
 	{
-		press = EPress::HELD;
+		if (IsPressKey(currKeyboardState_.data(), key))
+		{
+			press = EPress::HELD;
+		}
+		else
+		{
+			press = EPress::RELEASED;
+		}
+	}
+	else
+	{
+		if (IsPressKey(currKeyboardState_.data(), key))
+		{
+
+			press = EPress::PRESSED;
+		}
+		else
+		{
+			press = EPress::NONE;
+		}
 	}
 
-
-	//if (prevKeyboardState_[static_cast<int32_t>(key)] == GLFW_RELEASE)
-	//{
-	//	if (prevKeyboardState_[static_cast<int32_t>(key)] == GLFW_RELEASE)
-	//	{
-	//		press = EPress::NONE;
-	//	}
-	//	else if (prevKeyboardState_[static_cast<int32_t>(key)] == GLFW_PRESS)
-	//	{
-	//		press = EPress::PRESSED;
-	//	}
-	//	else // prevKeyboardState_[static_cast<int32_t>(key)] == GLFW_REPEAT
-	//	{
-	//		press = EPress::PRESSED;
-	//	}
-	//}
-	//else if (prevKeyboardState_[static_cast<int32_t>(key)] == GLFW_PRESS)
-	//{
-	//	if (prevKeyboardState_[static_cast<int32_t>(key)] == GLFW_RELEASE)
-	//	{
-	//		press = EPress::RELEASED;
-	//	}
-	//	else if (prevKeyboardState_[static_cast<int32_t>(key)] == GLFW_PRESS)
-	//	{
-	//		press = EPress::HELD;
-	//	}
-	//	else // prevKeyboardState_[static_cast<int32_t>(key)] == GLFW_REPEAT
-	//	{
-	//		press = EPress::HELD;
-	//	}
-	//}
-	//else // prevKeyboardState_[static_cast<int32_t>(key)] == GLFW_REPEAT
-	//{
-	//	if (prevKeyboardState_[static_cast<int32_t>(key)] == GLFW_RELEASE)
-	//	{
-	//		press = EPress::RELEASED;
-	//	}
-	//	else if (prevKeyboardState_[static_cast<int32_t>(key)] == GLFW_PRESS)
-	//	{
-	//		press = EPress::HELD;
-	//	}
-	//	else // prevKeyboardState_[static_cast<int32_t>(key)] == GLFW_REPEAT
-	//	{
-	//		press = EPress::HELD;
-	//	}
-	//}
-	
 	return press;
 }
 
@@ -189,7 +165,12 @@ void GLFWManager::SetCursorPosition(double x, double y)
 
 void GLFWManager::SetKeyboardState(int32_t key, int32_t action)
 {
-	keyboardState_[key] = action;
+	currKeyboardState_[key] = (action == 1) ? 1 : 0;
+}
+
+bool GLFWManager::IsPressKey(int32_t* keyboardState, const EKey& key)
+{
+	return keyboardState[static_cast<int32_t>(key)] == 0 ? false : true;
 }
 
 void GLFWManager::Startup(int32_t width, int32_t height, const char* title)
@@ -236,7 +217,8 @@ void GLFWManager::Startup(int32_t width, int32_t height, const char* title)
 	prevCursorPos_ = currCursorPos_;
 
 	uint32_t keyboardStateByteSize = KEY_BOARD_STATE_SIZE * sizeof(int32_t);
-	std::memset(keyboardState_.data(), 0, keyboardStateByteSize);
+	std::memset(prevKeyboardState_.data(), 0, keyboardStateByteSize);
+	std::memset(currKeyboardState_.data(), 0, keyboardStateByteSize);
 
 	ASSERTION(ImGui_ImplGlfw_InitForOpenGL(mainWindow_, true), "Failed to initialize ImGui for GLFW");
 }

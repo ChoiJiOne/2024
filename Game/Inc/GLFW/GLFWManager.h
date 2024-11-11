@@ -227,6 +227,9 @@ private:
 	/** 현재 키 상태 값을 설정합니다. */
 	void SetKeyboardState(int32_t key, int32_t action);
 
+	/** 키가 눌렸는지 확인합니다. */
+	bool IsPressKey(int32_t* keyboardState, const EKey& key);
+
 	/**
 	 * GLFW 매니저의 기본 생성자와 빈 가상 소멸자입니다. 
 	 * 싱글턴으로 구현하기 위해 private으로 숨겼습니다.
@@ -261,7 +264,11 @@ private:
 	/** 키 배열의 최대 값입니다. */
 	static const uint32_t KEY_BOARD_STATE_SIZE = 348;
 
-	std::array<int32_t, KEY_BOARD_STATE_SIZE> keyboardState_;
+	/** Tick 호출 이전의 키 상태입니다. */
+	std::array<int32_t, KEY_BOARD_STATE_SIZE> prevKeyboardState_;
+
+	/** Tick 호출 이후의 키 상태입니다. */
+	std::array<int32_t, KEY_BOARD_STATE_SIZE> currKeyboardState_;
 
 	/** GLFW 에러 발생 여부입니다. */
 	bool bIsDetectError_ = false;
