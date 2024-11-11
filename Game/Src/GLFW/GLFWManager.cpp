@@ -20,7 +20,18 @@ void GLFWErrorCallback(int32_t errorCode, const char* description)
 	GLFWManager::GetRef().SetLsatError(errorCode, description);
 }
 
+/** 키보드 입력이 감지되었을 때 호출되는 콜백 함수입니다. */
 void GLFWKeyEventCallback(GLFWwindow* window, int32_t key, int32_t scancode, int32_t action, int32_t mods)
+{
+}
+
+/** 마우스 커서가 움직일 때 호출되는 콜백 함수입니다. */
+void GLFWCursorMoveCallback(GLFWwindow* window, double x, double y)
+{
+}
+
+/** 마우스 커서가 진입했을 때 호출되는 콜백함수입니다. */
+void GLFWCursorEnterCallback(GLFWwindow* window, int32_t entered)
 {
 }
 
@@ -130,6 +141,8 @@ void GLFWManager::Startup(int32_t width, int32_t height, const char* title)
 	io.ConfigFlags |= ImGuiConfigFlags_NavEnableSetMousePos;
 
 	glfwSetKeyCallback(mainWindow_, GLFWKeyEventCallback);
+	glfwSetCursorPosCallback(mainWindow_, GLFWCursorMoveCallback);
+	glfwSetCursorEnterCallback(mainWindow_, GLFWCursorEnterCallback);
 
 	ASSERTION(ImGui_ImplGlfw_InitForOpenGL(mainWindow_, true), "Failed to initialize ImGui for GLFW");
 }
