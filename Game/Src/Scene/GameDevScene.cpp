@@ -3,6 +3,7 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <imgui.h>
 
+#include "Audio/AudioManager.h"
 #include "Entity/Camera2D.h"
 #include "Entity/EntityManager.h"
 #include "GL/FrameBuffer.h"
@@ -16,6 +17,7 @@
 #include "GL/PostProcessor.h"
 #include "GL/TTFont.h"
 #include "GL/VertexBuffer.h"
+#include "GLFW/GLFWManager.h"
 #include "Scene/GameDevScene.h"
 #include "Utils/Assertion.h"
 #include "Utils/Utils.h"
@@ -58,6 +60,12 @@ GameDevScene::~GameDevScene()
 
 void GameDevScene::Tick(float deltaSeconds)
 {
+	ImGui::Begin("MOUSE");
+	const glm::vec2& mousePos = GLFWManager::GetRef().GetCurrCursorPos();
+	ImGui::Text("(%f, %f)", mousePos.x, mousePos.y);
+	ImGui::End();
+
+	pos_ = mousePos;
 	animator_->Update(deltaSeconds);
 }
 
@@ -67,7 +75,8 @@ void GameDevScene::Render()
 
 	GLManager::GetRef().BeginFrame(0.0f, 0.0f, 0.0f, 1.0f);
 	{
-		renderMgr.Begin(mainCamera_, frameBuffer_);
+		RenderTargetOption option;
+		renderMgr.Begin(mainCamera_, frameBuffer_, option);
 		{
 			for (float x = -500; x <= 500.0f; x += 10.0f)
 			{
@@ -81,8 +90,10 @@ void GameDevScene::Render()
 				renderMgr.DrawLine(glm::vec2(-500.0f, y), glm::vec2(500.0f, y), color);
 			}
 
-			renderMgr.DrawTextureAtlas(animator_->GetTextureAtlas(), animator_->GetCurrentClipName(), glm::vec2(), 200.0f, 190.0f, 0.0f, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
-
+			if (GLFWManager::GetRef().GetKeyPress(EKey::KEY_SPACE) == EPress::HELD)
+			{
+				renderMgr.DrawTextureAtlas(animator_->GetTextureAtlas(), animator_->GetCurrentClipName(), pos_, 200.0f, 190.0f, 0.0f, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+			}
 		}
 		renderMgr.End();
 
