@@ -14,14 +14,132 @@
 
 GLFWManager GLFWManager::singleton_;
 
+static const std::array<EKey, 119> KEYS = 
+{
+	EKey::KEY_SPACE,
+	EKey::KEY_APOSTROPHE,
+	EKey::KEY_COMMA,
+	EKey::KEY_MINUS,
+	EKey::KEY_PERIOD,
+	EKey::KEY_SLASH,
+	EKey::KEY_0,
+	EKey::KEY_1,
+	EKey::KEY_2,
+	EKey::KEY_3,
+	EKey::KEY_4,
+	EKey::KEY_5,
+	EKey::KEY_6,
+	EKey::KEY_7,
+	EKey::KEY_8,
+	EKey::KEY_9,
+	EKey::KEY_SEMICOLON,
+	EKey::KEY_EQUAL,
+	EKey::KEY_A,
+	EKey::KEY_B,
+	EKey::KEY_C,
+	EKey::KEY_D,
+	EKey::KEY_E,
+	EKey::KEY_F,
+	EKey::KEY_G,
+	EKey::KEY_H,
+	EKey::KEY_I,
+	EKey::KEY_J,
+	EKey::KEY_K,
+	EKey::KEY_L,
+	EKey::KEY_M,
+	EKey::KEY_N,
+	EKey::KEY_O,
+	EKey::KEY_P,
+	EKey::KEY_Q,
+	EKey::KEY_R,
+	EKey::KEY_S,
+	EKey::KEY_T,
+	EKey::KEY_U,
+	EKey::KEY_V,
+	EKey::KEY_W,
+	EKey::KEY_X,
+	EKey::KEY_Y,
+	EKey::KEY_Z,
+	EKey::KEY_LEFT_BRACKET,
+	EKey::KEY_BACKSLASH,
+	EKey::KEY_RIGHT_BRACKET,
+	EKey::KEY_GRAVE_ACCENT,
+	EKey::KEY_WORLD_1,
+	EKey::KEY_WORLD_2,
+	EKey::KEY_ESCAPE,
+	EKey::KEY_ENTER,
+	EKey::KEY_TAB,
+	EKey::KEY_BACKSPACE,
+	EKey::KEY_INSERT,
+	EKey::KEY_DELETE,
+	EKey::KEY_RIGHT,
+	EKey::KEY_LEFT,
+	EKey::KEY_DOWN,
+	EKey::KEY_UP,
+	EKey::KEY_PAGE_UP,
+	EKey::KEY_PAGE_DOWN,
+	EKey::KEY_HOME,
+	EKey::KEY_END,
+	EKey::KEY_CAPS_LOCK,
+	EKey::KEY_SCROLL_LOCK,
+	EKey::KEY_NUM_LOCK,
+	EKey::KEY_PRINT_SCREEN,
+	EKey::KEY_PAUSE,
+	EKey::KEY_F1,
+	EKey::KEY_F2,
+	EKey::KEY_F3,
+	EKey::KEY_F4,
+	EKey::KEY_F5,
+	EKey::KEY_F6,
+	EKey::KEY_F7,
+	EKey::KEY_F8,
+	EKey::KEY_F9,
+	EKey::KEY_F10,
+	EKey::KEY_F11,
+	EKey::KEY_F12,
+	EKey::KEY_F13,
+	EKey::KEY_F14,
+	EKey::KEY_F15,
+	EKey::KEY_F16,
+	EKey::KEY_F17,
+	EKey::KEY_F18,
+	EKey::KEY_F19,
+	EKey::KEY_F20,
+	EKey::KEY_F21,
+	EKey::KEY_F22,
+	EKey::KEY_F23,
+	EKey::KEY_F24,
+	EKey::KEY_F25,
+	EKey::KEY_KP_0,
+	EKey::KEY_KP_1,
+	EKey::KEY_KP_2,
+	EKey::KEY_KP_3,
+	EKey::KEY_KP_4,
+	EKey::KEY_KP_5,
+	EKey::KEY_KP_6,
+	EKey::KEY_KP_7,
+	EKey::KEY_KP_8,
+	EKey::KEY_KP_9,
+	EKey::KEY_KP_DECIMAL,
+	EKey::KEY_KP_DIVIDE,
+	EKey::KEY_KP_MULTIPLY,
+	EKey::KEY_KP_SUBTRACT,
+	EKey::KEY_KP_ADD,
+	EKey::KEY_KP_ENTER,
+	EKey::KEY_KP_EQUAL,
+	EKey::KEY_LEFT_SHIFT,
+	EKey::KEY_LEFT_CONTROL,
+	EKey::KEY_LEFT_ALT,
+	EKey::KEY_LEFT_SUPER,
+	EKey::KEY_RIGHT_SHIFT,
+	EKey::KEY_RIGHT_CONTROL,
+	EKey::KEY_RIGHT_ALT,
+	EKey::KEY_RIGHT_SUPER,
+};
+
 void GLFWManager::ErrorCallback(int32_t errorCode, const char* description)
 {
 	singleton_.SetLsatError(errorCode, description);
-}
-
-void GLFWManager::KeyEventCallback(GLFWwindow* window, int32_t key, int32_t scancode, int32_t action, int32_t mods)
-{
-	singleton_.SetKeyboardState(key, action);
 }
 
 void GLFWManager::CursorMoveCallback(GLFWwindow* window, double x, double y)
@@ -32,10 +150,6 @@ void GLFWManager::CursorMoveCallback(GLFWwindow* window, double x, double y)
 void GLFWManager::CursorEnterCallback(GLFWwindow* window, int32_t entered)
 {
 	singleton_.SetCursorEnter(entered);
-}
-
-void GLFWManager::MouseButtonEventCallback(GLFWwindow* window, int32_t button, int32_t action, int32_t mods)
-{
 }
 
 GLFWManager& GLFWManager::GetRef()
@@ -109,15 +223,13 @@ void GLFWManager::SetLsatError(int32_t code, const char* description)
 void GLFWManager::Tick()
 {
 	prevCursorPos_ = currCursorPos_;
-
-	std::copy(currKeyboardState_.begin(), currKeyboardState_.end(), prevKeyboardState_.begin());
-	uint32_t keyboardStateByteSize = KEY_BOARD_STATE_SIZE * sizeof(int32_t);
-	std::memset(currKeyboardState_.data(), 0, keyboardStateByteSize);
 	
 	glfwPollEvents();
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplGlfw_NewFrame();
 	ImGui::NewFrame();
+
+	UpdateKeyboardState();
 }
 
 EPress GLFWManager::GetKeyPress(const EKey& key)
@@ -139,7 +251,6 @@ EPress GLFWManager::GetKeyPress(const EKey& key)
 	{
 		if (IsPressKey(currKeyboardState_.data(), key))
 		{
-
 			press = EPress::PRESSED;
 		}
 		else
@@ -163,14 +274,21 @@ void GLFWManager::SetCursorPosition(double x, double y)
 	currCursorPos_ = glm::vec2(cursorX, cursorY);
 }
 
-void GLFWManager::SetKeyboardState(int32_t key, int32_t action)
+bool GLFWManager::IsPressKey(const int32_t* keyboardState, const EKey& key)
 {
-	currKeyboardState_[key] = (action == 1) ? 1 : 0;
+	return keyboardState[static_cast<int32_t>(key)];
 }
 
-bool GLFWManager::IsPressKey(int32_t* keyboardState, const EKey& key)
+void GLFWManager::UpdateKeyboardState()
 {
-	return keyboardState[static_cast<int32_t>(key)] == 0 ? false : true;
+	std::copy(currKeyboardState_.begin(), currKeyboardState_.end(), prevKeyboardState_.begin());
+	std::fill(currKeyboardState_.begin(), currKeyboardState_.end(), 0);
+
+	for (const auto& KEY : KEYS)
+	{
+		int32_t key = static_cast<int32_t>(KEY);
+		currKeyboardState_[key] = glfwGetKey(mainWindow_, key);
+	}
 }
 
 void GLFWManager::Startup(int32_t width, int32_t height, const char* title)
@@ -202,10 +320,8 @@ void GLFWManager::Startup(int32_t width, int32_t height, const char* title)
 	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
 	io.ConfigFlags |= ImGuiConfigFlags_NavEnableSetMousePos;
 
-	glfwSetKeyCallback(mainWindow_, GLFWManager::KeyEventCallback);
 	glfwSetCursorPosCallback(mainWindow_, GLFWManager::CursorMoveCallback);
 	glfwSetCursorEnterCallback(mainWindow_, GLFWManager::CursorEnterCallback);
-	glfwSetMouseButtonCallback(mainWindow_, GLFWManager::MouseButtonEventCallback);
 
 	double x = 0.0;
 	double y = 0.0;
@@ -216,9 +332,8 @@ void GLFWManager::Startup(int32_t width, int32_t height, const char* title)
 	currCursorPos_ = glm::vec2(cursorX, cursorY);
 	prevCursorPos_ = currCursorPos_;
 
-	uint32_t keyboardStateByteSize = KEY_BOARD_STATE_SIZE * sizeof(int32_t);
-	std::memset(prevKeyboardState_.data(), 0, keyboardStateByteSize);
-	std::memset(currKeyboardState_.data(), 0, keyboardStateByteSize);
+	std::fill(prevKeyboardState_.begin(), prevKeyboardState_.end(), 0);
+	std::fill(currKeyboardState_.begin(), currKeyboardState_.end(), 0);
 
 	ASSERTION(ImGui_ImplGlfw_InitForOpenGL(mainWindow_, true), "Failed to initialize ImGui for GLFW");
 }

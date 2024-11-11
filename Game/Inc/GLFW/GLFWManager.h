@@ -206,17 +206,11 @@ private:
 	/** GLFW 에러 처리를 위한 콜백 함수입니다. */
 	static void ErrorCallback(int32_t errorCode, const char* description);
 
-	/** 키보드 입력이 감지되었을 때 호출되는 콜백 함수입니다. */
-	static void KeyEventCallback(GLFWwindow* window, int32_t key, int32_t scancode, int32_t action, int32_t mods);
-
 	/** 마우스 커서가 움직일 때 호출되는 콜백 함수입니다. */
 	static void CursorMoveCallback(GLFWwindow* window, double x, double y);
 
-	/** 마우스 커서가 진입했을 때 호출되는 콜백함수입니다. */
+	/** 마우스 커서가 진입했을 때 호출되는 콜백 함수입니다. */
 	static void CursorEnterCallback(GLFWwindow* window, int32_t entered);
-
-	/** 마우스 버튼 입력이 감지되었을 때 호출되는 콜백 함수입니다. */
-	static void MouseButtonEventCallback(GLFWwindow* window, int32_t button, int32_t action, int32_t mods);
 
 	/** 커서의 윈도우 창 진입 여부를 설정합니다. */
 	void SetCursorEnter(int32_t entered);
@@ -224,11 +218,11 @@ private:
 	/** 현재 커서 위치를 설정합니다. */
 	void SetCursorPosition(double x, double y);
 
-	/** 현재 키 상태 값을 설정합니다. */
-	void SetKeyboardState(int32_t key, int32_t action);
+	/** 해당 키가 눌렸는지 확인합니다. */
+	bool IsPressKey(const int32_t* keyboardState, const EKey& key);
 
-	/** 키가 눌렸는지 확인합니다. */
-	bool IsPressKey(int32_t* keyboardState, const EKey& key);
+	/** 키보드 상태를 업데이트합니다. */
+	void UpdateKeyboardState();
 
 	/**
 	 * GLFW 매니저의 기본 생성자와 빈 가상 소멸자입니다. 
