@@ -19,25 +19,21 @@ void GLFWManager::ErrorCallback(int32_t errorCode, const char* description)
 	singleton_.SetLsatError(errorCode, description);
 }
 
-/** 키보드 입력이 감지되었을 때 호출되는 콜백 함수입니다. */
 void GLFWManager::KeyEventCallback(GLFWwindow* window, int32_t key, int32_t scancode, int32_t action, int32_t mods)
 {
 	singleton_.SetKeyboardState(key, action);
 }
 
-/** 마우스 커서가 움직일 때 호출되는 콜백 함수입니다. */
 void GLFWManager::CursorMoveCallback(GLFWwindow* window, double x, double y)
 {
 	singleton_.SetCursorPosition(x, y);
 }
 
-/** 마우스 커서가 진입했을 때 호출되는 콜백함수입니다. */
 void GLFWManager::CursorEnterCallback(GLFWwindow* window, int32_t entered)
 {
 	singleton_.SetCursorEnter(entered);
 }
 
-/** 마우스 버튼 입력이 감지되었을 때 호출되는 콜백 함수입니다. */
 void GLFWManager::MouseButtonEventCallback(GLFWwindow* window, int32_t button, int32_t action, int32_t mods)
 {
 }
