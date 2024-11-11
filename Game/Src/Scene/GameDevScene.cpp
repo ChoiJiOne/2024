@@ -90,7 +90,7 @@ void GameDevScene::Render()
 				renderMgr.DrawLine(glm::vec2(-500.0f, y), glm::vec2(500.0f, y), color);
 			}
 
-			if (GLFWManager::GetRef().GetKeyPress(EKey::KEY_SPACE) == EPress::HELD)
+			if (GLFWManager::GetRef().GetMousePress(EMouse::LEFT) == EPress::HELD)
 			{
 				renderMgr.DrawTextureAtlas(animator_->GetTextureAtlas(), animator_->GetCurrentClipName(), pos_, 200.0f, 190.0f, 0.0f, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
 			}
