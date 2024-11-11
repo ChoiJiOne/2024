@@ -165,6 +165,13 @@ public:
 	/** 한 프레임을 시작합니다. */
 	void Tick();
 
+	/** 커서가 윈도우 내부에 있는지 확인합니다. */
+	bool IsEnterCursor() const { return bIsEnterCursor_; }
+	
+public:
+	/** 아래의 메서드는 외부에서 호출하면 안됩니다. */
+	void SetCursorEnter(int32_t entered);
+
 private:
 	/** GameApp에서 GLFWManager의 내부에 접근할 수 있도록 설정. */
 	friend class GameApp;
@@ -193,6 +200,9 @@ private:
 	/** GLFW 매니저가 관리하는 메인 윈도우의 가로/세로 크기입니다. */
 	int32_t mainWindowWidth_ = 0;
 	int32_t mainWindowHeight_ = 0;
+
+	/** 커서가 윈도우 내부에 있는지 확인합니다. */
+	bool bIsEnterCursor_ = true;
 
 	/** GLFW 에러 발생 여부입니다. */
 	bool bIsDetectError_ = false;

@@ -6,7 +6,6 @@
 
 #include "GLFW/GLFWAssertion.h"
 #include "GLFW/GLFWManager.h"
-#include "GLFW/InputManager.h"
 #include "Utils/Assertion.h"
 #include "Utils/MemoryAlloc.h"
 
@@ -20,6 +19,7 @@ void GLFWErrorCallback(int32_t errorCode, const char* description)
 	GLFWManager::GetRef().SetLsatError(errorCode, description);
 }
 
+#include "Utils/Utils.h"
 /** 키보드 입력이 감지되었을 때 호출되는 콜백 함수입니다. */
 void GLFWKeyEventCallback(GLFWwindow* window, int32_t key, int32_t scancode, int32_t action, int32_t mods)
 {
@@ -33,6 +33,7 @@ void GLFWCursorMoveCallback(GLFWwindow* window, double x, double y)
 /** 마우스 커서가 진입했을 때 호출되는 콜백함수입니다. */
 void GLFWCursorEnterCallback(GLFWwindow* window, int32_t entered)
 {
+	GLFWManager::GetRef().SetCursorEnter(entered);
 }
 
 /** 마우스 버튼 입력이 감지되었을 때 호출되는 콜백 함수입니다. */
@@ -114,6 +115,11 @@ void GLFWManager::Tick()
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplGlfw_NewFrame();
 	ImGui::NewFrame();
+}
+
+void GLFWManager::SetCursorEnter(int32_t entered)
+{
+	bIsEnterCursor_ = static_cast<bool>(entered);
 }
 
 void GLFWManager::Startup(int32_t width, int32_t height, const char* title)
