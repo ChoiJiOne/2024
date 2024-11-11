@@ -230,6 +230,7 @@ void GLFWManager::Tick()
 	ImGui::NewFrame();
 
 	UpdateKeyboardState();
+	UpdateMouseState();
 }
 
 EPress GLFWManager::GetKeyPress(const EKey& key)
@@ -250,6 +251,36 @@ EPress GLFWManager::GetKeyPress(const EKey& key)
 	else
 	{
 		if (IsPressKey(currKeyboardState_.data(), key))
+		{
+			press = EPress::PRESSED;
+		}
+		else
+		{
+			press = EPress::NONE;
+		}
+	}
+
+	return press;
+}
+
+EPress GLFWManager::GetMousePress(const EMouse& mouse)
+{
+	EPress press = EPress::NONE;
+
+	if (IsPressButton(prevMouseState_.data(), mouse))
+	{
+		if (IsPressButton(currMouseState_.data(), mouse))
+		{
+			press = EPress::HELD;
+		}
+		else
+		{
+			press = EPress::RELEASED;
+		}
+	}
+	else
+	{
+		if (IsPressButton(currMouseState_.data(), mouse))
 		{
 			press = EPress::PRESSED;
 		}
@@ -288,6 +319,30 @@ void GLFWManager::UpdateKeyboardState()
 	{
 		int32_t key = static_cast<int32_t>(KEY);
 		currKeyboardState_[key] = glfwGetKey(mainWindow_, key);
+	}
+}
+
+bool GLFWManager::IsPressButton(const int32_t* mouseState, const EMouse& mouse)
+{
+	return mouseState[static_cast<int32_t>(mouse)];
+}
+
+void GLFWManager::UpdateMouseState()
+{
+	std::copy(currMouseState_.begin(), currMouseState_.end(), prevMouseState_.begin());
+	std::fill(currMouseState_.begin(), currMouseState_.end(), 0);
+
+	static const std::array<EMouse, MOUSE_STATE_SIZE> MOUSE_CODES =
+	{
+		EMouse::LEFT,
+		EMouse::RIGHT,
+		EMouse::MIDDLE,
+	};
+
+	for (const auto& MOUSE_CODE : MOUSE_CODES)
+	{
+		int32_t mouse = static_cast<int32_t>(MOUSE_CODE);
+		currMouseState_[mouse] = glfwGetMouseButton(mainWindow_, mouse);
 	}
 }
 
@@ -334,7 +389,9 @@ void GLFWManager::Startup(int32_t width, int32_t height, const char* title)
 
 	std::fill(prevKeyboardState_.begin(), prevKeyboardState_.end(), 0);
 	std::fill(currKeyboardState_.begin(), currKeyboardState_.end(), 0);
-
+	std::fill(prevMouseState_.begin(), prevMouseState_.end(), 0);
+	std::fill(currMouseState_.begin(), currMouseState_.end(), 0);
+	
 	ASSERTION(ImGui_ImplGlfw_InitForOpenGL(mainWindow_, true), "Failed to initialize ImGui for GLFW");
 }
 

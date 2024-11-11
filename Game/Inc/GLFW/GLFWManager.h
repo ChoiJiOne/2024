@@ -151,6 +151,14 @@ enum class EKey
 	KEY_MENU = 348
 };
 
+/** 마우스 코드 값입니다. */
+enum class EMouse
+{
+	LEFT   = 0,
+	RIGHT  = 1,
+	MIDDLE = 2,
+};
+
 /**
  * GLFW 관련 처리를 수행하는 매니저입니다.
  * 이때, 이 매니저 클래스는 싱글턴입니다.
@@ -190,6 +198,9 @@ public:
 	/** 현재 키 값의 입력 상태를 얻습니다. */
 	EPress GetKeyPress(const EKey& key);
 
+	/** 현재 마우스의 입력 상태를 얻습니다. */
+	EPress GetMousePress(const EMouse& mouse);
+
 	/** Tick 호출 이전의 커서 위치를 얻습니다. */
 	const glm::vec2& GetPrevCursorPos() const { return prevCursorPos_; }
 
@@ -224,6 +235,12 @@ private:
 	/** 키보드 상태를 업데이트합니다. */
 	void UpdateKeyboardState();
 
+	/** 마우스 버튼이 눌렸는지 확인합니다. */
+	bool IsPressButton(const int32_t* mouseState, const EMouse& mouse);
+
+	/** 마우스 상태를 업데이트합니다. */
+	void UpdateMouseState();
+
 	/**
 	 * GLFW 매니저의 기본 생성자와 빈 가상 소멸자입니다. 
 	 * 싱글턴으로 구현하기 위해 private으로 숨겼습니다.
@@ -255,7 +272,7 @@ private:
 	/** Tick 호출 이후의 커서 위치입니다. */
 	glm::vec2 currCursorPos_ = glm::vec2();
 
-	/** 키 배열의 최대 값입니다. */
+	/** 키 상태 배열의 크기 값입니다. */
 	static const uint32_t KEY_BOARD_STATE_SIZE = 348;
 
 	/** Tick 호출 이전의 키 상태입니다. */
@@ -263,6 +280,15 @@ private:
 
 	/** Tick 호출 이후의 키 상태입니다. */
 	std::array<int32_t, KEY_BOARD_STATE_SIZE> currKeyboardState_;
+
+	/** 마우스 상태 배열의 크기 값입니다. */
+	static const uint32_t MOUSE_STATE_SIZE = 3;
+
+	/** Tick 호출 이전의 마우스 상태입니다. */
+	std::array<int32_t, MOUSE_STATE_SIZE> prevMouseState_;
+
+	/** Tick 호출 이후의 마우스 상태입니다. */
+	std::array<int32_t, MOUSE_STATE_SIZE> currMouseState_;
 
 	/** GLFW 에러 발생 여부입니다. */
 	bool bIsDetectError_ = false;
