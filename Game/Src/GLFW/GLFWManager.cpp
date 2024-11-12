@@ -159,14 +159,7 @@ void GLFWManager::MoveWindowCallback(GLFWwindow* window, int32_t x, int32_t y)
 
 void GLFWManager::FocusWindowCallback(GLFWwindow* window, int32_t focused)
 {
-	if (focused)
-	{
-		OutputDebugString("Gain Focus!\n");
-	}
-	else
-	{
-		OutputDebugString("Lost Focus!\n");
-	}
+	singleton_.SetWindowFocus(focused);
 }
 
 void GLFWManager::CloseWindowCallback(GLFWwindow* window)
@@ -366,6 +359,29 @@ void GLFWManager::SetCursorPosition(double x, double y)
 	float cursorX = -static_cast<float>(mainWindowWidth_) * 0.5f + static_cast<float>(x);
 	float cursorY = +static_cast<float>(mainWindowHeight_) * 0.5f - static_cast<float>(y);
 	currCursorPos_ = glm::vec2(cursorX, cursorY);
+}
+
+void GLFWManager::SetWindowFocus(int32_t focused)
+{
+	EWindowEvent windowEvent = EWindowEvent::NONE;
+	if (focused)
+	{
+		windowEvent = EWindowEvent::FOCUS_GAIN;
+	}
+	else
+	{
+		windowEvent = EWindowEvent::FOCUS_LOST;
+	}
+
+	for (uint32_t index = 0; index < windowEventActionSize_; ++index)
+	{
+		WindowEventAction& windowEventAction = windowEventActions_[index];
+		
+		if (windowEventAction.windowEvent == windowEvent && windowEventAction.bIsActive && windowEventAction.windowEventAction)
+		{
+			windowEventAction.windowEventAction();
+		}
+	}
 }
 
 bool GLFWManager::IsPressKey(const int32_t* keyboardState, const EKey& key)

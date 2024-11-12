@@ -271,6 +271,9 @@ private:
 	/** 현재 커서 위치를 설정합니다. */
 	void SetCursorPosition(double x, double y);
 
+	/** 윈도우 포커스 여부를 설정합니다. */
+	void SetWindowFocus(int32_t focused);
+
 	/** 해당 키가 눌렸는지 확인합니다. */
 	bool IsPressKey(const int32_t* keyboardState, const EKey& key);
 
