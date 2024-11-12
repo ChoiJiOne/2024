@@ -59,7 +59,7 @@ void CrashManager::SetCrashCallbackEvent(const std::function<void()>& callback)
 
 void CrashManager::ShowMessageBox(const std::string& message)
 {
-	::MessageBox(NULL, message.c_str(), "<DETECT APPLICATION CRASH>", MB_OK);
+	::MessageBox(NULL, message.c_str(), "DETECT APPLICATION CRASH", MB_OK);
 }
 
 void CrashManager::Startup()
