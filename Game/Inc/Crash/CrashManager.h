@@ -20,6 +20,9 @@ public:
 	/** 크래시 매니저의 싱글턴 객체 포인터를 얻습니다. */
 	static CrashManager* GetPtr();
 
+	/** 크래시 발생 시 호출할 콜백 함수를 설정합니다. */
+	void SetCrashCallbackEvent(const std::function<void()>& callback);
+	
 private:
 	/** GameApp에서 크래시 매니저의 내부에 접근할 수 있도록 설정.  */
 	friend class GameApp;

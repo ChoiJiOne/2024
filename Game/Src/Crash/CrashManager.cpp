@@ -7,6 +7,7 @@
 #include "Utils/Utils.h"
 
 static LPTOP_LEVEL_EXCEPTION_FILTER gTopLevelExceptionFilter;
+static std::function<void()> gCrashCallbackEvent = nullptr;
 static std::wstring gCrashDumpPath;
 
 CrashManager CrashManager::instance_;
@@ -24,6 +25,11 @@ CrashManager& CrashManager::GetRef()
 CrashManager* CrashManager::GetPtr()
 {
 	return &instance_;
+}
+
+void CrashManager::SetCrashCallbackEvent(const std::function<void()>& callback)
+{
+	gCrashCallbackEvent = callback;
 }
 
 void CrashManager::Startup()
