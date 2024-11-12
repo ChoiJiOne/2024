@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Crash/CrashManager.h"
 #include "Utils/Utils.h"
 
 #if defined(DEBUG_MODE) || defined(RELWITHDEBINFO_MODE)
@@ -49,7 +50,7 @@
 {\
 	if (!(bool)(EXP))\
 	{\
-		MessageBox(NULL, "Common assertion check point failed!", "Assertion check point failed!", MB_OK);\
+		CrashManager::GetRef().ShowMessageBox("Common assertion check point failed!");\
 	}\
 }
 #endif
@@ -64,9 +65,9 @@
 {\
 	if (!(bool)(EXP))\
 	{\
-		std::string description = PrintF(__VA_ARGS__);\
-		std::string text = PrintF("> Description: %s", description.c_str());\
-		MessageBox(NULL, text.c_str(), "Assertion check point failed!", MB_OK);\
+		std::string _description = PrintF(__VA_ARGS__);\
+		std::string _text = PrintF("> Description: %s", _description.c_str());\
+		CrashManager::GetRef().ShowMessageBox(_text);\
 	}\
 }
 #endif

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Crash/CrashManager.h"
 #include "GL/GLManager.h"
 #include "Utils/Utils.h"
 
@@ -95,8 +96,8 @@
 	if (!(bool)(EXP))\
 	{\
 		GLenum _errorCode = glGetError();\
-		std::string text = PrintF("> Code: %d\n> Error: %s", static_cast<int32_t>(_errorCode), GLManager::GetRef().GetErrorMessage(_errorCode));\
-		MessageBox(NULL, text.c_str(), "Assertion check point failed!", MB_OK);\
+		std::string _text = PrintF("> Code: %d\n> Error: %s", static_cast<int32_t>(_errorCode), GLManager::GetRef().GetErrorMessage(_errorCode));\
+		CrashManager::GetRef().ShowMessageBox(_text);\
 	}\
 }
 #endif
@@ -113,8 +114,8 @@
 	GLenum _errorCode = glGetError();\
 	if (_errorCode != GL_NO_ERROR)\
 	{\
-		std::string text = PrintF("> Code: %d\n> Error: %s", static_cast<int32_t>(_errorCode), GLManager::GetRef().GetErrorMessage(_errorCode));\
-		MessageBox(NULL, text.c_str(), "Assertion check point failed!", MB_OK);\
+		std::string _text = PrintF("> Code: %d\n> Error: %s", static_cast<int32_t>(_errorCode), GLManager::GetRef().GetErrorMessage(_errorCode));\
+		CrashManager::GetRef().ShowMessageBox(_text);\
 	}\
 }
 #endif
@@ -131,8 +132,8 @@
 	{\
 		GLenum _errorCode = glGetError(); \
 		std::string description = PrintF(__VA_ARGS__);\
-		std::string text = PrintF("> Code: %d\n> Error: %s\n> Description: %s", static_cast<int32_t>(_errorCode), GLManager::GetRef().GetErrorMessage(_errorCode), description.c_str());\
-		MessageBox(NULL, text.c_str(), "Assertion check point failed!", MB_OK);\
+		std::string _text = PrintF("> Code: %d\n> Error: %s\n> Description: %s", static_cast<int32_t>(_errorCode), GLManager::GetRef().GetErrorMessage(_errorCode), description.c_str());\
+		CrashManager::GetRef().ShowMessageBox(_text);\
 	}\
 }
 #endif
@@ -150,8 +151,8 @@
 	if (_errorCode != GL_NO_ERROR)\
 	{\
 		std::string description = PrintF(__VA_ARGS__);\
-		std::string text = PrintF("> Code: %d\n> Error: %s\n> Description: %s", static_cast<int32_t>(_errorCode), GLManager::GetRef().GetErrorMessage(_errorCode), description.c_str());\
-		MessageBox(NULL, text.c_str(), "Assertion check point failed!", MB_OK);\
+		std::string _text = PrintF("> Code: %d\n> Error: %s\n> Description: %s", static_cast<int32_t>(_errorCode), GLManager::GetRef().GetErrorMessage(_errorCode), description.c_str());\
+		CrashManager::GetRef().ShowMessageBox(_text);\
 	}\
 }
 #endif
