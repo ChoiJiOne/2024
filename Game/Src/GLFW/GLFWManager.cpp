@@ -315,6 +315,47 @@ EPress GLFWManager::GetMousePress(const EMouse& mouse)
 	return press;
 }
 
+WindowEventID GLFWManager::AddWindowEventAction(const EWindowEvent& windowEvent, const std::function<void()>& eventAction, bool bIsActive)
+{
+	CHECK(0 <= windowEventActionSize_ && windowEventActionSize_ < MAX_EVENT_ACTION_SIZE);
+
+	WindowEventID windowEventID = -1;
+	for (int32_t index = 0; index < windowEventActionSize_; ++index)
+	{
+		if (windowEventActions_[index].windowEvent == EWindowEvent::NONE)
+		{
+			windowEventID = static_cast<WindowEventID>(index);
+			break;
+		}
+	}
+
+	if (windowEventID == -1)
+	{
+		windowEventID = windowEventActionSize_++;
+	}
+
+	windowEventActions_[windowEventID].windowEvent = windowEvent;
+	windowEventActions_[windowEventID].windowEventAction = eventAction;
+	windowEventActions_[windowEventID].bIsActive = bIsActive;
+
+	return windowEventID;
+}
+
+void GLFWManager::DeleteWindowEventAction(const WindowEventID& windowEventID)
+{
+	CHECK(0 <= windowEventID && windowEventID < MAX_EVENT_ACTION_SIZE);
+
+	windowEventActions_[windowEventID].windowEvent = EWindowEvent::NONE;
+	windowEventActions_[windowEventID].windowEventAction = nullptr;
+	windowEventActions_[windowEventID].bIsActive = false;
+}
+
+void GLFWManager::SetActiveWindowEventAction(const WindowEventID& windowEventID, bool bIsActive)
+{
+	CHECK(0 <= windowEventID && windowEventID < MAX_EVENT_ACTION_SIZE);
+	windowEventActions_[windowEventID].bIsActive = bIsActive;
+}
+
 void GLFWManager::SetCursorEnter(int32_t entered)
 {
 	bIsEnterCursor_ = static_cast<bool>(entered);

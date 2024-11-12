@@ -221,6 +221,15 @@ public:
 
 	/** Tick 호출 이후의 커서 위치를 얻습니다. */
 	const glm::vec2& GetCurrCursorPos() const { return currCursorPos_; }
+
+	/** GLFW 매니저에 윈도우 이벤트 액션을 등록합니다. */
+	WindowEventID AddWindowEventAction(const EWindowEvent& windowEvent, const std::function<void()>& eventAction, bool bIsActive = true);
+	
+	/** GLFW 매니저에 윈도우 이벤트 액션을 삭제합니다. */
+	void DeleteWindowEventAction(const WindowEventID& windowEventID);
+
+	/** 등록된 윈도우 이벤트 액션의 활성화 여부를 설정합니다. */
+	void SetActiveWindowEventAction(const WindowEventID& windowEventID, bool bIsActive);
 	
 private:
 	/** GameApp에서 GLFWManager의 내부에 접근할 수 있도록 설정. */
@@ -233,8 +242,8 @@ private:
 	struct WindowEventAction
 	{
 		EWindowEvent          windowEvent = EWindowEvent::NONE; /** 윈도우 이벤트의 종류입니다. */
-		std::function<void()> windowEventAction;                /** 이벤트 감지 시 실행할 액션입니다. */
-		bool                  bIsActive;                        /** 이벤트 활성화 여부입니다. */
+		std::function<void()> windowEventAction = nullptr;      /** 이벤트 감지 시 실행할 액션입니다. */
+		bool                  bIsActive = false;                /** 이벤트 활성화 여부입니다. */
 
 	};
 
@@ -337,4 +346,13 @@ private:
 
 	/** GLFW 에러 메시지입니다. */
 	std::string errorMessage_;
+
+	/** 최대 등록할 수 있는 윈도우 이벤트 액션 수입니다. */
+	static const uint32_t MAX_EVENT_ACTION_SIZE = 100;
+
+	/** 현재 윈도우 이벤트 액션의 버퍼 크기입니다. */
+	uint32_t windowEventActionSize_ = 0;
+
+	/** 동작할 윈도우 이벤트 액션 목록입니다. */
+	std::array<WindowEventAction, MAX_EVENT_ACTION_SIZE> windowEventActions_;
 };
