@@ -454,7 +454,7 @@ void GLFWManager::RunWindowEventAction(const EWindowEvent& windowEvent)
 	}
 }
 
-void GLFWManager::Startup(int32_t width, int32_t height, const char* title)
+void GLFWManager::Startup(int32_t width, int32_t height, const char* title, bool bIsWindowCentered)
 {
 	glfwSetErrorCallback(ErrorCallback);
 
@@ -504,6 +504,20 @@ void GLFWManager::Startup(int32_t width, int32_t height, const char* title)
 	std::fill(currMouseState_.begin(), currMouseState_.end(), 0);
 	
 	ASSERTION(ImGui_ImplGlfw_InitForOpenGL(mainWindow_, true), "Failed to initialize ImGui for GLFW");
+
+	if (bIsWindowCentered)
+	{
+		GLFWmonitor* monitor = glfwGetPrimaryMonitor();
+		const GLFWvidmode* mode = glfwGetVideoMode(monitor);
+		
+		int32_t monitorX = 0;
+		int32_t monitorY = 0;
+		glfwGetMonitorPos(monitor, &monitorX, &monitorY);
+
+		int32_t centerX = monitorX + (mode->width - mainWindowWidth_) / 2;
+		int32_t centerY = monitorY + (mode->height - mainWindowHeight_) / 2;
+		glfwSetWindowPos(mainWindow_, centerX, centerY);
+	}
 }
 
 void GLFWManager::Shutdown()

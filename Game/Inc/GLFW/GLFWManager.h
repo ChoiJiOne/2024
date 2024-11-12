@@ -303,7 +303,7 @@ private:
 	virtual ~GLFWManager() {}
 
 	/** GLFW 매니저의 초기화 및 해제는 GameApp 내부에서만 수행됩니다. */
-	void Startup(int32_t width, int32_t height, const char* title);
+	void Startup(int32_t width, int32_t height, const char* title, bool bIsWindowCentered);
 	void Shutdown();
 	
 private:
