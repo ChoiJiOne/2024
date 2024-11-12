@@ -251,17 +251,7 @@ void GLFWManager::Tick()
 	if (bIsStartMoveWindow_ && !bIsDetectMoveWindow_)
 	{
 		bIsStartMoveWindow_ = false;
-		EWindowEvent windowEvent = EWindowEvent::MOVE_LEAVE;
-
-		for (uint32_t index = 0; index < windowEventActionSize_; ++index)
-		{
-			WindowEventAction& windowEventAction = windowEventActions_[index];
-
-			if (windowEventAction.windowEvent == windowEvent && windowEventAction.bIsActive && windowEventAction.windowEventAction)
-			{
-				windowEventAction.windowEventAction();
-			}
-		}
+		RunWindowEventAction(EWindowEvent::MOVE_LEAVE);
 	}
 }
 
@@ -387,17 +377,7 @@ void GLFWManager::SetWindowMove(int32_t x, int32_t y)
 	}
 
 	bIsStartMoveWindow_ = true;
-	EWindowEvent windowEvent = EWindowEvent::MOVE_ENTER;
-
-	for (uint32_t index = 0; index < windowEventActionSize_; ++index)
-	{
-		WindowEventAction& windowEventAction = windowEventActions_[index];
-
-		if (windowEventAction.windowEvent == windowEvent && windowEventAction.bIsActive && windowEventAction.windowEventAction)
-		{
-			windowEventAction.windowEventAction();
-		}
-	}
+	RunWindowEventAction(EWindowEvent::MOVE_ENTER);
 }
 
 void GLFWManager::SetWindowFocus(int32_t focused)
@@ -412,29 +392,12 @@ void GLFWManager::SetWindowFocus(int32_t focused)
 		windowEvent = EWindowEvent::FOCUS_LOST;
 	}
 
-	for (uint32_t index = 0; index < windowEventActionSize_; ++index)
-	{
-		WindowEventAction& windowEventAction = windowEventActions_[index];
-		
-		if (windowEventAction.windowEvent == windowEvent && windowEventAction.bIsActive && windowEventAction.windowEventAction)
-		{
-			windowEventAction.windowEventAction();
-		}
-	}
+	RunWindowEventAction(windowEvent);
 }
 
 void GLFWManager::SetWindowClose()
 {
-	EWindowEvent windowEvent = EWindowEvent::CLOSE_WINDOW;
-	for (uint32_t index = 0; index < windowEventActionSize_; ++index)
-	{
-		WindowEventAction& windowEventAction = windowEventActions_[index];
-
-		if (windowEventAction.windowEvent == windowEvent && windowEventAction.bIsActive && windowEventAction.windowEventAction)
-		{
-			windowEventAction.windowEventAction();
-		}
-	}
+	RunWindowEventAction(EWindowEvent::CLOSE_WINDOW);
 }
 
 bool GLFWManager::IsPressKey(const int32_t* keyboardState, const EKey& key)
@@ -475,6 +438,19 @@ void GLFWManager::UpdateMouseState()
 	{
 		int32_t mouse = static_cast<int32_t>(MOUSE_CODE);
 		currMouseState_[mouse] = glfwGetMouseButton(mainWindow_, mouse);
+	}
+}
+
+void GLFWManager::RunWindowEventAction(const EWindowEvent& windowEvent)
+{
+	for (uint32_t index = 0; index < windowEventActionSize_; ++index)
+	{
+		WindowEventAction& windowEventAction = windowEventActions_[index];
+
+		if (windowEventAction.windowEvent == windowEvent && windowEventAction.bIsActive && windowEventAction.windowEventAction)
+		{
+			windowEventAction.windowEventAction();
+		}
 	}
 }
 

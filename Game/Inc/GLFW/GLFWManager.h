@@ -292,6 +292,9 @@ private:
 	/** 마우스 상태를 업데이트합니다. */
 	void UpdateMouseState();
 
+	/** 윈도우 이벤트 액션을 실행합니다. */
+	void RunWindowEventAction(const EWindowEvent& windowEvent);
+
 	/**
 	 * GLFW 매니저의 기본 생성자와 빈 가상 소멸자입니다. 
 	 * 싱글턴으로 구현하기 위해 private으로 숨겼습니다.
