@@ -229,3 +229,13 @@ bool MakeDirectory(const std::wstring& path, std::string& outErrMsg)
 
 	return bSucceed;
 }
+
+bool IsValidPath(const std::string& path)
+{
+	return PathFileExistsA(path.c_str());
+}
+
+bool IsValidPath(const std::wstring& path)
+{
+	return PathFileExistsW(path.c_str());
+}

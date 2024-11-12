@@ -41,3 +41,9 @@ bool MakeDirectory(const std::string& path, std::string& outErrMsg);
 
 /** 디렉토리를 생성합니다. */
 bool MakeDirectory(const std::wstring& path, std::string& outErrMsg);
+
+/** 파일이나 폴더 경로가 유효한지 확인합니다.  */
+bool IsValidPath(const std::string& path);
+
+/** 파일이나 폴더 경로가 유효한지 확인합니다.  */
+bool IsValidPath(const std::wstring& path);
