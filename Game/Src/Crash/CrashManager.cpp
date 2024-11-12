@@ -57,6 +57,11 @@ void CrashManager::SetCrashCallbackEvent(const std::function<void()>& callback)
 	gCrashCallbackEvent = callback;
 }
 
+void CrashManager::ShowMessageBox(const std::string& message)
+{
+	::MessageBox(NULL, message.c_str(), "<DETECT APPLICATION CRASH>", MB_OK);
+}
+
 void CrashManager::Startup()
 {
 	static wchar_t exePath[MAX_PATH];

@@ -22,6 +22,9 @@ public:
 
 	/** 크래시 발생 시 호출할 콜백 함수를 설정합니다. */
 	void SetCrashCallbackEvent(const std::function<void()>& callback);
+
+	/** 크래시 발생 시 메시지 박스를 띄웁니다. */
+	void ShowMessageBox(const std::string& message);
 	
 private:
 	/** GameApp에서 크래시 매니저의 내부에 접근할 수 있도록 설정.  */
