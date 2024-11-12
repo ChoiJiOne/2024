@@ -20,7 +20,7 @@ GameApp::GameApp()
 	const uint32_t windowHeight = 800;
 	const char* windowTitle = "HyperCoinDash2D";
 
-	GLFWManager::GetRef().Startup(windowWidth, windowHeight, windowTitle);
+	GLFWManager::GetRef().Startup(windowWidth, windowHeight, windowTitle, true);
 	GLManager::GetRef().Startup();
 	RenderManager2D::GetRef().Startup();
 	AudioManager::GetRef().Startup();
