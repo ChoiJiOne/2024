@@ -18,12 +18,4 @@ public:
 
 private:
 	class Camera2D* mainCamera_ = nullptr;
-
-	class FrameBuffer* frameBuffer_ = nullptr;
-	class PostProcessor* postProcessor_ = nullptr;
-
-	class TextureAtlas2D* atlas_ = nullptr;
-	class SpriteAnimator2D* animator_ = nullptr;
-
-	glm::vec2 pos_;
 };

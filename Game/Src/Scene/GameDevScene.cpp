@@ -25,58 +25,6 @@
 GameDevScene::GameDevScene()
 {
 	mainCamera_ = EntityManager::GetRef().Create<Camera2D>(glm::vec2(0.0f, 0.0f), glm::vec2(1000.0f, 800.0f));
-	frameBuffer_ = GLManager::GetRef().Create<FrameBuffer>(1000, 800, FrameBuffer::EPixelFormat::RGBA, ITexture::EFilter::NEAREST);
-
-	atlas_ = GLManager::GetRef().Create<TextureAtlas2D>("Resource\\texture.png", "Resource\\texture.atlas", Texture2D::EFilter::NEAREST);
-
-	std::vector<std::string> names =
-	{
-		"idle-1",
-		"idle-2",
-		"idle-3",
-		"idle-4",
-	};
-	animator_ = GLManager::GetRef().Create<SpriteAnimator2D>(atlas_, names, 0.3f, true);
-
-	std::vector<uint8_t> vsBuffer;
-	std::vector<uint8_t> fsBuffer;
-	std::string vsSource;
-	std::string fsSource;
-	std::string outErrMsg;
-
-	ASSERTION(ReadFile("Shader\\Blit.vert", vsBuffer, outErrMsg), "%s", outErrMsg.c_str());
-	ASSERTION(ReadFile("Shader\\Blit.frag", fsBuffer, outErrMsg), "%s", outErrMsg.c_str());
-
-	vsSource = std::string(vsBuffer.begin(), vsBuffer.end());
-	fsSource = std::string(fsBuffer.begin(), fsBuffer.end());
-
-	postProcessor_ = GLManager::GetRef().Create<PostProcessor>(vsSource, fsSource);
-
-	GLFWManager::GetRef().AddWindowEventAction(EWindowEvent::FOCUS_GAIN, 
-		[]() 
-		{
-			OutputDebugString("FOCUS_GAIN\n");
-		}, 
-		true
-		);
-	GLFWManager::GetRef().AddWindowEventAction(EWindowEvent::FOCUS_LOST, 
-		[]() 
-		{
-			OutputDebugString("FOCUS_LOST\n");
-		}, 
-		true
-		);
-
-	GLFWManager::GetRef().AddWindowEventAction(EWindowEvent::MOVE_ENTER, 
-		[]() 
-		{
-			OutputDebugString("MOVE_ENTER\n");
-		}, true);
-	GLFWManager::GetRef().AddWindowEventAction(EWindowEvent::MOVE_LEAVE, 
-		[]() 
-		{
-			OutputDebugString("MOVE_LEAVE\n");
-		}, true);
 }
 
 GameDevScene::~GameDevScene()
@@ -86,13 +34,6 @@ GameDevScene::~GameDevScene()
 
 void GameDevScene::Tick(float deltaSeconds)
 {
-	ImGui::Begin("MOUSE");
-	const glm::vec2& mousePos = GLFWManager::GetRef().GetCurrCursorPos();
-	ImGui::Text("(%f, %f)", mousePos.x, mousePos.y);
-	ImGui::End();
-
-	pos_ = mousePos;
-	animator_->Update(deltaSeconds);
 }
 
 void GameDevScene::Render()
@@ -101,8 +42,7 @@ void GameDevScene::Render()
 
 	GLManager::GetRef().BeginFrame(0.0f, 0.0f, 0.0f, 1.0f);
 	{
-		RenderTargetOption option;
-		renderMgr.Begin(mainCamera_, frameBuffer_, option);
+		renderMgr.Begin(mainCamera_);
 		{
 			for (float x = -500; x <= 500.0f; x += 10.0f)
 			{
@@ -115,15 +55,8 @@ void GameDevScene::Render()
 				glm::vec4 color = (y == 0.0f) ? glm::vec4(1.0f, 0.0f, 0.0f, 1.0f) : glm::vec4(1.0f, 1.0f, 1.0f, 0.1f);
 				renderMgr.DrawLine(glm::vec2(-500.0f, y), glm::vec2(500.0f, y), color);
 			}
-
-			if (GLFWManager::GetRef().GetMousePress(EMouse::LEFT) == EPress::HELD)
-			{
-				renderMgr.DrawTextureAtlas(animator_->GetTextureAtlas(), animator_->GetCurrentClipName(), pos_, 200.0f, 190.0f, 0.0f, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
-			}
 		}
 		renderMgr.End();
-
-		postProcessor_->Blit(frameBuffer_);
 	}
 	GLManager::GetRef().EndFrame();
 }
