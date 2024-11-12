@@ -16,9 +16,12 @@ LONG WINAPI DetectApplicationCrash(EXCEPTION_POINTERS* ep)
 {
 	std::wstring currSystemTime = GetCurrentSystemTimeAsWString();
 	std::string errMsg;
-	if (!IsValidPath(gCrashDumpPath) && !MakeDirectory(gCrashDumpPath, errMsg))
+	if (!IsValidPath(gCrashDumpPath))
 	{
-		return EXCEPTION_EXECUTE_HANDLER;
+		if (!MakeDirectory(gCrashDumpPath, errMsg))
+		{
+			return EXCEPTION_EXECUTE_HANDLER;
+		}
 	}
 
 	std::wstring path = PrintF(L"%sWindows-%s-Minidump.dmp", gCrashDumpPath.c_str(), currSystemTime.c_str());
