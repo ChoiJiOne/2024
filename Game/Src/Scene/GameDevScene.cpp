@@ -51,6 +51,32 @@ GameDevScene::GameDevScene()
 	fsSource = std::string(fsBuffer.begin(), fsBuffer.end());
 
 	postProcessor_ = GLManager::GetRef().Create<PostProcessor>(vsSource, fsSource);
+
+	GLFWManager::GetRef().AddWindowEventAction(EWindowEvent::FOCUS_GAIN, 
+		[]() 
+		{
+			OutputDebugString("FOCUS_GAIN\n");
+		}, 
+		true
+		);
+	GLFWManager::GetRef().AddWindowEventAction(EWindowEvent::FOCUS_LOST, 
+		[]() 
+		{
+			OutputDebugString("FOCUS_LOST\n");
+		}, 
+		true
+		);
+
+	GLFWManager::GetRef().AddWindowEventAction(EWindowEvent::MOVE_ENTER, 
+		[]() 
+		{
+			OutputDebugString("MOVE_ENTER\n");
+		}, true);
+	GLFWManager::GetRef().AddWindowEventAction(EWindowEvent::MOVE_LEAVE, 
+		[]() 
+		{
+			OutputDebugString("MOVE_LEAVE\n");
+		}, true);
 }
 
 GameDevScene::~GameDevScene()
