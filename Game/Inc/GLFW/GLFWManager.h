@@ -229,6 +229,15 @@ private:
 	/** GLManager에서 GLFWManager의 내부에 접근할 수 있도록 설정. */
 	friend class GLManager;
 
+	/** 윈도우 이벤트 발생 시 실행할 동작입니다. */
+	struct WindowEventAction
+	{
+		EWindowEvent          windowEvent = EWindowEvent::NONE; /** 윈도우 이벤트의 종류입니다. */
+		std::function<void()> windowEventAction;                /** 이벤트 감지 시 실행할 액션입니다. */
+		bool                  bIsActive;                        /** 이벤트 활성화 여부입니다. */
+
+	};
+
 	/** GLFW 에러 처리를 위한 콜백 함수입니다. */
 	static void ErrorCallback(int32_t errorCode, const char* description);
 
