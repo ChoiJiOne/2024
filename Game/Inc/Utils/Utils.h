@@ -34,7 +34,7 @@ void GetCurrentSystemTime(int32_t& outYear, int32_t& outMonth, int32_t& outDay, 
 std::string GetCurrentSystemTimeAsString();
 
 /** 현재 시스템 시간을 문자열로 얻습니다. */
-static std::wstring GetCurrentSystemTimeAsWString();
+std::wstring GetCurrentSystemTimeAsWString();
 
 /** 디렉토리를 생성합니다. */
 bool MakeDirectory(const std::string& path, std::string& outErrMsg);
