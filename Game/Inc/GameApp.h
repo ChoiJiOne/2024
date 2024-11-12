@@ -1,8 +1,7 @@
 #pragma once
 
+#include <functional>
 #include <memory>
-
-#include <glfw/glfw3.h>
 
 #include "Utils/Macro.h"
 #include "Utils/Timer.h"
@@ -25,11 +24,14 @@ public:
 	void Shutdown();
 
 private:
-	/** GLFW 메인 윈도우의 포인터입니다. */
-	GLFWwindow* window_ = nullptr;
-
 	/** 게임 앱의 루프 타이머입니다. */
 	Timer loopTimer_;
+
+	/** 게임 앱의 루프 종료 여부입니다. */
+	bool bIsDoneLoop_ = false;
+
+	/** 게임 앱의 루프 종료 이벤트입니다. */
+	std::function<void()> doneLoopEvent_ = nullptr;
 	
 	/** 현재 게임 앱의 씬입니다. */
 	class IGameScene* currentScene_ = nullptr;

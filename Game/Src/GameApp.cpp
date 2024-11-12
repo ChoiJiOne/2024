@@ -25,7 +25,9 @@ GameApp::GameApp()
 	RenderManager2D::GetRef().Startup();
 	AudioManager::GetRef().Startup();
 
-	window_ = GLFWManager::GetRef().mainWindow_;
+	/** 루프 종료 이벤트 설정. */
+	doneLoopEvent_ = [&]() { bIsDoneLoop_ = true; };
+	GLFWManager::GetRef().AddWindowEventAction(EWindowEvent::CLOSE_WINDOW, doneLoopEvent_, true);
 
 	/** 알파 블랜딩 활성화. */
 	GLManager::GetRef().SetAlphaBlendMode(true);
@@ -49,9 +51,9 @@ void GameApp::Startup()
 void GameApp::Run()
 {
 	loopTimer_.Reset();
-
 	currentScene_->Enter();
-	while (!glfwWindowShouldClose(window_))
+
+	while (!bIsDoneLoop_)
 	{
 		loopTimer_.Tick();
 		GLFWManager::GetRef().Tick();
