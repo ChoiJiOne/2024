@@ -271,6 +271,9 @@ private:
 	/** 현재 커서 위치를 설정합니다. */
 	void SetCursorPosition(double x, double y);
 
+	/** 윈도우 움직임을 설정합니다. */
+	void SetWindowMove(int32_t x, int32_t y);
+
 	/** 윈도우 포커스 여부를 설정합니다. */
 	void SetWindowFocus(int32_t focused);
 
@@ -337,6 +340,12 @@ private:
 
 	/** Tick 호출 이후의 마우스 상태입니다. */
 	std::array<int32_t, MOUSE_STATE_SIZE> currMouseState_;
+
+	/** 윈도우 움직임이 시작 되었는지 확인합니다. */
+	bool bIsStartMoveWindow_ = false;
+
+	/** 윈도우 움직임이 감지되었는지 확인합니다. */
+	bool bIsDetectMoveWindow_ = false;
 
 	/** GLFW 에러 발생 여부입니다. */
 	bool bIsDetectError_ = false;

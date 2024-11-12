@@ -154,7 +154,7 @@ void GLFWManager::CursorEnterCallback(GLFWwindow* window, int32_t entered)
 
 void GLFWManager::MoveWindowCallback(GLFWwindow* window, int32_t x, int32_t y)
 {
-	OutputDebugString("MOVE!\n");
+	singleton_.SetWindowMove(x, y);
 }
 
 void GLFWManager::FocusWindowCallback(GLFWwindow* window, int32_t focused)
@@ -237,6 +237,7 @@ void GLFWManager::SetLsatError(int32_t code, const char* description)
 
 void GLFWManager::Tick()
 {
+	bIsDetectMoveWindow_ = false;
 	prevCursorPos_ = currCursorPos_;
 	
 	glfwPollEvents();
@@ -246,6 +247,22 @@ void GLFWManager::Tick()
 
 	UpdateKeyboardState();
 	UpdateMouseState();
+
+	if (bIsStartMoveWindow_ && !bIsDetectMoveWindow_)
+	{
+		bIsStartMoveWindow_ = false;
+		EWindowEvent windowEvent = EWindowEvent::MOVE_LEAVE;
+
+		for (uint32_t index = 0; index < windowEventActionSize_; ++index)
+		{
+			WindowEventAction& windowEventAction = windowEventActions_[index];
+
+			if (windowEventAction.windowEvent == windowEvent && windowEventAction.bIsActive && windowEventAction.windowEventAction)
+			{
+				windowEventAction.windowEventAction();
+			}
+		}
+	}
 }
 
 EPress GLFWManager::GetKeyPress(const EKey& key)
@@ -359,6 +376,28 @@ void GLFWManager::SetCursorPosition(double x, double y)
 	float cursorX = -static_cast<float>(mainWindowWidth_) * 0.5f + static_cast<float>(x);
 	float cursorY = +static_cast<float>(mainWindowHeight_) * 0.5f - static_cast<float>(y);
 	currCursorPos_ = glm::vec2(cursorX, cursorY);
+}
+
+void GLFWManager::SetWindowMove(int32_t x, int32_t y)
+{
+	if (bIsStartMoveWindow_)
+	{
+		bIsDetectMoveWindow_ = true;
+		return;
+	}
+
+	bIsStartMoveWindow_ = true;
+	EWindowEvent windowEvent = EWindowEvent::MOVE_ENTER;
+
+	for (uint32_t index = 0; index < windowEventActionSize_; ++index)
+	{
+		WindowEventAction& windowEventAction = windowEventActions_[index];
+
+		if (windowEventAction.windowEvent == windowEvent && windowEventAction.bIsActive && windowEventAction.windowEventAction)
+		{
+			windowEventAction.windowEventAction();
+		}
+	}
 }
 
 void GLFWManager::SetWindowFocus(int32_t focused)
