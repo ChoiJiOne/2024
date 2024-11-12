@@ -4,6 +4,7 @@
 #include <cstring>
 
 #include <windows.h>
+#include <Shlwapi.h>
 
 #include "Utils/Utils.h"
 
@@ -101,6 +102,58 @@ bool ReadFile(const std::wstring& path, std::vector<uint8_t>& outBuffer, std::st
 
 	DWORD bytesRead;
 	if (!::ReadFile(file, outBuffer.data(), fileSize, &bytesRead, nullptr))
+	{
+		outErrMsg = GetWindowsErrMessage();
+		::CloseHandle(file);
+		return false;
+	}
+
+	if (!::CloseHandle(file))
+	{
+		outErrMsg = GetWindowsErrMessage();
+		return false;
+	}
+
+	return true;
+}
+
+bool WriteFile(const std::string& path, const std::vector<uint8_t>& buffer, std::string& outErrMsg)
+{
+	HANDLE file = ::CreateFileA(path.c_str(), GENERIC_WRITE, 0, nullptr, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, nullptr);
+	if (file == INVALID_HANDLE_VALUE)
+	{
+		outErrMsg = GetWindowsErrMessage();
+		return false;
+	}
+	
+	DWORD writeByteSize = 0;
+	if (!::WriteFile(file, buffer.data(), static_cast<DWORD>(buffer.size()), &writeByteSize, nullptr))
+	{
+		outErrMsg = GetWindowsErrMessage();
+		::CloseHandle(file);
+		return false;
+	}
+
+	if (!::CloseHandle(file))
+	{
+		outErrMsg = GetWindowsErrMessage();
+		return false;
+	}
+
+	return true;
+}
+
+bool WriteFile(const std::wstring& path, const std::vector<uint8_t>& buffer, std::string& outErrMsg)
+{
+	HANDLE file = ::CreateFileW(path.c_str(), GENERIC_WRITE, 0, nullptr, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, nullptr);
+	if (file == INVALID_HANDLE_VALUE)
+	{
+		outErrMsg = GetWindowsErrMessage();
+		return false;
+	}
+
+	DWORD writeByteSize = 0;
+	if (!::WriteFile(file, buffer.data(), static_cast<DWORD>(buffer.size()), &writeByteSize, nullptr))
 	{
 		outErrMsg = GetWindowsErrMessage();
 		::CloseHandle(file);

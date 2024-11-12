@@ -21,6 +21,12 @@ bool ReadFile(const std::string& path, std::vector<uint8_t>& outBuffer, std::str
 /** 파일을 읽어 벡터에 저장합니다. */
 bool ReadFile(const std::wstring& path, std::vector<uint8_t>& outBuffer, std::string& outErrMsg);
 
+/** 벡터에 저장된 버퍼를 파일에 씁니다. */
+bool WriteFile(const std::string& path, const std::vector<uint8_t>& buffer, std::string& outErrMsg);
+
+/** 벡터에 저장된 버퍼를 파일에 씁니다. */
+bool WriteFile(const std::wstring& path, const std::vector<uint8_t>& buffer, std::string& outErrMsg);
+
 /** 현재 시스템 시간 값을 얻습니다. */
 void GetCurrentSystemTime(int32_t& outYear, int32_t& outMonth, int32_t& outDay, int32_t& outHour, int32_t& outMinute, int32_t& outSecond);
 
