@@ -115,3 +115,42 @@ bool ReadFile(const std::wstring& path, std::vector<uint8_t>& outBuffer, std::st
 
 	return true;
 }
+
+void GetCurrentSystemTime(int32_t& outYear, int32_t& outMonth, int32_t& outDay, int32_t& outHour, int32_t& outMinute, int32_t& outSecond)
+{
+	SYSTEMTIME systemTime;
+	GetLocalTime(&systemTime);
+
+	outYear = static_cast<int32_t>(systemTime.wYear);
+	outMonth = static_cast<int32_t>(systemTime.wMonth);
+	outDay = static_cast<int32_t>(systemTime.wDay);
+	outHour = static_cast<int32_t>(systemTime.wHour);
+	outMinute = static_cast<int32_t>(systemTime.wMinute);
+	outSecond = static_cast<int32_t>(systemTime.wSecond);
+}
+
+std::string GetCurrentSystemTimeAsString()
+{
+	int32_t year = 0;
+	int32_t month = 0;
+	int32_t day = 0;
+	int32_t hour = 0;
+	int32_t minute = 0;
+	int32_t second = 0;
+	GetCurrentSystemTime(year, month, day, hour, minute, second);
+
+	return PrintF("%4d-%02d-%02d-%02d-%02d-%02d", year, month, day, hour, minute, second);
+}
+
+std::wstring GetCurrentSystemTimeAsWString()
+{
+	int32_t year = 0;
+	int32_t month = 0;
+	int32_t day = 0;
+	int32_t hour = 0;
+	int32_t minute = 0;
+	int32_t second = 0;
+	GetCurrentSystemTime(year, month, day, hour, minute, second);
+
+	return PrintF(L"%4d-%02d-%02d-%02d-%02d-%02d", year, month, day, hour, minute, second);
+}

@@ -20,3 +20,12 @@ bool ReadFile(const std::string& path, std::vector<uint8_t>& outBuffer, std::str
 
 /** 파일을 읽어 벡터에 저장합니다. */
 bool ReadFile(const std::wstring& path, std::vector<uint8_t>& outBuffer, std::string& outErrMsg);
+
+/** 현재 시스템 시간 값을 얻습니다. */
+void GetCurrentSystemTime(int32_t& outYear, int32_t& outMonth, int32_t& outDay, int32_t& outHour, int32_t& outMinute, int32_t& outSecond);
+
+/** 현재 시스템 시간을 문자열로 얻습니다. */
+std::string GetCurrentSystemTimeAsString();
+
+/** 현재 시스템 시간을 문자열로 얻습니다. */
+static std::wstring GetCurrentSystemTimeAsWString();
