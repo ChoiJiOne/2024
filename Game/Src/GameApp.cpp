@@ -1,6 +1,7 @@
 #include <mimalloc-new-delete.h>
 
 #include "Audio/AudioManager.h"
+#include "Crash/CrashManager.h"
 #include "Entity/EntityManager.h"
 #include "GL/GLAssertion.h"
 #include "GL/GLManager.h"
@@ -20,6 +21,7 @@ GameApp::GameApp()
 	const uint32_t windowHeight = 800;
 	const char* windowTitle = "HyperCoinDash2D";
 
+	CrashManager::GetRef().Startup();
 	GLFWManager::GetRef().Startup(windowWidth, windowHeight, windowTitle, true);
 	GLManager::GetRef().Startup();
 	RenderManager2D::GetRef().Startup();
@@ -41,6 +43,7 @@ GameApp::~GameApp()
 	RenderManager2D::GetRef().Shutdown();
 	GLManager::GetRef().Shutdown();
 	GLFWManager::GetRef().Shutdown();
+	CrashManager::GetRef().Shutdown();
 }
 
 void GameApp::Startup()
