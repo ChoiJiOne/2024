@@ -47,3 +47,45 @@ bool IsValidPath(const std::string& path);
 
 /** 파일이나 폴더 경로가 유효한지 확인합니다.  */
 bool IsValidPath(const std::wstring& path);
+
+/**
+ * 전체 경로에서 베이스 경로를 얻습니다.
+ * ex)
+ * AA\\BB\\CC\\D.txt => AA\\BB\\CC\\
+ */
+std::string GetBasePath(const std::string& path);
+
+/**
+ * 전체 경로에서 베이스 경로를 얻습니다.
+ * ex)
+ * AA\\BB\\CC\\D.txt => AA\\BB\\CC\\
+ */
+std::wstring GetBasePath(const std::wstring& path);
+
+/**
+ * 전체 경로에서 베이스 경로를 삭제합니다.
+ * ex)
+ * AA\\BB\\CC\\D.txt => D.txt
+ */
+std::string RemoveBasePath(const std::string& path);
+
+/**
+ * 전체 경로에서 베이스 경로를 삭제합니다.
+ * ex)
+ * AA\\BB\\CC\\D.txt => D.txt
+ */
+std::wstring RemoveBasePath(const std::wstring& path);
+
+/**
+ * 전체 경로에서 파일 확장자를 얻습니다.
+ * ex)
+ * AA\\BB\\CC\\D.txt => txt
+ */
+std::string GetFileExtension(const std::string& path);
+
+/**
+ * 전체 경로에서 파일 확장자를 얻습니다.
+ * ex)
+ * AA\\BB\\CC\\D.txt => txt
+ */
+std::wstring GetFileExtension(const std::wstring& path);

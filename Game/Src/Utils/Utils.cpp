@@ -239,3 +239,91 @@ bool IsValidPath(const std::wstring& path)
 {
 	return PathFileExistsW(path.c_str());
 }
+
+std::string GetBasePath(const std::string& path)
+{
+	std::size_t lastSlash;
+
+	if ((lastSlash = path.rfind('/')) != std::string::npos)
+	{
+		return path.substr(0, lastSlash + 1);
+	}
+	else if ((lastSlash = path.rfind('\\')) != std::string::npos)
+	{
+		return path.substr(0, lastSlash + 1);
+	}
+	else
+	{
+		return "";
+	}
+}
+
+std::wstring GetBasePath(const std::wstring& path)
+{
+	std::size_t lastSlash;
+
+	if ((lastSlash = path.rfind(L'/')) != std::wstring::npos)
+	{
+		return path.substr(0, lastSlash + 1);
+	}
+	else if ((lastSlash = path.rfind(L'\\')) != std::wstring::npos)
+	{
+		return path.substr(0, lastSlash + 1);
+	}
+	else
+	{
+		return L"";
+	}
+}
+
+std::string RemoveBasePath(const std::string& path)
+{
+	std::size_t lastSlash;
+
+	if ((lastSlash = path.rfind('/')) != std::string::npos)
+	{
+		return path.substr(lastSlash + 1, std::string::npos);
+	}
+	else if ((lastSlash = path.rfind('\\')) != std::string::npos)
+	{
+		return path.substr(lastSlash + 1, std::string::npos);
+	}
+	else
+	{
+		return path;
+	}
+}
+
+std::wstring RemoveBasePath(const std::wstring& path)
+{
+	std::size_t lastSlash;
+
+	if ((lastSlash = path.rfind(L'/')) != std::wstring::npos)
+	{
+		return path.substr(lastSlash + 1, std::wstring::npos);
+	}
+	else if ((lastSlash = path.rfind(L'\\')) != std::wstring::npos)
+	{
+		return path.substr(lastSlash + 1, std::wstring::npos);
+	}
+	else
+	{
+		return path;
+	}
+}
+
+std::string GetFileExtension(const std::string& path)
+{
+	std::string filename = RemoveBasePath(path);
+	std::size_t offset = filename.rfind('.');
+
+	return (offset == std::string::npos) ? "" : filename.substr(offset + 1);
+}
+
+std::wstring GetFileExtension(const std::wstring& path)
+{
+	std::wstring filename = RemoveBasePath(path);
+	std::size_t offset = filename.rfind('.');
+
+	return (offset == std::wstring::npos) ? L"" : filename.substr(offset + 1);
+}
