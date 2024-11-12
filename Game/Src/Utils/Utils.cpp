@@ -207,3 +207,25 @@ std::wstring GetCurrentSystemTimeAsWString()
 
 	return PrintF(L"%4d-%02d-%02d-%02d-%02d-%02d", year, month, day, hour, minute, second);
 }
+
+bool MakeDirectory(const std::string& path, std::string& outErrMsg)
+{
+	bool bSucceed = CreateDirectoryA(path.c_str(), nullptr);
+	if (!bSucceed)
+	{
+		outErrMsg = GetWindowsErrMessage();
+	}
+
+	return bSucceed;
+}
+
+bool MakeDirectory(const std::wstring& path, std::string& outErrMsg)
+{
+	bool bSucceed = CreateDirectoryW(path.c_str(), nullptr);
+	if (!bSucceed)
+	{
+		outErrMsg = GetWindowsErrMessage();
+	}
+
+	return bSucceed;
+}
