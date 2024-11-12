@@ -164,7 +164,7 @@ void GLFWManager::FocusWindowCallback(GLFWwindow* window, int32_t focused)
 
 void GLFWManager::CloseWindowCallback(GLFWwindow* window)
 {
-	OutputDebugString("Close!\n");
+	singleton_.SetWindowClose();
 }
 
 GLFWManager& GLFWManager::GetRef()
@@ -377,6 +377,20 @@ void GLFWManager::SetWindowFocus(int32_t focused)
 	{
 		WindowEventAction& windowEventAction = windowEventActions_[index];
 		
+		if (windowEventAction.windowEvent == windowEvent && windowEventAction.bIsActive && windowEventAction.windowEventAction)
+		{
+			windowEventAction.windowEventAction();
+		}
+	}
+}
+
+void GLFWManager::SetWindowClose()
+{
+	EWindowEvent windowEvent = EWindowEvent::CLOSE_WINDOW;
+	for (uint32_t index = 0; index < windowEventActionSize_; ++index)
+	{
+		WindowEventAction& windowEventAction = windowEventActions_[index];
+
 		if (windowEventAction.windowEvent == windowEvent && windowEventAction.bIsActive && windowEventAction.windowEventAction)
 		{
 			windowEventAction.windowEventAction();

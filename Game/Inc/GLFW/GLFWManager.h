@@ -274,6 +274,9 @@ private:
 	/** 윈도우 포커스 여부를 설정합니다. */
 	void SetWindowFocus(int32_t focused);
 
+	/** 윈도우 종료 이벤트를 설정합니다. */
+	void SetWindowClose();
+
 	/** 해당 키가 눌렸는지 확인합니다. */
 	bool IsPressKey(const int32_t* keyboardState, const EKey& key);
 
