@@ -14,6 +14,31 @@ CrashManager CrashManager::instance_;
 
 LONG WINAPI DetectApplicationCrash(EXCEPTION_POINTERS* ep)
 {
+	std::wstring currSystemTime = GetCurrentSystemTimeAsWString();
+	std::string errMsg;
+	if (!IsValidPath(gCrashDumpPath) && !MakeDirectory(gCrashDumpPath, errMsg))
+	{
+		return EXCEPTION_EXECUTE_HANDLER;
+	}
+
+	std::wstring path = PrintF(L"%sWindows-%s-Minidump.dmp", gCrashDumpPath.c_str(), currSystemTime.c_str());
+	HANDLE file = ::CreateFileW(path.c_str(), GENERIC_WRITE, FILE_SHARE_WRITE, nullptr, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, nullptr);
+
+	_MINIDUMP_EXCEPTION_INFORMATION exception;
+	exception.ThreadId = ::GetCurrentThreadId();
+	exception.ExceptionPointers = ep;
+	exception.ClientPointers = FALSE;
+
+	HANDLE process = ::GetCurrentProcess();
+	DWORD processID = ::GetCurrentProcessId();
+	::MiniDumpWriteDump(process, processID, file, MiniDumpWithFullMemory, &exception, nullptr, nullptr);
+	::CloseHandle(file);
+
+	if (gCrashCallbackEvent)
+	{
+		gCrashCallbackEvent();
+	}
+
 	return EXCEPTION_EXECUTE_HANDLER;
 }
 
@@ -39,8 +64,8 @@ void CrashManager::Startup()
 
 	std::wstring minidumpPath(exePath);
 	std::wstring basePath = GetBasePath(minidumpPath);
-	gCrashDumpPath = PrintF(L"%s\\Crash\\", basePath.c_str());
 
+	gCrashDumpPath = PrintF(L"%s\\Crash\\", basePath.c_str());
 	gTopLevelExceptionFilter = ::SetUnhandledExceptionFilter(DetectApplicationCrash);
 }
 
