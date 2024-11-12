@@ -3,7 +3,7 @@
 #include "Scene/SceneManager.h"
 
 GameApp::GameApp() 
-	: IApp(windowWidth_, windowHeight_, windowTitle_, bIsWindowCentered_)
+	: IApp(windowWidth_, windowHeight_, "HyperCoinDash2D", bIsWindowCentered_)
 {
 }
 
