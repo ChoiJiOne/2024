@@ -152,6 +152,28 @@ void GLFWManager::CursorEnterCallback(GLFWwindow* window, int32_t entered)
 	singleton_.SetCursorEnter(entered);
 }
 
+void GLFWManager::MoveWindowCallback(GLFWwindow* window, int32_t x, int32_t y)
+{
+	OutputDebugString("MOVE!\n");
+}
+
+void GLFWManager::FocusWindowCallback(GLFWwindow* window, int32_t focused)
+{
+	if (focused)
+	{
+		OutputDebugString("Gain Focus!\n");
+	}
+	else
+	{
+		OutputDebugString("Lost Focus!\n");
+	}
+}
+
+void GLFWManager::CloseWindowCallback(GLFWwindow* window)
+{
+	OutputDebugString("Close!\n");
+}
+
 GLFWManager& GLFWManager::GetRef()
 {
 	return singleton_;
@@ -377,6 +399,9 @@ void GLFWManager::Startup(int32_t width, int32_t height, const char* title)
 
 	glfwSetCursorPosCallback(mainWindow_, GLFWManager::CursorMoveCallback);
 	glfwSetCursorEnterCallback(mainWindow_, GLFWManager::CursorEnterCallback);
+	glfwSetWindowPosCallback(mainWindow_, GLFWManager::MoveWindowCallback);
+	glfwSetWindowFocusCallback(mainWindow_, GLFWManager::FocusWindowCallback);
+	glfwSetWindowCloseCallback(mainWindow_, GLFWManager::CloseWindowCallback);
 
 	double x = 0.0;
 	double y = 0.0;

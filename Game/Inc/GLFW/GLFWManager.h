@@ -1,6 +1,7 @@
 #pragma once
 
 #include <array>
+#include <functional>
 #include <string>
 
 #include <glfw/glfw3.h>
@@ -151,6 +152,17 @@ enum class EKey
 	KEY_MENU = 348
 };
 
+/** GLFW 윈도우 이벤트입니다. */
+enum class EWindowEvent
+{
+	NONE         = 0x00,
+	MOVE_ENTER   = 0x01,
+	MOVE_LEAVE   = 0x02,
+	FOCUS_GAIN   = 0x03,
+	FOCUS_LOST   = 0x04,
+	CLOSE_WINDOW = 0x05,
+};
+
 /** 마우스 코드 값입니다. */
 enum class EMouse
 {
@@ -223,6 +235,15 @@ private:
 	/** 마우스 커서가 진입했을 때 호출되는 콜백 함수입니다. */
 	static void CursorEnterCallback(GLFWwindow* window, int32_t entered);
 
+	/** 윈도우 창이 움직였을 때 호출되는 콜백 함수입니다. */
+	static void MoveWindowCallback(GLFWwindow* window, int32_t x, int32_t y);
+
+	/** 윈도우 창의 포커스 관련 요소가 변경되었을 때 콜백 함수입니다. */
+	static void FocusWindowCallback(GLFWwindow* window, int32_t focused);
+
+	/** 윈도우 창을 닫았을 때 호출되는 콜백 함수입니다. */
+	static void CloseWindowCallback(GLFWwindow* window);
+	
 	/** 커서의 윈도우 창 진입 여부를 설정합니다. */
 	void SetCursorEnter(int32_t entered);
 
