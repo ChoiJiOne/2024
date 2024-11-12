@@ -152,6 +152,14 @@ enum class EKey
 	KEY_MENU = 348
 };
 
+/** 마우스 코드 값입니다. */
+enum class EMouse
+{
+	LEFT   = 0,
+	RIGHT  = 1,
+	MIDDLE = 2,
+};
+
 /** GLFW 윈도우 이벤트입니다. */
 enum class EWindowEvent
 {
@@ -163,13 +171,8 @@ enum class EWindowEvent
 	CLOSE_WINDOW = 0x05,
 };
 
-/** 마우스 코드 값입니다. */
-enum class EMouse
-{
-	LEFT   = 0,
-	RIGHT  = 1,
-	MIDDLE = 2,
-};
+/** 윈도우 이벤트의 ID 값입니다. */
+using WindowEventID = uint32_t;
 
 /**
  * GLFW 관련 처리를 수행하는 매니저입니다.
