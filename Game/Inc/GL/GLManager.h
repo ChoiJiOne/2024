@@ -93,8 +93,8 @@ public:
 	void Destroy(const GLResource* resource);
 
 private:
-	/** GameApp에서 GLManager의 내부에 접근할 수 있도록 설정. */
-	friend class GameApp;
+	/** IApp에서 GL 매니저의 내부에 접근할 수 있도록 설정. */
+	friend class IApp;
 
 	/**
 	 * GL 매니저의 기본 생성자와 빈 가상 소멸자입니다.
@@ -103,7 +103,7 @@ private:
 	GLManager() = default;
 	virtual ~GLManager() {}
 
-	/** GL 매니저의 초기화 및 해제는 GameApp 내부에서만 수행됩니다. */
+	/** GL 매니저의 초기화 및 해제는 IApp 내부에서만 수행됩니다. */
 	void Startup();
 	void Shutdown();
 

@@ -232,10 +232,10 @@ public:
 	void SetActiveWindowEventAction(const WindowEventID& windowEventID, bool bIsActive);
 	
 private:
-	/** GameApp에서 GLFWManager의 내부에 접근할 수 있도록 설정. */
-	friend class GameApp;
+	/** IApp에서 GLFW 매니저의 내부에 접근할 수 있도록 설정. */
+	friend class IApp;
 
-	/** GLManager에서 GLFWManager의 내부에 접근할 수 있도록 설정. */
+	/** GL 매니저에서 GLFW 매니저의 내부에 접근할 수 있도록 설정. */
 	friend class GLManager;
 
 	/** 윈도우 이벤트 발생 시 실행할 동작입니다. */
@@ -302,7 +302,7 @@ private:
 	GLFWManager() = default;
 	virtual ~GLFWManager() {}
 
-	/** GLFW 매니저의 초기화 및 해제는 GameApp 내부에서만 수행됩니다. */
+	/** GLFW 매니저의 초기화 및 해제는 IApp 내부에서만 수행됩니다. */
 	void Startup(int32_t width, int32_t height, const char* title, bool bIsWindowCentered);
 	void Shutdown();
 	

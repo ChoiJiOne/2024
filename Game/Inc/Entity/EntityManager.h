@@ -80,8 +80,8 @@ public:
 	}
 
 private:
-	/** GameApp에서 EntityManager의 내부에 접근할 수 있도록 설정 */
-	friend class GameApp;
+	/** IApp에서 엔티티 매니저의 내부에 접근할 수 있도록 설정 */
+	friend class IApp;
 
 	/**
 	 * 엔티티 매니저의 기본 생성자와 가상 소멸자입니다.
@@ -90,7 +90,7 @@ private:
 	EntityManager() = default;
 	virtual ~EntityManager() {}
 
-	/** 엔티티 매니저의 종료는 GameApp 내부에서만 수행됩니다. */
+	/** 엔티티 매니저의 종료는 IApp 내부에서만 수행됩니다. */
 	void Shutdown();
 
 private:

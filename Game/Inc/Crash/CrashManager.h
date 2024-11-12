@@ -27,8 +27,8 @@ public:
 	void ShowMessageBox(const std::string& message);
 	
 private:
-	/** GameApp에서 크래시 매니저의 내부에 접근할 수 있도록 설정.  */
-	friend class GameApp;
+	/** IApp에서 크래시 매니저의 내부에 접근할 수 있도록 설정.  */
+	friend class IApp;
 
 	/**
 	 * 크래시 매니저의 기본 생성자와 빈 가상 소멸자입니다.
@@ -37,7 +37,7 @@ private:
 	CrashManager() = default;
 	virtual ~CrashManager() {}
 
-	/** 크래시 매니저의 초기화 및 해제는 GameApp 내부에서만 수행됩니다. */
+	/** 크래시 매니저의 초기화 및 해제는 IApp 내부에서만 수행됩니다. */
 	void Startup();
 	void Shutdown();
 

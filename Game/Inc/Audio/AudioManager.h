@@ -58,8 +58,8 @@ public:
 	void Destroy(const Sound* sound);
 
 private:
-	/** GameApp에서 AudioManager의 내부에 접근할 수 있도록 설정. */
-	friend class GameApp;
+	/** IApp에서 오디오 매니저의 내부에 접근할 수 있도록 설정. */
+	friend class IApp;
 
 	/**
 	 * 오디오 매니저의 기본 생성자와 빈 가상 소멸자입니다.
@@ -68,7 +68,7 @@ private:
 	AudioManager() = default;
 	virtual ~AudioManager() {}
 
-	/** 오디오 매니저의 초기화/해제는 GameApp 내부에서만 수행됩니다. */
+	/** 오디오 매니저의 초기화/해제는 IApp 내부에서만 수행됩니다. */
 	void Startup();
 	void Shutdown();
 
