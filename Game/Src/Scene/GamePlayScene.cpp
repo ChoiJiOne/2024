@@ -9,17 +9,25 @@
 
 GamePlayScene::GamePlayScene()
 {
+	entityManager_ = EntityManager::GetPtr();
+	glManager_ = GLManager::GetPtr();
+	renderManager_ = RenderManager2D::GetPtr();
+
 	glm::vec2 screenSize = glm::vec2(0.0f, 0.0f);
 	GLFWManager::GetRef().GetWindowSize(screenSize.x, screenSize.y);
 
-	mainCamera_ = EntityManager::GetRef().Create<Camera2D>(glm::vec2(0.0f, 0.0f), screenSize);
-	background_ = EntityManager::GetRef().Create<Background>();
+	mainCamera_ = entityManager_->Create<Camera2D>(glm::vec2(0.0f, 0.0f), screenSize);
+	background_ = entityManager_->Create<Background>();
 }
 
 GamePlayScene::~GamePlayScene()
 {
-	EntityManager::GetRef().Destroy(background_);
-	EntityManager::GetRef().Destroy(mainCamera_);
+	entityManager_->Destroy(background_);
+	entityManager_->Destroy(mainCamera_);
+
+	renderManager_ = nullptr;
+	glManager_ = nullptr;
+	entityManager_ = nullptr;
 }
 
 void GamePlayScene::Tick(float deltaSeconds)
@@ -29,29 +37,15 @@ void GamePlayScene::Tick(float deltaSeconds)
 
 void GamePlayScene::Render()
 {
-	RenderManager2D& renderMgr = RenderManager2D::GetRef();
-
-	GLManager::GetRef().BeginFrame(0.0f, 0.0f, 0.0f, 1.0f);
+	glManager_->BeginFrame(0.0f, 0.0f, 0.0f, 1.0f);
 	{
-		renderMgr.Begin(mainCamera_);
+		renderManager_->Begin(mainCamera_);
 		{
 			background_->Render();
-
-	/*		for (float x = -500; x <= 500.0f; x += 10.0f)
-			{
-				glm::vec4 color = (x == 0.0f) ? glm::vec4(0.0f, 0.0f, 1.0f, 1.0f) : glm::vec4(1.0f, 1.0f, 1.0f, 0.1f);
-				renderMgr.DrawLine(glm::vec2(x, 400.0f), glm::vec2(x, -400.0f), color);
-			}
-
-			for (float y = -400; y <= 400.0f; y += 10.0f)
-			{
-				glm::vec4 color = (y == 0.0f) ? glm::vec4(1.0f, 0.0f, 0.0f, 1.0f) : glm::vec4(1.0f, 1.0f, 1.0f, 0.1f);
-				renderMgr.DrawLine(glm::vec2(-500.0f, y), glm::vec2(500.0f, y), color);
-			}*/
 		}
-		renderMgr.End();
+		renderManager_->End();
 	}
-	GLManager::GetRef().EndFrame();
+	glManager_->EndFrame();
 }
 
 void GamePlayScene::Enter()

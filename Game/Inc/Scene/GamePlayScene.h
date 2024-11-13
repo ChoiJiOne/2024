@@ -17,6 +17,10 @@ public:
 	virtual void Exit() override;
 
 private:
+	class EntityManager* entityManager_ = nullptr;
+	class GLManager* glManager_ = nullptr;
+	class RenderManager2D* renderManager_ = nullptr;
+
 	class Camera2D* mainCamera_ = nullptr;
 	class Background* background_ = nullptr;
 };
