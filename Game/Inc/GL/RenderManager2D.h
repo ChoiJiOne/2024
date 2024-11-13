@@ -13,6 +13,7 @@
 class Camera2D;
 class FrameBuffer;
 class ITexture;
+class PostProcessor;
 class Shader;
 class TextureAtlas2D;
 class TTFont;
@@ -210,4 +211,7 @@ private:
 
 	/** 2D 렌더링 명령을 저장하는 커맨드 큐입니다. */
 	std::queue<RenderCommand> commandQueue_;
+
+	/** 프레임 버퍼의 후처리를 수행합니다. */
+	PostProcessor* postProcessor_ = nullptr;
 };

@@ -12,6 +12,7 @@
 #include "GL/GLAssertion.h"
 #include "GL/GLManager.h"
 #include "GL/ITexture.h"
+#include "GL/PostProcessor.h"
 #include "GL/RenderManager2D.h"
 #include "GL/Shader.h"
 #include "GL/TextureAtlas2D.h"
@@ -2339,6 +2340,21 @@ void RenderManager2D::Startup()
 
 void RenderManager2D::Shutdown()
 {
+	if (postProcessor_)
+	{
+		glManager_->Destroy(postProcessor_);
+		postProcessor_ = nullptr;
+	}
+
+	for (auto& shader : shaders_)
+	{
+		if (shader.second)
+		{
+			glManager_->Destroy(shader.second);
+			shader.second = nullptr;
+		}
+	}
+
 	if (vertexBuffer_)
 	{
 		glManager_->Destroy(vertexBuffer_);
@@ -2441,6 +2457,14 @@ void RenderManager2D::LoadShaders()
 	fsSource = std::string(fsBuffer.begin(), fsBuffer.end());
 
 	shaders_.insert({ RenderCommand::EType::STRING_EX, glManager_->Create<Shader>(vsSource, fsSource) });
+
+	ASSERTION(ReadFile("Shader\\PostProcessing.vert", vsBuffer, outErrMsg), "%s", outErrMsg.c_str());
+	ASSERTION(ReadFile("Shader\\PostProcessing.frag", fsBuffer, outErrMsg), "%s", outErrMsg.c_str());
+
+	vsSource = std::string(vsBuffer.begin(), vsBuffer.end());
+	fsSource = std::string(fsBuffer.begin(), fsBuffer.end());
+
+	postProcessor_ = glManager_->Create<PostProcessor>(vsSource, fsSource);
 }
 
 void RenderManager2D::Flush()
