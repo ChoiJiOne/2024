@@ -1,6 +1,7 @@
 #include "Entity/Background.h"
 #include "Entity/Camera2D.h"
 #include "Entity/EntityManager.h"
+#include "Entity/Player.h"
 #include "GL/RenderManager2D.h"
 #include "GLFW/GLFWManager.h"
 #include "Scene/GamePlayScene.h"
@@ -18,10 +19,12 @@ GamePlayScene::GamePlayScene()
 
 	mainCamera_ = entityManager_->Create<Camera2D>(glm::vec2(0.0f, 0.0f), screenSize);
 	background_ = entityManager_->Create<Background>();
+	player_ = entityManager_->Create<Player>();
 }
 
 GamePlayScene::~GamePlayScene()
 {
+	entityManager_->Destroy(player_);
 	entityManager_->Destroy(background_);
 	entityManager_->Destroy(mainCamera_);
 
@@ -32,6 +35,7 @@ GamePlayScene::~GamePlayScene()
 
 void GamePlayScene::Tick(float deltaSeconds)
 {
+	player_->Tick(deltaSeconds);
 	background_->Tick(deltaSeconds);
 }
 
@@ -42,6 +46,7 @@ void GamePlayScene::Render()
 		renderManager_->Begin(mainCamera_);
 		{
 			background_->Render();
+			player_->Render();
 		}
 		renderManager_->End();
 	}
