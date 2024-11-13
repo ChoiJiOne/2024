@@ -53,15 +53,12 @@ vec3 Blur(sampler2D fb, vec2 texCoord, vec2 scale)
 
 void main()
 {
-	ivec2 size = textureSize(frameBuffer, 0);
-    vec2 scale = 1.0f / size;
 	vec3 color;
-	float grayscale = 0.0f;
 
 	switch(PerFrameUBO.type)
 	{
 	case TYPE_BLIT:
-		outFragColor =  vec4(texture(frameBuffer, inTexCoords).rgb, 1.0f);
+		outFragColor = vec4(texture(frameBuffer, inTexCoords).rgb, 1.0f);
 		break;
 
 	case TYPE_BLEND_COLOR:
@@ -76,11 +73,13 @@ void main()
 
 	case TYPE_GRAYSCALE:
 		color = texture(frameBuffer, inTexCoords).rgb;
-		grayscale = dot(color, vec3(0.2126f, 0.7152f, 0.0722f));
+		float grayscale = dot(color, vec3(0.2126f, 0.7152f, 0.0722f));
 		outFragColor =  vec4(grayscale, grayscale, grayscale, 1.0f);
 	    break;
 
 	case TYPE_GAUSSIAN_BLUR:
+		ivec2 size = textureSize(frameBuffer, 0);
+		vec2 scale = 1.0f / size;
 		color = Blur(frameBuffer, inTexCoords, scale);
 		outFragColor =  vec4(color.rgb, 1.0f);
 		break;
