@@ -1,5 +1,7 @@
 #pragma once
 
+#include <glm/glm.hpp>
+
 #include "Scene/IGameScene.h"
 
 /** 게임 개발을 위한 씬입니다. */
@@ -18,4 +20,12 @@ public:
 
 private:
 	class Camera2D* mainCamera_ = nullptr;
+	class FrameBuffer* frameBuffer_ = nullptr;
+	class PostProcessor* postProcessor_ = nullptr;
+	class TextureAtlas2D* atlas_ = nullptr;
+	class SpriteAnimator2D* animator_ = nullptr;
+
+	int32_t type = 0;
+	glm::vec3 color = glm::vec3(0.0f, 0.0f, 0.0f);
+	float factor = 0.0f;
 };

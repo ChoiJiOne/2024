@@ -25,6 +25,31 @@
 GameDevScene::GameDevScene()
 {
 	mainCamera_ = EntityManager::GetRef().Create<Camera2D>(glm::vec2(0.0f, 0.0f), glm::vec2(1000.0f, 800.0f));
+	frameBuffer_ = GLManager::GetRef().Create<FrameBuffer>(1000, 800, FrameBuffer::EPixelFormat::RGBA, ITexture::EFilter::NEAREST);
+	atlas_ = GLManager::GetRef().Create<TextureAtlas2D>("Resource\\texture.png", "Resource\\texture.atlas", Texture2D::EFilter::NEAREST);
+
+	std::vector<std::string> names =
+	{
+		"idle-1",
+		"idle-2",
+		"idle-3",
+		"idle-4",
+	};
+	animator_ = GLManager::GetRef().Create<SpriteAnimator2D>(atlas_, names, 0.3f, true);
+
+	std::vector<uint8_t> vsBuffer;
+	std::vector<uint8_t> fsBuffer;
+	std::string vsSource;
+	std::string fsSource;
+	std::string outErrMsg;
+
+	ASSERTION(ReadFile("Shader\\PostProcessing.vert", vsBuffer, outErrMsg), "%s", outErrMsg.c_str());
+	ASSERTION(ReadFile("Shader\\PostProcessing.frag", fsBuffer, outErrMsg), "%s", outErrMsg.c_str());
+
+	vsSource = std::string(vsBuffer.begin(), vsBuffer.end());
+	fsSource = std::string(fsBuffer.begin(), fsBuffer.end());
+
+	postProcessor_ = GLManager::GetRef().Create<PostProcessor>(vsSource, fsSource);
 }
 
 GameDevScene::~GameDevScene()
@@ -34,6 +59,35 @@ GameDevScene::~GameDevScene()
 
 void GameDevScene::Tick(float deltaSeconds)
 {
+	ImGui::Begin("COLOR");
+	ImGui::ColorEdit3("COLOR", glm::value_ptr(color));
+	ImGui::SliderFloat("FACTOR", &factor, 0.0f, 1.0f);
+
+	if (ImGui::RadioButton("BLIT", type == 0))
+	{
+		type = 0;
+	}
+	if (ImGui::RadioButton("BLEND_COLOR", type == 1))
+	{
+		type = 1;
+	}
+	if (ImGui::RadioButton("INVERSION", type == 2))
+	{
+		type = 2;
+	}
+	if (ImGui::RadioButton("GRAYSCALE", type == 3))
+	{
+		type = 3;
+	}
+	if (ImGui::RadioButton("GAUSSIAN_BLUR", type == 4))
+	{
+		type = 4;
+	}
+
+	ImGui::End();
+
+	postProcessor_->SetBlendColor(color, factor);
+	animator_->Update(deltaSeconds);
 }
 
 void GameDevScene::Render()
@@ -42,7 +96,8 @@ void GameDevScene::Render()
 
 	GLManager::GetRef().BeginFrame(0.0f, 0.0f, 0.0f, 1.0f);
 	{
-		renderMgr.Begin(mainCamera_);
+		RenderTargetOption option;
+		renderMgr.Begin(mainCamera_, frameBuffer_, option);
 		{
 			for (float x = -500; x <= 500.0f; x += 10.0f)
 			{
@@ -55,8 +110,12 @@ void GameDevScene::Render()
 				glm::vec4 color = (y == 0.0f) ? glm::vec4(1.0f, 0.0f, 0.0f, 1.0f) : glm::vec4(1.0f, 1.0f, 1.0f, 0.1f);
 				renderMgr.DrawLine(glm::vec2(-500.0f, y), glm::vec2(500.0f, y), color);
 			}
+
+			renderMgr.DrawTextureAtlas(animator_->GetTextureAtlas(), animator_->GetCurrentClipName(), glm::vec2(), 200.0f, 190.0f, 0.0f, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
 		}
 		renderMgr.End();
+
+		postProcessor_->Blit(static_cast<PostProcessor::EType>(type), frameBuffer_);
 	}
 	GLManager::GetRef().EndFrame();
 }
