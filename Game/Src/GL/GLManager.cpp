@@ -135,6 +135,27 @@ void GLManager::Destroy(const GLResource* resource)
 	}
 }
 
+void GLManager::Register(const std::string& name, GLResource* resource)
+{
+	auto it = namedResources_.find(name);
+	ASSERTION(it == namedResources_.end(), "Already register '%s'", name.c_str());
+
+	namedResources_.insert({ name, resource });
+}
+
+bool GLManager::IsRegistration(const std::string& name)
+{
+	return namedResources_.find(name) != namedResources_.end();
+}
+
+void GLManager::Unregister(const std::string& name)
+{
+	auto it = namedResources_.find(name);
+	ASSERTION(it != namedResources_.end(), "Can't find '%s' in GLManager.", name.c_str());
+
+	namedResources_.erase(it);
+}
+
 void GLManager::Startup()
 {
 	errorMessages_ =

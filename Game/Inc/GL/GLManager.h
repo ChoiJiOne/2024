@@ -92,6 +92,28 @@ public:
 	/** 생성한 OpenGL 리소스를 파괴합니다. */
 	void Destroy(const GLResource* resource);
 
+	/** 리소스를 GL 매니저에 등록합니다. */
+	void Register(const std::string& name, GLResource* resource);
+
+	/** 리소스 이름이 등록 되었는지 확인합니다. */
+	bool IsRegistration(const std::string& name);
+
+	/** GL 매니저에 등록을 해제합니다. */
+	void Unregister(const std::string& name);
+
+	/** 이름에 대응하는 리소스를 얻습니다. */
+	template <typename TResource>
+	TResource* GetByName(const std::string& name)
+	{
+		auto it = namedResources_.find(name);
+		if (it == namedResources_.end())
+		{
+			return nullptr;
+		}
+
+		return reinterpret_cast<TResource*>(it->second);
+	}
+
 private:
 	/** IApp에서 GL 매니저의 내부에 접근할 수 있도록 설정. */
 	friend class IApp;
@@ -130,4 +152,7 @@ private:
 	/** OpenGL 리소스의 버퍼와 해당 버퍼의 현재 사용여부입니다. */
 	std::array<std::unique_ptr<GLResource>, MAX_GL_RESOURCE> resources_;
 	std::array<bool, MAX_GL_RESOURCE> usages_;
+
+	/** 이름을 가진 리소스입니다. */
+	std::map<std::string, GLResource*> namedResources_;
 };
