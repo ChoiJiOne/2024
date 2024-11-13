@@ -7,6 +7,7 @@
 #include "GL/GLAssertion.h"
 #include "GL/GLManager.h"
 #include "GL/PostProcessor.h"
+#include "GL/UniformBuffer.h"
 #include "GL/VertexBuffer.h"
 
 PostProcessor::PostProcessor(const std::string& vsSource, const std::string& fsSource)
@@ -41,6 +42,10 @@ PostProcessor::PostProcessor(const std::string& vsSource, const std::string& fsS
 		vertexBuffer_->Unbind();
 	}
 	GL_API_CHECK(glBindVertexArray(0));
+
+	uint32_t uniformBufferByteSize = static_cast<uint32_t>(sizeof(PerFrameUBO));
+	UniformBuffer::EUsage uniformBufferUsage = UniformBuffer::EUsage::DYNAMIC;
+	uniformBuffer_ = GLManager::GetRef().Create<UniformBuffer>(uniformBufferByteSize, uniformBufferUsage);
 }
 
 PostProcessor::~PostProcessor()
@@ -53,6 +58,12 @@ PostProcessor::~PostProcessor()
 
 void PostProcessor::Release()
 {
+	if (uniformBuffer_)
+	{
+		GLManager::GetRef().Destroy(uniformBuffer_);
+		uniformBuffer_ = nullptr;
+	}
+
 	if (vertexArrayObject_)
 	{
 		GL_API_CHECK(glDeleteVertexArrays(1, &vertexArrayObject_));
@@ -68,10 +79,29 @@ void PostProcessor::Release()
 	Shader::Release();
 }
 
-void PostProcessor::Blit(FrameBuffer* frameBuffer)
+void PostProcessor::SetBlendColor(const glm::vec3& color, float factor)
 {
+	bIsNeedUpdate_ = true;
+	perFrameUBO_.color = glm::vec4(color, factor);
+}
+
+void PostProcessor::Blit(const EType& type, FrameBuffer* frameBuffer)
+{
+	if (static_cast<int32_t>(type) != perFrameUBO_.type)
+	{
+		bIsNeedUpdate_ = true;
+		perFrameUBO_.type = static_cast<int32_t>(type);
+	}
+
+	if (bIsNeedUpdate_)
+	{
+		uniformBuffer_->SetBufferData(&perFrameUBO_, static_cast<uint32_t>(sizeof(PerFrameUBO)));
+		bIsNeedUpdate_ = false;
+	}
+
 	Bind();
 	{
+		uniformBuffer_->BindSlot(UNIFORM_BUFFER_BIND_SLOT);
 		frameBuffer->Active(FRAME_BUFFER_BIND_SLOT);
 
 		GL_API_CHECK(glBindVertexArray(vertexArrayObject_));
