@@ -17,8 +17,8 @@ public:
 	virtual void Release() override;
 
 private:
-	/** 벡그라운드 렌더링 시 사용할 텍스처 리소스입니다. */
-	class Texture2D* texture_ = nullptr;
+	/** 벡그라운드 렌더링 시 사용할 텍스처 아틀라스 리소스입니다. */
+	class TextureAtlas2D* textureAtlas_ = nullptr;
 	
 	/** 백그라운드 영역입니다. */
 	Rect2D bound_;

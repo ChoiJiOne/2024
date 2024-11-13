@@ -10,7 +10,7 @@ Background::Background()
 	glm::vec2 screenSize = glm::vec2(0.0f, 0.0f);
 	GLFWManager::GetRef().GetWindowSize(screenSize.x, screenSize.y);
 
-	texture_ = GLManager::GetRef().Create<Texture2D>("Resource\\Background.png", Texture2D::EFilter::NEAREST);
+	textureAtlas_ = GLManager::GetRef().GetByName<TextureAtlas2D>("TextureAtlas");
 	bound_ = Rect2D(glm::vec2(0.0f, 0.0f), screenSize);
 
 	bIsInitialized_ = true;
@@ -30,18 +30,14 @@ void Background::Tick(float deltaSeconds)
 
 void Background::Render()
 {
-	RenderManager2D::GetRef().DrawTexture(texture_, bound_.center, bound_.size.x, bound_.size.y, 0.0f);
+	RenderManager2D::GetRef().DrawTextureAtlas(textureAtlas_, "Background", bound_.center, bound_.size.x, bound_.size.y, 0.0f);
 }
 
 void Background::Release()
 {
 	CHECK(bIsInitialized_);
 
-	if (texture_)
-	{
-		GLManager::GetRef().Destroy(texture_);
-		texture_ = nullptr;
-	}
+	textureAtlas_ = nullptr;
 
 	bIsInitialized_ = false;
 }
