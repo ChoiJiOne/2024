@@ -96,6 +96,9 @@ public:
 	void DrawString(TTFont* font, const std::wstring& text, const glm::vec2& basePos, const glm::vec4& color);
 	void DrawString(TTFont* font, const std::wstring& text, const glm::vec2& basePos, const glm::vec4& textColor, const glm::vec4& outlineColor);
 
+	/** 후처리를 수행하는 객체를 얻습니다. */
+	PostProcessor* GetPostProcessor() { return postProcessor_; }
+
 private:
 	/** IApp에서 2D 렌더 매니저의 내부에 접근할 수 있도록 설정. */
 	friend class IApp;
