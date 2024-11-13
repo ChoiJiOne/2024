@@ -255,6 +255,12 @@ void GLFWManager::Tick()
 	}
 }
 
+void GLFWManager::GetWindowSize(float& outWidth, float& outHeight)
+{
+	outWidth = static_cast<float>(mainWindowWidth_);
+	outHeight = static_cast<float>(mainWindowHeight_);
+}
+
 EPress GLFWManager::GetKeyPress(const EKey& key)
 {
 	EPress press = EPress::NONE;

@@ -207,6 +207,9 @@ public:
 	/** 한 프레임을 시작합니다. */
 	void Tick();
 
+	/** 현재 윈도우 크기를 얻습니다. */
+	void GetWindowSize(float& outWidth, float& outHeight);
+
 	/** 커서가 윈도우 내부에 있는지 확인합니다. */
 	bool IsEnterCursor() const { return bIsEnterCursor_; }
 
