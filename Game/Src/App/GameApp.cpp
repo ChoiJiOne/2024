@@ -1,5 +1,5 @@
 #include "App/GameApp.h"
-#include "Scene/GameDevScene.h"
+#include "Scene/GamePlayScene.h"
 #include "Scene/SceneManager.h"
 
 GameApp::GameApp() 
@@ -13,9 +13,10 @@ GameApp::~GameApp()
 
 void GameApp::Startup()
 {
-	GameDevScene* devScene = SceneManager::GetRef().Create<GameDevScene>();
+	GamePlayScene* gamePlayScene = sceneManager_->Create<GamePlayScene>();
+	sceneManager_->Register("GamePlayScene", gamePlayScene);
 
-	SetAppScene(devScene);
+	SetAppScene(gamePlayScene);
 }
 
 void GameApp::Shutdown()
