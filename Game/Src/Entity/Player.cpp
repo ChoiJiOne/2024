@@ -11,8 +11,7 @@ Player::Player()
 {
 	textureAtlas_ = GLManager::GetRef().GetByName<TextureAtlas2D>("TextureAtlas");
 	renderBound_ = Rect2D(glm::vec2(0.0f, 0.0f), glm::vec2(66.0f, 64.0f));
-	
-	collisionBound_.radius = 30.0f;
+	collisionBound_.radius = 22.0f;
 	collisionBound_.center.x = 0.0f;
 	collisionBound_.center.y = renderBound_.center.y - renderBound_.size.y * 0.5f + collisionBound_.radius;
 
