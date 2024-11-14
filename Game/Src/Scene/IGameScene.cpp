@@ -1,3 +1,5 @@
+#include <algorithm>
+
 #include "Scene/IGameScene.h"
 #include "Utils/Assertion.h"
 
@@ -5,38 +7,28 @@ void IGameScene::Tick(float deltaSeconds)
 {
 	for (auto& updateEntity : updateEntites_)
 	{
-		updateEntity.second->Tick(deltaSeconds);
+		updateEntity->Tick(deltaSeconds);
 	}
 }
 
-void IGameScene::AddUpdateEntity(const std::string& name, IEntity* updateEntity)
+void IGameScene::AddUpdateEntity(IEntity* entity)
 {
-	auto it = updateEntites_.find(name);
-	ASSERTION(it == updateEntites_.end(), "Already exist %s update entity in game scene.");
-
-	updateEntites_.insert({ name, updateEntity });
+	updateEntites_.push_back(entity);
+	updateEntites_.sort(IGameScene::CompareUpdateOrder);
 }
 
-void IGameScene::RemoveUpdateEntity(const std::string& name)
+void IGameScene::RemoveUpdateEntity(IEntity* entity)
 {
-	auto it = updateEntites_.find(name);
-	ASSERTION(it != updateEntites_.end(), "Can't find %s update entity in game scene.");
-
-	updateEntites_.erase(it);
+	updateEntites_.remove(entity);
 }
 
-void IGameScene::AddRenderEntity(const std::string& name, IEntity2D* renderEntity)
+void IGameScene::AddRenderEntity(IEntity2D* entity)
 {
-	auto it = renderEntities_.find(name);
-	ASSERTION(it == renderEntities_.end(), "Already exist %s render entity in game scene.");
-
-	renderEntities_.insert({ name, renderEntity });
+	renderEntities_.push_back(entity);
+	renderEntities_.sort(IGameScene::CompareRenderOrder);
 }
 
-void IGameScene::RemoveRenderEntity(const std::string& name)
+void IGameScene::RemoveRenderEntity(IEntity2D* entity)
 {
-	auto it = renderEntities_.find(name);
-	ASSERTION(it != renderEntities_.end(), "Can't find %s render entity in game scene.");
-
-	renderEntities_.erase(it);
+	renderEntities_.remove(entity);
 }
