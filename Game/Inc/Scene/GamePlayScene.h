@@ -24,4 +24,5 @@ private:
 	class Camera2D* mainCamera_ = nullptr;
 	class Background* background_ = nullptr;
 	class Player* player_ = nullptr;
+	class Coin* coin_ = nullptr;
 };
