@@ -16,6 +16,15 @@ Player::Player()
 	collisionBound_.center.x = 0.0f;
 	collisionBound_.center.y = renderBound_.center.y - renderBound_.size.y * 0.5f + collisionBound_.radius;
 
+	shadow_.scale = 0.5f;
+	shadow_.bound = renderBound_;
+	shadow_.bound.size.y *= shadow_.scale;
+	shadow_.bound.center.y = (-renderBound_.size.y * 0.5f) + (-shadow_.bound.size.y * 0.5f);
+	shadow_.option.blend = glm::vec3(0.0f, 0.0f, 0.0f);
+	shadow_.option.factor = 1.0f;
+	shadow_.option.transparent = 0.3f;
+	shadow_.option.bIsFlipV = true;
+
 	LoadAnimations();
 
 	bIsInitialized_ = true;
@@ -62,10 +71,16 @@ void Player::Render()
 		renderBound_.size.y, 
 		0.0f
 	);
-	RenderManager2D::GetRef().DrawRectWireframe(renderBound_.center, renderBound_.size.x, renderBound_.size.y, glm::vec4(1.0f, 0.0f, 0.0f, 1.0f), 0.0f);
-	RenderManager2D::GetRef().DrawLine(glm::vec2(-500.0f, 0.0f), glm::vec2(500.0f, 0.0f), glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
-	RenderManager2D::GetRef().DrawLine(glm::vec2(0.0f, 400.0f), glm::vec2(0.0f, -400.0f), glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
-	RenderManager2D::GetRef().DrawCircleWireframe(collisionBound_.center, collisionBound_.radius, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
+
+	RenderManager2D::GetRef().DrawTextureAtlas(
+		animations_.at(animationState_)->GetTextureAtlas(),
+		animations_.at(animationState_)->GetCurrentClipName(),
+		shadow_.bound.center,
+		shadow_.bound.size.x,
+		shadow_.bound.size.y,
+		0.0f,
+		shadow_.option
+	);
 }
 
 void Player::Release()
@@ -120,4 +135,10 @@ void Player::UnloadAnimation()
 	{
 		glManager.Destroy(animation.second);
 	}
+}
+
+void Player::UpdateShadow()
+{
+	shadow_.bound.center = renderBound_.center;
+	shadow_.bound.center.y = (-renderBound_.size.y * 0.5f) + (-shadow_.bound.size.y * 0.5f);
 }

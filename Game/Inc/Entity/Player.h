@@ -3,6 +3,7 @@
 #include <map>
 
 #include "Entity/IEntity2D.h"
+#include "GL/RenderManager2D.h"
 #include "Physic/Circle2D.h"
 #include "Physic/Rect2D.h"
 
@@ -32,11 +33,22 @@ private:
 		HURT = 0x02,
 	};
 
+	/** 플레이어의 그림자입니다. */
+	struct Shadow
+	{
+		Rect2D bound; /** 그림자 영역입니다. */
+		TextureDrawOption option; /** 그림자 렌더링 시 설정할 옵션입니다. */
+		float scale = 0.0f; /** 그림자의 스케일 값입니다. */
+	};
+
 	/** 플레이어의 애니메이션 상태를 초기화합니다. */
 	void LoadAnimations();
 
 	/** 플레이어의 애니메이션 상태 초기화를 해제합니다. */
 	void UnloadAnimation();
+
+	/** 그림자 상태를 업데이트합니다. */
+	void UpdateShadow();
 
 private:
 	/** 플레이어 렌더링 시 참조할 텍스처 아틀라스입니다. */
@@ -48,6 +60,9 @@ private:
 	/** 충돌 영역입니다. */
 	Circle2D collisionBound_;
 
+	/** 플레이어의 그림자입니다. */
+	Shadow shadow_;
+	
 	/** 현재 애니메이션의 상태입니다. */
 	EAnimationState animationState_ = EAnimationState::IDLE;
 
