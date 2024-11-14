@@ -1,3 +1,9 @@
+#include <array>
+
+#define GLM_ENABLE_EXPERIMENTAL
+#include <glm/gtc/constants.hpp>
+#include <glm/gtc/epsilon.hpp>
+
 #include "Entity/Player.h"
 #include "GL/GLManager.h"
 #include "GL/RenderManager2D.h"
@@ -11,17 +17,20 @@ Player::Player()
 	textureAtlas_ = GLManager::GetRef().GetByName<TextureAtlas2D>("TextureAtlas");
 	renderBound_ = Rect2D(glm::vec2(0.0f, 0.0f), glm::vec2(66.0f, 64.0f));
 	collisionBound_.radius = 22.0f;
-	collisionBound_.center.x = 0.0f;
-	collisionBound_.center.y = renderBound_.center.y - renderBound_.size.y * 0.5f + collisionBound_.radius;
+	collisionBound_.center = renderBound_.center;
+	collisionBound_.center.y += -renderBound_.size.y * 0.5f + collisionBound_.radius;
 
 	shadow_.scale = 0.5f;
 	shadow_.bound = renderBound_;
 	shadow_.bound.size.y *= shadow_.scale;
-	shadow_.bound.center.y = (-renderBound_.size.y * 0.5f) + (-shadow_.bound.size.y * 0.5f);
+	shadow_.bound.center.y += (-renderBound_.size.y * 0.5f) + (-shadow_.bound.size.y * 0.5f);
 	shadow_.option.blend = glm::vec3(0.0f, 0.0f, 0.0f);
 	shadow_.option.factor = 1.0f;
 	shadow_.option.transparent = 0.3f;
 	shadow_.option.bIsFlipV = true;
+
+	direction_ = glm::vec2(0.0f, -1.0f);
+	speed_ = 500.0f;
 
 	LoadAnimations();
 
@@ -38,7 +47,49 @@ Player::~Player()
 
 void Player::Tick(float deltaSeconds)
 {
-	UpdateShadow();
+	bool bIsPress = false;
+	const static std::map<EKey, glm::vec2> KEY_DIRECTIONS =
+	{
+		{ EKey::KEY_LEFT,  glm::vec2(-1.0f, +0.0f) },
+		{ EKey::KEY_UP,    glm::vec2(+0.0f, +1.0f) },
+		{ EKey::KEY_RIGHT, glm::vec2(+1.0f, +0.0f) },
+		{ EKey::KEY_DOWN,  glm::vec2(+0.0f, -1.0f) },
+	};
+
+	GLFWManager& glfwManager = GLFWManager::GetRef();
+	glm::vec2 direction = glm::vec2(0.0f, 0.0f);
+	for (const auto& keyDirection : KEY_DIRECTIONS)
+	{
+		if (glfwManager.GetKeyPress(keyDirection.first) == EPress::HELD)
+		{
+			direction += keyDirection.second;
+			bIsPress = true;
+		}
+	}
+
+	if (bIsPress)
+	{
+		animationState_ = EAnimationState::RUN;
+		direction_ = direction;
+
+		renderBound_.center += direction_ * speed_ * deltaSeconds;
+
+		collisionBound_.center = renderBound_.center;
+		collisionBound_.center.y += -renderBound_.size.y * 0.5f + collisionBound_.radius;
+
+		shadow_.bound.center = renderBound_.center;
+		shadow_.bound.center.y += (-renderBound_.size.y * 0.5f) + (-shadow_.bound.size.y * 0.5f);
+
+		if (glm::epsilonNotEqual<float>(direction_.x, 0.0f, glm::epsilon<float>()))
+		{
+			renderOption_.bIsFlipH = (direction_.x < 0.0f);
+			shadow_.option.bIsFlipH = renderOption_.bIsFlipH;
+		}
+	}
+	else
+	{
+		animationState_ = EAnimationState::IDLE;
+	}
 
 	animations_.at(animationState_)->Update(deltaSeconds);
 }
@@ -51,7 +102,8 @@ void Player::Render()
 		renderBound_.center, 
 		renderBound_.size.x, 
 		renderBound_.size.y, 
-		0.0f
+		0.0f,
+		renderOption_
 	);
 
 	RenderManager2D::GetRef().DrawTextureAtlas(
@@ -117,10 +169,4 @@ void Player::UnloadAnimation()
 	{
 		glManager.Destroy(animation.second);
 	}
-}
-
-void Player::UpdateShadow()
-{
-	shadow_.bound.center = renderBound_.center;
-	shadow_.bound.center.y = (-renderBound_.size.y * 0.5f) + (-shadow_.bound.size.y * 0.5f);
 }

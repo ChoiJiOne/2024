@@ -47,9 +47,6 @@ private:
 	/** 플레이어의 애니메이션 상태 초기화를 해제합니다. */
 	void UnloadAnimation();
 
-	/** 그림자 상태를 업데이트합니다. */
-	void UpdateShadow();
-
 private:
 	/** 플레이어 렌더링 시 참조할 텍스처 아틀라스입니다. */
 	TextureAtlas2D* textureAtlas_ = nullptr;
@@ -57,11 +54,20 @@ private:
 	/** 렌더링 영역입니다 */
 	Rect2D renderBound_;
 
+	/** 플레이어의 렌더링 옵션입니다. */
+	TextureDrawOption renderOption_;
+
 	/** 충돌 영역입니다. */
 	Circle2D collisionBound_;
 
 	/** 플레이어의 그림자입니다. */
 	Shadow shadow_;
+
+	/** 플레이어의 이동 방향입니다. */
+	glm::vec2 direction_;
+	
+	/** 플레이어의 속도입니다. */
+	float speed_ = 0.0f;
 	
 	/** 현재 애니메이션의 상태입니다. */
 	EAnimationState animationState_ = EAnimationState::IDLE;
