@@ -48,6 +48,25 @@ public:
 
 	/** 업데이트할 엔티티를 삭제합니다. */
 	void RemoveUpdateEntity(const std::string& name);
+
+	/** 렌더링할 엔티티를 추가합니다. 이때, 이름은 고유해야 합니다. */
+	void AddRenderEntity(const std::string& name, IEntity2D* renderEntity);
+
+	/** 렌더링할 엔티티를 얻습니다. */
+	template <typename TEntity2D>
+	TEntity2D* GetRenderEntity(const std::string& name)
+	{
+		auto it = renderEntities_.find(name);
+		if (it == renderEntities_.end())
+		{
+			return nullptr;
+		}
+
+		return reinterpret_cast<TEntity2D*>(it->second);
+	}
+
+	/** 렌더링할 엔티티를 삭제합니다. */
+	void RemoveRenderEntity(const std::string& name);
 	
 protected:
 	/** 업데이트할 엔티티의 우선순위 설정을 위한 구조체입니다. */

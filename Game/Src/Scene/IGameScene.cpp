@@ -16,3 +16,19 @@ void IGameScene::RemoveUpdateEntity(const std::string& name)
 
 	updateEntites_.erase(it);
 }
+
+void IGameScene::AddRenderEntity(const std::string& name, IEntity2D* renderEntity)
+{
+	auto it = renderEntities_.find(name);
+	ASSERTION(it == renderEntities_.end(), "Already exist %s render entity in game scene.");
+
+	renderEntities_.insert({ name, renderEntity });
+}
+
+void IGameScene::RemoveRenderEntity(const std::string& name)
+{
+	auto it = renderEntities_.find(name);
+	ASSERTION(it != renderEntities_.end(), "Can't find %s render entity in game scene.");
+
+	renderEntities_.erase(it);
+}
