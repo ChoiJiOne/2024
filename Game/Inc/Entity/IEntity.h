@@ -14,8 +14,10 @@ public:
 	virtual void Tick(float deltaSeconds) = 0;
 	virtual void Release() = 0;
 
+	/** 엔티티가 초기화 되었는지 확인합니다. */
 	bool IsInitialized() const { return bIsInitialized_; }
 
 protected:
+	/** 엔티티가 초기화 되었는지 확인합니다. */
 	bool bIsInitialized_ = false;
 };
