@@ -1,6 +1,6 @@
 @ECHO OFF
 
-SET PROJECT_NAME=HyperCoinDash2D
+SET PROJECT_NAME=FoxDash
 SET MODE=Release
 SET SCRIPT=Script\\Run.bat
 
