@@ -6,9 +6,8 @@
 
 #include "Entity/Player.h"
 #include "GL/GLManager.h"
-#include "GL/RenderManager2D.h"
 #include "GL/SpriteAnimator2D.h"
-#include "GL/Texture2D.h"
+#include "GL/TextureAtlas2D.h"
 #include "GLFW/GLFWManager.h"
 #include "Utils/Assertion.h"
 
