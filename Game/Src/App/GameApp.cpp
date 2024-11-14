@@ -4,8 +4,8 @@
 #include "Scene/GamePlayScene.h"
 #include "Scene/SceneManager.h"
 
-GameApp::GameApp() 
-	: IApp(windowWidth_, windowHeight_, "HyperCoinDash2D", bIsWindowCentered_)
+GameApp::GameApp(uint32_t windowWidth, uint32_t windowHeight, const char* windowTitle, bool bIsWindowCentered)
+	: IApp(windowWidth, windowHeight, windowTitle, bIsWindowCentered)
 {
 }
 
