@@ -1,6 +1,14 @@
 #include "Scene/IGameScene.h"
 #include "Utils/Assertion.h"
 
+void IGameScene::Tick(float deltaSeconds)
+{
+	for (auto& updateEntity : updateEntites_)
+	{
+		updateEntity.second->Tick(deltaSeconds);
+	}
+}
+
 void IGameScene::AddUpdateEntity(const std::string& name, IEntity* updateEntity)
 {
 	auto it = updateEntites_.find(name);
