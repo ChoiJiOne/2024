@@ -1,5 +1,3 @@
-#include <imgui.h>
-
 #include "Entity/Player.h"
 #include "GL/GLManager.h"
 #include "GL/RenderManager2D.h"
@@ -40,23 +38,7 @@ Player::~Player()
 
 void Player::Tick(float deltaSeconds)
 {
-	ImGui::Begin("ANIMATION");
-	if (ImGui::RadioButton("IDLE", static_cast<int32_t>(animationState_) == 0))
-	{
-		animationState_ = EAnimationState::IDLE;
-	}
-
-	if (ImGui::RadioButton("RUN", static_cast<int32_t>(animationState_) == 1))
-	{
-		animationState_ = EAnimationState::RUN;
-	}
-
-	if (ImGui::RadioButton("HURT", static_cast<int32_t>(animationState_) == 2))
-	{
-		animationState_ = EAnimationState::HURT;
-	}
-
-	ImGui::End();
+	UpdateShadow();
 
 	animations_.at(animationState_)->Update(deltaSeconds);
 }
