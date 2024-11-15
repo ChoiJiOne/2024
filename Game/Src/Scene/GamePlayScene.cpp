@@ -18,19 +18,31 @@ GamePlayScene::GamePlayScene()
 	glm::vec2 screenSize = glm::vec2(0.0f, 0.0f);
 	GLFWManager::GetRef().GetWindowSize(screenSize.x, screenSize.y);
 
+	Player* player = entityManager_->Create<Player>();
+	player->SetTickOrder(0);
+	player->SetRenderOrder(1);
+	AddUpdateEntity(player);
+	AddRenderEntity(player);
+
 	mainCamera_ = entityManager_->Create<Camera2D>(glm::vec2(0.0f, 0.0f), screenSize);
-	background_ = entityManager_->Create<Background>();
-	player_ = entityManager_->Create<Player>();
-	coin_ = entityManager_->Create<Coin>();
+	mainCamera_->SetTickOrder(1);
+	AddUpdateEntity(mainCamera_);
+
+	Background* background = entityManager_->Create<Background>();
+	background->SetTickOrder(2);
+	background->SetRenderOrder(0);
+	AddUpdateEntity(background);
+	AddRenderEntity(background);
+
+	Coin* coin = entityManager_->Create<Coin>();
+	coin->SetTickOrder(3);
+	coin->SetRenderOrder(2);
+	AddUpdateEntity(coin);
+	AddRenderEntity(coin);
 }
 
 GamePlayScene::~GamePlayScene()
 {
-	entityManager_->Destroy(coin_);
-	entityManager_->Destroy(player_);
-	entityManager_->Destroy(background_);
-	entityManager_->Destroy(mainCamera_);
-
 	renderManager_ = nullptr;
 	glManager_ = nullptr;
 	entityManager_ = nullptr;
@@ -38,9 +50,7 @@ GamePlayScene::~GamePlayScene()
 
 void GamePlayScene::Tick(float deltaSeconds)
 {
-	player_->Tick(deltaSeconds);
-	background_->Tick(deltaSeconds);
-	coin_->Tick(deltaSeconds);
+	IGameScene::Tick(deltaSeconds);
 }
 
 void GamePlayScene::Render()
@@ -49,9 +59,10 @@ void GamePlayScene::Render()
 	{
 		renderManager_->Begin(mainCamera_);
 		{
-			background_->Render();
-			player_->Render();
-			coin_->Render();
+			for (auto& renderEntity : renderEntities_)
+			{
+				renderEntity->Render();
+			}
 		}
 		renderManager_->End();
 	}
