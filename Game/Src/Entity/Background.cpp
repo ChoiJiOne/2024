@@ -7,6 +7,9 @@
 
 Background::Background()
 {
+	tickOrder_ = 2;
+	renderOrder_ = 0;
+
 	glm::vec2 screenSize = glm::vec2(0.0f, 0.0f);
 	GLFWManager::GetRef().GetWindowSize(screenSize.x, screenSize.y);
 
@@ -30,7 +33,7 @@ void Background::Tick(float deltaSeconds)
 
 void Background::Render()
 {
-	RenderManager2D::GetRef().DrawTextureAtlas(textureAtlas_, "Background", bound_.center, bound_.size.x, bound_.size.y, 0.0f);
+	renderManager_->DrawTextureAtlas(textureAtlas_, "Background", bound_.center, bound_.size.x, bound_.size.y, 0.0f);
 }
 
 void Background::Release()
