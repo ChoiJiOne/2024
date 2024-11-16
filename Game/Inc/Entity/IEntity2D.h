@@ -6,8 +6,8 @@
 class IEntity2D : public IEntity
 {
 public:
-	IEntity2D() = default;
-	virtual ~IEntity2D() {}
+	IEntity2D();
+	virtual ~IEntity2D();
 
 	DISALLOW_COPY_AND_ASSIGN(IEntity2D);
 
@@ -21,7 +21,10 @@ public:
 	/** 2D 엔티티의 렌더링 순서 값을 얻습니다. */
 	uint32_t GetRenderOrder() const { return renderOrder_; }
 
-private:
+protected:
 	/** 2D 엔티티의 렌더링 순위 값입니다. 이 값은 낮을수록 우선순위가 높아집니다. */
 	uint32_t renderOrder_ = 0;
+
+	/** 렌더링할 때 사용할 2D 렌더러입니다. */
+	class RenderManager2D* renderManager_ = nullptr;;
 };
