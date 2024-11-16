@@ -1,5 +1,5 @@
 # Tetris2D
-- `Tetris2D` is a project for developing a 2D Tetris game based on my engine.
+- `Tetris2D` is a project for developing a 2D tetris game.
 
 ## Support Platform
 - Windows 10/11 Home/Pro
