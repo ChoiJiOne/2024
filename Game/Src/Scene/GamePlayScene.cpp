@@ -3,6 +3,7 @@
 #include "Entity/Coin.h"
 #include "Entity/EntityManager.h"
 #include "Entity/Player.h"
+#include "Entity/PlayerFollowCamera.h"
 #include "GL/RenderManager2D.h"
 #include "GLFW/GLFWManager.h"
 #include "Scene/GamePlayScene.h"
@@ -15,28 +16,19 @@ GamePlayScene::GamePlayScene()
 	glManager_ = GLManager::GetPtr();
 	renderManager_ = RenderManager2D::GetPtr();
 
-	glm::vec2 screenSize = glm::vec2(0.0f, 0.0f);
-	GLFWManager::GetRef().GetWindowSize(screenSize.x, screenSize.y);
-
 	Player* player = entityManager_->Create<Player>();
-	player->SetTickOrder(0);
-	player->SetRenderOrder(1);
+	entityManager_->Register("Player", player);
 	AddUpdateEntity(player);
 	AddRenderEntity(player);
 
-	mainCamera_ = entityManager_->Create<Camera2D>(glm::vec2(0.0f, 0.0f), screenSize);
-	mainCamera_->SetTickOrder(1);
+	mainCamera_ = entityManager_->Create<PlayerFollowCamera>();
 	AddUpdateEntity(mainCamera_);
 
 	Background* background = entityManager_->Create<Background>();
-	background->SetTickOrder(2);
-	background->SetRenderOrder(0);
 	AddUpdateEntity(background);
 	AddRenderEntity(background);
 
-	Coin* coin = entityManager_->Create<Coin>();
-	coin->SetTickOrder(3);
-	coin->SetRenderOrder(2);
+	Coin* coin = entityManager_->Create<Coin>(glm::vec2(-100.0f, -100.0f));
 	AddUpdateEntity(coin);
 	AddRenderEntity(coin);
 }
