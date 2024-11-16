@@ -35,6 +35,7 @@ GamePlayScene::GamePlayScene()
 
 	CoinSpawner* coinSpawner = entityManager_->Create<CoinSpawner>();
 	AddUpdateEntity(coinSpawner);
+	AddRenderEntity(coinSpawner);
 }
 
 GamePlayScene::~GamePlayScene()
