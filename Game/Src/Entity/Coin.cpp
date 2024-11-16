@@ -9,7 +9,7 @@
 Coin::Coin(const glm::vec2& position)
 {
 	tickOrder_ = 3;
-	renderOrder_ = 2;
+	renderOrder_ = 3;
 
 	textureAtlas_ = GLManager::GetRef().GetByName<TextureAtlas2D>("TextureAtlas");
 	renderBound_ = Rect2D(position, glm::vec2(32.0f, 32.0f));
