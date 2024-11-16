@@ -24,6 +24,9 @@ public:
 	virtual void Render() override;
 	virtual void Release() override;
 
+	/** 플레이어의 중심 위치를 얻습니다. */
+	const glm::vec2 GetPosition() const;
+
 private:
 	/** 플레이어의 애니메이션 상태입니다. */
 	enum class EAnimationState

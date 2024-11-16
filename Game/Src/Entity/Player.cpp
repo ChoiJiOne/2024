@@ -112,6 +112,11 @@ void Player::Release()
 	bIsInitialized_ = false;
 }
 
+const glm::vec2 Player::GetPosition() const
+{
+	return renderBound_.center;
+}
+
 void Player::LoadAnimations()
 {
 	GLManager& glManager = GLManager::GetRef();
