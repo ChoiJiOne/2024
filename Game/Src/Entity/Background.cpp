@@ -9,7 +9,7 @@
 
 Background::Background()
 {
-	tickOrder_ = 2;
+	tickOrder_ = 3;
 	renderOrder_ = 0;
 
 	player_ = EntityManager::GetRef().GetByName<Player>("Player");
@@ -19,8 +19,6 @@ Background::Background()
 
 	textureAtlas_ = GLManager::GetRef().GetByName<TextureAtlas2D>("TextureAtlas");
 	screenBound_ = Rect2D(player_->GetPosition(), screenSize);
-	playground_ = Circle2D(glm::vec2(0.0f, 0.0f), 1000.0f);
-	playgroundColor_ = glm::vec4(1.0f, 0.0f, 0.0f, 1.0f);
 
 	bIsInitialized_ = true;
 }
@@ -41,7 +39,6 @@ void Background::Tick(float deltaSeconds)
 void Background::Render()
 {
 	renderManager_->DrawTextureAtlas(textureAtlas_, "Background", screenBound_.center, screenBound_.size.x, screenBound_.size.y, 0.0f);
-	renderManager_->DrawCircleWireframe(playground_.center, playground_.radius, playgroundColor_);
 }
 
 void Background::Release()
