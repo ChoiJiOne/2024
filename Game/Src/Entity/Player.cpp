@@ -14,7 +14,7 @@
 Player::Player()
 {
 	tickOrder_ = 0;
-	renderOrder_ = 1;
+	renderOrder_ = 2;
 
 	textureAtlas_ = GLManager::GetRef().GetByName<TextureAtlas2D>("TextureAtlas");
 	renderBound_ = Rect2D(glm::vec2(0.0f, 0.0f), glm::vec2(66.0f, 64.0f));
