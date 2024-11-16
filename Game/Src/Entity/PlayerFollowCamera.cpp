@@ -5,6 +5,8 @@
 
 PlayerFollowCamera::PlayerFollowCamera()
 {
+	tickOrder_ = 1;
+
 	player_ = EntityManager::GetRef().GetByName<Player>("Player");
 
 	glm::vec2 screenSize = glm::vec2(0.0f, 0.0f);
