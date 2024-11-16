@@ -52,7 +52,6 @@ void Playground::Tick(float deltaSeconds)
 void Playground::Render()
 {
 	renderManager_->DrawCircleWireframe(safeBound_.center, safeBound_.radius, playerStateColors_.at(playerState_));
-	renderManager_->DrawCircleWireframe(warnBound_.center, warnBound_.radius, playerStateColors_.at(playerState_));
 }
 
 void Playground::Release()
