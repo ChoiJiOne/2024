@@ -5,6 +5,7 @@
 #include "Entity/EntityManager.h"
 #include "Entity/Player.h"
 #include "Entity/PlayerFollowCamera.h"
+#include "Entity/Playground.h"
 #include "GL/RenderManager2D.h"
 #include "GLFW/GLFWManager.h"
 #include "Scene/SceneManager.h"
@@ -25,6 +26,10 @@ GamePlayScene::GamePlayScene()
 	entityManager_->Register("Player", player);
 	AddUpdateEntity(player);
 	AddRenderEntity(player);
+
+	Playground* playground = entityManager_->Create<Playground>();
+	AddUpdateEntity(playground);
+	AddRenderEntity(playground);
 
 	mainCamera_ = entityManager_->Create<PlayerFollowCamera>();
 	AddUpdateEntity(mainCamera_);
