@@ -34,7 +34,7 @@ protected:
 	/** 2D 카메라의 위치와 크기를 기반으로 직교 투영 행렬을 계산합니다. */
 	glm::mat4 CalculateOrtho(const glm::vec2& center, const glm::vec2& size, float zNear = -1.0f, float zFar = 1.0f);
 
-private:
+protected:
 	/** 2D 카메라의 중심 위치입니다. */
 	glm::vec2 center_;
 
