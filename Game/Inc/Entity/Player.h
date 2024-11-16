@@ -27,6 +27,9 @@ public:
 	/** 플레이어의 중심 위치를 얻습니다. */
 	const glm::vec2 GetPosition() const;
 
+	/** 플레이어의 경계 충돌 영역을 얻습니다. */
+	const ICollider2D* GetCollider() const { return &collisionBound_; }
+
 private:
 	/** 플레이어의 애니메이션 상태입니다. */
 	enum class EAnimationState
