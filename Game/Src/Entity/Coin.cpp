@@ -1,4 +1,6 @@
 #include "Entity/Coin.h"
+#include "Entity/EntityManager.h"
+#include "Entity/Player.h"
 #include "GL/GLManager.h"
 #include "GL/SpriteAnimator2D.h"
 #include "GL/TextureAtlas2D.h"
@@ -34,7 +36,7 @@ Coin::Coin(const glm::vec2& position)
 	};
 	animator_ = GLManager::GetRef().Create<SpriteAnimator2D>(textureAtlas_, coinClipNames, 0.5f, true);
 
-
+	player_ = EntityManager::GetRef().GetByName<Player>("Player");
 
 	bIsInitialized_ = true;
 }
@@ -49,11 +51,21 @@ Coin::~Coin()
 
 void Coin::Tick(float deltaSeconds)
 {
+	if (!bIsGain_ && collisionBound_.Intersect(player_->GetCollider()))
+	{
+		bIsGain_ = true;
+	}
+
 	animator_->Update(deltaSeconds);
 }
 
 void Coin::Render()
 {
+	if (bIsGain_)
+	{
+		return;
+	}
+
 	TextureAtlas2D* animationTexture = animator_->GetTextureAtlas();
 	const std::string& animationClipName = animator_->GetCurrentClipName();
 
@@ -65,6 +77,8 @@ void Coin::Release()
 {
 	CHECK(bIsInitialized_);
 
+	player_ = nullptr;
+
 	if (animator_)
 	{
 		GLManager::GetRef().Destroy(animator_);
@@ -74,4 +88,17 @@ void Coin::Release()
 	textureAtlas_ = nullptr;
 
 	bIsInitialized_ = false;
+}
+
+void Coin::Reset(const glm::vec2& position)
+{
+	renderBound_.center = position;
+	collisionBound_.center = renderBound_.center;
+	collisionBound_.center.y += -renderBound_.size.y * 0.5f + collisionBound_.radius;
+
+	shadow_.bound = renderBound_;
+	shadow_.bound.size.y *= shadow_.scale;
+	shadow_.bound.center.y += (-renderBound_.size.y * 0.5f) + (-shadow_.bound.size.y * 0.5f);
+
+	bIsGain_ = false;
 }

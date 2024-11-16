@@ -8,6 +8,7 @@
 /** 클래스 전방 선언입니다. */
 class SpriteAnimator2D;
 class TextureAtlas2D;
+class Player;
 
 /** 플레이어가 획득할 코인입니다. */
 class Coin : public IEntity2D
@@ -21,6 +22,12 @@ public:
 	virtual void Tick(float deltaSeconds) override;
 	virtual void Render() override;
 	virtual void Release() override;
+
+	/** 플레이어가 코인을 획득했는지 확인합니다. */
+	bool IsGain() const { return bIsGain_; }
+
+	/** 코인의 상태를 초기화합니다. */
+	void Reset(const glm::vec2& position);
 
 private:
 	/** 코인의 그림자입니다. */
@@ -38,6 +45,9 @@ private:
 	/** 코인의 애니메이션을 수행하는 스프라이트 애니메이터입니다. */
 	SpriteAnimator2D* animator_ = nullptr;
 
+	/** 해당 코인을 획득했는지 확인할 플레이어입니다. */
+	Player* player_ = nullptr;
+
 	/** 렌더링 영역입니다. */
 	Rect2D renderBound_;
 
@@ -46,4 +56,7 @@ private:
 
 	/** 코인의 그림자입니다. */
 	Shadow shadow_;
+
+	/** 코인을 플레이어가 획득했는지 확인합니다. */
+	bool bIsGain_ = false;
 };
