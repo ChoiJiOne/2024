@@ -95,25 +95,11 @@ void Player::Tick(float deltaSeconds)
 
 void Player::Render()
 {
-	RenderManager2D::GetRef().DrawTextureAtlas(
-		animations_.at(animationState_)->GetTextureAtlas(),
-		animations_.at(animationState_)->GetCurrentClipName(),
-		renderBound_.center, 
-		renderBound_.size.x, 
-		renderBound_.size.y, 
-		0.0f,
-		renderOption_
-	);
+	TextureAtlas2D* animationTexture = animations_.at(animationState_)->GetTextureAtlas();
+	const std::string& animationClipName = animations_.at(animationState_)->GetCurrentClipName();
 
-	RenderManager2D::GetRef().DrawTextureAtlas(
-		animations_.at(animationState_)->GetTextureAtlas(),
-		animations_.at(animationState_)->GetCurrentClipName(),
-		shadow_.bound.center,
-		shadow_.bound.size.x,
-		shadow_.bound.size.y,
-		0.0f,
-		shadow_.option
-	);
+	renderManager_->DrawTextureAtlas(animationTexture, animationClipName, renderBound_.center, renderBound_.size.x, renderBound_.size.y, 0.0f, renderOption_);
+	renderManager_->DrawTextureAtlas(animationTexture, animationClipName, shadow_.bound.center, shadow_.bound.size.x, shadow_.bound.size.y, 0.0f, shadow_.option);
 }
 
 void Player::Release()
