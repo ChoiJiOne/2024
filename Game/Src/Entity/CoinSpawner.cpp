@@ -10,10 +10,10 @@
 CoinSpawner::CoinSpawner()
 {
 	tickOrder_ = 5;
+	renderOrder_ = 1;
 
-	bound_ = Circle2D(glm::vec2(0.0f, 0.0f), 500.0f);
-
-	countCoin_ = 50;
+	bound_ = Circle2D(glm::vec2(0.0f, 0.0f), 1000.0f);
+	countCoin_ = 20;
 	for (uint32_t count = 0; count < countCoin_; ++count)
 	{
 		glm::vec2 position = glm::diskRand(bound_.radius);
@@ -39,6 +39,11 @@ CoinSpawner::~CoinSpawner()
 void CoinSpawner::Tick(float deltaSeconds)
 {
 
+}
+
+void CoinSpawner::Render()
+{
+	renderManager_->DrawCircleWireframe(bound_.center, bound_.radius, glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
 }
 
 void CoinSpawner::Release()

@@ -2,14 +2,14 @@
 
 #include <list>
 
-#include "Entity/IEntity.h"
+#include "Entity/IEntity2D.h"
 #include "Physic/Circle2D.h"
 
 /** 클래스의 전방 선언입니다. */
 class Coin;
 
 /** 필드의 코인을 관리하는 엔티티입니다. */
-class CoinSpawner : public IEntity
+class CoinSpawner : public IEntity2D
 {
 public:
 	CoinSpawner();
@@ -18,6 +18,7 @@ public:
 	DISALLOW_COPY_AND_ASSIGN(CoinSpawner);
 
 	virtual void Tick(float deltaSeconds) override;
+	virtual void Render() override;
 	virtual void Release() override;
 
 private:
