@@ -4,10 +4,10 @@
 #include "GL/TextureAtlas2D.h"
 #include "Utils/Assertion.h"
 
-Coin::Coin()
+Coin::Coin(const glm::vec2& position)
 {
 	textureAtlas_ = GLManager::GetRef().GetByName<TextureAtlas2D>("TextureAtlas");
-	renderBound_ = Rect2D(glm::vec2(100.0f, 100.0f), glm::vec2(32.0f, 32.0f));
+	renderBound_ = Rect2D(position, glm::vec2(32.0f, 32.0f));
 	collisionBound_.radius = 16.0f;
 	collisionBound_.center = renderBound_.center;
 	collisionBound_.center.y += -renderBound_.size.y * 0.5f + collisionBound_.radius;

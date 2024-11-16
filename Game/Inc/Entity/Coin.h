@@ -13,7 +13,7 @@ class TextureAtlas2D;
 class Coin : public IEntity2D
 {
 public:
-	Coin();
+	Coin(const glm::vec2& position);
 	virtual ~Coin();
 
 	DISALLOW_COPY_AND_ASSIGN(Coin);
