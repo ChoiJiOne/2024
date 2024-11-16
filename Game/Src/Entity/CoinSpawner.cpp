@@ -36,21 +36,11 @@ CoinSpawner::CoinSpawner(const glm::vec2& position)
 		"CoinChest_2",
 		"CoinChest_3",
 		"CoinChest_4",
+		"CoinChest_5",
+		"CoinChest_6",
+		"CoinChest_7",
 	};
-	animator_ = GLManager::GetRef().Create<SpriteAnimator2D>(textureAtlas_, coinClipNames, 0.5f, false);
-
-	//bound_ = Circle2D(glm::vec2(0.0f, 0.0f), 1000.0f);
-	//countCoin_ = 20;
-	//for (uint32_t count = 0; count < countCoin_; ++count)
-	//{
-	//	glm::vec2 position = glm::diskRand(bound_.radius);
-	//	Coin* coin = EntityManager::GetRef().Create<Coin>(position);
-	//	coins_.push_back(coin);
-
-	//	GamePlayScene* gamePlayScene = SceneManager::GetRef().GetByName<GamePlayScene>("GamePlayScene");
-	//	gamePlayScene->AddUpdateEntity(coin);
-	//	gamePlayScene->AddRenderEntity(coin);
-	//}
+	animator_ = GLManager::GetRef().Create<SpriteAnimator2D>(textureAtlas_, coinClipNames, 1.0f, false);
 
 	bIsInitialized_ = true;
 }

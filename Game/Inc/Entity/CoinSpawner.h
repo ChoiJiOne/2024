@@ -8,7 +8,7 @@
 /** 클래스의 전방 선언입니다. */
 class Coin;
 
-/** 필드의 코인을 관리하는 엔티티입니다. */
+/** 코인을 생성하는 엔티티입니다. */
 class CoinSpawner : public IEntity2D
 {
 public:
@@ -30,6 +30,13 @@ private:
 		float scale = 0.0f; /** 그림자의 스케일 값입니다. */
 	};
 
+	/** 코인 스포너의 상태입니다. */
+	enum class EState
+	{
+		WAIT     = 0x00,
+		GENERATE = 0x01,
+	};
+
 private:
 	/** 코인 스포너 렌더링 시 참조할 텍스처 아틀라스입니다. */
 	TextureAtlas2D* textureAtlas_ = nullptr;
@@ -45,4 +52,7 @@ private:
 
 	/** 코인 스포너의 그림자입니다. */
 	Shadow shadow_;
+
+	/** 코인 스포너의 상태입니다. */
+	EState state_ = EState::WAIT;
 };
