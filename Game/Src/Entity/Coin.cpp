@@ -51,30 +51,11 @@ void Coin::Tick(float deltaSeconds)
 
 void Coin::Render()
 {
-	RenderManager2D::GetRef().DrawTextureAtlas(
-		animator_->GetTextureAtlas(),
-		animator_->GetCurrentClipName(),
-		renderBound_.center,
-		renderBound_.size.x,
-		renderBound_.size.y,
-		0.0f
-	);
+	TextureAtlas2D* animationTexture = animator_->GetTextureAtlas();
+	const std::string& animationClipName = animator_->GetCurrentClipName();
 
-	RenderManager2D::GetRef().DrawTextureAtlas(
-		animator_->GetTextureAtlas(),
-		animator_->GetCurrentClipName(),
-		shadow_.bound.center,
-		shadow_.bound.size.x,
-		shadow_.bound.size.y,
-		0.0f,
-		shadow_.option
-	);
-
-	RenderManager2D::GetRef().DrawCircleWireframe(
-		collisionBound_.center,
-		collisionBound_.radius,
-		glm::vec4(1.0f, 0.0f, 0.0f, 1.0f)
-	);
+	renderManager_->DrawTextureAtlas(animationTexture, animationClipName, renderBound_.center, renderBound_.size.x, renderBound_.size.y, 0.0f);
+	renderManager_->DrawTextureAtlas(animationTexture, animationClipName, shadow_.bound.center, shadow_.bound.size.x, shadow_.bound.size.y, 0.0f, shadow_.option);
 }
 
 void Coin::Release()
