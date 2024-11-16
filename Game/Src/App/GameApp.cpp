@@ -19,7 +19,6 @@ void GameApp::Startup()
 	glManager_->Register("TextureAtlas", textureAtlas);
 
 	GamePlayScene* gamePlayScene = sceneManager_->Create<GamePlayScene>();
-	sceneManager_->Register("GamePlayScene", gamePlayScene);
 
 	SetAppScene(gamePlayScene);
 }

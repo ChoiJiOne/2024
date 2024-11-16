@@ -1,11 +1,13 @@
 #include "Entity/Background.h"
 #include "Entity/Camera2D.h"
 #include "Entity/Coin.h"
+#include "Entity/CoinSpawner.h"
 #include "Entity/EntityManager.h"
 #include "Entity/Player.h"
 #include "Entity/PlayerFollowCamera.h"
 #include "GL/RenderManager2D.h"
 #include "GLFW/GLFWManager.h"
+#include "Scene/SceneManager.h"
 #include "Scene/GamePlayScene.h"
 #include "Utils/Assertion.h"
 #include "Utils/Utils.h"
@@ -15,6 +17,9 @@ GamePlayScene::GamePlayScene()
 	entityManager_ = EntityManager::GetPtr();
 	glManager_ = GLManager::GetPtr();
 	renderManager_ = RenderManager2D::GetPtr();
+	sceneManager_ = SceneManager::GetPtr();
+
+	sceneManager_->Register("GamePlayScene", this);
 
 	Player* player = entityManager_->Create<Player>();
 	entityManager_->Register("Player", player);
@@ -28,9 +33,8 @@ GamePlayScene::GamePlayScene()
 	AddUpdateEntity(background);
 	AddRenderEntity(background);
 
-	Coin* coin = entityManager_->Create<Coin>(glm::vec2(-100.0f, -100.0f));
-	AddUpdateEntity(coin);
-	AddRenderEntity(coin);
+	CoinSpawner* coinSpawner = entityManager_->Create<CoinSpawner>();
+	AddUpdateEntity(coinSpawner);
 }
 
 GamePlayScene::~GamePlayScene()
