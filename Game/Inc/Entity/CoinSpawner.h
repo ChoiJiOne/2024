@@ -8,6 +8,7 @@
 /** 클래스의 전방 선언입니다. */
 class Coin;
 class Playground;
+class GamePlayScene;
 
 /** 코인을 생성하는 엔티티입니다. */
 class CoinSpawner : public IEntity2D
@@ -47,6 +48,9 @@ private:
 
 	/** 코인 스포너의 애니메이션을 수행하는 스프라이트 애니메이터입니다. */
 	SpriteAnimator2D* animator_ = nullptr;
+
+	/** 게임 플레이 씬입니다. */
+	GamePlayScene* gamePlayScene_ = nullptr;
 	
 	/** 렌더링 영역입니다. */
 	Rect2D renderBound_;

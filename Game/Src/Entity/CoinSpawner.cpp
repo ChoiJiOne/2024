@@ -18,6 +18,7 @@ CoinSpawner::CoinSpawner(const glm::vec2& position)
 	
 	textureAtlas_ = GLManager::GetRef().GetByName<TextureAtlas2D>("TextureAtlas");
 	playground_ = EntityManager::GetRef().GetByName<Playground>("Playground");
+	gamePlayScene_ = SceneManager::GetRef().GetByName<GamePlayScene>("GamePlayScene");
 
 	renderBound_ = Rect2D(position, glm::vec2(64.0f, 64.0f));
 	collisionBound_ = renderBound_;
@@ -80,19 +81,18 @@ void CoinSpawner::Tick(float deltaSeconds)
 		const std::string& animationClipName = animator_->GetCurrentClipName();
 		if (animationClipName == "CoinChest_4" && !bIsGenerateCoin_)
 		{
-			glm::vec2 position = glm::diskRand(playground_->GetSafeBound()->radius);
+			glm::vec2 startPos = renderBound_.center;
+			glm::vec2 endPos = glm::diskRand(playground_->GetSafeBound()->radius);
 
-			Coin* coin = EntityManager::GetRef().Create<Coin>(position);
+			Coin* coin = EntityManager::GetRef().Create<Coin>(startPos, endPos);
 			coins_.push_back(coin);
 
-			GamePlayScene* gamePlayScene = SceneManager::GetRef().GetByName<GamePlayScene>("GamePlayScene");
-			gamePlayScene->AddUpdateEntity(coin);
-			gamePlayScene->AddRenderEntity(coin);
+			gamePlayScene_->AddUpdateEntity(coin);
+			gamePlayScene_->AddRenderEntity(coin);
 
 			bIsGenerateCoin_ = true;
 		}
-
-		if (animationClipName == "CoinChest_7")
+		else if (animationClipName == "CoinChest_7")
 		{
 			animator_->Reset();
 			bIsGenerateCoin_ = false;
@@ -101,6 +101,19 @@ void CoinSpawner::Tick(float deltaSeconds)
 	}
 	break;
 	}
+
+	for (auto& coin : coins_)
+	{
+		if (coin && coin->GetState() == Coin::EState::GAIN)
+		{
+			gamePlayScene_->RemoveUpdateEntity(coin);
+			gamePlayScene_->RemoveRenderEntity(coin);
+			EntityManager::GetRef().Destroy(coin);
+			coin = nullptr;
+		}
+	}
+
+	coins_.remove_if([&](Coin* coin) { return coin == nullptr; });
 }
 
 void CoinSpawner::Render()
