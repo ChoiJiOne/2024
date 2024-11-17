@@ -5,6 +5,7 @@
 #include "Entity/Coin.h"
 #include "Entity/CoinSpawner.h"
 #include "Entity/EntityManager.h"
+#include "Entity/FireSpawner.h"
 #include "Entity/Player.h"
 #include "Entity/PlayerFollowCamera.h"
 #include "Entity/Playground.h"
@@ -48,6 +49,14 @@ GamePlayScene::GamePlayScene()
 		CoinSpawner* coinSpawner = entityManager_->Create<CoinSpawner>(glm::vec2(boundRadius * glm::cos(theta), boundRadius * glm::sin(theta)));
 		AddUpdateEntity(coinSpawner);
 		AddRenderEntity(coinSpawner);
+	}
+
+	for (uint32_t count = 0; count < 4; ++count)
+	{
+		float theta = glm::pi<float>() / 4.0f + (2.0f * glm::pi<float>() * static_cast<float>(count)) / 4.0f;
+		FireSpawner* fireSpawner = entityManager_->Create<FireSpawner>(glm::vec2(boundRadius * glm::cos(theta), boundRadius * glm::sin(theta)));
+		AddUpdateEntity(fireSpawner);
+		AddRenderEntity(fireSpawner);
 	}
 }
 
