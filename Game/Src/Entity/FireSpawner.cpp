@@ -1,4 +1,4 @@
-#include <glm/gtc/random.hpp>
+#include <glm/gtc/constants.hpp>
 
 #include "Entity/EntityManager.h"
 #include "Entity/Fire.h"
@@ -10,6 +10,7 @@
 #include "Scene/GamePlayScene.h"
 #include "Scene/SceneManager.h"
 #include "Utils/Assertion.h"
+#include "Utils/Math.h"
 
 FireSpawner::FireSpawner(const glm::vec2& position)
 {
@@ -48,6 +49,8 @@ FireSpawner::FireSpawner(const glm::vec2& position)
 
 	waitTime_ = 0.0f;
 	maxWaitTime_ = 2.0f;
+	minFireSpeed_ = 100.0f;
+	maxFireSpeed_ = 400.0f;
 
 	bIsInitialized_ = true;
 }
@@ -80,9 +83,10 @@ void FireSpawner::Tick(float deltaSeconds)
 	case EState::GENERATE:
 	{
 		glm::vec2 postiton = renderBound_.center;
-		glm::vec2 direction = glm::normalize(glm::vec2(0.0f, 0.0f) - postiton);
+		glm::vec2 direction = GenerateRandomVec2(-postiton, glm::pi<float>() / 2.0f);
+		float speed = GenerateRandomFloat(minFireSpeed_, maxFireSpeed_);
 
-		Fire* fire = EntityManager::GetRef().Create<Fire>(postiton, direction, 100.0f);
+		Fire* fire = EntityManager::GetRef().Create<Fire>(postiton, direction, speed);
 		fires_.push_back(fire);
 
 		gamePlayScene_->AddUpdateEntity(fire);

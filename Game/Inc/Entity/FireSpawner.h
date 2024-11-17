@@ -74,4 +74,10 @@ private:
 
 	/** 최대 대기 시간입니다 */
 	float maxWaitTime_ = 0.0f;
+
+	/** 불의 최소 속도입니다. */
+	float minFireSpeed_ = 0.0f;
+
+	/** 불의 최대 속도입니다. */
+	float maxFireSpeed_ = 0.0f;
 };
