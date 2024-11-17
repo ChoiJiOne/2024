@@ -17,6 +17,7 @@ Coin::Coin(const glm::vec2& startPos, const glm::vec2& endPos)
 	renderOrder_ = 4;
 
 	textureAtlas_ = GLManager::GetRef().GetByName<TextureAtlas2D>("TextureAtlas");
+	player_ = EntityManager::GetRef().GetByName<Player>("Player");
 
 	renderBound_ = Rect2D(startPos, glm::vec2(32.0f, 32.0f));
 	collisionBound_.radius = 16.0f;
@@ -41,9 +42,7 @@ Coin::Coin(const glm::vec2& startPos, const glm::vec2& endPos)
 		"Coin_5",
 	};
 	animator_ = GLManager::GetRef().Create<SpriteAnimator2D>(textureAtlas_, coinClipNames, 0.5f, true);
-
-	player_ = EntityManager::GetRef().GetByName<Player>("Player");
-
+	
 	state_ = EState::MOVE;
 	moveTime_ = 0.0f;
 	maxMoveTime_ = 2.0f;
