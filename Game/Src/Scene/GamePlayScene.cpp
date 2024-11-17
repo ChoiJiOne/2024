@@ -9,6 +9,7 @@
 #include "Entity/Player.h"
 #include "Entity/PlayerFollowCamera.h"
 #include "Entity/Playground.h"
+#include "Entity/UICamera.h"
 #include "GL/RenderManager2D.h"
 #include "GLFW/GLFWManager.h"
 #include "Scene/SceneManager.h"
@@ -37,7 +38,7 @@ GamePlayScene::GamePlayScene()
 
 	mainCamera_ = entityManager_->Create<PlayerFollowCamera>();
 	AddUpdateEntity(mainCamera_);
-
+	
 	Background* background = entityManager_->Create<Background>();
 	AddUpdateEntity(background);
 	AddRenderEntity(background);
@@ -58,6 +59,8 @@ GamePlayScene::GamePlayScene()
 		AddUpdateEntity(fireSpawner);
 		AddRenderEntity(fireSpawner);
 	}
+
+	uiCamera_ = entityManager_->Create<UICamera>();
 }
 
 GamePlayScene::~GamePlayScene()
@@ -85,6 +88,12 @@ void GamePlayScene::Render()
 			{
 				renderEntity->Render();
 			}
+		}
+		renderManager_->End();
+
+		renderManager_->Begin(uiCamera_);
+		{
+
 		}
 		renderManager_->End();
 	}
