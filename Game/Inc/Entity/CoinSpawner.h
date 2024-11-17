@@ -7,6 +7,7 @@
 
 /** 클래스의 전방 선언입니다. */
 class Coin;
+class Playground;
 
 /** 코인을 생성하는 엔티티입니다. */
 class CoinSpawner : public IEntity2D
@@ -41,9 +42,12 @@ private:
 	/** 코인 스포너 렌더링 시 참조할 텍스처 아틀라스입니다. */
 	TextureAtlas2D* textureAtlas_ = nullptr;
 
+	/** 코인을 생성할 영역입니다. */
+	Playground* playground_ = nullptr;
+
 	/** 코인 스포너의 애니메이션을 수행하는 스프라이트 애니메이터입니다. */
 	SpriteAnimator2D* animator_ = nullptr;
-
+	
 	/** 렌더링 영역입니다. */
 	Rect2D renderBound_;
 
@@ -55,4 +59,16 @@ private:
 
 	/** 코인 스포너의 상태입니다. */
 	EState state_ = EState::WAIT;
+
+	/** 현재 관리 중인 코인입니다. */
+	std::list<Coin*> coins_;
+
+	/** 코인 생성까지 대기 시간입니다. */
+	float waitTime_ = 0.0f;
+
+	/** 최대 대기 시간입니다 */
+	float maxWaitTime_ = 0.0f;
+
+	/** 코인 생성 여부를 확인합니다. */
+	bool bIsGenerateCoin_ = false;
 };
