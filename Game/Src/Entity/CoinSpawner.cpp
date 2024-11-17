@@ -1,5 +1,3 @@
-#include <glm/gtc/random.hpp>
-
 #include "Entity/Coin.h"
 #include "Entity/CoinSpawner.h"
 #include "Entity/EntityManager.h"
