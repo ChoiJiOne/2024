@@ -1,10 +1,10 @@
 #pragma once
 
-#include <array>
 #include <cstdint>
 #include <map>
 #include <memory>
 #include <string>
+#include <vector>
 
 #include "Entity/IEntity.h"
 #include "Utils/Macro.h"
@@ -28,15 +28,10 @@ public:
 	template <typename TEntity, typename... Args>
 	TEntity* Create(Args&&... args)
 	{
-		if (!(0 <= entitySize_ && entitySize_ < MAX_ENTITY_SIZE))
-		{
-			return nullptr;
-		}
-
 		int32_t entityID = -1;
-		for (uint32_t index = 0; index < entitySize_; ++index)
+		for (uint32_t index = 0; index < entities_.size(); ++index)
 		{
-			if (!entities_[index] && !usages_[index])
+			if (!entities_[index].first && !entities_[index].second)
 			{
 				entityID = static_cast<int32_t>(index);
 				break;
@@ -45,13 +40,17 @@ public:
 
 		if (entityID == -1)
 		{
-			entityID = entitySize_++;
+			entityID = entities_.size();
+			entities_.push_back({ nullptr, true });
+			entities_[entityID].first = std::make_unique<TEntity>(args...);
+		}
+		else
+		{
+			entities_[entityID].second = true;
+			entities_[entityID].first = std::make_unique<TEntity>(args...);
 		}
 
-		usages_[entityID] = true;
-		entities_[entityID] = std::make_unique<TEntity>(args...);
-
-		return reinterpret_cast<TEntity*>(entities_[entityID].get());
+		return reinterpret_cast<TEntity*>(entities_[entityID].first.get());
 	}
 
 	/** 생성한 엔티티를 파괴합니다. */
@@ -96,16 +95,9 @@ private:
 private:
 	/** 엔티티 매니저의 싱글턴 객체입니다. */
 	static EntityManager singleton_;
-
-	/** 엔티티 매니저에서 관리하는 엔티티의 최대 개수입니다. */
-	static const uint32_t MAX_ENTITY_SIZE = 300;
-
-	/** 엔티티 매니저의 엔티티 크기입니다. 최대 MAX_ENTITY_SIZE개 까지 지원합니다. */
-	uint32_t entitySize_ = 0;
-
+	
 	/** 엔티티와 해당 엔티티의 사용 여부입니다. */
-	std::array<std::unique_ptr<IEntity>, MAX_ENTITY_SIZE> entities_;
-	std::array<bool, MAX_ENTITY_SIZE> usages_;
+	std::vector<std::pair<std::unique_ptr<IEntity>, bool>> entities_;
 
 	/** 이름을 가진 엔티티입니다. */
 	std::map<std::string, IEntity*> namedEntities_;
