@@ -28,7 +28,7 @@ public:
 	const glm::vec2 GetPosition() const;
 
 	/** 플레이어의 경계 충돌 영역을 얻습니다. */
-	const ICollider2D* GetCollider() const { return &collisionBound_; }
+	const Circle2D* GetCollider() const { return &collisionBound_; }
 
 private:
 	/** 플레이어의 애니메이션 상태입니다. */
