@@ -1,3 +1,6 @@
+#define GLM_ENABLE_EXPERIMENTAL 
+#include <glm/gtx/compatibility.hpp>
+
 #include "Entity/Coin.h"
 #include "Entity/EntityManager.h"
 #include "Entity/Player.h"
@@ -6,13 +9,16 @@
 #include "GL/TextureAtlas2D.h"
 #include "Utils/Assertion.h"
 
-Coin::Coin(const glm::vec2& position)
+Coin::Coin(const glm::vec2& startPos, const glm::vec2& endPos)
+	: moveStartPos_(startPos)
+	, moveEndPos_(endPos)
 {
 	tickOrder_ = 3;
 	renderOrder_ = 4;
 
 	textureAtlas_ = GLManager::GetRef().GetByName<TextureAtlas2D>("TextureAtlas");
-	renderBound_ = Rect2D(position, glm::vec2(32.0f, 32.0f));
+
+	renderBound_ = Rect2D(startPos, glm::vec2(32.0f, 32.0f));
 	collisionBound_.radius = 16.0f;
 	collisionBound_.center = renderBound_.center;
 	collisionBound_.center.y += -renderBound_.size.y * 0.5f + collisionBound_.radius;
@@ -38,6 +44,10 @@ Coin::Coin(const glm::vec2& position)
 
 	player_ = EntityManager::GetRef().GetByName<Player>("Player");
 
+	state_ = EState::MOVE;
+	moveTime_ = 0.0f;
+	maxMoveTime_ = 2.0f;
+
 	bIsInitialized_ = true;
 }
 
@@ -51,17 +61,45 @@ Coin::~Coin()
 
 void Coin::Tick(float deltaSeconds)
 {
-	if (!bIsGain_ && collisionBound_.Intersect(player_->GetCollider()))
+	switch (state_)
 	{
-		bIsGain_ = true;
-	}
+	case EState::MOVE:
+	{
+		moveTime_ += deltaSeconds;
+		float timeScale = glm::clamp<float>(moveTime_ / maxMoveTime_, 0.0f, 1.0f);
 
+		glm::vec2 movePos = glm::lerp(moveStartPos_, moveEndPos_, timeScale);
+		UpdateBounds(movePos);
+
+		if (moveTime_ >= maxMoveTime_)
+		{
+			state_ = EState::WAIT;
+		}
+	}
+	break;
+
+	case EState::WAIT:
+	{
+		if (collisionBound_.Intersect(player_->GetCollider()))
+		{
+			state_ = EState::GAIN;
+		}
+	}
+	break;
+
+	case EState::GAIN:
+	{
+
+	}
+	break;
+	}
+	
 	animator_->Update(deltaSeconds);
 }
 
 void Coin::Render()
 {
-	if (bIsGain_)
+	if (state_ == EState::GAIN || state_ == EState::NONE)
 	{
 		return;
 	}
@@ -90,15 +128,13 @@ void Coin::Release()
 	bIsInitialized_ = false;
 }
 
-void Coin::Reset(const glm::vec2& position)
+void Coin::UpdateBounds(const glm::vec2& position)
 {
 	renderBound_.center = position;
+	
 	collisionBound_.center = renderBound_.center;
 	collisionBound_.center.y += -renderBound_.size.y * 0.5f + collisionBound_.radius;
-
-	shadow_.bound = renderBound_;
-	shadow_.bound.size.y *= shadow_.scale;
+	
+	shadow_.bound.center = renderBound_.center;
 	shadow_.bound.center.y += (-renderBound_.size.y * 0.5f) + (-shadow_.bound.size.y * 0.5f);
-
-	bIsGain_ = false;
 }
