@@ -33,5 +33,6 @@ float GenerateRandomFloat(float minValue, float maxValue)
 glm::vec2 GenerateRandomDisk(float radius)
 {
 	float radian = GenerateRandomFloat(0.0f, 2.0f * glm::pi<float>());
-	return glm::vec2(radius * glm::cos(radian), radius * glm::sin(radian));
+	float r = GenerateRandomFloat(0.0f, radius);
+	return glm::vec2(r * glm::cos(radian), r * glm::sin(radian));
 }
