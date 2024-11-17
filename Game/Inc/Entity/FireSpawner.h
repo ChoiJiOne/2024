@@ -1,11 +1,13 @@
 #pragma once
 
+#include <list>
+
 #include "Entity/IEntity2D.h"
 #include "GL/RenderManager2D.h"
 #include "Physic/Rect2D.h"
 
 /** 클래스의 전방 선언입니다. */
-class Coin;
+class Fire;
 class Playground;
 class SpriteAnimator2D;
 class GamePlayScene;
@@ -32,6 +34,13 @@ private:
 		float scale = 0.0f; /** 그림자의 스케일 값입니다. */
 	};
 
+	/** 불 스포너의 상태입니다. */
+	enum class EState
+	{
+		WAIT = 0x00,
+		GENERATE = 0x01,
+	};
+
 private:
 	/** 불 스포너 렌더링 시 참조할 텍스처 아틀라스입니다. */
 	TextureAtlas2D* textureAtlas_ = nullptr;
@@ -42,6 +51,9 @@ private:
 	/** 불 스포너의 애니메이션을 수행하는 스프라이트 애니메이터입니다. */
 	SpriteAnimator2D* animator_ = nullptr;
 
+	/** 게임 플레이 씬입니다. */
+	GamePlayScene* gamePlayScene_ = nullptr;
+
 	/** 렌더링 영역입니다. */
 	Rect2D renderBound_;
 
@@ -50,4 +62,16 @@ private:
 
 	/** 불 스포너의 그림자입니다. */
 	Shadow shadow_;
+
+	/** 불 스포너의 상태입니다. */
+	EState state_ = EState::WAIT;
+
+	/** 현재 관리 중인 불입니다. */
+	std::list<Fire*> fires_;
+
+	/** 불 생성까지 대기 시간입니다. */
+	float waitTime_ = 0.0f;
+
+	/** 최대 대기 시간입니다 */
+	float maxWaitTime_ = 0.0f;
 };

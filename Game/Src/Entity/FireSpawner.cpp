@@ -1,6 +1,7 @@
 #include <glm/gtc/random.hpp>
 
 #include "Entity/EntityManager.h"
+#include "Entity/Fire.h"
 #include "Entity/FireSpawner.h"
 #include "Entity/Playground.h"
 #include "GL/GLManager.h"
@@ -17,6 +18,7 @@ FireSpawner::FireSpawner(const glm::vec2& position)
 
 	textureAtlas_ = GLManager::GetRef().GetByName<TextureAtlas2D>("TextureAtlas");
 	playground_ = EntityManager::GetRef().GetByName<Playground>("Playground");
+	gamePlayScene_ = SceneManager::GetRef().GetByName<GamePlayScene>("GamePlayScene");
 
 	renderBound_ = Rect2D(position, glm::vec2(64.0f, 128.0f));
 	collisionBound_ = renderBound_;
@@ -44,6 +46,9 @@ FireSpawner::FireSpawner(const glm::vec2& position)
 	};
 	animator_ = GLManager::GetRef().Create<SpriteAnimator2D>(textureAtlas_, burnClipNames, 1.0f, true);
 
+	waitTime_ = 0.0f;
+	maxWaitTime_ = 2.0f;
+
 	bIsInitialized_ = true;
 }
 
@@ -58,6 +63,48 @@ FireSpawner::~FireSpawner()
 void FireSpawner::Tick(float deltaSeconds)
 {
 	animator_->Update(deltaSeconds);
+
+	switch (state_)
+	{
+	case EState::WAIT:
+	{
+		waitTime_ += deltaSeconds;
+		if (waitTime_ >= maxWaitTime_)
+		{
+			waitTime_ -= maxWaitTime_;
+			state_ = EState::GENERATE;
+		}
+	}
+	break;
+
+	case EState::GENERATE:
+	{
+		glm::vec2 postiton = renderBound_.center;
+		glm::vec2 direction = glm::normalize(glm::vec2(0.0f, 0.0f) - postiton);
+
+		Fire* fire = EntityManager::GetRef().Create<Fire>(postiton, direction, 100.0f);
+		fires_.push_back(fire);
+
+		gamePlayScene_->AddUpdateEntity(fire);
+		gamePlayScene_->AddRenderEntity(fire);
+
+		state_ = EState::WAIT;
+	}
+	break;
+	}
+
+	for (auto& fire : fires_)
+	{
+		if (fire && fire->GetState() == Fire::EState::DONE)
+		{
+			gamePlayScene_->RemoveUpdateEntity(fire);
+			gamePlayScene_->RemoveRenderEntity(fire);
+			EntityManager::GetRef().Destroy(fire);
+			fire = nullptr;
+		}
+	}
+
+	fires_.remove_if([&](Fire* fire) { return fire == nullptr; });
 }
 
 void FireSpawner::Render()
@@ -67,7 +114,6 @@ void FireSpawner::Render()
 
 	renderManager_->DrawTextureAtlas(animationTexture, animationClipName, renderBound_.center, renderBound_.size.x, renderBound_.size.y, 0.0f);
 	renderManager_->DrawTextureAtlas(animationTexture, animationClipName, shadow_.bound.center, shadow_.bound.size.x, shadow_.bound.size.y, 0.0f, shadow_.option);
-
 }
 
 void FireSpawner::Release()
