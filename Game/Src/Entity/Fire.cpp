@@ -9,6 +9,7 @@
 #include "GL/SpriteAnimator2D.h"
 #include "GL/TextureAtlas2D.h"
 #include "Utils/Assertion.h"
+#include "Utils/Math.h"
 
 Fire::Fire(const glm::vec2& position, const glm::vec2& direction, float speed)
 	: direction_(direction)
@@ -21,8 +22,7 @@ Fire::Fire(const glm::vec2& position, const glm::vec2& direction, float speed)
 	player_ = EntityManager::GetRef().GetByName<Player>("Player");
 	playground_ = EntityManager::GetRef().GetByName<Playground>("Playground");
 	
-	float rotate = glm::angle(glm::vec2(1.0f, 0.0f), direction_);
-	rotate = direction_.y < 0.0f ? (2.0f * glm::pi<float>() - rotate) : rotate;
+	float rotate = GetRadianVec2(direction_);
 	renderBound_ = OrientedRect2D(position, glm::vec2(58.0f, 54.0f), rotate);
 
 	collisionBound_.center = renderBound_.center;
