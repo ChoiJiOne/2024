@@ -3,11 +3,13 @@
 #include <list>
 
 #include "Entity/IEntity2D.h"
+#include "GL/RenderManager2D.h"
 #include "Physic/Rect2D.h"
 
 /** 클래스의 전방 선언입니다. */
 class Coin;
 class Playground;
+class SpriteAnimator2D;
 class GamePlayScene;
 
 /** 코인을 생성하는 엔티티입니다. */
