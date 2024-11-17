@@ -1,10 +1,10 @@
 #pragma once
 
-#include <array>
 #include <cstdint>
 #include <map>
 #include <memory>
 #include <string>
+#include <vector>
 
 #include <glfw/glfw3.h>
 
@@ -63,15 +63,10 @@ public:
 	template <typename TResource, typename... Args>
 	TResource* Create(Args&&... args)
 	{
-		if (!(0 <= resourceSize_ && resourceSize_ < MAX_GL_RESOURCE))
-		{
-			return nullptr;
-		}
-
 		int32_t resourceID = -1;
-		for (uint32_t index = 0; index < resourceSize_; ++index)
+		for (uint32_t index = 0; index < resources_.size(); ++index)
 		{
-			if (!resources_[index] && !usages_[index])
+			if (!resources_[index].first && !resources_[index].second)
 			{
 				resourceID = static_cast<int32_t>(index);
 				break;
@@ -80,13 +75,17 @@ public:
 
 		if (resourceID == -1)
 		{
-			resourceID = resourceSize_++;
+			resourceID = resources_.size();
+			resources_.push_back({ nullptr, true });
+			resources_[resourceID].first = std::make_unique<TResource>(args...);
+		}
+		else
+		{
+			resources_[resourceID].second = true;
+			resources_[resourceID].first = std::make_unique<TResource>(args...);
 		}
 
-		usages_[resourceID] = true;
-		resources_[resourceID] = std::make_unique<TResource>(args...);
-
-		return reinterpret_cast<TResource*>(resources_[resourceID].get());
+		return reinterpret_cast<TResource*>(resources_[resourceID].first.get());
 	}
 
 	/** 생성한 OpenGL 리소스를 파괴합니다. */
@@ -143,15 +142,8 @@ private:
 	/** OpenGL 에러 코드에 대응하는 에러 메시지입니다. */
 	std::map<uint32_t, std::string> errorMessages_;
 
-	/** OpenGL 리소스의 최대 개수입니다. */
-	static const uint32_t MAX_GL_RESOURCE = 200;
-
-	/** OpenGL 리소스 버퍼 사이즈입니다. 최대 MAX_GL_RESOURCE개 까지 지원합니다. */
-	uint32_t resourceSize_ = 0;
-
 	/** OpenGL 리소스의 버퍼와 해당 버퍼의 현재 사용여부입니다. */
-	std::array<std::unique_ptr<GLResource>, MAX_GL_RESOURCE> resources_;
-	std::array<bool, MAX_GL_RESOURCE> usages_;
+	std::vector< std::pair<std::unique_ptr<GLResource>, bool>> resources_;
 
 	/** 이름을 가진 리소스입니다. */
 	std::map<std::string, GLResource*> namedResources_;

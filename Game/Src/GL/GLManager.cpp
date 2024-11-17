@@ -108,9 +108,9 @@ const char* GLManager::GetErrorMessage(uint32_t code) const
 void GLManager::Destroy(const GLResource* resource)
 {
 	int32_t resourceID = -1;
-	for (uint32_t index = 0; index < resourceSize_; ++index)
+	for (uint32_t index = 0; index < resources_.size(); ++index)
 	{
-		GLResource* resourcePtr = resources_[index].get();
+		GLResource* resourcePtr = resources_[index].first.get();
 		if (resource == resourcePtr)
 		{
 			resourceID = static_cast<int32_t>(index);
@@ -123,15 +123,15 @@ void GLManager::Destroy(const GLResource* resource)
 		return; // 해당 리소스는 이미 할당 해제 되었거나, GLManager에 의해서 생성된 리소스가 아님.
 	}
 
-	if (resources_[resourceID])
+	if (resources_[resourceID].first)
 	{
-		if (resources_[resourceID]->IsInitialized())
+		if (resources_[resourceID].first->IsInitialized())
 		{
-			resources_[resourceID]->Release();
+			resources_[resourceID].first->Release();
 		}
 
-		resources_[resourceID].reset();
-		usages_[resourceID] = false;
+		resources_[resourceID].first.reset();
+		resources_[resourceID].second = false;
 	}
 }
 
@@ -186,17 +186,17 @@ void GLManager::Shutdown()
 {
 	ImGui_ImplOpenGL3_Shutdown();
 
-	for (uint32_t index = 0; index < resourceSize_; ++index)
+	for (uint32_t index = 0; index < resources_.size(); ++index)
 	{
-		if (resources_[index])
+		if (resources_[index].first)
 		{
-			if (resources_[index]->IsInitialized())
+			if (resources_[index].first->IsInitialized())
 			{
-				resources_[index]->Release();
+				resources_[index].first->Release();
 			}
 
-			resources_[index].reset();
-			usages_[index] = false;
+			resources_[index].first.reset();
+			resources_[index].second = false;
 		}
 	}
 
