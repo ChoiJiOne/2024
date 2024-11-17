@@ -10,6 +10,7 @@
 #include "Scene/GamePlayScene.h"
 #include "Scene/SceneManager.h"
 #include "Utils/Assertion.h"
+#include "Utils/Math.h"
 
 CoinSpawner::CoinSpawner(const glm::vec2& position)
 {
@@ -82,7 +83,7 @@ void CoinSpawner::Tick(float deltaSeconds)
 		if (animationClipName == "CoinChest_4" && !bIsGenerateCoin_)
 		{
 			glm::vec2 startPos = renderBound_.center;
-			glm::vec2 endPos = glm::diskRand(playground_->GetSafeBound()->radius);
+			glm::vec2 endPos = GenerateRandomDisk(playground_->GetSafeBound()->radius);
 
 			Coin* coin = EntityManager::GetRef().Create<Coin>(startPos, endPos);
 			coins_.push_back(coin);
