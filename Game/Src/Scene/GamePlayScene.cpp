@@ -69,7 +69,10 @@ GamePlayScene::~GamePlayScene()
 
 void GamePlayScene::Tick(float deltaSeconds)
 {
-	IGameScene::Tick(deltaSeconds);
+	for (auto& updateEntity : updateEntites_)
+	{
+		updateEntity->Tick(deltaSeconds);
+	}
 }
 
 void GamePlayScene::Render()
@@ -94,4 +97,26 @@ void GamePlayScene::Enter()
 
 void GamePlayScene::Exit()
 {
+}
+
+void GamePlayScene::AddUpdateEntity(IEntity* entity)
+{
+	updateEntites_.push_back(entity);
+	updateEntites_.sort(GamePlayScene::CompareUpdateOrder);
+}
+
+void GamePlayScene::RemoveUpdateEntity(IEntity* entity)
+{
+	updateEntites_.remove(entity);
+}
+
+void GamePlayScene::AddRenderEntity(IEntity2D* entity)
+{
+	renderEntities_.push_back(entity);
+	renderEntities_.sort(GamePlayScene::CompareRenderOrder);
+}
+
+void GamePlayScene::RemoveRenderEntity(IEntity2D* entity)
+{
+	renderEntities_.remove(entity);
 }

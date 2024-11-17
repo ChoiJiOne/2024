@@ -29,31 +29,6 @@ public:
 
 	/** 전환할 씬의 포인터 값을 얻습니다. */
 	IGameScene* GetSwitchScene() { return switchScene_; }
-
-	/** 업데이트할 엔티티를 추가합니다. */
-	void AddUpdateEntity(IEntity* entity);
-	
-	/** 업데이트할 엔티티를 삭제합니다. */
-	void RemoveUpdateEntity(IEntity* entity);
-
-	/** 렌더링할 엔티티를 추가합니다.  */
-	void AddRenderEntity(IEntity2D* entity);
-
-	/** 렌더링할 엔티티를 삭제합니다. */
-	void RemoveRenderEntity(IEntity2D* entity);
-
-protected:
-	/** 업데이트할 엔티티의 우선 순위를 비교합니다. */
-	static bool CompareUpdateOrder(IEntity* lhs, IEntity* rhs)
-	{
-		return lhs->GetTickOrder() < rhs->GetTickOrder();
-	}
-
-	/** 렌더링할 엔티티의 우선 순위를 비교합니다. */
-	static bool CompareRenderOrder(IEntity2D* lhs, IEntity2D* rhs)
-	{
-		return lhs->GetRenderOrder() < rhs->GetRenderOrder();
-	}
 	
 protected:
 	/** 현재 씬에 진입했는지 확인합니다. */
@@ -64,10 +39,4 @@ protected:
 
 	/** 전환할 씬의 포인터입니다. */
 	IGameScene* switchScene_ = nullptr;
-
-	/** 업데이트할 엔티티입니다. */
-	std::list<IEntity*> updateEntites_;
-
-	/** 렌더링할 엔티티입니다. */
-	std::list<IEntity2D*> renderEntities_;
 };
