@@ -45,6 +45,9 @@ private:
 	/** 불 스포너 렌더링 시 참조할 텍스처 아틀라스입니다. */
 	TextureAtlas2D* textureAtlas_ = nullptr;
 
+	/** 불을 피해야 할 플레이어입니다. */
+	Player* player_ = nullptr;
+
 	/** 불을 생성할 영역입니다. */
 	Playground* playground_ = nullptr;
 

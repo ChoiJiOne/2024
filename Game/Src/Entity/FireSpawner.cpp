@@ -3,6 +3,7 @@
 #include "Entity/EntityManager.h"
 #include "Entity/Fire.h"
 #include "Entity/FireSpawner.h"
+#include "Entity/Player.h"
 #include "Entity/Playground.h"
 #include "GL/GLManager.h"
 #include "GL/SpriteAnimator2D.h"
@@ -19,6 +20,7 @@ FireSpawner::FireSpawner(const glm::vec2& position)
 
 	textureAtlas_ = GLManager::GetRef().GetByName<TextureAtlas2D>("TextureAtlas");
 	playground_ = EntityManager::GetRef().GetByName<Playground>("Playground");
+	player_ = EntityManager::GetRef().GetByName<Player>("Player");
 	gamePlayScene_ = SceneManager::GetRef().GetByName<GamePlayScene>("GamePlayScene");
 
 	renderBound_ = Rect2D(position, glm::vec2(64.0f, 128.0f));
@@ -83,7 +85,7 @@ void FireSpawner::Tick(float deltaSeconds)
 	case EState::GENERATE:
 	{
 		glm::vec2 postiton = renderBound_.center;
-		glm::vec2 direction = GenerateRandomVec2(-postiton, glm::pi<float>() / 2.0f);
+		glm::vec2 direction = glm::normalize(player_->GetCollider()->center - postiton);
 		float speed = GenerateRandomFloat(minFireSpeed_, maxFireSpeed_);
 
 		Fire* fire = EntityManager::GetRef().Create<Fire>(postiton, direction, speed);
@@ -131,6 +133,7 @@ void FireSpawner::Release()
 	}
 
 	playground_ = nullptr;
+	player_ = nullptr;
 	textureAtlas_ = nullptr;
 
 	bIsInitialized_ = false;
