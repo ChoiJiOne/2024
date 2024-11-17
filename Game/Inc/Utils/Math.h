@@ -16,3 +16,9 @@ float GenerateRandomFloat(float minValue, float maxValue);
 
 /** 반지름 내의 임의의 벡터를 생성합니다. */
 glm::vec2 GenerateRandomDisk(float radius);
+
+/** 
+ * 특정 벡터를 기준으로 라디안 각도 범위 내에 벡터를 생성합니다. 
+ * 단, 생성된 벡터는 정규화된 벡터입니다.
+ */
+glm::vec2 GenerateRandomVec2(const glm::vec2& v, float radian);
