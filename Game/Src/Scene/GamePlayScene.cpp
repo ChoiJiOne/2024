@@ -1,3 +1,5 @@
+#include <glm/gtc/constants.hpp>
+
 #include "Entity/Background.h"
 #include "Entity/Camera2D.h"
 #include "Entity/Coin.h"
@@ -28,6 +30,7 @@ GamePlayScene::GamePlayScene()
 	AddRenderEntity(player);
 
 	Playground* playground = entityManager_->Create<Playground>();
+	entityManager_->Register("Playground", playground);
 	AddUpdateEntity(playground);
 	AddRenderEntity(playground);
 
@@ -38,9 +41,14 @@ GamePlayScene::GamePlayScene()
 	AddUpdateEntity(background);
 	AddRenderEntity(background);
 
-	CoinSpawner* coinSpawner = entityManager_->Create<CoinSpawner>();
-	AddUpdateEntity(coinSpawner);
-	AddRenderEntity(coinSpawner);
+	float boundRadius = playground->GetSafeBound()->radius;
+	for (uint32_t count = 0; count < 4; ++count)
+	{
+		float theta = (2.0f * glm::pi<float>() * static_cast<float>(count)) / 4.0f;
+		CoinSpawner* coinSpawner = entityManager_->Create<CoinSpawner>(glm::vec2(boundRadius * glm::cos(theta), boundRadius * glm::sin(theta)));
+		AddUpdateEntity(coinSpawner);
+		AddRenderEntity(coinSpawner);
+	}
 }
 
 GamePlayScene::~GamePlayScene()
