@@ -89,6 +89,12 @@ private:
 
 	/** 불의 최대 속도입니다. */
 	float maxFireSpeed_ = 0.0f;
+
+	/** 불의 최소 지속 시간입니다. */
+	float minFireLifeTime_ = 0.0f;
+
+	/** 불의 최대  지속 시간입니다. */
+	float maxFireLifeTime_ = 0.0f;
 	
 	/** 현재 관리 중인 오브젝트들입니다. */
 	std::list<IObject*> objects_;

@@ -53,6 +53,8 @@ RandomChest::RandomChest(const glm::vec2& position)
 	bIsGenerateObject_ = false;
 	minFireSpeed_ = 100.0f;
 	maxFireSpeed_ = 400.0f;
+	minFireLifeTime_ = 5.0f;
+	maxFireLifeTime_ = 10.0f;
 
 	bIsInitialized_ = true;
 }
@@ -150,8 +152,9 @@ IObject* RandomChest::GenerateRandomObject()
 		glm::vec2 postiton = renderBound_.center;
 		glm::vec2 direction = glm::normalize(player_->GetCollider()->center - postiton);
 		float speed = GenerateRandomFloat(minFireSpeed_, maxFireSpeed_);
+		float lifeTime = GenerateRandomFloat(minFireLifeTime_, maxFireLifeTime_);
 
-		return entityManager.Create<Fire>(postiton, direction, speed);
+		return entityManager.Create<Fire>(postiton, direction, speed, lifeTime);
 	}
 	break;
 
