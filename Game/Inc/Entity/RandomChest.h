@@ -12,21 +12,21 @@ class Playground;
 class SpriteAnimator2D;
 class GamePlayScene;
 
-/** 코인을 생성하는 엔티티입니다. */
-class CoinSpawner : public IEntity2D
+/** 임의의 오브젝트를 생성하는 상자 엔티티입니다. */
+class RandomChest : public IEntity2D
 {
 public:
-	CoinSpawner(const glm::vec2& position);
-	virtual ~CoinSpawner();
+	RandomChest(const glm::vec2& position);
+	virtual ~RandomChest();
 
-	DISALLOW_COPY_AND_ASSIGN(CoinSpawner);
+	DISALLOW_COPY_AND_ASSIGN(RandomChest);
 
 	virtual void Tick(float deltaSeconds) override;
 	virtual void Render() override;
 	virtual void Release() override;
 
 private:
-	/** 코인 스포너의 그림자입니다. */
+	/** 렌덤 상자의 그림자입니다. */
 	struct Shadow
 	{
 		Rect2D bound; /** 그림자 영역입니다. */
@@ -34,7 +34,7 @@ private:
 		float scale = 0.0f; /** 그림자의 스케일 값입니다. */
 	};
 
-	/** 코인 스포너의 상태입니다. */
+	/** 렌덤 상자의 상태입니다. */
 	enum class EState
 	{
 		WAIT     = 0x00,
@@ -42,13 +42,13 @@ private:
 	};
 
 private:
-	/** 코인 스포너 렌더링 시 참조할 텍스처 아틀라스입니다. */
+	/** 렌덤 상자 렌더링 시 참조할 텍스처 아틀라스입니다. */
 	TextureAtlas2D* textureAtlas_ = nullptr;
 
 	/** 코인을 생성할 영역입니다. */
 	Playground* playground_ = nullptr;
 
-	/** 코인 스포너의 애니메이션을 수행하는 스프라이트 애니메이터입니다. */
+	/** 렌덤 상자의 애니메이션을 수행하는 스프라이트 애니메이터입니다. */
 	SpriteAnimator2D* animator_ = nullptr;
 
 	/** 게임 플레이 씬입니다. */
@@ -60,10 +60,10 @@ private:
 	/** 충돌 영역입니다. */
 	Rect2D collisionBound_;
 
-	/** 코인 스포너의 그림자입니다. */
+	/** 렌덤 상자의 그림자입니다. */
 	Shadow shadow_;
 
-	/** 코인 스포너의 상태입니다. */
+	/** 렌덤 상자의 상태입니다. */
 	EState state_ = EState::WAIT;
 
 	/** 현재 관리 중인 코인입니다. */

@@ -3,7 +3,7 @@
 #include "Entity/Background.h"
 #include "Entity/Camera2D.h"
 #include "Entity/Coin.h"
-#include "Entity/CoinSpawner.h"
+#include "Entity/RandomChest.h"
 #include "Entity/EntityManager.h"
 #include "Entity/FireSpawner.h"
 #include "Entity/Player.h"
@@ -47,9 +47,9 @@ GamePlayScene::GamePlayScene()
 	for (uint32_t count = 0; count < 4; ++count)
 	{
 		float theta = (2.0f * glm::pi<float>() * static_cast<float>(count)) / 4.0f;
-		CoinSpawner* coinSpawner = entityManager_->Create<CoinSpawner>(glm::vec2(boundRadius * glm::cos(theta), boundRadius * glm::sin(theta)));
-		AddUpdateEntity(coinSpawner);
-		AddRenderEntity(coinSpawner);
+		RandomChest* randomChest = entityManager_->Create<RandomChest>(glm::vec2(boundRadius * glm::cos(theta), boundRadius * glm::sin(theta)));
+		AddUpdateEntity(randomChest);
+		AddRenderEntity(randomChest);
 	}
 
 	for (uint32_t count = 0; count < 4; ++count)

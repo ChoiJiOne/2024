@@ -1,5 +1,5 @@
 #include "Entity/Coin.h"
-#include "Entity/CoinSpawner.h"
+#include "Entity/RandomChest.h"
 #include "Entity/EntityManager.h"
 #include "Entity/Playground.h"
 #include "GL/GLManager.h"
@@ -10,7 +10,7 @@
 #include "Utils/Assertion.h"
 #include "Utils/Math.h"
 
-CoinSpawner::CoinSpawner(const glm::vec2& position)
+RandomChest::RandomChest(const glm::vec2& position)
 {
 	tickOrder_ = 5;
 	renderOrder_ = 1;
@@ -50,7 +50,7 @@ CoinSpawner::CoinSpawner(const glm::vec2& position)
 	bIsInitialized_ = true;
 }
 
-CoinSpawner::~CoinSpawner()
+RandomChest::~RandomChest()
 {
 	if (bIsInitialized_)
 	{
@@ -58,7 +58,7 @@ CoinSpawner::~CoinSpawner()
 	}
 }
 
-void CoinSpawner::Tick(float deltaSeconds)
+void RandomChest::Tick(float deltaSeconds)
 {
 	switch (state_)
 	{
@@ -115,7 +115,7 @@ void CoinSpawner::Tick(float deltaSeconds)
 	coins_.remove_if([&](Coin* coin) { return coin == nullptr; });
 }
 
-void CoinSpawner::Render()
+void RandomChest::Render()
 {
 	TextureAtlas2D* animationTexture = animator_->GetTextureAtlas();
 	const std::string& animationClipName = animator_->GetCurrentClipName();
@@ -124,7 +124,7 @@ void CoinSpawner::Render()
 	renderManager_->DrawTextureAtlas(animationTexture, animationClipName, shadow_.bound.center, shadow_.bound.size.x, shadow_.bound.size.y, 0.0f, shadow_.option);
 }
 
-void CoinSpawner::Release()
+void RandomChest::Release()
 {
 	CHECK(bIsInitialized_);
 	
