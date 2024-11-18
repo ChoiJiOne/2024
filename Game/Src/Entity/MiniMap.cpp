@@ -27,7 +27,7 @@ MiniMap::MiniMap(UICamera* uiCamera, const std::vector<RandomChest*>& randomChes
 	playgroundRadius_ = playground->GetSafeBound()->radius;
 
 	glm::vec2 uiCameraSize = uiCamera_->GetSize() * 0.5f;
-	renderBound_ = Rect2D(glm::vec2(0.0f, 0.0f), glm::vec2(256.0f, 256.0f));
+	renderBound_ = Rect2D(glm::vec2(0.0f, 0.0f), glm::vec2(200.0f, 200.0f));
 	renderBound_.center = glm::vec2(uiCameraSize.x, -uiCameraSize.y);
 	renderBound_.center += glm::vec2(-renderBound_.size.x, +renderBound_.size.y) * 0.5f;
 
