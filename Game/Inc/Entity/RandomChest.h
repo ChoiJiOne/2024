@@ -25,6 +25,9 @@ public:
 	virtual void Render() override;
 	virtual void Release() override;
 
+	/** 렌덤 상자 엔티티가 관리하는 오브젝트 목록을 얻습니다. */
+	const std::list<IObject*>& GetObjects() const { return objects_; }
+
 private:
 	/** 렌덤 상자의 그림자입니다. */
 	struct Shadow
