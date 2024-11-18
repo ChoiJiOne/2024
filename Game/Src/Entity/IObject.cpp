@@ -2,7 +2,6 @@
 #include "Entity/IObject.h"
 #include "Entity/Player.h"
 #include "Utils/Assertion.h"
-//: type_(type) {}
 
 IObject::IObject(const EType& type)
 	: type_(type)
