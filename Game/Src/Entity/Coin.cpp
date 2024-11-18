@@ -62,12 +62,7 @@ void Coin::Tick(float deltaSeconds)
 	{
 	case EState::MOVE:
 	{
-		moveTime_ += deltaSeconds;
-		float timeScale = glm::clamp<float>(moveTime_ / maxMoveTime_, 0.0f, 1.0f);
-
-		glm::vec2 movePos = glm::lerp(moveStartPos_, moveEndPos_, timeScale);
-		UpdateBounds(movePos);
-
+		Move(deltaSeconds);
 		if (moveTime_ >= maxMoveTime_)
 		{
 			state_ = EState::WAIT;
@@ -121,13 +116,17 @@ void Coin::Release()
 	IObject::Release();
 }
 
-void Coin::UpdateBounds(const glm::vec2& position)
+void Coin::Move(float deltaSeconds)
 {
-	renderBound_.center = position;
-	
+	moveTime_ += deltaSeconds;
+	float timeScale = glm::clamp<float>(moveTime_ / maxMoveTime_, 0.0f, 1.0f);
+	glm::vec2 movePos = glm::lerp(moveStartPos_, moveEndPos_, timeScale);
+
+	renderBound_.center = movePos;
+
 	collisionBound_.center = renderBound_.center;
 	collisionBound_.center.y += -renderBound_.size.y * 0.5f + collisionBound_.radius;
-	
+
 	shadow_.bound.center = renderBound_.center;
 	shadow_.bound.center.y += (-renderBound_.size.y * 0.5f) + (-shadow_.bound.size.y * 0.5f);
 }

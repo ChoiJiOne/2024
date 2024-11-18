@@ -31,9 +31,9 @@ private:
 		float scale = 0.0f; /** 그림자의 스케일 값입니다. */
 	};
 
-	/** 코인 내의 경계 영역 요소들을 업데이트합니다. */
-	void UpdateBounds(const glm::vec2& position);
-	
+	/** 코인을 움직입니다. */
+	void Move(float deltaSeconds);
+
 private:
 	/** 코인 렌더링 시 참조할 텍스처 아틀라스입니다. */
 	TextureAtlas2D* textureAtlas_ = nullptr;
