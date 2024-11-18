@@ -8,6 +8,7 @@
 
 /** 클래스의 전방 선언입니다. */
 class Coin;
+class Fire;
 class Playground;
 class SpriteAnimator2D;
 class GamePlayScene;
@@ -45,7 +46,10 @@ private:
 	/** 렌덤 상자 렌더링 시 참조할 텍스처 아틀라스입니다. */
 	TextureAtlas2D* textureAtlas_ = nullptr;
 
-	/** 코인을 생성할 영역입니다. */
+	/** 렌덤 상자의 요소를 획득하거나 피해야 할 플레이어입니다. */
+	Player* player_ = nullptr;
+
+	/** 렌덤 요소를 생성할 영역입니다. */
 	Playground* playground_ = nullptr;
 
 	/** 렌덤 상자의 애니메이션을 수행하는 스프라이트 애니메이터입니다. */
@@ -65,16 +69,25 @@ private:
 
 	/** 렌덤 상자의 상태입니다. */
 	EState state_ = EState::WAIT;
-
-	/** 현재 관리 중인 코인입니다. */
-	std::list<Coin*> coins_;
-
-	/** 코인 생성까지 대기 시간입니다. */
+	
+	/** 생성까지 대기 시간입니다. */
 	float waitTime_ = 0.0f;
 
 	/** 최대 대기 시간입니다 */
 	float maxWaitTime_ = 0.0f;
 
-	/** 코인 생성 여부를 확인합니다. */
-	bool bIsGenerateCoin_ = false;
+	/** 생성 여부를 확인합니다. */
+	bool bIsGenerate_ = false;
+		
+	/** 불의 최소 속도입니다. */
+	float minFireSpeed_ = 0.0f;
+
+	/** 불의 최대 속도입니다. */
+	float maxFireSpeed_ = 0.0f;
+	
+	/** 현재 관리 중인 코인입니다. */
+	std::list<Coin*> coins_;
+
+	/** 현재 관리 중인 불입니다. */
+	std::list<Fire*> fires_;
 };
