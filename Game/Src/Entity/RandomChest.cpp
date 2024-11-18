@@ -3,6 +3,7 @@
 #include "Entity/Fire.h"
 #include "Entity/IObject.h"
 #include "Entity/RandomChest.h"
+#include "Entity/Potion.h"
 #include "Entity/Player.h"
 #include "Entity/Playground.h"
 #include "GL/GLManager.h"
@@ -147,7 +148,6 @@ IObject* RandomChest::GenerateRandomObject()
 	case 1:
 	case 2:
 	case 3:
-	case 4:
 	{
 		glm::vec2 postiton = renderBound_.center;
 		glm::vec2 direction = glm::normalize(player_->GetCollider()->center - postiton);
@@ -158,16 +158,26 @@ IObject* RandomChest::GenerateRandomObject()
 	}
 	break;
 
+	case 4:
 	case 5:
 	case 6:
 	case 7:
 	case 8:
-	case 9:
 	{
 		glm::vec2 startPos = renderBound_.center;
 		glm::vec2 endPos = GenerateRandomDisk(playground_->GetSafeBound()->radius);
 
 		return entityManager.Create<Coin>(startPos, endPos);
+	}
+	break;
+
+	case 9:
+	{
+		glm::vec2 startPos = renderBound_.center;
+		glm::vec2 endPos = GenerateRandomDisk(playground_->GetSafeBound()->radius);
+		Potion::EColor color = static_cast<Potion::EColor>(GenerateRandomInt(1, 2));
+
+		return entityManager.Create<Potion>(startPos, endPos, color);
 	}
 	break;
 	}
