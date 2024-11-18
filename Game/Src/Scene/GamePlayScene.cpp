@@ -1,9 +1,11 @@
+#include <imgui.h>
 #include <glm/gtc/constants.hpp>
 
 #include "Entity/Background.h"
 #include "Entity/Camera2D.h"
 #include "Entity/Coin.h"
 #include "Entity/EntityManager.h"
+#include "Entity/HPBar.h"
 #include "Entity/MiniMap.h"
 #include "Entity/Player.h"
 #include "Entity/PlayerFollowCamera.h"
@@ -61,6 +63,9 @@ GamePlayScene::GamePlayScene()
 
 	MiniMap* miniMap = entityManager_->Create<MiniMap>(uiCamera_, randomChests);
 	AddUIEntity(miniMap);
+
+	hpBar_ = entityManager_->Create<HPBar>(uiCamera_);
+	AddUIEntity(hpBar_);
 }
 
 GamePlayScene::~GamePlayScene()
@@ -72,6 +77,19 @@ GamePlayScene::~GamePlayScene()
 
 void GamePlayScene::Tick(float deltaSeconds)
 {
+	ImGui::Begin("HPBAR");
+	if (ImGui::Button("INC"))
+	{
+		float hp = hpBar_->GetHP();
+		hpBar_->SetHP(hp + 10);
+	}
+	if (ImGui::Button("DEC"))
+	{
+		float hp = hpBar_->GetHP();
+		hpBar_->SetHP(hp - 10);
+	}
+	ImGui::End();
+
 	for (auto& updateEntity : updateEntites_)
 	{
 		updateEntity->Tick(deltaSeconds);
