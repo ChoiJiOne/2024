@@ -54,7 +54,7 @@ GamePlayScene::GamePlayScene()
 
 	uiCamera_ = entityManager_->Create<UICamera>();
 
-	MiniMap* miniMap = entityManager_->Create<MiniMap>();
+	MiniMap* miniMap = entityManager_->Create<MiniMap>(uiCamera_);
 	AddUIEntity(miniMap);
 }
 

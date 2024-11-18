@@ -58,7 +58,7 @@ private:
 	class Camera2D* mainCamera_ = nullptr;
 
 	/** 게임 플레이 씬의 스크린 카메라입니다. */
-	class Camera2D* uiCamera_ = nullptr;
+	class UICamera* uiCamera_ = nullptr;
 
 	/** 업데이트할 엔티티입니다. */
 	std::list<IEntity*> updateEntites_;
