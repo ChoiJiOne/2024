@@ -23,7 +23,7 @@ public:
 	virtual void Tick(float deltaSeconds) override;
 	virtual void Render() override;
 	virtual void Release() override;
-
+	
 private:
 	/** 미니멥 렌더링에 기준이 될 UI 카메라입니다. */
 	UICamera* uiCamera_ = nullptr;
@@ -45,4 +45,10 @@ private:
 
 	/** 미니맵에 표시할 점의 크기입니다. */
 	float pointSize_ = 0.0f;
+
+	/** 미니맵 상의 플레이어 위치입니다. */
+	glm::vec2 playerPosition_ = glm::vec2(0.0f, 0.0f);
+
+	/** 미니맵 상의 플레이어의 색상입니다. */
+	glm::vec4 playerColor_ = glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
 };

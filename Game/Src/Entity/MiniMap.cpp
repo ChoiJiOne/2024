@@ -26,7 +26,8 @@ MiniMap::MiniMap(UICamera* uiCamera)
 	renderBound_.center += glm::vec2(-renderBound_.size.x, +renderBound_.size.y) * 0.5f;
 
 	minimapRadius_ = renderBound_.size.x * 0.4f;
-	pointSize_ = 4.0f;
+	pointSize_ = 6.0f;
+	playerColor_ = glm::vec4(0.0f, 1.0f, 0.0f, 1.0f);
 
 	bIsInitialized_ = true;
 }
@@ -41,17 +42,16 @@ MiniMap::~MiniMap()
 
 void MiniMap::Tick(float deltaSeconds)
 {
+	playerPosition_ = player_->GetCollider()->center / playgroundRadius_;
+	playerPosition_ *= minimapRadius_;
+	playerPosition_ += renderBound_.center;
 }
 
 void MiniMap::Render()
 {
-	glm::vec2 playerPos = player_->GetCollider()->center / playgroundRadius_;
-	playerPos *= minimapRadius_;
-	playerPos += renderBound_.center;
-
 	renderManager_->DrawTextureAtlas(textureAtlas_, "MiniMap", renderBound_.center, renderBound_.size.x, renderBound_.size.y, 0.0f);
 
-	renderManager_->DrawPoint(playerPos, glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), pointSize_);
+	renderManager_->DrawPoint(playerPosition_, playerColor_, pointSize_);
 }
 
 void MiniMap::Release()
