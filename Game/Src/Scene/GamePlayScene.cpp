@@ -4,6 +4,7 @@
 #include "Entity/Camera2D.h"
 #include "Entity/Coin.h"
 #include "Entity/EntityManager.h"
+#include "Entity/MiniMap.h"
 #include "Entity/Player.h"
 #include "Entity/PlayerFollowCamera.h"
 #include "Entity/Playground.h"
@@ -52,6 +53,9 @@ GamePlayScene::GamePlayScene()
 	}
 
 	uiCamera_ = entityManager_->Create<UICamera>();
+
+	MiniMap* miniMap = entityManager_->Create<MiniMap>();
+	AddUIEntity(miniMap);
 }
 
 GamePlayScene::~GamePlayScene()
