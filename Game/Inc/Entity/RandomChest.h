@@ -7,8 +7,7 @@
 #include "Physic/Rect2D.h"
 
 /** 클래스의 전방 선언입니다. */
-class Coin;
-class Fire;
+class IObject;
 class Playground;
 class SpriteAnimator2D;
 class GamePlayScene;
@@ -41,6 +40,12 @@ private:
 		WAIT     = 0x00,
 		GENERATE = 0x01,
 	};
+
+	/** 임의의 오브젝트를 생성합니다. */
+	IObject* GenerateRandomObject();
+
+	/** 오브젝트 요소를 정리합니다. */
+	void CleanupObjects();
 
 private:
 	/** 렌덤 상자 렌더링 시 참조할 텍스처 아틀라스입니다. */
@@ -77,7 +82,7 @@ private:
 	float maxWaitTime_ = 0.0f;
 
 	/** 생성 여부를 확인합니다. */
-	bool bIsGenerate_ = false;
+	bool bIsGenerateObject_ = false;
 		
 	/** 불의 최소 속도입니다. */
 	float minFireSpeed_ = 0.0f;
@@ -85,9 +90,6 @@ private:
 	/** 불의 최대 속도입니다. */
 	float maxFireSpeed_ = 0.0f;
 	
-	/** 현재 관리 중인 코인입니다. */
-	std::list<Coin*> coins_;
-
-	/** 현재 관리 중인 불입니다. */
-	std::list<Fire*> fires_;
+	/** 현재 관리 중인 오브젝트들입니다. */
+	std::list<IObject*> objects_;
 };

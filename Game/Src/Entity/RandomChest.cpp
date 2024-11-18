@@ -1,7 +1,8 @@
 #include "Entity/Coin.h"
-#include "Entity/Fire.h"
-#include "Entity/RandomChest.h"
 #include "Entity/EntityManager.h"
+#include "Entity/Fire.h"
+#include "Entity/IObject.h"
+#include "Entity/RandomChest.h"
 #include "Entity/Player.h"
 #include "Entity/Playground.h"
 #include "GL/GLManager.h"
@@ -35,7 +36,7 @@ RandomChest::RandomChest(const glm::vec2& position)
 	shadow_.option.transparent = 0.3f;
 	shadow_.option.bIsFlipV = true;
 
-	std::vector<std::string> coinChestClipNames =
+	std::vector<std::string> chestClipNames =
 	{
 		"Chest_1",
 		"Chest_2",
@@ -45,11 +46,11 @@ RandomChest::RandomChest(const glm::vec2& position)
 		"Chest_6",
 		"Chest_7",
 	};
-	animator_ = GLManager::GetRef().Create<SpriteAnimator2D>(textureAtlas_, coinChestClipNames, 1.0f, false);
+	animator_ = GLManager::GetRef().Create<SpriteAnimator2D>(textureAtlas_, chestClipNames, 1.0f, false);
 
 	waitTime_ = 0.0f;
-	maxWaitTime_ = 2.0f;
-	bIsGenerate_ = false;
+	maxWaitTime_ = 3.0f;
+	bIsGenerateObject_ = false;
 	minFireSpeed_ = 100.0f;
 	maxFireSpeed_ = 400.0f;
 
@@ -84,66 +85,27 @@ void RandomChest::Tick(float deltaSeconds)
 		animator_->Update(deltaSeconds);
 
 		const std::string& animationClipName = animator_->GetCurrentClipName();
-		if (animationClipName == "Chest_4" && !bIsGenerate_)
+		if (animationClipName == "Chest_4" && !bIsGenerateObject_)
 		{
-			glm::vec2 postiton = renderBound_.center;
-			glm::vec2 direction = glm::normalize(player_->GetCollider()->center - postiton);
-			float speed = GenerateRandomFloat(minFireSpeed_, maxFireSpeed_);
+			IObject* randomObject = GenerateRandomObject();
 
-			Fire* fire = EntityManager::GetRef().Create<Fire>(postiton, direction, speed);
-			fires_.push_back(fire);
+			objects_.push_back(randomObject);
+			gamePlayScene_->AddUpdateEntity(randomObject);
+			gamePlayScene_->AddRenderEntity(randomObject);
 
-			gamePlayScene_->AddUpdateEntity(fire);
-			gamePlayScene_->AddRenderEntity(fire);
-
-
-
-
-			glm::vec2 startPos = renderBound_.center;
-			glm::vec2 endPos = GenerateRandomDisk(playground_->GetSafeBound()->radius);
-
-			Coin* coin = EntityManager::GetRef().Create<Coin>(startPos, endPos);
-			coins_.push_back(coin);
-
-			gamePlayScene_->AddUpdateEntity(coin);
-			gamePlayScene_->AddRenderEntity(coin);
-
-			bIsGenerate_ = true;
+			bIsGenerateObject_ = true;
 		}
 		else if (animationClipName == "Chest_7")
 		{
 			animator_->Reset();
-			bIsGenerate_ = false;
+			bIsGenerateObject_ = false;
 			state_ = EState::WAIT;
 		}
 	}
 	break;
 	}
 
-	for (auto& coin : coins_)
-	{
-		if (coin && coin->GetState() == Coin::EState::GAIN)
-		{
-			gamePlayScene_->RemoveUpdateEntity(coin);
-			gamePlayScene_->RemoveRenderEntity(coin);
-			EntityManager::GetRef().Destroy(coin);
-			coin = nullptr;
-		}
-	}
-
-	for (auto& fire : fires_)
-	{
-		if (fire && fire->GetState() == Fire::EState::DONE)
-		{
-			gamePlayScene_->RemoveUpdateEntity(fire);
-			gamePlayScene_->RemoveRenderEntity(fire);
-			EntityManager::GetRef().Destroy(fire);
-			fire = nullptr;
-		}
-	}
-
-	coins_.remove_if([&](Coin* coin) { return coin == nullptr; });
-	fires_.remove_if([&](Fire* fire) { return fire == nullptr; });
+	CleanupObjects();
 }
 
 void RandomChest::Render()
@@ -170,4 +132,58 @@ void RandomChest::Release()
 	textureAtlas_ = nullptr;
 
 	bIsInitialized_ = false;
+}
+
+IObject* RandomChest::GenerateRandomObject()
+{
+	EntityManager& entityManager = EntityManager::GetRef();
+	int32_t randomSelect = GenerateRandomInt(0, 9);
+
+	switch (randomSelect)
+	{
+	case 0:
+	case 1:
+	case 2:
+	case 3:
+	case 4:
+	{
+		glm::vec2 postiton = renderBound_.center;
+		glm::vec2 direction = glm::normalize(player_->GetCollider()->center - postiton);
+		float speed = GenerateRandomFloat(minFireSpeed_, maxFireSpeed_);
+
+		return entityManager.Create<Fire>(postiton, direction, speed);
+	}
+	break;
+
+	case 5:
+	case 6:
+	case 7:
+	case 8:
+	case 9:
+	{
+		glm::vec2 startPos = renderBound_.center;
+		glm::vec2 endPos = GenerateRandomDisk(playground_->GetSafeBound()->radius);
+
+		return entityManager.Create<Coin>(startPos, endPos);
+	}
+	break;
+	}
+
+	return nullptr;
+}
+
+void RandomChest::CleanupObjects()
+{
+	for (auto& object : objects_)
+	{
+		if (object && object->GetState() == IObject::EState::DONE)
+		{
+			gamePlayScene_->RemoveUpdateEntity(object);
+			gamePlayScene_->RemoveRenderEntity(object);
+			EntityManager::GetRef().Destroy(object);
+			object = nullptr;
+		}
+	}
+	
+	objects_.remove_if([&](IObject* object) { return object == nullptr; });
 }
