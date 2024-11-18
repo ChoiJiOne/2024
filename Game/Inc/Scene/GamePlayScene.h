@@ -29,6 +29,12 @@ public:
 	void RemoveRenderEntity(IEntity2D* entity);
 
 private:
+	/** UI 엔티티를 추가합니다. */
+	void AddUIEntity(IEntity2D* entity);
+
+	/** UI 엔티티를 삭제합니다. */
+	void RemoveUIEntity(IEntity2D* entity);
+	
 	/** 업데이트할 엔티티의 우선 순위를 비교합니다. */
 	static bool CompareUpdateOrder(IEntity* lhs, IEntity* rhs)
 	{
@@ -59,4 +65,7 @@ private:
 
 	/** 렌더링할 엔티티입니다. */
 	std::list<IEntity2D*> renderEntities_;
+
+	/** UI 엔티티입니다. */
+	std::list<IEntity2D*> uiEntities_;
 };
