@@ -35,6 +35,9 @@ public:
 	/** 포션의 충돌 영역을 얻습니다. */
 	const Circle2D* GetCollisionBound() const { return &collisionBound_; }
 
+	/** 포션의 색상 종류를 얻습니다. */
+	const EColor& GetColor() const { return color_; }
+
 private:
 	/** 포션의 그림자입니다. */
 	struct Shadow
