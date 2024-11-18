@@ -56,9 +56,6 @@ private:
 	/** 코인의 그림자입니다. */
 	Shadow shadow_;
 
-	/** 코인의 현재 상태입니다. */
-	EState state_ = EState::NONE;
-
 	/** 코인의 이동 시간입니다. */
 	float moveTime_ = 0.0f;
 
