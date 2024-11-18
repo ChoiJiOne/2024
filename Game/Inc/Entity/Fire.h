@@ -32,6 +32,9 @@ public:
 	virtual void Render() override;
 	virtual void Release() override;
 
+	/** 불의 충돌 영역을 얻습니다. */
+	const Circle2D* GetCollisionBound() { return &collisionBound_; }
+
 private:
 	/** 불을 움직입니다. */
 	void Move(float deltaSeconds);
