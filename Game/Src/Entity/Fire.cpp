@@ -4,7 +4,6 @@
 #include "Entity/Fire.h"
 #include "Entity/EntityManager.h"
 #include "Entity/Player.h"
-#include "Entity/Playground.h"
 #include "GL/GLManager.h"
 #include "GL/SpriteAnimator2D.h"
 #include "GL/TextureAtlas2D.h"
@@ -20,7 +19,6 @@ Fire::Fire(const glm::vec2& position, const glm::vec2& direction, float speed)
 	renderOrder_ = 4;
 
 	textureAtlas_ = GLManager::GetRef().GetByName<TextureAtlas2D>("TextureAtlas");
-	playground_ = EntityManager::GetRef().GetByName<Playground>("Playground");
 	
 	float rotate = GetRadianVec2(direction_);
 	renderBound_ = OrientedRect2D(position, glm::vec2(58.0f, 54.0f), rotate);
@@ -60,7 +58,7 @@ void Fire::Tick(float deltaSeconds)
 		}
 
 		lifeTime_ -= deltaSeconds;
-		if (lifeTime_ <= 0.0f || !collisionBound_.Intersect(playground_->GetSafeBound()))
+		if (lifeTime_ <= 0.0f)
 		{
 			animationState_ = EAnimationState::EXPLOSION;
 			state_ = EState::WAIT;
@@ -106,7 +104,6 @@ void Fire::Release()
 
 	UnloadAnimation();
 
-	playground_ = nullptr;
 	textureAtlas_ = nullptr;
 	
 	IObject::Release();

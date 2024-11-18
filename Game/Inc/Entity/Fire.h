@@ -10,7 +10,6 @@
 /** 클래스 전방 선언입니다. */
 class SpriteAnimator2D;
 class TextureAtlas2D;
-class Playground;
 
 /** 플레이어가 피해야 할 불입니다. */
 class Fire : public IObject
@@ -47,9 +46,6 @@ private:
 	/** 불 렌더링 시 참조할 텍스처 아틀라스입니다. */
 	TextureAtlas2D* textureAtlas_ = nullptr;
 	
-	/** 불이 존재할 영역입니다. */
-	Playground* playground_ = nullptr;
-
 	/** 렌더링 영역입니다. */
 	OrientedRect2D renderBound_;
 
