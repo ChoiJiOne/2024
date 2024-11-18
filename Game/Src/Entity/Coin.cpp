@@ -10,14 +10,14 @@
 #include "Utils/Assertion.h"
 
 Coin::Coin(const glm::vec2& startPos, const glm::vec2& endPos)
-	: moveStartPos_(startPos)
+	: IObject(IObject::EType::COIN)
+	, moveStartPos_(startPos)
 	, moveEndPos_(endPos)
 {
 	tickOrder_ = 3;
 	renderOrder_ = 4;
 
 	textureAtlas_ = GLManager::GetRef().GetByName<TextureAtlas2D>("TextureAtlas");
-	player_ = EntityManager::GetRef().GetByName<Player>("Player");
 
 	renderBound_ = Rect2D(startPos, glm::vec2(32.0f, 32.0f));
 	collisionBound_.radius = 16.0f;
@@ -46,8 +46,6 @@ Coin::Coin(const glm::vec2& startPos, const glm::vec2& endPos)
 	state_ = EState::MOVE;
 	moveTime_ = 0.0f;
 	maxMoveTime_ = 2.0f;
-
-	bIsInitialized_ = true;
 }
 
 Coin::~Coin()
@@ -81,12 +79,12 @@ void Coin::Tick(float deltaSeconds)
 	{
 		if (collisionBound_.Intersect(player_->GetCollider()))
 		{
-			state_ = EState::GAIN;
+			state_ = EState::DONE;
 		}
 	}
 	break;
 
-	case EState::GAIN:
+	case EState::DONE:
 	{
 
 	}
@@ -98,7 +96,7 @@ void Coin::Tick(float deltaSeconds)
 
 void Coin::Render()
 {
-	if (state_ == EState::GAIN || state_ == EState::NONE)
+	if (state_ == EState::DONE || state_ == EState::NONE)
 	{
 		return;
 	}
@@ -112,10 +110,6 @@ void Coin::Render()
 
 void Coin::Release()
 {
-	CHECK(bIsInitialized_);
-
-	player_ = nullptr;
-
 	if (animator_)
 	{
 		GLManager::GetRef().Destroy(animator_);
@@ -124,7 +118,7 @@ void Coin::Release()
 
 	textureAtlas_ = nullptr;
 
-	bIsInitialized_ = false;
+	IObject::Release();
 }
 
 void Coin::UpdateBounds(const glm::vec2& position)

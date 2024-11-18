@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Entity/IEntity2D.h"
+#include "Entity/IObject.h"
 #include "GL/RenderManager2D.h"
 #include "Physic/Circle2D.h"
 #include "Physic/Rect2D.h"
@@ -8,21 +8,10 @@
 /** 클래스 전방 선언입니다. */
 class SpriteAnimator2D;
 class TextureAtlas2D;
-class Player;
 
 /** 플레이어가 획득할 코인입니다. */
-class Coin : public IEntity2D
+class Coin : public IObject
 {
-public:
-	/** 코인의 상태입니다. */
-	enum class EState
-	{
-		NONE = 0x00, // 아무것도 아닌 상태.
-		MOVE = 0x01, // 지정된 위치로 이동 중.
-		WAIT = 0x02, // 대기중.
-		GAIN = 0x03, // 플레이어가 획득한 상태.
-	};
-
 public:
 	Coin(const glm::vec2& startPos, const glm::vec2& endPos);
 	virtual ~Coin();
@@ -32,9 +21,6 @@ public:
 	virtual void Tick(float deltaSeconds) override;
 	virtual void Render() override;
 	virtual void Release() override;
-
-	/** 코인의 현재 상태를 얻습니다. */
-	const EState& GetState() const { return state_; }
 
 private:
 	/** 코인의 그림자입니다. */
@@ -54,9 +40,6 @@ private:
 
 	/** 코인의 애니메이션을 수행하는 스프라이트 애니메이터입니다. */
 	SpriteAnimator2D* animator_ = nullptr;
-
-	/** 해당 코인을 획득했는지 확인할 플레이어입니다. */
-	Player* player_ = nullptr;
 
 	/** 코인의 이동 시작 위치입니다. */
 	glm::vec2 moveStartPos_ = glm::vec2(0.0f, 0.0f);
