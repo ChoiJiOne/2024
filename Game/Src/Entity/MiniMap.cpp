@@ -1,3 +1,4 @@
+#include "Entity/EntityManager.h"
 #include "Entity/UICamera.h"
 #include "Entity/MiniMap.h"
 #include "Entity/Player.h"
@@ -14,11 +15,18 @@ MiniMap::MiniMap(UICamera* uiCamera)
 	renderOrder_ = 0;
 
 	textureAtlas_ = GLManager::GetRef().GetByName<TextureAtlas2D>("TextureAtlas");
+	player_ = EntityManager::GetRef().GetByName<Player>("Player");
 	
+	Playground* playground = EntityManager::GetRef().GetByName<Playground>("Playground");
+	playgroundRadius_ = playground->GetSafeBound()->radius;
+
 	glm::vec2 uiCameraSize = uiCamera_->GetSize() * 0.5f;
-	renderBound_ = Rect2D(glm::vec2(0.0f, 0.0f), glm::vec2(256.0f, 256.0f));
+	renderBound_ = Rect2D(glm::vec2(0.0f, 0.0f), glm::vec2(200.0f, 200.0f));
 	renderBound_.center = glm::vec2(uiCameraSize.x, -uiCameraSize.y);
 	renderBound_.center += glm::vec2(-renderBound_.size.x, +renderBound_.size.y) * 0.5f;
+
+	minimapRadius_ = renderBound_.size.x * 0.4f;
+	pointSize_ = 4.0f;
 
 	bIsInitialized_ = true;
 }
@@ -37,13 +45,20 @@ void MiniMap::Tick(float deltaSeconds)
 
 void MiniMap::Render()
 {
+	glm::vec2 playerPos = player_->GetCollider()->center / playgroundRadius_;
+	playerPos *= minimapRadius_;
+	playerPos += renderBound_.center;
+
 	renderManager_->DrawTextureAtlas(textureAtlas_, "MiniMap", renderBound_.center, renderBound_.size.x, renderBound_.size.y, 0.0f);
+
+	renderManager_->DrawPoint(playerPos, glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), pointSize_);
 }
 
 void MiniMap::Release()
 {
 	CHECK(bIsInitialized_);
 
+	player_ = nullptr;
 	textureAtlas_ = nullptr;
 
 	bIsInitialized_ = false;

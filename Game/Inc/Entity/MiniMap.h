@@ -33,4 +33,16 @@ private:
 
 	/** 렌더링 영역입니다. */
 	Rect2D renderBound_;
+
+	/** 플레이어입니다. */
+	Player* player_ = nullptr;
+
+	/** 플레이 영역의 반지름 길이입니다. */
+	float playgroundRadius_ = 0.0f;
+
+	/** 미니맵 반지름 길이입니다. */
+	float minimapRadius_ = 0.0f;
+
+	/** 미니맵에 표시할 점의 크기입니다. */
+	float pointSize_ = 0.0f;
 };
