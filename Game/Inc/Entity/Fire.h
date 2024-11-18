@@ -33,7 +33,7 @@ public:
 	virtual void Release() override;
 
 	/** 불의 충돌 영역을 얻습니다. */
-	const Circle2D* GetCollisionBound() { return &collisionBound_; }
+	const Circle2D* GetCollisionBound() const { return &collisionBound_; }
 
 private:
 	/** 불을 움직입니다. */

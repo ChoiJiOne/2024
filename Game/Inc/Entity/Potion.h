@@ -33,7 +33,7 @@ public:
 	virtual void Release() override;
 
 	/** 포션의 충돌 영역을 얻습니다. */
-	const Circle2D* GetCollisionBound() { return &collisionBound_; }
+	const Circle2D* GetCollisionBound() const { return &collisionBound_; }
 
 private:
 	/** 포션의 그림자입니다. */
