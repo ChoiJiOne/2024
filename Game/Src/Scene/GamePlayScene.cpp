@@ -43,18 +43,23 @@ GamePlayScene::GamePlayScene()
 	AddUpdateEntity(background);
 	AddRenderEntity(background);
 
+	static const uint32_t COUNT_RANDOM_CHEST = 8;
 	float boundRadius = playground->GetSafeBound()->radius;
-	for (uint32_t count = 0; count < 8; ++count)
+	std::vector<RandomChest*> randomChests(COUNT_RANDOM_CHEST);
+	for (uint32_t count = 0; count < COUNT_RANDOM_CHEST; ++count)
 	{
 		float theta = (2.0f * glm::pi<float>() * static_cast<float>(count)) / 8.0f;
 		RandomChest* randomChest = entityManager_->Create<RandomChest>(glm::vec2(boundRadius * glm::cos(theta), boundRadius * glm::sin(theta)));
+
 		AddUpdateEntity(randomChest);
 		AddRenderEntity(randomChest);
+
+		randomChests[count] = randomChest;
 	}
 
 	uiCamera_ = entityManager_->Create<UICamera>();
 
-	MiniMap* miniMap = entityManager_->Create<MiniMap>(uiCamera_);
+	MiniMap* miniMap = entityManager_->Create<MiniMap>(uiCamera_, randomChests);
 	AddUIEntity(miniMap);
 }
 
