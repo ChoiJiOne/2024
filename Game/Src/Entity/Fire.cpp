@@ -12,14 +12,14 @@
 #include "Utils/Math.h"
 
 Fire::Fire(const glm::vec2& position, const glm::vec2& direction, float speed)
-	: direction_(direction)
+	: IObject(IObject::EType::FIRE)
+	, direction_(direction)
 	, speed_(speed)
 {
 	tickOrder_ = 3;
 	renderOrder_ = 4;
 
 	textureAtlas_ = GLManager::GetRef().GetByName<TextureAtlas2D>("TextureAtlas");
-	player_ = EntityManager::GetRef().GetByName<Player>("Player");
 	playground_ = EntityManager::GetRef().GetByName<Playground>("Playground");
 	
 	float rotate = GetRadianVec2(direction_);
@@ -28,34 +28,7 @@ Fire::Fire(const glm::vec2& position, const glm::vec2& direction, float speed)
 	collisionBound_.center = renderBound_.center;
 	collisionBound_.radius = 20.0f;
 
-	std::vector<std::string> fireBallClipNames =
-	{
-		"Fireball_1",
-		"Fireball_2",
-		"Fireball_3",
-		"Fireball_4",
-		"Fireball_5",
-	};
-	SpriteAnimator2D* fireBall = GLManager::GetRef().Create<SpriteAnimator2D>(textureAtlas_, fireBallClipNames, 0.2f, true);
-
-	std::vector<std::string> fireBallHitClipNames =
-	{
-		"Fireball_Hit_1",
-		"Fireball_Hit_2",
-		"Fireball_Hit_3",
-		"Fireball_Hit_4",
-		"Fireball_Hit_5",
-		"Fireball_Hit_6",
-	};
-	SpriteAnimator2D* fireBallHit = GLManager::GetRef().Create<SpriteAnimator2D>(textureAtlas_, fireBallHitClipNames, 0.5f, false);
-
-	animations_ =
-	{
-		{ EState::NONE,       nullptr     },
-		{ EState::MOVE,       fireBall    },
-		{ EState::EXPLOSION,  fireBallHit },
-		{ EState::DONE,       nullptr     },
-	};
+	LoadAnimations();
 
 	lifeTime_ = 5.0f;
 	state_ = EState::MOVE;
@@ -78,24 +51,26 @@ void Fire::Tick(float deltaSeconds)
 	case EState::MOVE:
 	{
 		Move(deltaSeconds);
-		animations_.at(state_)->Update(deltaSeconds);
+		animations_.at(animationState_)->Update(deltaSeconds);
 
 		if (collisionBound_.Intersect(player_->GetCollider()))
 		{
-			state_ = EState::EXPLOSION;
+			animationState_ = EAnimationState::EXPLOSION;
+			state_ = EState::WAIT;
 		}
 
 		lifeTime_ -= deltaSeconds;
 		if (lifeTime_ <= 0.0f || !collisionBound_.Intersect(playground_->GetSafeBound()))
 		{
-			state_ = EState::EXPLOSION;
+			animationState_ = EAnimationState::EXPLOSION;
+			state_ = EState::WAIT;
 		}
 	}
 	break;
 
-	case EState::EXPLOSION:
+	case EState::WAIT:
 	{
-		SpriteAnimator2D* animation = animations_.at(state_);
+		SpriteAnimator2D* animation = animations_.at(animationState_);
 		animation->Update(deltaSeconds);
 		if (animation->GetTime() >= animation->GetAnimationTime())
 		{
@@ -119,8 +94,8 @@ void Fire::Render()
 		return;
 	}
 
-	TextureAtlas2D* animationTexture = animations_.at(state_)->GetTextureAtlas();
-	const std::string& animationClipName = animations_.at(state_)->GetCurrentClipName();
+	TextureAtlas2D* animationTexture = animations_.at(animationState_)->GetTextureAtlas();
+	const std::string& animationClipName = animations_.at(animationState_)->GetCurrentClipName();
 
 	renderManager_->DrawTextureAtlas(animationTexture, animationClipName, renderBound_.center, renderBound_.size.x, renderBound_.size.y, renderBound_.rotate);
 }
@@ -129,14 +104,12 @@ void Fire::Release()
 {
 	CHECK(bIsInitialized_);
 
-	GLManager::GetRef().Destroy(animations_.at(EState::MOVE));
-	GLManager::GetRef().Destroy(animations_.at(EState::EXPLOSION));
+	UnloadAnimation();
 
 	playground_ = nullptr;
-	player_ = nullptr;
 	textureAtlas_ = nullptr;
 	
-	bIsInitialized_ = false;
+	IObject::Release();
 }
 
 void Fire::Move(float deltaSeconds)
@@ -149,4 +122,41 @@ void Fire::Move(float deltaSeconds)
 
 	renderBound_.center = movePos;
 	collisionBound_.center = movePos;
+}
+
+void Fire::LoadAnimations()
+{
+	GLManager& glManager = GLManager::GetRef();
+
+	std::vector<std::string> fireBallClipNames =
+	{
+		"Fireball_1",
+		"Fireball_2",
+		"Fireball_3",
+		"Fireball_4",
+		"Fireball_5",
+	};	
+	SpriteAnimator2D* fireBall = glManager.Create<SpriteAnimator2D>(textureAtlas_, fireBallClipNames, 0.2f, true);
+	animations_.insert({ EAnimationState::BURN, fireBall });
+
+	std::vector<std::string> fireBallHitClipNames =
+	{
+		"Fireball_Hit_1",
+		"Fireball_Hit_2",
+		"Fireball_Hit_3",
+		"Fireball_Hit_4",
+		"Fireball_Hit_5",
+		"Fireball_Hit_6",
+	};
+	SpriteAnimator2D* fireBallHit = glManager.Create<SpriteAnimator2D>(textureAtlas_, fireBallHitClipNames, 0.5f, false);
+	animations_.insert({ EAnimationState::EXPLOSION, fireBallHit });
+}
+
+void Fire::UnloadAnimation()
+{
+	GLManager& glManager = GLManager::GetRef();
+	for (auto& animation : animations_)
+	{
+		glManager.Destroy(animation.second);
+	}
 }
