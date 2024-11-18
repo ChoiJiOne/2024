@@ -65,6 +65,9 @@ private:
 	/** 불의 이동 속도입니다. */
 	float speed_ = 0.0f;
 
+	/** 불의 라이프 타입입니다. */
+	float lifeTime_ = 0.0f;
+
 	/** 불의 현재 상태입니다. */
 	EState state_ = EState::NONE;
 

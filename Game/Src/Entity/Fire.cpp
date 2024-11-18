@@ -57,6 +57,7 @@ Fire::Fire(const glm::vec2& position, const glm::vec2& direction, float speed)
 		{ EState::DONE,       nullptr     },
 	};
 
+	lifeTime_ = 5.0f;
 	state_ = EState::MOVE;
 
 	bIsInitialized_ = true;
@@ -84,7 +85,8 @@ void Fire::Tick(float deltaSeconds)
 			state_ = EState::EXPLOSION;
 		}
 
-		if (!collisionBound_.Intersect(playground_->GetSafeBound()))
+		lifeTime_ -= deltaSeconds;
+		if (lifeTime_ <= 0.0f || !collisionBound_.Intersect(playground_->GetSafeBound()))
 		{
 			state_ = EState::EXPLOSION;
 		}
