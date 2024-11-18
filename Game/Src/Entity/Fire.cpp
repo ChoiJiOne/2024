@@ -139,7 +139,11 @@ void Fire::Release()
 
 void Fire::Move(float deltaSeconds)
 {
-	glm::vec2 movePos = renderBound_.center + direction_ * deltaSeconds * speed_;
+	direction_ = glm::normalize(player_->GetCollider()->center - renderBound_.center);
+	renderBound_.rotate = GetRadianVec2(direction_);
+
+	glm::vec2 movePos = renderBound_.center;
+	movePos += direction_ * deltaSeconds * speed_;
 
 	renderBound_.center = movePos;
 	collisionBound_.center = movePos;
