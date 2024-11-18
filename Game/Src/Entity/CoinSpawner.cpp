@@ -34,13 +34,13 @@ CoinSpawner::CoinSpawner(const glm::vec2& position)
 
 	std::vector<std::string> coinChestClipNames =
 	{
-		"CoinChest_1",
-		"CoinChest_2",
-		"CoinChest_3",
-		"CoinChest_4",
-		"CoinChest_5",
-		"CoinChest_6",
-		"CoinChest_7",
+		"Chest_1",
+		"Chest_2",
+		"Chest_3",
+		"Chest_4",
+		"Chest_5",
+		"Chest_6",
+		"Chest_7",
 	};
 	animator_ = GLManager::GetRef().Create<SpriteAnimator2D>(textureAtlas_, coinChestClipNames, 1.0f, false);
 
@@ -78,7 +78,7 @@ void CoinSpawner::Tick(float deltaSeconds)
 		animator_->Update(deltaSeconds);
 
 		const std::string& animationClipName = animator_->GetCurrentClipName();
-		if (animationClipName == "CoinChest_4" && !bIsGenerateCoin_)
+		if (animationClipName == "Chest_4" && !bIsGenerateCoin_)
 		{
 			glm::vec2 startPos = renderBound_.center;
 			glm::vec2 endPos = GenerateRandomDisk(playground_->GetSafeBound()->radius);
@@ -91,7 +91,7 @@ void CoinSpawner::Tick(float deltaSeconds)
 
 			bIsGenerateCoin_ = true;
 		}
-		else if (animationClipName == "CoinChest_7")
+		else if (animationClipName == "Chest_7")
 		{
 			animator_->Reset();
 			bIsGenerateCoin_ = false;
