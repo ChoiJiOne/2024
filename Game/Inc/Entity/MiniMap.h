@@ -1,11 +1,14 @@
 #pragma once
 
+#include <queue>
+
 #include "Entity/IEntity2D.h"
 #include "GL/RenderManager2D.h"
 #include "Physic/Rect2D.h"
 
 /** 클래스 전방 선언입니다. */
 class UICamera;
+class IObject;
 class RandomChest;
 class Player;
 class Playground;
@@ -15,15 +18,26 @@ class TextureAtlas2D;
 class MiniMap : public IEntity2D
 {
 public:
-	MiniMap(UICamera* uiCamera);
+	MiniMap(UICamera* uiCamera, const std::vector<RandomChest*>& randomChests);
 	virtual ~MiniMap();
 
 	DISALLOW_COPY_AND_ASSIGN(MiniMap);
-
+	
 	virtual void Tick(float deltaSeconds) override;
 	virtual void Render() override;
 	virtual void Release() override;
-	
+
+private:
+	/** 미니맵 상의 오브젝트입니다. */
+	struct MinimapObject
+	{
+		glm::vec2 position; // 미니맵 상의 위치입니다.
+		glm::vec4 color; // 미니맵 상의 색상입니다.
+	};
+
+	/** 오브젝트를 미니맵 오브젝트로 변환합니다. */
+	void ConvertMinimapObject(const IObject* object, MinimapObject& outMinimapObjec);
+
 private:
 	/** 미니멥 렌더링에 기준이 될 UI 카메라입니다. */
 	UICamera* uiCamera_ = nullptr;
@@ -45,10 +59,25 @@ private:
 
 	/** 미니맵에 표시할 점의 크기입니다. */
 	float pointSize_ = 0.0f;
-
-	/** 미니맵 상의 플레이어 위치입니다. */
-	glm::vec2 playerPosition_ = glm::vec2(0.0f, 0.0f);
-
-	/** 미니맵 상의 플레이어의 색상입니다. */
+	
+	/** 미니맵 상의 플레이어 색상입니다. */
 	glm::vec4 playerColor_ = glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
+
+	/** 미니맵 상의 코인 색상입니다. */
+	glm::vec4 coinColor_ = glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
+
+	/** 미니맵 상의 불 색상입니다. */
+	glm::vec4 fireColor_ = glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
+
+	/** 미니맵 상의 빨간색 포션 색상입니다. */
+	glm::vec4 redPotionColor_ = glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
+
+	/** 미니맵 상의 파란색 포션 색상입니다. */
+	glm::vec4 bluePotionColor_ = glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
+
+	/** 오브젝트들을 관리하는 렌덤 상자 엔티티 목록입니다. */
+	std::vector<RandomChest*> randomChests_;
+
+	/** 미니맵 상의 오브젝트 큐입니다. */
+	std::queue<MinimapObject> minimapObjects_;
 };

@@ -1,15 +1,21 @@
+#include "Entity/Coin.h"
 #include "Entity/EntityManager.h"
-#include "Entity/UICamera.h"
+#include "Entity/Fire.h"
+#include "Entity/IObject.h"
 #include "Entity/MiniMap.h"
 #include "Entity/Player.h"
 #include "Entity/Playground.h"
+#include "Entity/Potion.h"
+#include "Entity/RandomChest.h"
+#include "Entity/UICamera.h"
 #include "GL/GLManager.h"
 #include "GL/TextureAtlas2D.h"
 #include "GLFW/GLFWManager.h"
 #include "Utils/Assertion.h"
 
-MiniMap::MiniMap(UICamera* uiCamera)
+MiniMap::MiniMap(UICamera* uiCamera, const std::vector<RandomChest*>& randomChests)
 	: uiCamera_(uiCamera)
+	, randomChests_(randomChests)
 {
 	tickOrder_ = 0;
 	renderOrder_ = 0;
@@ -21,13 +27,17 @@ MiniMap::MiniMap(UICamera* uiCamera)
 	playgroundRadius_ = playground->GetSafeBound()->radius;
 
 	glm::vec2 uiCameraSize = uiCamera_->GetSize() * 0.5f;
-	renderBound_ = Rect2D(glm::vec2(0.0f, 0.0f), glm::vec2(200.0f, 200.0f));
+	renderBound_ = Rect2D(glm::vec2(0.0f, 0.0f), glm::vec2(256.0f, 256.0f));
 	renderBound_.center = glm::vec2(uiCameraSize.x, -uiCameraSize.y);
 	renderBound_.center += glm::vec2(-renderBound_.size.x, +renderBound_.size.y) * 0.5f;
 
 	minimapRadius_ = renderBound_.size.x * 0.4f;
 	pointSize_ = 6.0f;
 	playerColor_ = glm::vec4(0.0f, 1.0f, 0.0f, 1.0f);
+	coinColor_ = glm::vec4(1.0f, 1.0f, 0.0f, 1.0f);
+	fireColor_ = glm::vec4(1.0f, 0.5f, 0.1f, 1.0f);
+	redPotionColor_ = glm::vec4(1.0f, 0.0f, 0.0f, 1.0f);
+	bluePotionColor_ = glm::vec4(0.0f, 0.0f, 1.0f, 1.0f);
 
 	bIsInitialized_ = true;
 }
@@ -42,16 +52,36 @@ MiniMap::~MiniMap()
 
 void MiniMap::Tick(float deltaSeconds)
 {
-	playerPosition_ = player_->GetCollider()->center / playgroundRadius_;
-	playerPosition_ *= minimapRadius_;
-	playerPosition_ += renderBound_.center;
+	MinimapObject minimapPlayer;
+	minimapPlayer.position = player_->GetCollider()->center / playgroundRadius_;
+	minimapPlayer.position *= minimapRadius_;
+	minimapPlayer.position += renderBound_.center;
+	minimapPlayer.color = playerColor_;
+	minimapObjects_.push(minimapPlayer);
+
+	for (const auto& randomChest : randomChests_)
+	{
+		const std::list<IObject*>& objects = randomChest->GetObjects();
+		for (const auto& object : objects)
+		{
+			MinimapObject minimapObject;
+			ConvertMinimapObject(object, minimapObject);
+
+			minimapObjects_.push(minimapObject);
+		}
+	}
 }
 
 void MiniMap::Render()
 {
 	renderManager_->DrawTextureAtlas(textureAtlas_, "MiniMap", renderBound_.center, renderBound_.size.x, renderBound_.size.y, 0.0f);
 
-	renderManager_->DrawPoint(playerPosition_, playerColor_, pointSize_);
+	while (!minimapObjects_.empty())
+	{
+		const MinimapObject& object = minimapObjects_.front();
+		renderManager_->DrawPoint(object.position, object.color, pointSize_);
+		minimapObjects_.pop();
+	}
 }
 
 void MiniMap::Release()
@@ -62,4 +92,42 @@ void MiniMap::Release()
 	textureAtlas_ = nullptr;
 
 	bIsInitialized_ = false;
+}
+
+void MiniMap::ConvertMinimapObject(const IObject* object, MinimapObject& outMinimapObjec)
+{
+	const IObject::EType& type = object->GetType();
+
+	switch (type)
+	{
+	case IObject::EType::COIN:
+	{
+		const Coin* coin = reinterpret_cast<const Coin*>(object);
+		outMinimapObjec.position = coin->GetCollisionBound()->center / playgroundRadius_;
+		outMinimapObjec.position *= minimapRadius_;
+		outMinimapObjec.position += renderBound_.center;
+		outMinimapObjec.color = coinColor_;
+	}
+	break;
+
+	case IObject::EType::FIRE:
+	{
+		const Fire* fire = reinterpret_cast<const Fire*>(object);
+		outMinimapObjec.position = fire->GetCollisionBound()->center / playgroundRadius_;
+		outMinimapObjec.position *= minimapRadius_;
+		outMinimapObjec.position += renderBound_.center;
+		outMinimapObjec.color = fireColor_;
+	}
+	break;
+
+	case IObject::EType::POTION:
+	{
+		const Potion* potion = reinterpret_cast<const Potion*>(object);
+		outMinimapObjec.position = potion->GetCollisionBound()->center / playgroundRadius_;
+		outMinimapObjec.position *= minimapRadius_;
+		outMinimapObjec.position += renderBound_.center;
+		outMinimapObjec.color = potion->GetColor() == Potion::EColor::BLUE ? bluePotionColor_ : redPotionColor_;
+	}
+	break;
+	}
 }
