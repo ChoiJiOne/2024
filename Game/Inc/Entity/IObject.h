@@ -2,6 +2,9 @@
 
 #include "IEntity2D.h"
 
+/** 클래스 전방 선언. */
+class Player;
+
 /** 플레이어가 획득하거나 피해야 할 오브젝트의 인터페이스입니다. */
 class IObject : public IEntity2D
 {
@@ -24,14 +27,14 @@ public:
 	};
 
 public:
-	IObject(const EType& type) : type_(type) {}
-	virtual ~IObject() {}
+	IObject(const EType& type);
+	virtual ~IObject();
 
 	DISALLOW_COPY_AND_ASSIGN(IObject);
 
 	virtual void Tick(float deltaSeconds) = 0;
 	virtual void Render() = 0;
-	virtual void Release() = 0;
+	virtual void Release() override;
 
 	/** 오브젝트의 타입을 얻습니다. */
 	const EType& GetType() const { return type_; }
@@ -45,4 +48,7 @@ protected:
 
 	/** 오브젝트의 상태입니다. */
 	EState state_ = EState::NONE;
+
+	/** 오브젝트를 획득하거나 피할 플레이어입니다. */
+	Player* player_ = nullptr;
 };
