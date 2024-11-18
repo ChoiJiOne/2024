@@ -66,7 +66,7 @@ void IApp::Run()
 	while (!bIsDoneLoop_)
 	{
 		loopTimer_.Tick();
-		GLFWManager::GetRef().Tick();
+		glfwManager_->Tick();
 
 		appScene_->Tick(loopTimer_.GetDeltaSeconds());
 		appScene_->Render();
