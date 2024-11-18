@@ -10,10 +10,11 @@
 #include "Utils/Assertion.h"
 #include "Utils/Math.h"
 
-Fire::Fire(const glm::vec2& position, const glm::vec2& direction, float speed)
+Fire::Fire(const glm::vec2& position, const glm::vec2& direction, float speed, float lifeTime)
 	: IObject(IObject::EType::FIRE)
 	, direction_(direction)
 	, speed_(speed)
+	, lifeTime_(lifeTime)
 {
 	tickOrder_ = 3;
 	renderOrder_ = 4;
@@ -28,7 +29,6 @@ Fire::Fire(const glm::vec2& position, const glm::vec2& direction, float speed)
 
 	LoadAnimations();
 
-	lifeTime_ = 5.0f;
 	state_ = EState::MOVE;
 
 	bIsInitialized_ = true;

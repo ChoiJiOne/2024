@@ -23,7 +23,7 @@ public:
 	};
 
 public:
-	Fire(const glm::vec2& position, const glm::vec2& direction, float speed);
+	Fire(const glm::vec2& position, const glm::vec2& direction, float speed, float lifeTime);
 	virtual ~Fire();
 
 	DISALLOW_COPY_AND_ASSIGN(Fire);
