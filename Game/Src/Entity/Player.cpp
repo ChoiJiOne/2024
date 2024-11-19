@@ -155,6 +155,11 @@ float Player::GetHP() const
 
 void Player::SetHP(float hp)
 {
+	if (animationState_ != EAnimationState::IDLE && animationState_ != EAnimationState::RUN)
+	{
+		return;
+	}
+
 	hpBar_->SetBar(hp);
 }
 
@@ -165,6 +170,11 @@ float Player::GetMaxHP() const
 
 void Player::SetMaxHP(float maxHp)
 {
+	if (animationState_ != EAnimationState::IDLE && animationState_ != EAnimationState::RUN)
+	{
+		return;
+	}
+
 	hpBar_->SetMaxBar(maxHp);
 }
 
@@ -175,6 +185,11 @@ float Player::GetMP() const
 
 void Player::SetMP(float mp)
 {
+	if (animationState_ != EAnimationState::IDLE && animationState_ != EAnimationState::RUN)
+	{
+		return;
+	}
+
 	mpBar_->SetBar(mp);
 }
 
@@ -185,6 +200,11 @@ float Player::GetMaxMP() const
 
 void Player::SetMaxMP(float maxMP)
 {
+	if (animationState_ != EAnimationState::IDLE && animationState_ != EAnimationState::RUN)
+	{
+		return;
+	}
+
 	mpBar_->SetMaxBar(maxMP);
 }
 
