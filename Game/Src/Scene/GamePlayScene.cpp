@@ -64,8 +64,11 @@ GamePlayScene::GamePlayScene()
 	MiniMap* miniMap = entityManager_->Create<MiniMap>(uiCamera_, randomChests);
 	AddUIEntity(miniMap);
 
-	hpBar_ = entityManager_->Create<UIBar>(uiCamera_, glManager_->GetByName<TTFont>("Font24"));
-	AddUIEntity(hpBar_);
+	UIBar* hpBar = entityManager_->Create<UIBar>(uiCamera_, glManager_->GetByName<TTFont>("Font24"), "Resource\\UI\\HP.bar");
+	AddUIEntity(hpBar);
+
+	UIBar* mpBar = entityManager_->Create<UIBar>(uiCamera_, glManager_->GetByName<TTFont>("Font24"), "Resource\\UI\\MP.bar");
+	AddUIEntity(mpBar);
 }
 
 GamePlayScene::~GamePlayScene()
@@ -77,19 +80,6 @@ GamePlayScene::~GamePlayScene()
 
 void GamePlayScene::Tick(float deltaSeconds)
 {
-	ImGui::Begin("HPBAR");
-	if (ImGui::Button("INC"))
-	{
-		float hp = hpBar_->GetBar();
-		hpBar_->SetBar(hp + 100);
-	}
-	if (ImGui::Button("DEC"))
-	{
-		float hp = hpBar_->GetBar();
-		hpBar_->SetBar(hp - 100);
-	}
-	ImGui::End();
-
 	for (auto& updateEntity : updateEntites_)
 	{
 		updateEntity->Tick(deltaSeconds);

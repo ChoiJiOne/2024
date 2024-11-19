@@ -68,7 +68,4 @@ private:
 
 	/** UI 엔티티입니다. */
 	std::list<IEntity2D*> uiEntities_;
-
-	// 테스트용.
-	class UIBar* hpBar_ = nullptr;
 };
