@@ -11,8 +11,8 @@
 class IGameScene
 {
 public:
-	IGameScene() {}
-	virtual ~IGameScene() {}
+	IGameScene();
+	virtual ~IGameScene();
 
 	DISALLOW_COPY_AND_ASSIGN(IGameScene);
 
@@ -39,4 +39,13 @@ protected:
 
 	/** 전환할 씬의 포인터입니다. */
 	IGameScene* switchScene_ = nullptr;
+
+	/** 씬 내에서 사용 가능한 매니저들의 포인터입니다. */
+	class AudioManager* audioManager_ = nullptr;
+	class CrashManager* crashManager_ = nullptr;
+	class EntityManager* entityManager_ = nullptr;
+	class GLManager* glManager_ = nullptr;
+	class RenderManager2D* renderManager_ = nullptr;
+	class GLFWManager* glfwManager_ = nullptr;
+	class SceneManager* sceneManager_ = nullptr;
 };
