@@ -5,6 +5,8 @@
 #include "Entity/IEntity2D.h"
 #include "Physic/Circle2D.h"
 
+class Player;
+
 /** 플레이어의 플레이 영역을 나타내는 엔티티입니다. */
 class Playground : public IEntity2D
 {
@@ -43,8 +45,20 @@ private:
 	/** 위험한 영역입니다. */
 	Circle2D warnBound_;
 
+	/** 플레이어입니다. */
+	Player* player_ = nullptr;
+
 	/** 플레이어 현재 위치에 대한 상태입니다. */
 	EPlayerState playerState_ = EPlayerState::SAFE;
+
+	/** 플레이어가 위험한 영역에 있는 시간입니다. */
+	float warnStayTime_ = 0.0f;
+
+	/** 플레이어가 위험한 영역에 있는 최대 시간입니다. */
+	float maxWarnStayTime_ = 0.0f;
+
+	/** 플레이어가 위험한 영역에 있을 때 받을 데미지입니다. */
+	float deadDamage_ = 0.0f;
 
 	/** 상태 별 색상입니다. */
 	std::map<EPlayerState, glm::vec4> playerStateColors_;
