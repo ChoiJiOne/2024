@@ -65,6 +65,12 @@ Player::~Player()
 
 void Player::Tick(float deltaSeconds)
 {
+	if (animationState_ == EAnimationState::HURT)
+	{
+		animations_.at(animationState_)->Update(deltaSeconds);
+		return;
+	}
+
 	bool bIsPress = false;
 	const static std::map<EKey, glm::vec2> KEY_DIRECTIONS =
 	{
@@ -107,6 +113,11 @@ void Player::Tick(float deltaSeconds)
 	else
 	{
 		animationState_ = EAnimationState::IDLE;
+	}
+
+	if (hpBar_->GetBar() <= 0.0f)
+	{
+		animationState_ = EAnimationState::HURT;
 	}
 
 	animations_.at(animationState_)->Update(deltaSeconds);
