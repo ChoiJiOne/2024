@@ -41,6 +41,9 @@ public:
 	/** 코드 포인트가 현재 트루 타입 폰트 리소스 내에서 유효한지 검사합니다. */
 	bool IsValidCodePoint(int32_t codePoint) const;
 
+	/** 텍스트의 크기를 측정합니다. */
+	void MeasureText(const std::wstring& text, float& outWidth, float& outHeight) const;
+
 private:
 	/** 글리프 아틀라스의 비트맵을 생성합니다. */
 	std::shared_ptr<uint8_t[]> CreateGlyphAtlasBitmap(const std::vector<uint8_t>& buffer);
