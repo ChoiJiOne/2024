@@ -89,7 +89,7 @@ private:
 	/** 플레이어를 움직입니다 */
 	void Move(float deltaSeconds);
 
-	/** 플레이어의 위치를 조정합니다. */
+	/** 플레이어의 렌더링/충돌/그림자 위치를 조정합니다. */
 	void AdjustPosition(const glm::vec2& position);
 
 private:
