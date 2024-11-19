@@ -30,6 +30,12 @@ public:
 	/** UI내의 Bar 값을 설정합니다. */
 	void SetBar(float bar);
 
+	/** UI내 Bar의 최대 값을 얻습니다. */
+	float GetMaxBar() const { return maxBar_; }
+	
+	/** UI내 Bar의 최대 값을 설정합니다. */
+	void SetMaxBar(float maxBar);
+
 private:
 	/** UI바 내의 속성들을 초기화합니다. */
 	void InitProperties(const std::string& barPath);

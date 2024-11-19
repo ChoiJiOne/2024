@@ -89,6 +89,17 @@ void UIBar::SetBar(float bar)
 	bar_ = glm::clamp<float>(bar_, 0.0f, maxBar_);
 }
 
+void UIBar::SetMaxBar(float maxBar)
+{
+	maxBar_ = maxBar;
+
+	barBound_.center = background_.center + glm::vec2(-background_.size.x * 0.5f, +background_.size.y * 0.5f);
+	barBound_.size.x = background_.size.x * (barMark_ / maxBar_);
+	barBound_.center += glm::vec2(barBound_.size.x * 0.5f, -barBound_.size.y * 0.5f);
+
+	text_ = PrintF(L"%3d / %3d", static_cast<int32_t>(barMark_), static_cast<int32_t>(maxBar_));
+}
+
 void UIBar::InitProperties(const std::string& barPath)
 {
 	std::vector<uint8_t> buffer;
