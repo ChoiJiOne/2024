@@ -82,12 +82,6 @@ void Fire::Tick(float deltaSeconds)
 		}
 	}
 	break;
-	
-	case EState::DONE:
-	{
-
-	}
-	break;
 	}
 }
 
