@@ -44,6 +44,12 @@ public:
 	/** 플레이어의 MP를 설정합니다. */
 	void SetMP(float mp);
 
+	/** 플레이어의 코인 수를 얻습니다. */
+	int32_t GetCoin() const { return coin_; }
+
+	/** 플레이어의 코인 수를 설정합니다. */
+	void SetCoin(int32_t coin) { coin_ = coin; }
+
 private:
 	/** 플레이어의 애니메이션 상태입니다. */
 	enum class EAnimationState
@@ -103,4 +109,7 @@ private:
 
 	/** 플레이어의 마나를 나타내는 MP입니다. */
 	UIBar* mpBar_ = nullptr;
+
+	/** 플레이어의 코인 수입니다. */
+	int32_t coin_ = 0;
 };
