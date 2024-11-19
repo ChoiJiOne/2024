@@ -240,12 +240,14 @@ void Player::Move(float deltaSeconds)
 		animationState_ = EAnimationState::RUN;
 		direction_ = direction;
 
-		renderBound_.center += direction_ * speed_ * deltaSeconds;
-		collisionBound_.center = renderBound_.center;
-		collisionBound_.center.y += -renderBound_.size.y * 0.5f + collisionBound_.radius;
+		glm::vec2 originPosition = renderBound_.center;
+		glm::vec2 movePosition = originPosition + direction_ * speed_ * deltaSeconds;
 
-		shadow_.bound.center = renderBound_.center;
-		shadow_.bound.center.y += (-renderBound_.size.y * 0.5f) + (-shadow_.bound.size.y * 0.5f);
+		AdjustPosition(movePosition);
+		if (!collisionBound_.Intersect(playground_->GetSafeBound()))
+		{
+			AdjustPosition(originPosition);
+		}
 
 		if (glm::epsilonNotEqual<float>(direction_.x, 0.0f, glm::epsilon<float>()))
 		{
