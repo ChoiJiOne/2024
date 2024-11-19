@@ -28,13 +28,13 @@ public:
 	/** 렌더링할 엔티티를 삭제합니다. */
 	void RemoveRenderEntity(IEntity2D* entity);
 
-private:
 	/** UI 엔티티를 추가합니다. */
 	void AddUIEntity(IEntity2D* entity);
 
 	/** UI 엔티티를 삭제합니다. */
 	void RemoveUIEntity(IEntity2D* entity);
-	
+
+private:
 	/** 업데이트할 엔티티의 우선 순위를 비교합니다. */
 	static bool CompareUpdateOrder(IEntity* lhs, IEntity* rhs)
 	{
@@ -60,11 +60,20 @@ private:
 	/** 게임 플레이 씬의 스크린 카메라입니다. */
 	class UICamera* uiCamera_ = nullptr;
 
+	/** 업데이트할 엔티티의 정렬 여부입니다. */
+	bool bIsSortUpdateEntites_ = false;
+
 	/** 업데이트할 엔티티입니다. */
 	std::list<IEntity*> updateEntites_;
 
+	/** 업데이트할 엔티티의 정렬 여부입니다. */
+	bool bIsSortRenderEntites_ = false;
+	
 	/** 렌더링할 엔티티입니다. */
 	std::list<IEntity2D*> renderEntities_;
+
+	/** UI 엔티티의 정렬 여부입니다. */
+
 
 	/** UI 엔티티입니다. */
 	std::list<IEntity2D*> uiEntities_;
