@@ -74,14 +74,11 @@ void Coin::Tick(float deltaSeconds)
 	{
 		if (collisionBound_.Intersect(player_->GetCollider()))
 		{
+			int32_t coin = player_->GetCoin();
+			player_->SetCoin(coin + 1);
+
 			state_ = EState::DONE;
 		}
-	}
-	break;
-
-	case EState::DONE:
-	{
-
 	}
 	break;
 	}
