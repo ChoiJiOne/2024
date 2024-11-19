@@ -158,6 +158,16 @@ void Player::SetHP(float hp)
 	hpBar_->SetBar(hp);
 }
 
+float Player::GetMaxHP() const
+{
+	return hpBar_->GetMaxBar();
+}
+
+void Player::SetMaxHP(float maxHp)
+{
+	hpBar_->SetMaxBar(maxHp);
+}
+
 float Player::GetMP() const
 {
 	return mpBar_->GetBar();
@@ -166,6 +176,16 @@ float Player::GetMP() const
 void Player::SetMP(float mp)
 {
 	mpBar_->SetBar(mp);
+}
+
+float Player::GetMaxMP() const
+{
+	return mpBar_->GetMaxBar();
+}
+
+void Player::SetMaxMP(float maxMP)
+{
+	mpBar_->SetMaxBar(maxMP);
 }
 
 void Player::LoadAnimations()

@@ -38,11 +38,23 @@ public:
 	/** 플레이어의 HP를 설정합니다. */
 	void SetHP(float hp);
 
+	/** 플레이어의 최대 HP를 얻습니다. */
+	float GetMaxHP() const;
+
+	/** 플레이어의 최대 HP를 설정합니다. */
+	void SetMaxHP(float maxHp);
+
 	/** 플레이어의 MP를 얻습니다. */
 	float GetMP() const;
 
 	/** 플레이어의 MP를 설정합니다. */
 	void SetMP(float mp);
+
+	/** 플레이어의 최대 MP를 얻습니다. */
+	float GetMaxMP() const;
+
+	/** 플레이어의 최대 MP를 설정합니다. */
+	void SetMaxMP(float maxMP);
 
 	/** 플레이어의 코인 수를 얻습니다. */
 	int32_t GetCoin() const { return coin_; }
