@@ -145,7 +145,6 @@ void UIBar::InitProperties(const std::string& barPath)
 	CHECK(bar["SlideSpeed"].isDouble() && !bar["SlideSpeed"].isNull());
 	CHECK(bar["IsFullFill"].isBool() && !bar["IsFullFill"].isNull());
 
-	minBar_ = 0.0f;
 	maxBar_ = bar["Size"].asFloat();
 	bar_ = bar["IsFullFill"].asBool() ? maxBar_ : 0.0f;
 	barMark_ = bar_;

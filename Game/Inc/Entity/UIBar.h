@@ -65,9 +65,6 @@ private:
 	/** 부드러운 전환을 위한 마크입니다. */
 	float barMark_ = 0.0f;
 
-	/** UI바 내의 Bar 최소 값입니다. */
-	float minBar_ = 0.0f;
-
 	/** UI바 내의 Bar 최대 값입니다.. */
 	float maxBar_ = 0.0f;
 
