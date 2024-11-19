@@ -17,9 +17,11 @@ public:
 	/** 포션의 색상입니다. 색상 종류에 따라 효과가 다릅니다. */
 	enum class EColor
 	{
-		NONE = 0x00,
-		RED  = 0x01,
-		BLUE = 0x02,
+		NONE       = 0x00,
+		RED        = 0x01,
+		BLUE       = 0x02,
+		RED_POWER  = 0x03,
+		BLUE_POWER = 0x04,
 	};
 
 public:
@@ -83,4 +85,7 @@ private:
 
 	/** 포션 색상에 대응하는 아틀라스 내의 이름입니다. */
 	std::map<EColor, std::string> colorNames_;
+
+	/** 파워 포션의 외곽선 색상입니다. */
+	std::map<EColor, glm::vec4> outlineColors_;
 };

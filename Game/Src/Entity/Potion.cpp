@@ -41,8 +41,16 @@ Potion::Potion(const glm::vec2& startPos, const glm::vec2& endPos, const EColor&
 
 	colorNames_ =
 	{
-		{ EColor::RED,  "PotionRed"   },
-		{ EColor::BLUE, "PotionsBlue" },
+		{ EColor::RED,        "PotionRed"   },
+		{ EColor::BLUE,       "PotionsBlue" },
+		{ EColor::RED_POWER,  "PotionRed"   },
+		{ EColor::BLUE_POWER, "PotionsBlue" },
+	};
+
+	outlineColors_ =
+	{
+		{ EColor::RED_POWER,  glm::vec4(1.0f, 0.2f, 0.2f, 1.0f) },
+		{ EColor::BLUE_POWER, glm::vec4(0.2f, 0.2f, 1.0f, 1.0f) },
 	};
 }
 
@@ -72,17 +80,47 @@ void Potion::Tick(float deltaSeconds)
 	{
 		if (collisionBound_.Intersect(player_->GetCollider()))
 		{
-			if (color_ == EColor::RED)
+			switch (color_)
+			{
+			case EColor::RED:
 			{
 				float hp = player_->GetHP();
 				hp += heal_;
 				player_->SetHP(hp);
 			}
-			else // color_ == EColor::BLUE
+			break;
+
+			case EColor::BLUE:
 			{
 				float mp = player_->GetMP();
 				mp += heal_;
 				player_->SetMP(mp);
+			}
+			break;
+
+			case EColor::RED_POWER:
+			{
+				float maxHp = player_->GetMaxHP();
+				maxHp += heal_;
+				player_->SetMaxHP(maxHp);
+
+				float hp = player_->GetHP();
+				hp += heal_;
+				player_->SetHP(hp);
+			}
+			break;
+
+			case EColor::BLUE_POWER:
+			{
+				float maxMp = player_->GetMaxMP();
+				maxMp += heal_;
+				player_->SetMaxMP(maxMp);
+
+				float mp = player_->GetMP();
+				mp += heal_;
+				player_->SetMP(mp);
+			}
+			break;
 			}
 
 			state_ = EState::DONE;
@@ -105,7 +143,15 @@ void Potion::Render()
 		return;
 	}
 
-	renderManager_->DrawTextureAtlas(textureAtlas_, colorNames_.at(color_), renderBound_.center, renderBound_.size.x, renderBound_.size.y, 0.0f);
+	if (color_ == EColor::BLUE || color_ == EColor::RED)
+	{
+		renderManager_->DrawTextureAtlas(textureAtlas_, colorNames_.at(color_), renderBound_.center, renderBound_.size.x, renderBound_.size.y, 0.0f);
+	}
+	else
+	{
+		renderManager_->DrawTextureAtlas(textureAtlas_, colorNames_.at(color_), renderBound_.center, renderBound_.size.x, renderBound_.size.y, 0.0f, outlineColors_.at(color_));
+	}
+	
 	renderManager_->DrawTextureAtlas(textureAtlas_, colorNames_.at(color_), shadow_.bound.center, shadow_.bound.size.x, shadow_.bound.size.y, 0.0f, shadow_.option);
 }
 
