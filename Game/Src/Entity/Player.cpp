@@ -137,6 +137,26 @@ const glm::vec2 Player::GetPosition() const
 	return renderBound_.center;
 }
 
+float Player::GetHP() const
+{
+	return hpBar_->GetBar();
+}
+
+void Player::SetHP(float hp)
+{
+	hpBar_->SetBar(hp);
+}
+
+float Player::GetMP() const
+{
+	return mpBar_->GetBar();
+}
+
+void Player::SetMP(float mp)
+{
+	mpBar_->SetBar(mp);
+}
+
 void Player::LoadAnimations()
 {
 	GLManager& glManager = GLManager::GetRef();

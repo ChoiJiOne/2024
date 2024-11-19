@@ -32,6 +32,18 @@ public:
 	/** 플레이어의 경계 충돌 영역을 얻습니다. */
 	const Circle2D* GetCollider() const { return &collisionBound_; }
 
+	/** 플레이어의 HP를 얻습니다. */
+	float GetHP() const;
+
+	/** 플레이어의 HP를 설정합니다. */
+	void SetHP(float hp);
+
+	/** 플레이어의 MP를 얻습니다. */
+	float GetMP() const;
+
+	/** 플레이어의 MP를 설정합니다. */
+	void SetMP(float mp);
+
 private:
 	/** 플레이어의 애니메이션 상태입니다. */
 	enum class EAnimationState
