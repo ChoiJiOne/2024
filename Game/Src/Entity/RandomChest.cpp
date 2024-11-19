@@ -137,10 +137,20 @@ void RandomChest::Release()
 	bIsInitialized_ = false;
 }
 
+bool RandomChest::IsRange(int32_t num, int32_t minNum, int32_t maxNum)
+{
+	int32_t minNumber = glm::min<float>(minNum, maxNum);
+	int32_t maxNumber = glm::max<float>(minNum, maxNum);
+
+	return (minNumber <= num) && (num <= maxNumber);
+}
+
 IObject* RandomChest::GenerateRandomObject()
 {
 	EntityManager& entityManager = EntityManager::GetRef();
-	int32_t randomSelect = GenerateRandomInt(0, 9);
+	int32_t randomSelect = GenerateRandomInt(MIN_RANDOM_SELECT, MAX_RANDOM_SELECT);
+
+
 
 	switch (randomSelect)
 	{
@@ -148,6 +158,9 @@ IObject* RandomChest::GenerateRandomObject()
 	case 1:
 	case 2:
 	case 3:
+	case 4:
+	case 5:
+	case 6:
 	{
 		glm::vec2 postiton = renderBound_.center;
 		glm::vec2 direction = glm::normalize(player_->GetCollider()->center - postiton);
@@ -156,22 +169,21 @@ IObject* RandomChest::GenerateRandomObject()
 
 		return entityManager.Create<Fire>(postiton, direction, speed, lifeTime);
 	}
-	break;
 
-	case 4:
-	case 5:
-	case 6:
 	case 7:
 	case 8:
+	case 9:
+	case 10:
 	{
 		glm::vec2 startPos = renderBound_.center;
 		glm::vec2 endPos = GenerateRandomDisk(playground_->GetSafeBound()->radius);
 
 		return entityManager.Create<Coin>(startPos, endPos);
 	}
-	break;
 
-	case 9:
+	case 11:
+	case 12:
+	case 13:
 	{
 		glm::vec2 startPos = renderBound_.center;
 		glm::vec2 endPos = GenerateRandomDisk(playground_->GetSafeBound()->radius);
@@ -179,7 +191,15 @@ IObject* RandomChest::GenerateRandomObject()
 
 		return entityManager.Create<Potion>(startPos, endPos, color);
 	}
-	break;
+
+	case 14:
+	{
+		glm::vec2 startPos = renderBound_.center;
+		glm::vec2 endPos = GenerateRandomDisk(playground_->GetSafeBound()->radius);
+		Potion::EColor color = static_cast<Potion::EColor>(GenerateRandomInt(3, 4));
+
+		return entityManager.Create<Potion>(startPos, endPos, color);
+	}
 	}
 
 	return nullptr;

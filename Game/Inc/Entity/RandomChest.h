@@ -44,6 +44,12 @@ private:
 		GENERATE = 0x01,
 	};
 
+	/**
+	 * 특정 숫자가 범위 내에 있는지 확인합니다.
+	 * 이때, 범위는 [minNum, maxNum]입니다.
+	 */
+	bool IsRange(int32_t num, int32_t minNum, int32_t maxNum);
+
 	/** 임의의 오브젝트를 생성합니다. */
 	IObject* GenerateRandomObject();
 
@@ -101,4 +107,10 @@ private:
 	
 	/** 현재 관리 중인 오브젝트들입니다. */
 	std::list<IObject*> objects_;
+
+	/** 렌덤 뽑기를 위한 최소 값입니다. */
+	static const int32_t MIN_RANDOM_SELECT = 1;
+
+	/** 렌더 뽑기를 위한 최댓 값입니다. */
+	static const int32_t MAX_RANDOM_SELECT = 100;
 };
