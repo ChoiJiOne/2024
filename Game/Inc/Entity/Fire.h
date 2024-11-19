@@ -64,6 +64,9 @@ private:
 	/** 불의 라이프 타입입니다. */
 	float lifeTime_ = 0.0f;
 
+	/** 불의 데미지 값입니다. */
+	float damage_ = 0.0f;
+
 	/** 애니메이션 상태입니다. */
 	EAnimationState animationState_ = EAnimationState::BURN;
 

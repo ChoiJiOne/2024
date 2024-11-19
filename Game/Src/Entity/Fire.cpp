@@ -29,6 +29,8 @@ Fire::Fire(const glm::vec2& position, const glm::vec2& direction, float speed, f
 
 	LoadAnimations();
 
+	damage_ = 10.0f;
+
 	state_ = EState::MOVE;
 
 	bIsInitialized_ = true;
@@ -53,6 +55,10 @@ void Fire::Tick(float deltaSeconds)
 
 		if (collisionBound_.Intersect(player_->GetCollider()))
 		{
+			float hp = player_->GetHP();
+			hp -= damage_;
+			player_->SetHP(hp);
+
 			animationState_ = EAnimationState::EXPLOSION;
 			state_ = EState::WAIT;
 		}
