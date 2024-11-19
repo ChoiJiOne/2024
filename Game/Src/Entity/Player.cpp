@@ -6,6 +6,7 @@
 
 #include "Entity/EntityManager.h"
 #include "Entity/Player.h"
+#include "Entity/Playground.h"
 #include "Entity/UIBar.h"
 #include "Entity/UICamera.h"
 #include "GL/GLManager.h"
@@ -23,6 +24,7 @@ Player::Player()
 	renderOrder_ = 2;
 
 	textureAtlas_ = GLManager::GetRef().GetByName<TextureAtlas2D>("TextureAtlas");
+	playground_ = EntityManager::GetRef().GetByName<Playground>("Playground");
 	gamePlayScene_ = SceneManager::GetRef().GetByName<GamePlayScene>("GamePlayScene");
 	renderBound_ = Rect2D(glm::vec2(0.0f, 0.0f), glm::vec2(66.0f, 64.0f));
 	collisionBound_.radius = 22.0f;
@@ -138,6 +140,7 @@ void Player::Release()
 
 	UnloadAnimation();
 	gamePlayScene_ = nullptr;
+	playground_ = nullptr;
 	textureAtlas_ = nullptr;
 
 	bIsInitialized_ = false;
