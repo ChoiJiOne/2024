@@ -21,11 +21,6 @@
 
 GamePlayScene::GamePlayScene()
 {
-	entityManager_ = EntityManager::GetPtr();
-	glManager_ = GLManager::GetPtr();
-	renderManager_ = RenderManager2D::GetPtr();
-	sceneManager_ = SceneManager::GetPtr();
-
 	sceneManager_->Register("GamePlayScene", this);
 
 	Player* player = entityManager_->Create<Player>();
@@ -62,13 +57,16 @@ GamePlayScene::GamePlayScene()
 	uiCamera_ = entityManager_->Create<UICamera>();
 
 	MiniMap* miniMap = entityManager_->Create<MiniMap>(uiCamera_, randomChests);
-	AddUIEntity(miniMap);
+	AddUpdateUIEntity(miniMap);
+	AddRenderUIEntity(miniMap);
 
 	UIBar* hpBar = entityManager_->Create<UIBar>(uiCamera_, glManager_->GetByName<TTFont>("Font24"), "Resource\\UI\\HP.bar");
-	AddUIEntity(hpBar);
+	AddUpdateUIEntity(hpBar);
+	AddRenderUIEntity(hpBar);
 
 	UIBar* mpBar = entityManager_->Create<UIBar>(uiCamera_, glManager_->GetByName<TTFont>("Font24"), "Resource\\UI\\MP.bar");
-	AddUIEntity(mpBar);
+	AddUpdateUIEntity(mpBar);
+	AddRenderUIEntity(mpBar);
 }
 
 GamePlayScene::~GamePlayScene()
@@ -80,12 +78,24 @@ GamePlayScene::~GamePlayScene()
 
 void GamePlayScene::Tick(float deltaSeconds)
 {
+	if (bNeedSortUpdateEntites_)
+	{
+		updateEntites_.sort(GamePlayScene::CompareUpdateOrder);
+		bNeedSortUpdateEntites_ = false;
+	}
+
 	for (auto& updateEntity : updateEntites_)
 	{
 		updateEntity->Tick(deltaSeconds);
 	}
 
-	for (auto& uiEntity : uiEntities_)
+	if (bNeedSortUpdateUiEntites_)
+	{
+		updateUiEntities_.sort(GamePlayScene::CompareUpdateOrder);
+		bNeedSortUpdateUiEntites_ = false;
+	}
+
+	for (auto& uiEntity : updateUiEntities_)
 	{
 		uiEntity->Tick(deltaSeconds);
 	}
@@ -93,6 +103,18 @@ void GamePlayScene::Tick(float deltaSeconds)
 
 void GamePlayScene::Render()
 {
+	if (bNeedSortRenderEntites_)
+	{
+		renderEntities_.sort(GamePlayScene::CompareRenderOrder);
+		bNeedSortRenderEntites_ = false;
+	}
+
+	if (bNeedSortRenderUiEntites_)
+	{
+		renderUiEntities_.sort(GamePlayScene::CompareRenderOrder);
+		bNeedSortRenderUiEntites_ = false;
+	}
+	
 	glManager_->BeginFrame(0.0f, 0.0f, 0.0f, 1.0f);
 	{
 		renderManager_->Begin(mainCamera_);
@@ -106,7 +128,7 @@ void GamePlayScene::Render()
 
 		renderManager_->Begin(uiCamera_);
 		{
-			for (auto& uiEntity : uiEntities_)
+			for (auto& uiEntity : renderUiEntities_)
 			{
 				uiEntity->Render();
 			}
@@ -127,7 +149,7 @@ void GamePlayScene::Exit()
 void GamePlayScene::AddUpdateEntity(IEntity* entity)
 {
 	updateEntites_.push_back(entity);
-	updateEntites_.sort(GamePlayScene::CompareUpdateOrder);
+	bNeedSortUpdateEntites_ = true;
 }
 
 void GamePlayScene::RemoveUpdateEntity(IEntity* entity)
@@ -138,7 +160,7 @@ void GamePlayScene::RemoveUpdateEntity(IEntity* entity)
 void GamePlayScene::AddRenderEntity(IEntity2D* entity)
 {
 	renderEntities_.push_back(entity);
-	renderEntities_.sort(GamePlayScene::CompareRenderOrder);
+	bNeedSortRenderEntites_ = true;
 }
 
 void GamePlayScene::RemoveRenderEntity(IEntity2D* entity)
@@ -146,13 +168,24 @@ void GamePlayScene::RemoveRenderEntity(IEntity2D* entity)
 	renderEntities_.remove(entity);
 }
 
-void GamePlayScene::AddUIEntity(IEntity2D* entity)
+void GamePlayScene::AddUpdateUIEntity(IEntity2D* entity)
 {
-	uiEntities_.push_back(entity);
-	uiEntities_.sort(GamePlayScene::CompareRenderOrder);
+	updateUiEntities_.push_back(entity);
+	bNeedSortUpdateUiEntites_ = true;
 }
 
-void GamePlayScene::RemoveUIEntity(IEntity2D* entity)
+void GamePlayScene::RemoveUpdateUIEntity(IEntity2D* entity)
 {
-	uiEntities_.remove(entity);
+	updateUiEntities_.remove(entity);
+}
+
+void GamePlayScene::AddRenderUIEntity(IEntity2D* entity)
+{
+	renderUiEntities_.push_back(entity);
+	bNeedSortRenderUiEntites_ = true;
+}
+
+void GamePlayScene::RemoveRenderUIEntity(IEntity2D* entity)
+{
+	renderUiEntities_.remove(entity);
 }

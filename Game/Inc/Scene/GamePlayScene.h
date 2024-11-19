@@ -29,10 +29,16 @@ public:
 	void RemoveRenderEntity(IEntity2D* entity);
 
 	/** UI 엔티티를 추가합니다. */
-	void AddUIEntity(IEntity2D* entity);
+	void AddUpdateUIEntity(IEntity2D* entity);
 
 	/** UI 엔티티를 삭제합니다. */
-	void RemoveUIEntity(IEntity2D* entity);
+	void RemoveUpdateUIEntity(IEntity2D* entity);
+
+	/** 렌더링할 UI 엔티티를 추가합니다.  */
+	void AddRenderUIEntity(IEntity2D* entity);
+
+	/** 렌더링할 UI 엔티티를 삭제합니다. */
+	void RemoveRenderUIEntity(IEntity2D* entity);
 
 private:
 	/** 업데이트할 엔티티의 우선 순위를 비교합니다. */
@@ -48,33 +54,33 @@ private:
 	}
 
 private:
-	/** 게임 플레이 씬에서 사용할 매니저들의 포인터입니다. */
-	class EntityManager* entityManager_ = nullptr;
-	class GLManager* glManager_ = nullptr;
-	class RenderManager2D* renderManager_ = nullptr;
-	class SceneManager* sceneManager_ = nullptr;
-	
 	/** 게임 플레이 씬의 메인 카메라입니다. */
 	class Camera2D* mainCamera_ = nullptr;
 
 	/** 게임 플레이 씬의 스크린 카메라입니다. */
 	class UICamera* uiCamera_ = nullptr;
 
-	/** 업데이트할 엔티티의 정렬 여부입니다. */
-	bool bIsSortUpdateEntites_ = false;
-
 	/** 업데이트할 엔티티입니다. */
 	std::list<IEntity*> updateEntites_;
 
-	/** 업데이트할 엔티티의 정렬 여부입니다. */
-	bool bIsSortRenderEntites_ = false;
-	
+	/** 업데이트할 엔티티를 정렬해야 할지 확인합니다. */
+	bool bNeedSortUpdateEntites_ = false;
+
 	/** 렌더링할 엔티티입니다. */
 	std::list<IEntity2D*> renderEntities_;
 
-	/** UI 엔티티의 정렬 여부입니다. */
+	/** 렌더링할 엔티티를 정렬해야 할지 확인합니다. */
+	bool bNeedSortRenderEntites_ = false;
 
+	/** 업데이트할 UI 엔티티입니다. */
+	std::list<IEntity2D*> updateUiEntities_;
 
-	/** UI 엔티티입니다. */
-	std::list<IEntity2D*> uiEntities_;
+	/** 업데이트할 UI 엔티티를 정렬해야 할지 확인합니다. */
+	bool bNeedSortUpdateUiEntites_ = false;
+
+	/** 렌더링할 UI 엔티티입니다. */
+	std::list<IEntity2D*> renderUiEntities_;
+
+	/** 렌더링할 UI 엔티티를 정렬해야 할지 확인합니다. */
+	bool bNeedSortRenderUiEntites_ = false;
 };
