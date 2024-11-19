@@ -37,6 +37,8 @@ Potion::Potion(const glm::vec2& startPos, const glm::vec2& endPos, const EColor&
 	moveTime_ = 0.0f;
 	maxMoveTime_ = 2.0f;
 
+	heal_ = 10.0f;
+
 	colorNames_ =
 	{
 		{ EColor::RED,  "PotionRed"   },
@@ -70,6 +72,19 @@ void Potion::Tick(float deltaSeconds)
 	{
 		if (collisionBound_.Intersect(player_->GetCollider()))
 		{
+			if (color_ == EColor::RED)
+			{
+				float hp = player_->GetHP();
+				hp += heal_;
+				player_->SetHP(hp);
+			}
+			else // color_ == EColor::BLUE
+			{
+				float mp = player_->GetMP();
+				mp += heal_;
+				player_->SetMP(mp);
+			}
+
 			state_ = EState::DONE;
 		}
 	}

@@ -75,6 +75,9 @@ private:
 	/** 포션의 최대 이동 시간입니다. */
 	float maxMoveTime_ = 0.0f;
 
+	/** 포션의 회복량입니다. */
+	float heal_ = 0.0f;
+
 	/** 포션의 색상입니다. */
 	EColor color_ = EColor::NONE;
 
