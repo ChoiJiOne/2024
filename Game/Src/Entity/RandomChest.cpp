@@ -150,7 +150,7 @@ IObject* RandomChest::GenerateRandomObject()
 	EntityManager& entityManager = EntityManager::GetRef();
 	int32_t randomSelect = GenerateRandomInt(MIN_RANDOM_SELECT, MAX_RANDOM_SELECT);
 
-	if (IsRange(randomSelect, 1, 55)) // 약 55%
+	if (IsRange(randomSelect, 1, 50)) // 약 50%
 	{
 		glm::vec2 postiton = renderBound_.center;
 		glm::vec2 direction = glm::normalize(player_->GetCollider()->center - postiton);
@@ -159,7 +159,7 @@ IObject* RandomChest::GenerateRandomObject()
 
 		return entityManager.Create<Fire>(postiton, direction, speed, lifeTime);
 	}
-	else if (IsRange(randomSelect, 56, 85)) // 약 30%
+	else if (IsRange(randomSelect, 51, 94)) // 약 44%
 	{
 		glm::vec2 startPos = renderBound_.center;
 		glm::vec2 endPos = GenerateRandomDisk(playground_->GetSafeBound()->radius);
@@ -173,12 +173,12 @@ IObject* RandomChest::GenerateRandomObject()
 
 		int32_t start = 0;
 		int32_t end = 0;
-		if (IsRange(randomSelect, 86, 95)) // 약 10%
+		if (IsRange(randomSelect, 95, 99)) // 약 5%
 		{
 			start = static_cast<int32_t>(Potion::EColor::RED);
 			end = static_cast<int32_t>(Potion::EColor::BLUE);
 		}
-		else // 96~100, 약 5%
+		else // 약 1%
 		{
 			start = static_cast<int32_t>(Potion::EColor::RED_POWER);
 			end = static_cast<int32_t>(Potion::EColor::BLUE_POWER);
