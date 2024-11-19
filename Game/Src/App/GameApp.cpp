@@ -20,10 +20,10 @@ void GameApp::Startup()
 	TextureAtlas2D* textureAtlas = glManager_->Create<TextureAtlas2D>("Resource\\TextureAtlas\\TextureAtlas.png", "Resource\\TextureAtlas\\TextureAtlas.atlas", TextureAtlas2D::EFilter::NEAREST);
 	glManager_->Register("TextureAtlas", textureAtlas);
 
-	std::array<int32_t, 4> fontSizes = { 24, 32, };
+	std::array<int32_t, 2> fontSizes = { 24, 32, };
 	for (const auto& fontSize : fontSizes)
 	{
-		TTFont* font = glManager_->Create<TTFont>("Resource\\Font\\lower.ttf", 0x00, 0x128, static_cast<float>(fontSize));
+		TTFont* font = glManager_->Create<TTFont>("Resource\\Font\\lower.ttf", 0x00, 0x128, static_cast<float>(fontSize), ITexture::EFilter::NEAREST);
 		glManager_->Register(PrintF("Font%d", fontSize), font);
 	}
 
