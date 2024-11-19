@@ -23,6 +23,10 @@ GamePlayScene::GamePlayScene()
 {
 	sceneManager_->Register("GamePlayScene", this);
 
+	uiCamera_ = entityManager_->Create<UICamera>();
+	entityManager_->Register("UICamera", uiCamera_);
+	AddUpdateUIEntity(uiCamera_);
+
 	Player* player = entityManager_->Create<Player>();
 	entityManager_->Register("Player", player);
 	AddUpdateEntity(player);
@@ -53,20 +57,10 @@ GamePlayScene::GamePlayScene()
 
 		randomChests[count] = randomChest;
 	}
-
-	uiCamera_ = entityManager_->Create<UICamera>();
-
+	
 	MiniMap* miniMap = entityManager_->Create<MiniMap>(uiCamera_, randomChests);
 	AddUpdateUIEntity(miniMap);
 	AddRenderUIEntity(miniMap);
-
-	UIBar* hpBar = entityManager_->Create<UIBar>(uiCamera_, glManager_->GetByName<TTFont>("Font24"), "Resource\\UI\\HP.bar");
-	AddUpdateUIEntity(hpBar);
-	AddRenderUIEntity(hpBar);
-
-	UIBar* mpBar = entityManager_->Create<UIBar>(uiCamera_, glManager_->GetByName<TTFont>("Font24"), "Resource\\UI\\MP.bar");
-	AddUpdateUIEntity(mpBar);
-	AddRenderUIEntity(mpBar);
 }
 
 GamePlayScene::~GamePlayScene()
@@ -168,13 +162,13 @@ void GamePlayScene::RemoveRenderEntity(IEntity2D* entity)
 	renderEntities_.remove(entity);
 }
 
-void GamePlayScene::AddUpdateUIEntity(IEntity2D* entity)
+void GamePlayScene::AddUpdateUIEntity(IEntity* entity)
 {
 	updateUiEntities_.push_back(entity);
 	bNeedSortUpdateUiEntites_ = true;
 }
 
-void GamePlayScene::RemoveUpdateUIEntity(IEntity2D* entity)
+void GamePlayScene::RemoveUpdateUIEntity(IEntity* entity)
 {
 	updateUiEntities_.remove(entity);
 }

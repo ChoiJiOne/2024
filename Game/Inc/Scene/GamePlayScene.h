@@ -29,10 +29,10 @@ public:
 	void RemoveRenderEntity(IEntity2D* entity);
 
 	/** UI 엔티티를 추가합니다. */
-	void AddUpdateUIEntity(IEntity2D* entity);
+	void AddUpdateUIEntity(IEntity* entity);
 
 	/** UI 엔티티를 삭제합니다. */
-	void RemoveUpdateUIEntity(IEntity2D* entity);
+	void RemoveUpdateUIEntity(IEntity* entity);
 
 	/** 렌더링할 UI 엔티티를 추가합니다.  */
 	void AddRenderUIEntity(IEntity2D* entity);
@@ -73,7 +73,7 @@ private:
 	bool bNeedSortRenderEntites_ = false;
 
 	/** 업데이트할 UI 엔티티입니다. */
-	std::list<IEntity2D*> updateUiEntities_;
+	std::list<IEntity*> updateUiEntities_;
 
 	/** 업데이트할 UI 엔티티를 정렬해야 할지 확인합니다. */
 	bool bNeedSortUpdateUiEntites_ = false;
