@@ -44,6 +44,9 @@ public:
 	/** 텍스트의 크기를 측정합니다. */
 	void MeasureText(const std::wstring& text, float& outWidth, float& outHeight) const;
 
+	/** 텍스트의 중앙 위치로부터 텍스트의 기본 위치를 계산합니다. */
+	glm::vec2 MeasureBasePos(const std::wstring& text, const glm::vec2& center);
+	
 private:
 	/** 글리프 아틀라스의 비트맵을 생성합니다. */
 	std::shared_ptr<uint8_t[]> CreateGlyphAtlasBitmap(const std::vector<uint8_t>& buffer);

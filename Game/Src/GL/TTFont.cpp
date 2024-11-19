@@ -92,6 +92,38 @@ void TTFont::MeasureText(const std::wstring& text, float& outWidth, float& outHe
 	outHeight = yoff1 + yoff2;
 }
 
+glm::vec2 TTFont::MeasureBasePos(const std::wstring& text, const glm::vec2& center)
+{
+	float width = 0;
+	float height = 0.0f;
+	float yoff1 = -FLT_MAX;
+	float yoff2 = -FLT_MAX;
+
+	for (uint32_t index = 0; index < text.size(); ++index)
+	{
+		const Glyph& glyph = GetGlyph(static_cast<int32_t>(text[index]));
+
+		if (index == text.size() - 1)
+		{
+			width += static_cast<float>(glyph.pos1.x - glyph.pos0.x) + glyph.xoff;
+		}
+		else
+		{
+			width += glyph.xadvance;
+		}
+
+		yoff1 = glm::max<float>(yoff1, glm::abs(glyph.yoff));
+		yoff2 = glm::max<float>(yoff2, glm::abs(glyph.yoff2));
+	}
+
+	height = yoff1 + yoff2;
+
+	glm::vec2 basePos = center - glm::vec2(width * 0.5f, height * 0.5f);
+	basePos.y += yoff2;
+
+	return basePos;
+}
+
 std::shared_ptr<uint8_t[]> TTFont::CreateGlyphAtlasBitmap(const std::vector<uint8_t>& buffer)
 {
 	std::size_t glyphSize = static_cast<std::size_t>(endCodePoint_ - beginCodePoint_ + 1);
