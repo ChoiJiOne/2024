@@ -8,8 +8,10 @@
 #include "Physic/Rect2D.h"
 
 /** 클래스 전방 선언입니다. */
+class GamePlayScene;
 class SpriteAnimator2D;
 class TextureAtlas2D;
+class UIBar;
 
 /** 플레이어가 조종할 엔티티입니다. */
 class Player : public IEntity2D
@@ -57,6 +59,9 @@ private:
 	/** 플레이어 렌더링 시 참조할 텍스처 아틀라스입니다. */
 	TextureAtlas2D* textureAtlas_ = nullptr;
 
+	/** 게임 플레이 씬입니다. */
+	GamePlayScene* gamePlayScene_ = nullptr;
+
 	/** 렌더링 영역입니다 */
 	Rect2D renderBound_;
 
@@ -80,4 +85,10 @@ private:
 
 	/** 플레이어의 애니메이션 상태 별 애니메이션 리소스입니다. */
 	std::map<EAnimationState, SpriteAnimator2D*> animations_;
+
+	/** 플레이어의 체력을 나타내는 HP입니다. */
+	UIBar* hpBar_ = nullptr;
+
+	/** 플레이어의 마나를 나타내는 MP입니다. */
+	UIBar* mpBar_ = nullptr;
 };

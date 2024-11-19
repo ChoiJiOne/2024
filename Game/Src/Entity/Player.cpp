@@ -4,11 +4,17 @@
 #include <glm/gtc/constants.hpp>
 #include <glm/gtc/epsilon.hpp>
 
+#include "Entity/EntityManager.h"
 #include "Entity/Player.h"
+#include "Entity/UIBar.h"
+#include "Entity/UICamera.h"
 #include "GL/GLManager.h"
 #include "GL/SpriteAnimator2D.h"
 #include "GL/TextureAtlas2D.h"
+#include "GL/TTFont.h"
 #include "GLFW/GLFWManager.h"
+#include "Scene/GamePlayScene.h"
+#include "Scene/SceneManager.h"
 #include "Utils/Assertion.h"
 
 Player::Player()
@@ -17,6 +23,7 @@ Player::Player()
 	renderOrder_ = 2;
 
 	textureAtlas_ = GLManager::GetRef().GetByName<TextureAtlas2D>("TextureAtlas");
+	gamePlayScene_ = SceneManager::GetRef().GetByName<GamePlayScene>("GamePlayScene");
 	renderBound_ = Rect2D(glm::vec2(0.0f, 0.0f), glm::vec2(66.0f, 64.0f));
 	collisionBound_.radius = 22.0f;
 	collisionBound_.center = renderBound_.center;
@@ -35,6 +42,15 @@ Player::Player()
 	speed_ = 500.0f;
 
 	LoadAnimations();
+
+	UICamera* uiCamera = EntityManager::GetRef().GetByName<UICamera>("UICamera");
+	hpBar_ = EntityManager::GetRef().Create<UIBar>(uiCamera, GLManager::GetRef().GetByName<TTFont>("Font24"), "Resource\\UI\\HP.bar");
+	gamePlayScene_->AddUpdateUIEntity(hpBar_);
+	gamePlayScene_->AddRenderUIEntity(hpBar_);
+
+	mpBar_ = EntityManager::GetRef().Create<UIBar>(uiCamera, GLManager::GetRef().GetByName<TTFont>("Font24"), "Resource\\UI\\MP.bar");
+	gamePlayScene_->AddUpdateUIEntity(mpBar_);
+	gamePlayScene_->AddRenderUIEntity(mpBar_);
 
 	bIsInitialized_ = true;
 }
@@ -110,6 +126,7 @@ void Player::Release()
 	CHECK(bIsInitialized_);
 
 	UnloadAnimation();
+	gamePlayScene_ = nullptr;
 	textureAtlas_ = nullptr;
 
 	bIsInitialized_ = false;
