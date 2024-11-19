@@ -70,5 +70,5 @@ private:
 	std::list<IEntity2D*> uiEntities_;
 
 	// 테스트용.
-	class HPBar* hpBar_ = nullptr;
+	class UIBar* hpBar_ = nullptr;
 };
