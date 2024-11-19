@@ -241,7 +241,6 @@ void Player::Move(float deltaSeconds)
 		direction_ = direction;
 
 		renderBound_.center += direction_ * speed_ * deltaSeconds;
-
 		collisionBound_.center = renderBound_.center;
 		collisionBound_.center.y += -renderBound_.size.y * 0.5f + collisionBound_.radius;
 
@@ -258,4 +257,17 @@ void Player::Move(float deltaSeconds)
 	{
 		animationState_ = EAnimationState::IDLE;
 	}
+}
+
+void Player::AdjustPosition(const glm::vec2& position)
+{
+	renderBound_.center = position;
+
+	// 충돌 영역 위치 조정.
+	collisionBound_.center = renderBound_.center;
+	collisionBound_.center.y += -renderBound_.size.y * 0.5f + collisionBound_.radius;
+
+	// 그림자 위치 조정.
+	shadow_.bound.center = renderBound_.center;
+	shadow_.bound.center.y += (-renderBound_.size.y * 0.5f) + (-shadow_.bound.size.y * 0.5f);
 }

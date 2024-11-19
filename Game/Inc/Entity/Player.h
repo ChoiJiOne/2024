@@ -89,6 +89,9 @@ private:
 	/** 플레이어를 움직입니다 */
 	void Move(float deltaSeconds);
 
+	/** 플레이어의 위치를 조정합니다. */
+	void AdjustPosition(const glm::vec2& position);
+
 private:
 	/** 플레이어 렌더링 시 참조할 텍스처 아틀라스입니다. */
 	TextureAtlas2D* textureAtlas_ = nullptr;
