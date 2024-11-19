@@ -10,11 +10,12 @@
 class TTFont;
 class UICamera;
 
-/** UI 엔티티입니다. */
+/** UI 바 엔티티입니다. */
 class UIBar : public IEntity2D
 {
 public:
-	UIBar(UICamera* uiCamera, TTFont* font);
+	/** UI 바의 내부 속성을 설정하기 위해서는 Json 포멧의 파일이 필요합니다. */
+	UIBar(UICamera* uiCamera, TTFont* font, const std::string& barPath);
 	virtual ~UIBar();
 
 	DISALLOW_COPY_AND_ASSIGN(UIBar);
@@ -23,11 +24,15 @@ public:
 	virtual void Render() override;
 	virtual void Release() override;
 
-	/** 플레이어의 현재 HP를 얻습니다. */
+	/** UI내의 현재 Bar를 얻습니다. */
 	float GetBar() const { return bar_; }
 
-	/** 플레이어의 HP 값을 설정합니다. */
+	/** UI내의 Bar 값을 설정합니다. */
 	void SetBar(float bar);
+
+private:
+	/** UI바 내의 속성들을 초기화합니다. */
+	void InitProperties(const std::string& barPath);
 
 private:
 	/** UI바 렌더링에 기준이 될 UI 카메라입니다. */
@@ -45,22 +50,22 @@ private:
 	/** UI바의 백그라운드 색상입니다. */
 	glm::vec4 backgroundColor_;
 
-	/** UI바의 체력 색상입니다. */
+	/** UI바의 색상입니다. */
 	glm::vec4 barColor_;
 
-	/** 플레이어의 HP입니다. */
+	/** UI바 내의 Bar입니다. */
 	float bar_ = 0.0f;
 
-	/** 플레이어의 HP 렌더링 시 부드러운 전환을 위한 마크입니다. */
+	/** 부드러운 전환을 위한 마크입니다. */
 	float barMark_ = 0.0f;
 
-	/** 플레이어의 최소 HP입니다. */
+	/** UI바 내의 Bar 최소 값입니다. */
 	float minBar_ = 0.0f;
 
-	/** 플레이어의 최대 HP입니다. */
+	/** UI바 내의 Bar 최대 값입니다.. */
 	float maxBar_ = 0.0f;
 
-	/** 플레이어의 HP 렌더링 시 부드러운 전환을 위한 속도입니다. */
+	/** 부드러운 전환을 위한 속도입니다. */
 	float barSlideSpeed_ = 0.0f;
 
 	/** UI바에 표시할 텍스트입니다. */

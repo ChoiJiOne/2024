@@ -3,6 +3,8 @@
 #include <glm/gtc/epsilon.hpp>
 #include <glm/gtx/norm.hpp>
 
+#include <json/json.h>
+
 #include "Entity/EntityManager.h"
 #include "Entity/UIBar.h"
 #include "Entity/Player.h"
@@ -10,25 +12,21 @@
 #include "Utils/Assertion.h"
 #include "Utils/Utils.h"
 
-UIBar::UIBar(UICamera* uiCamera, TTFont* font)
+UIBar::UIBar(UICamera* uiCamera, TTFont* font, const std::string& barPath)
 	: uiCamera_(uiCamera)
 	, font_(font)
 {
 	tickOrder_ = 1;
 	renderOrder_ = 1;
 
-	background_ = Rect2D(glm::vec2(0.0f, -300.0f), glm::vec2(400.0f, 25.0f));
-	barBound_ = background_;
-	backgroundColor_ = glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
-	barColor_ = glm::vec4(1.0f, 0.0f, 0.0f, 1.0f);
-
-	bar_ = 200.0f;
-	barMark_ = bar_;
-	minBar_ = 0.0f;
-	maxBar_ = bar_;
-	barSlideSpeed_ = 50.0f;
+	InitProperties(barPath);
 	
 	text_ = PrintF(L"%3d / %3d", static_cast<int32_t>(barMark_), static_cast<int32_t>(maxBar_));
+
+	barBound_ = background_;
+	barBound_.center = background_.center + glm::vec2(-background_.size.x * 0.5f, +background_.size.y * 0.5f);
+	barBound_.size.x = background_.size.x * (barMark_ / maxBar_);
+	barBound_.center += glm::vec2(barBound_.size.x * 0.5f, -barBound_.size.y * 0.5f);
 
 	bIsInitialized_ = true;
 }
@@ -89,4 +87,63 @@ void UIBar::SetBar(float bar)
 {
 	bar_ = bar;
 	bar_ = glm::clamp<float>(bar_, 0.0f, maxBar_);
+}
+
+void UIBar::InitProperties(const std::string& barPath)
+{
+	std::vector<uint8_t> buffer;
+	std::string errMsg;
+	ASSERTION(ReadFile(barPath, buffer, errMsg), "%s", errMsg.c_str());
+
+	std::string jsonString(buffer.begin(), buffer.end());
+	Json::Value root;
+	Json::Reader reader;
+	ASSERTION(reader.parse(jsonString, root), "Failed to parse '%s' file.", barPath.c_str());
+
+	CHECK(root["Background"].isObject() && !root["Background"].isNull());
+	const Json::Value& background = root["Background"];
+
+	CHECK(background["Bound"].isObject() && !background["Bound"].isNull());
+	const Json::Value& backgroundBound = background["Bound"];
+
+	CHECK(backgroundBound["x"].isDouble() && !backgroundBound["x"].isNull());
+	CHECK(backgroundBound["y"].isDouble() && !backgroundBound["y"].isNull());
+	CHECK(backgroundBound["w"].isDouble() && !backgroundBound["w"].isNull());
+	CHECK(backgroundBound["h"].isDouble() && !backgroundBound["h"].isNull());
+	background_.center.x = backgroundBound["x"].asFloat();
+	background_.center.y = backgroundBound["y"].asFloat();
+	background_.size.x = backgroundBound["w"].asFloat();
+	background_.size.y = backgroundBound["h"].asFloat();
+
+	CHECK(background["Color"].isObject() && !background["Color"].isNull());
+	const Json::Value& backgroundColor = background["Color"];
+
+	CHECK(backgroundColor["r"].isDouble() && !backgroundColor["r"].isNull());
+	CHECK(backgroundColor["g"].isDouble() && !backgroundColor["g"].isNull());
+	CHECK(backgroundColor["b"].isDouble() && !backgroundColor["b"].isNull());
+	CHECK(backgroundColor["a"].isDouble() && !backgroundColor["a"].isNull());
+	backgroundColor_.x = backgroundColor["r"].asFloat();
+	backgroundColor_.y = backgroundColor["g"].asFloat();
+	backgroundColor_.z = backgroundColor["b"].asFloat();
+	backgroundColor_.w = backgroundColor["a"].asFloat();
+
+	CHECK(root["Bar"].isObject() && !root["Bar"].isNull());
+	const Json::Value& bar = root["Bar"];
+
+	CHECK(bar["Size"].isDouble() && !bar["Size"].isNull());
+	CHECK(bar["SlideSpeed"].isDouble() && !bar["SlideSpeed"].isNull());
+	CHECK(bar["IsFullFill"].isBool() && !bar["IsFullFill"].isNull());
+
+	minBar_ = 0.0f;
+	maxBar_ = bar["Size"].asFloat();
+	bar_ = bar["IsFullFill"].asBool() ? maxBar_ : 0.0f;
+	barMark_ = bar_;
+	barSlideSpeed_ = bar["SlideSpeed"].asFloat();
+
+	CHECK(bar["Color"].isObject() && !bar["Color"].isNull());
+	const Json::Value& barColor = bar["Color"];
+	barColor_.x = barColor["r"].asFloat();
+	barColor_.y = barColor["g"].asFloat();
+	barColor_.z = barColor["b"].asFloat();
+	barColor_.w = barColor["a"].asFloat();
 }
