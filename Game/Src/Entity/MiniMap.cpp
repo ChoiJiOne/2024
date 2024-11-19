@@ -33,7 +33,8 @@ MiniMap::MiniMap(UICamera* uiCamera, const std::vector<RandomChest*>& randomChes
 	renderBound_.center = glm::vec2(uiCameraSize.x, -uiCameraSize.y);
 	renderBound_.center += glm::vec2(-renderBound_.size.x - xoffset, +renderBound_.size.y + yoffset) * 0.5f;
 
-	minimapRadius_ = renderBound_.size.x * 0.4f;
+	worldScale_ = 0.35f;
+	minimapRadius_ = renderBound_.size.x * worldScale_;
 	pointSize_ = 6.0f;
 	playerColor_ = glm::vec4(0.0f, 1.0f, 0.0f, 1.0f);
 	coinColor_ = glm::vec4(1.0f, 1.0f, 0.0f, 1.0f);

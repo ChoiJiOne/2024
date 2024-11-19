@@ -51,6 +51,9 @@ private:
 	/** 플레이어입니다. */
 	Player* player_ = nullptr;
 
+	/** 전체 월드의 스케일 값입니다. */
+	float worldScale_ = 0.0f;
+
 	/** 플레이 영역의 반지름 길이입니다. */
 	float playgroundRadius_ = 0.0f;
 
