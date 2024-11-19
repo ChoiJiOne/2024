@@ -150,17 +150,7 @@ IObject* RandomChest::GenerateRandomObject()
 	EntityManager& entityManager = EntityManager::GetRef();
 	int32_t randomSelect = GenerateRandomInt(MIN_RANDOM_SELECT, MAX_RANDOM_SELECT);
 
-
-
-	switch (randomSelect)
-	{
-	case 0:
-	case 1:
-	case 2:
-	case 3:
-	case 4:
-	case 5:
-	case 6:
+	if (IsRange(randomSelect, 1, 55)) // 약 55%
 	{
 		glm::vec2 postiton = renderBound_.center;
 		glm::vec2 direction = glm::normalize(player_->GetCollider()->center - postiton);
@@ -169,37 +159,33 @@ IObject* RandomChest::GenerateRandomObject()
 
 		return entityManager.Create<Fire>(postiton, direction, speed, lifeTime);
 	}
-
-	case 7:
-	case 8:
-	case 9:
-	case 10:
+	else if (IsRange(randomSelect, 56, 85)) // 약 30%
 	{
 		glm::vec2 startPos = renderBound_.center;
 		glm::vec2 endPos = GenerateRandomDisk(playground_->GetSafeBound()->radius);
 
 		return entityManager.Create<Coin>(startPos, endPos);
 	}
-
-	case 11:
-	case 12:
-	case 13:
+	else
 	{
 		glm::vec2 startPos = renderBound_.center;
 		glm::vec2 endPos = GenerateRandomDisk(playground_->GetSafeBound()->radius);
-		Potion::EColor color = static_cast<Potion::EColor>(GenerateRandomInt(1, 2));
 
+		int32_t start = 0;
+		int32_t end = 0;
+		if (IsRange(randomSelect, 86, 95)) // 약 10%
+		{
+			start = static_cast<int32_t>(Potion::EColor::RED);
+			end = static_cast<int32_t>(Potion::EColor::BLUE);
+		}
+		else // 96~100, 약 5%
+		{
+			start = static_cast<int32_t>(Potion::EColor::RED_POWER);
+			end = static_cast<int32_t>(Potion::EColor::BLUE_POWER);
+		}
+
+		Potion::EColor color = static_cast<Potion::EColor>(GenerateRandomInt(start, end));
 		return entityManager.Create<Potion>(startPos, endPos, color);
-	}
-
-	case 14:
-	{
-		glm::vec2 startPos = renderBound_.center;
-		glm::vec2 endPos = GenerateRandomDisk(playground_->GetSafeBound()->radius);
-		Potion::EColor color = static_cast<Potion::EColor>(GenerateRandomInt(3, 4));
-
-		return entityManager.Create<Potion>(startPos, endPos, color);
-	}
 	}
 
 	return nullptr;
