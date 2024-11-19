@@ -86,6 +86,9 @@ private:
 	/** 플레이어의 애니메이션 상태 초기화를 해제합니다. */
 	void UnloadAnimation();
 
+	/** 플레이어를 움직입니다 */
+	void Move(float deltaSeconds);
+
 private:
 	/** 플레이어 렌더링 시 참조할 텍스처 아틀라스입니다. */
 	TextureAtlas2D* textureAtlas_ = nullptr;

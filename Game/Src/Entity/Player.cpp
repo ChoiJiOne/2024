@@ -73,49 +73,7 @@ void Player::Tick(float deltaSeconds)
 		return;
 	}
 
-	bool bIsPress = false;
-	const static std::map<EKey, glm::vec2> KEY_DIRECTIONS =
-	{
-		{ EKey::KEY_LEFT,  glm::vec2(-1.0f, +0.0f) },
-		{ EKey::KEY_UP,    glm::vec2(+0.0f, +1.0f) },
-		{ EKey::KEY_RIGHT, glm::vec2(+1.0f, +0.0f) },
-		{ EKey::KEY_DOWN,  glm::vec2(+0.0f, -1.0f) },
-	};
-
-	GLFWManager& glfwManager = GLFWManager::GetRef();
-	glm::vec2 direction = glm::vec2(0.0f, 0.0f);
-	for (const auto& keyDirection : KEY_DIRECTIONS)
-	{
-		if (glfwManager.GetKeyPress(keyDirection.first) == EPress::HELD)
-		{
-			direction += keyDirection.second;
-			bIsPress = true;
-		}
-	}
-
-	if (bIsPress)
-	{
-		animationState_ = EAnimationState::RUN;
-		direction_ = direction;
-
-		renderBound_.center += direction_ * speed_ * deltaSeconds;
-
-		collisionBound_.center = renderBound_.center;
-		collisionBound_.center.y += -renderBound_.size.y * 0.5f + collisionBound_.radius;
-
-		shadow_.bound.center = renderBound_.center;
-		shadow_.bound.center.y += (-renderBound_.size.y * 0.5f) + (-shadow_.bound.size.y * 0.5f);
-
-		if (glm::epsilonNotEqual<float>(direction_.x, 0.0f, glm::epsilon<float>()))
-		{
-			renderOption_.bIsFlipH = (direction_.x < 0.0f);
-			shadow_.option.bIsFlipH = renderOption_.bIsFlipH;
-		}
-	}
-	else
-	{
-		animationState_ = EAnimationState::IDLE;
-	}
+	Move(deltaSeconds);
 
 	if (hpBar_->GetBar() <= 0.0f)
 	{
@@ -252,5 +210,52 @@ void Player::UnloadAnimation()
 	for (auto& animation : animations_)
 	{
 		glManager.Destroy(animation.second);
+	}
+}
+
+void Player::Move(float deltaSeconds)
+{
+	bool bIsPress = false;
+	const static std::map<EKey, glm::vec2> KEY_DIRECTIONS =
+	{
+		{ EKey::KEY_LEFT,  glm::vec2(-1.0f, +0.0f) },
+		{ EKey::KEY_UP,    glm::vec2(+0.0f, +1.0f) },
+		{ EKey::KEY_RIGHT, glm::vec2(+1.0f, +0.0f) },
+		{ EKey::KEY_DOWN,  glm::vec2(+0.0f, -1.0f) },
+	};
+
+	GLFWManager& glfwManager = GLFWManager::GetRef();
+	glm::vec2 direction = glm::vec2(0.0f, 0.0f);
+	for (const auto& keyDirection : KEY_DIRECTIONS)
+	{
+		if (glfwManager.GetKeyPress(keyDirection.first) == EPress::HELD)
+		{
+			direction += keyDirection.second;
+			bIsPress = true;
+		}
+	}
+
+	if (bIsPress)
+	{
+		animationState_ = EAnimationState::RUN;
+		direction_ = direction;
+
+		renderBound_.center += direction_ * speed_ * deltaSeconds;
+
+		collisionBound_.center = renderBound_.center;
+		collisionBound_.center.y += -renderBound_.size.y * 0.5f + collisionBound_.radius;
+
+		shadow_.bound.center = renderBound_.center;
+		shadow_.bound.center.y += (-renderBound_.size.y * 0.5f) + (-shadow_.bound.size.y * 0.5f);
+
+		if (glm::epsilonNotEqual<float>(direction_.x, 0.0f, glm::epsilon<float>()))
+		{
+			renderOption_.bIsFlipH = (direction_.x < 0.0f);
+			shadow_.option.bIsFlipH = renderOption_.bIsFlipH;
+		}
+	}
+	else
+	{
+		animationState_ = EAnimationState::IDLE;
 	}
 }
