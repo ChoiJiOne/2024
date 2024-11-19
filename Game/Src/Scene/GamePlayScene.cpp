@@ -27,16 +27,16 @@ GamePlayScene::GamePlayScene()
 	entityManager_->Register("UICamera", uiCamera_);
 	AddUpdateUIEntity(uiCamera_);
 
-	Player* player = entityManager_->Create<Player>();
-	entityManager_->Register("Player", player);
-	AddUpdateEntity(player);
-	AddRenderEntity(player);
-
 	Playground* playground = entityManager_->Create<Playground>();
 	entityManager_->Register("Playground", playground);
 	AddUpdateEntity(playground);
 	AddRenderEntity(playground);
 
+	Player* player = entityManager_->Create<Player>();
+	entityManager_->Register("Player", player);
+	AddUpdateEntity(player);
+	AddRenderEntity(player);
+	
 	mainCamera_ = entityManager_->Create<PlayerFollowCamera>();
 	AddUpdateEntity(mainCamera_);
 	
