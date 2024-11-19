@@ -19,7 +19,16 @@ Potion::Potion(const glm::vec2& startPos, const glm::vec2& endPos, const EColor&
 
 	textureAtlas_ = GLManager::GetRef().GetByName<TextureAtlas2D>("TextureAtlas");
 
-	renderBound_ = Rect2D(startPos, glm::vec2(32.0f, 32.0f));
+	renderBound_.center = startPos;
+	if (color_ == EColor::BLUE || color_ == EColor::RED)
+	{
+		renderBound_.size = glm::vec2(32.0f, 32.0f);
+	}
+	else
+	{
+		renderBound_.size = glm::vec2(48.0f, 48.0f);
+	}
+
 	collisionBound_.radius = 16.0f;
 	collisionBound_.center = renderBound_.center;
 	collisionBound_.center.y += -renderBound_.size.y * 0.5f + collisionBound_.radius;
