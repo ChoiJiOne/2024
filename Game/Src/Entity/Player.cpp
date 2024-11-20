@@ -67,8 +67,20 @@ void Player::Tick(float deltaSeconds)
 		animations_.at(animationState_)->Update(deltaSeconds);
 		return;
 	}
+
+	GLFWManager& glfwManager = GLFWManager::GetRef();
+	if (glfwManager.GetKeyPress(EKey::KEY_X) == EPress::PRESSED && currentUseSkill_ == ESkill::NONE)
+	{
+		currentUseSkill_ = ESkill::INVINCIBILITY;
+		skills_.at(currentUseSkill_)->Start();
+	}
 	
 	Move(deltaSeconds, speed_);
+
+	if (currentUseSkill_ != ESkill::NONE && !skills_.at(currentUseSkill_)->IsRemainCoolTime())
+	{
+		currentUseSkill_ = ESkill::NONE;
+	}
 
 	if (hpBar_->GetBar() <= 0.0f)
 	{
@@ -84,8 +96,46 @@ void Player::Render()
 	TextureAtlas2D* animationTexture = animations_.at(animationState_)->GetTextureAtlas();
 	const std::string& animationClipName = animations_.at(animationState_)->GetCurrentClipName();
 
-	renderManager_->DrawTextureAtlas(animationTexture, animationClipName, renderBound_.center, renderBound_.size.x, renderBound_.size.y, 0.0f, renderOption_);
-	renderManager_->DrawTextureAtlas(animationTexture, animationClipName, shadow_.bound.center, shadow_.bound.size.x, shadow_.bound.size.y, 0.0f, shadow_.option);
+	switch (currentUseSkill_)
+	{
+	case ESkill::NONE:
+	{
+		renderManager_->DrawTextureAtlas(animationTexture, animationClipName, renderBound_.center, renderBound_.size.x, renderBound_.size.y, 0.0f, renderOption_);
+		renderManager_->DrawTextureAtlas(animationTexture, animationClipName, shadow_.bound.center, shadow_.bound.size.x, shadow_.bound.size.y, 0.0f, shadow_.option);
+	}
+	break;
+
+	case ESkill::DASH:
+	{
+		// 기능 구현 된거 아님.
+		renderManager_->DrawTextureAtlas(animationTexture, animationClipName, renderBound_.center, renderBound_.size.x, renderBound_.size.y, 0.0f, renderOption_);
+		renderManager_->DrawTextureAtlas(animationTexture, animationClipName, shadow_.bound.center, shadow_.bound.size.x, shadow_.bound.size.y, 0.0f, shadow_.option);
+	}
+	break;
+
+	case ESkill::FLASH:
+	{
+		// 기능 구현 된거 아님.
+		renderManager_->DrawTextureAtlas(animationTexture, animationClipName, renderBound_.center, renderBound_.size.x, renderBound_.size.y, 0.0f, renderOption_);
+		renderManager_->DrawTextureAtlas(animationTexture, animationClipName, shadow_.bound.center, shadow_.bound.size.x, shadow_.bound.size.y, 0.0f, shadow_.option);
+	}
+	break;
+
+	case ESkill::INVINCIBILITY:
+	{
+		renderManager_->DrawTextureAtlas(animationTexture, animationClipName, renderBound_.center, renderBound_.size.x, renderBound_.size.y, 0.0f, glm::vec4(1.0f, 0.0f, 0.0f, 1.0f), renderOption_);
+		renderManager_->DrawTextureAtlas(animationTexture, animationClipName, shadow_.bound.center, shadow_.bound.size.x, shadow_.bound.size.y, 0.0f, shadow_.option);
+	}
+	break;
+
+	case ESkill::SANDEVISTAN:
+	{
+		// 기능 구현 된거 아님.
+		renderManager_->DrawTextureAtlas(animationTexture, animationClipName, renderBound_.center, renderBound_.size.x, renderBound_.size.y, 0.0f, renderOption_);
+		renderManager_->DrawTextureAtlas(animationTexture, animationClipName, shadow_.bound.center, shadow_.bound.size.x, shadow_.bound.size.y, 0.0f, shadow_.option);
+	}
+	break;
+	}
 }
 
 void Player::Release()
@@ -116,6 +166,15 @@ void Player::SetHP(float hp)
 	if (animationState_ != EAnimationState::IDLE && animationState_ != EAnimationState::RUN)
 	{
 		return;
+	}
+
+	if (currentUseSkill_ == ESkill::INVINCIBILITY)
+	{
+		float currentHp = hpBar_->GetBar();
+		if (hp < currentHp)
+		{
+			return;
+		}
 	}
 
 	hpBar_->SetBar(hp);
