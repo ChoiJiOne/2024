@@ -3,6 +3,7 @@
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/gtc/constants.hpp>
 #include <glm/gtc/epsilon.hpp>
+#include <glm/gtx/norm.hpp>
 
 #include "Entity/EntityManager.h"
 #include "Entity/Player.h"
@@ -71,6 +72,7 @@ void Player::Tick(float deltaSeconds)
 
 	if (hpBar_->GetBar() <= 0.0f)
 	{
+		currentUseSkill_ = ESkill::NONE;
 		animationState_ = EAnimationState::HURT;
 	}
 

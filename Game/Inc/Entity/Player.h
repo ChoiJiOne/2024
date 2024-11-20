@@ -1,6 +1,7 @@
 #pragma once
 
 #include <map>
+#include <list>
 
 #include "Entity/IEntity2D.h"
 #include "GL/RenderManager2D.h"
@@ -71,6 +72,16 @@ private:
 		IDLE = 0x00,
 		RUN  = 0x01,
 		HURT = 0x02,
+	};
+
+	/** 플레이어의 스킬 종류입니다. */
+	enum class ESkill
+	{
+		NONE          = 0x00,
+		DASH          = 0x01,
+		FLASH         = 0x02,
+		INVINCIBILITY = 0x03,
+		SANDEVISTAN   = 0x04,
 	};
 
 	/** 플레이어의 그림자입니다. */
@@ -158,5 +169,5 @@ private:
 	UISkill* sandevistan_ = nullptr;
 
 	/** 현재 시전 중인 스킬입니다. */
-	UISkill* currentSkill_ = nullptr;
+	ESkill currentUseSkill_ = ESkill::NONE;
 };
