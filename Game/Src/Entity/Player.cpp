@@ -226,29 +226,31 @@ void Player::LoadUIs()
 	gamePlayScene_->AddUpdateUIEntity(mpBar_);
 	gamePlayScene_->AddRenderUIEntity(mpBar_);
 
-	dash_ = entityManager.Create<UISkill>(uiCamera, font24, "Resource\\UI\\Skill_Dash.skill");
-	gamePlayScene_->AddUpdateUIEntity(dash_);
-	gamePlayScene_->AddRenderUIEntity(dash_);
+	UISkill* dash = entityManager.Create<UISkill>(uiCamera, font24, "Resource\\UI\\Skill_Dash.skill");
+	gamePlayScene_->AddUpdateUIEntity(dash);
+	gamePlayScene_->AddRenderUIEntity(dash);
 
-	flash_ = entityManager.Create<UISkill>(uiCamera, font24, "Resource\\UI\\Skill_Flash.skill");
-	gamePlayScene_->AddUpdateUIEntity(flash_);
-	gamePlayScene_->AddRenderUIEntity(flash_);
+	UISkill* flash = entityManager.Create<UISkill>(uiCamera, font24, "Resource\\UI\\Skill_Flash.skill");
+	gamePlayScene_->AddUpdateUIEntity(flash);
+	gamePlayScene_->AddRenderUIEntity(flash);
 
-	invincibility_ = entityManager.Create<UISkill>(uiCamera, font24, "Resource\\UI\\Skill_Invincibility.skill");
-	gamePlayScene_->AddUpdateUIEntity(invincibility_);
-	gamePlayScene_->AddRenderUIEntity(invincibility_);
+	UISkill* invincibility = entityManager.Create<UISkill>(uiCamera, font24, "Resource\\UI\\Skill_Invincibility.skill");
+	gamePlayScene_->AddUpdateUIEntity(invincibility);
+	gamePlayScene_->AddRenderUIEntity(invincibility);
 
-	sandevistan_ = entityManager.Create<UISkill>(uiCamera, font24, "Resource\\UI\\Skill_Sandevistan.skill");
-	gamePlayScene_->AddUpdateUIEntity(sandevistan_);
-	gamePlayScene_->AddRenderUIEntity(sandevistan_);
+	UISkill* sandevistan = entityManager.Create<UISkill>(uiCamera, font24, "Resource\\UI\\Skill_Sandevistan.skill");
+	gamePlayScene_->AddUpdateUIEntity(sandevistan);
+	gamePlayScene_->AddRenderUIEntity(sandevistan);
+
+	skills_.insert({ ESkill::NONE,          nullptr       });
+	skills_.insert({ ESkill::DASH,          dash          });
+	skills_.insert({ ESkill::FLASH,         flash         });
+	skills_.insert({ ESkill::INVINCIBILITY, invincibility });
+	skills_.insert({ ESkill::SANDEVISTAN,   sandevistan   });
 }
 
 void Player::UnloadUIs()
 {
-	sandevistan_ = nullptr;
-	invincibility_ = nullptr;
-	flash_ = nullptr;
-	dash_ = nullptr;
 	mpBar_ = nullptr;
 	hpBar_ = nullptr;
 }
