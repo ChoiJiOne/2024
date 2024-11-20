@@ -59,6 +59,9 @@ private:
 	/** UI바의 색상입니다. */
 	glm::vec4 barColor_;
 
+	/** UI바 내의 텍스트 색상입니다. */
+	glm::vec4 textColor_;
+
 	/** UI바 내의 Bar입니다. */
 	float bar_ = 0.0f;
 

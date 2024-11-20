@@ -70,7 +70,7 @@ void UIBar::Render()
 	renderManager_->DrawRect(barBound_.center, barBound_.size.x, barBound_.size.y, barColor_, 0.0f);
 
 	glm::vec2 basePos = font_->MeasureBasePos(text_, background_.center);
-	renderManager_->DrawString(font_, text_, basePos, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+	renderManager_->DrawString(font_, text_, basePos, textColor_);
 }
 
 void UIBar::Release()
@@ -156,4 +156,11 @@ void UIBar::InitProperties(const std::string& barPath)
 	barColor_.y = barColor["g"].asFloat();
 	barColor_.z = barColor["b"].asFloat();
 	barColor_.w = barColor["a"].asFloat();
+
+	CHECK(bar["TextColor"].isObject() && !bar["TextColor"].isNull());
+	const Json::Value& textColor = bar["TextColor"];
+	textColor_.x = textColor["r"].asFloat();
+	textColor_.y = textColor["g"].asFloat();
+	textColor_.z = textColor["b"].asFloat();
+	textColor_.w = textColor["a"].asFloat();
 }
