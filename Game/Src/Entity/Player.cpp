@@ -237,7 +237,7 @@ void Player::LoadAnimations()
 	animations_.insert({ EAnimationState::HURT, hurtAnimation });
 }
 
-void Player::UnloadAnimation()
+void Player::UnloadAnimations()
 {
 	GLManager& glManager = GLManager::GetRef();
 	for (auto& animation : animations_)

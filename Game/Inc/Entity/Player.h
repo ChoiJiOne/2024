@@ -96,7 +96,7 @@ private:
 	void LoadAnimations();
 
 	/** 플레이어의 애니메이션 상태 초기화를 해제합니다. */
-	void UnloadAnimation();
+	void UnloadAnimations();
 
 	/** 플레이어의 UI 요소를 초기화합니다. */
 	void LoadUIs();
