@@ -49,6 +49,8 @@ Player::Player()
 	LoadAnimations();
 	LoadUIs();
 
+	invincibilityColor_ = glm::vec4(1.0f, 0.0f, 0.0f, 1.0f);
+
 	bIsInitialized_ = true;
 }
 
@@ -68,23 +70,28 @@ void Player::Tick(float deltaSeconds)
 		return;
 	}
 
-	GLFWManager& glfwManager = GLFWManager::GetRef();
-	if (glfwManager.GetKeyPress(EKey::KEY_X) == EPress::PRESSED && currentUseSkill_ == ESkill::NONE)
+	static const std::map<EKey, ESkill> KEY_SKILLS =
 	{
-		currentUseSkill_ = ESkill::INVINCIBILITY;
-		skills_.at(currentUseSkill_)->Start();
-	}
-	
-	Move(deltaSeconds, speed_);
+		{ EKey::KEY_Z, ESkill::DASH          },
+		{ EKey::KEY_X, ESkill::FLASH         },
+		{ EKey::KEY_C, ESkill::INVINCIBILITY },
+		{ EKey::KEY_V, ESkill::SANDEVISTAN   },
+	};
 
-	if (currentUseSkill_ != ESkill::NONE && !skills_.at(currentUseSkill_)->IsRemainCoolTime())
+	GLFWManager& glfwManager = GLFWManager::GetRef();
+	for (const auto& keySkill : KEY_SKILLS)
 	{
-		currentUseSkill_ = ESkill::NONE;
+		UISkill* skill = skills_.at(keySkill.second);
+		if (glfwManager.GetKeyPress(keySkill.first) == EPress::PRESSED && !skill->IsRemainCoolTime())
+		{
+			skills_.at(keySkill.second)->Start();
+		}
 	}
+
+	Move(deltaSeconds, speed_);
 
 	if (hpBar_->GetBar() <= 0.0f)
 	{
-		currentUseSkill_ = ESkill::NONE;
 		animationState_ = EAnimationState::HURT;
 	}
 
@@ -95,47 +102,17 @@ void Player::Render()
 {
 	TextureAtlas2D* animationTexture = animations_.at(animationState_)->GetTextureAtlas();
 	const std::string& animationClipName = animations_.at(animationState_)->GetCurrentClipName();
-
-	switch (currentUseSkill_)
+	
+	if (skills_.at(ESkill::INVINCIBILITY)->IsRemainCoolTime())
 	{
-	case ESkill::NONE:
+		renderManager_->DrawTextureAtlas(animationTexture, animationClipName, renderBound_.center, renderBound_.size.x, renderBound_.size.y, 0.0f, invincibilityColor_, renderOption_);
+	}
+	else
 	{
 		renderManager_->DrawTextureAtlas(animationTexture, animationClipName, renderBound_.center, renderBound_.size.x, renderBound_.size.y, 0.0f, renderOption_);
-		renderManager_->DrawTextureAtlas(animationTexture, animationClipName, shadow_.bound.center, shadow_.bound.size.x, shadow_.bound.size.y, 0.0f, shadow_.option);
 	}
-	break;
 
-	case ESkill::DASH:
-	{
-		// 기능 구현 된거 아님.
-		renderManager_->DrawTextureAtlas(animationTexture, animationClipName, renderBound_.center, renderBound_.size.x, renderBound_.size.y, 0.0f, renderOption_);
-		renderManager_->DrawTextureAtlas(animationTexture, animationClipName, shadow_.bound.center, shadow_.bound.size.x, shadow_.bound.size.y, 0.0f, shadow_.option);
-	}
-	break;
-
-	case ESkill::FLASH:
-	{
-		// 기능 구현 된거 아님.
-		renderManager_->DrawTextureAtlas(animationTexture, animationClipName, renderBound_.center, renderBound_.size.x, renderBound_.size.y, 0.0f, renderOption_);
-		renderManager_->DrawTextureAtlas(animationTexture, animationClipName, shadow_.bound.center, shadow_.bound.size.x, shadow_.bound.size.y, 0.0f, shadow_.option);
-	}
-	break;
-
-	case ESkill::INVINCIBILITY:
-	{
-		renderManager_->DrawTextureAtlas(animationTexture, animationClipName, renderBound_.center, renderBound_.size.x, renderBound_.size.y, 0.0f, glm::vec4(1.0f, 0.0f, 0.0f, 1.0f), renderOption_);
-		renderManager_->DrawTextureAtlas(animationTexture, animationClipName, shadow_.bound.center, shadow_.bound.size.x, shadow_.bound.size.y, 0.0f, shadow_.option);
-	}
-	break;
-
-	case ESkill::SANDEVISTAN:
-	{
-		// 기능 구현 된거 아님.
-		renderManager_->DrawTextureAtlas(animationTexture, animationClipName, renderBound_.center, renderBound_.size.x, renderBound_.size.y, 0.0f, renderOption_);
-		renderManager_->DrawTextureAtlas(animationTexture, animationClipName, shadow_.bound.center, shadow_.bound.size.x, shadow_.bound.size.y, 0.0f, shadow_.option);
-	}
-	break;
-	}
+	renderManager_->DrawTextureAtlas(animationTexture, animationClipName, shadow_.bound.center, shadow_.bound.size.x, shadow_.bound.size.y, 0.0f, shadow_.option);
 }
 
 void Player::Release()
@@ -168,7 +145,7 @@ void Player::SetHP(float hp)
 		return;
 	}
 
-	if (currentUseSkill_ == ESkill::INVINCIBILITY)
+	if (skills_.at(ESkill::INVINCIBILITY)->IsRemainCoolTime())
 	{
 		float currentHp = hpBar_->GetBar();
 		if (hp < currentHp)
