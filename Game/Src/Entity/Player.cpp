@@ -9,6 +9,7 @@
 #include "Entity/Playground.h"
 #include "Entity/UIBar.h"
 #include "Entity/UICamera.h"
+#include "Entity/UISkill.h"
 #include "GL/GLManager.h"
 #include "GL/SpriteAnimator2D.h"
 #include "GL/TextureAtlas2D.h"
@@ -44,15 +45,7 @@ Player::Player()
 	speed_ = 500.0f;
 
 	LoadAnimations();
-
-	UICamera* uiCamera = EntityManager::GetRef().GetByName<UICamera>("UICamera");
-	hpBar_ = EntityManager::GetRef().Create<UIBar>(uiCamera, GLManager::GetRef().GetByName<TTFont>("Font24"), "Resource\\UI\\HP.bar");
-	gamePlayScene_->AddUpdateUIEntity(hpBar_);
-	gamePlayScene_->AddRenderUIEntity(hpBar_);
-
-	mpBar_ = EntityManager::GetRef().Create<UIBar>(uiCamera, GLManager::GetRef().GetByName<TTFont>("Font24"), "Resource\\UI\\MP.bar");
-	gamePlayScene_->AddUpdateUIEntity(mpBar_);
-	gamePlayScene_->AddRenderUIEntity(mpBar_);
+	LoadUIs();
 
 	bIsInitialized_ = true;
 }
@@ -96,6 +89,7 @@ void Player::Release()
 {
 	CHECK(bIsInitialized_);
 
+	UnloadUIs();
 	UnloadAnimation();
 	gamePlayScene_ = nullptr;
 	playground_ = nullptr;
@@ -211,6 +205,49 @@ void Player::UnloadAnimation()
 	{
 		glManager.Destroy(animation.second);
 	}
+}
+
+void Player::LoadUIs()
+{
+	EntityManager& entityManager = EntityManager::GetRef();
+	GLManager& glManager = GLManager::GetRef();
+
+	TTFont* font24 = glManager.GetByName<TTFont>("Font24");
+
+	UICamera* uiCamera = entityManager.GetByName<UICamera>("UICamera");
+	hpBar_ = entityManager.Create<UIBar>(uiCamera, font24, "Resource\\UI\\HP.bar");
+	gamePlayScene_->AddUpdateUIEntity(hpBar_);
+	gamePlayScene_->AddRenderUIEntity(hpBar_);
+
+	mpBar_ = entityManager.Create<UIBar>(uiCamera, font24, "Resource\\UI\\MP.bar");
+	gamePlayScene_->AddUpdateUIEntity(mpBar_);
+	gamePlayScene_->AddRenderUIEntity(mpBar_);
+
+	dash_ = entityManager.Create<UISkill>(uiCamera, font24, "Resource\\UI\\Skill_Dash.skill");
+	gamePlayScene_->AddUpdateUIEntity(dash_);
+	gamePlayScene_->AddRenderUIEntity(dash_);
+
+	flash_ = entityManager.Create<UISkill>(uiCamera, font24, "Resource\\UI\\Skill_Flash.skill");
+	gamePlayScene_->AddUpdateUIEntity(flash_);
+	gamePlayScene_->AddRenderUIEntity(flash_);
+
+	invincibility_ = entityManager.Create<UISkill>(uiCamera, font24, "Resource\\UI\\Skill_Invincibility.skill");
+	gamePlayScene_->AddUpdateUIEntity(invincibility_);
+	gamePlayScene_->AddRenderUIEntity(invincibility_);
+
+	sandevistan_ = entityManager.Create<UISkill>(uiCamera, font24, "Resource\\UI\\Skill_Sandevistan.skill");
+	gamePlayScene_->AddUpdateUIEntity(sandevistan_);
+	gamePlayScene_->AddRenderUIEntity(sandevistan_);
+}
+
+void Player::UnloadUIs()
+{
+	sandevistan_ = nullptr;
+	invincibility_ = nullptr;
+	flash_ = nullptr;
+	dash_ = nullptr;
+	mpBar_ = nullptr;
+	hpBar_ = nullptr;
 }
 
 void Player::Move(float deltaSeconds)

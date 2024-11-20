@@ -13,6 +13,7 @@ class SpriteAnimator2D;
 class TextureAtlas2D;
 class Playground;
 class UIBar;
+class UISkill;
 
 /** 플레이어가 조종할 엔티티입니다. */
 class Player : public IEntity2D
@@ -86,6 +87,12 @@ private:
 	/** 플레이어의 애니메이션 상태 초기화를 해제합니다. */
 	void UnloadAnimation();
 
+	/** 플레이어의 UI 요소를 초기화합니다. */
+	void LoadUIs();
+
+	/** 플레이어의 UI 요소를 초기화 해제합니다. */
+	void UnloadUIs();
+
 	/** 플레이어를 움직입니다 */
 	void Move(float deltaSeconds);
 
@@ -131,6 +138,18 @@ private:
 
 	/** 플레이어의 마나를 나타내는 MP입니다. */
 	UIBar* mpBar_ = nullptr;
+
+	/** 플레이어의 데쉬 스킬입니다. */
+	UISkill* dash_ = nullptr;
+
+	/** 플레이어의 점멸(flash) 스킬입니다. */
+	UISkill* flash_ = nullptr;
+
+	/** 플레이어의 무적(invincibility) 스킬입니다. */
+	UISkill* invincibility_ = nullptr;
+
+	/** 플레이어 외의 모든 오브젝트의 시간이 느리게 흐르는 스킬입니다. */
+	UISkill* sandevistan_ = nullptr;
 
 	/** 플레이어의 코인 수입니다. */
 	int32_t coin_ = 0;
