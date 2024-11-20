@@ -43,6 +43,7 @@ Player::Player()
 
 	direction_ = glm::vec2(0.0f, -1.0f);
 	speed_ = 500.0f;
+	dashSpeed_ = 1000.0f;
 
 	LoadAnimations();
 	LoadUIs();
@@ -65,8 +66,8 @@ void Player::Tick(float deltaSeconds)
 		animations_.at(animationState_)->Update(deltaSeconds);
 		return;
 	}
-
-	Move(deltaSeconds);
+	
+	Move(deltaSeconds, speed_);
 
 	if (hpBar_->GetBar() <= 0.0f)
 	{
@@ -250,7 +251,7 @@ void Player::UnloadUIs()
 	hpBar_ = nullptr;
 }
 
-void Player::Move(float deltaSeconds)
+void Player::Move(float deltaSeconds, float speed)
 {
 	bool bIsPress = false;
 	const static std::map<EKey, glm::vec2> KEY_DIRECTIONS =
@@ -278,7 +279,7 @@ void Player::Move(float deltaSeconds)
 		direction_ = direction;
 
 		glm::vec2 originPosition = renderBound_.center;
-		glm::vec2 movePosition = originPosition + direction_ * speed_ * deltaSeconds;
+		glm::vec2 movePosition = originPosition + direction_ * speed * deltaSeconds;
 
 		AdjustPosition(movePosition);
 		if (!collisionBound_.Intersect(playground_->GetSafeBound()))

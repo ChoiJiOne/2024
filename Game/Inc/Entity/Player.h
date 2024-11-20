@@ -94,7 +94,7 @@ private:
 	void UnloadUIs();
 
 	/** 플레이어를 움직입니다 */
-	void Move(float deltaSeconds);
+	void Move(float deltaSeconds, float speed);
 
 	/** 플레이어의 렌더링/충돌/그림자 위치를 조정합니다. */
 	void AdjustPosition(const glm::vec2& position);
@@ -126,12 +126,18 @@ private:
 	
 	/** 플레이어의 속도입니다. */
 	float speed_ = 0.0f;
+
+	/** 플레이어의 대쉬 속도입니다. */
+	float dashSpeed_ = 0.0f;
 	
 	/** 현재 애니메이션의 상태입니다. */
 	EAnimationState animationState_ = EAnimationState::IDLE;
 
 	/** 플레이어의 애니메이션 상태 별 애니메이션 리소스입니다. */
 	std::map<EAnimationState, SpriteAnimator2D*> animations_;
+
+	/** 플레이어의 코인 수입니다. */
+	int32_t coin_ = 0;
 
 	/** 플레이어의 체력을 나타내는 HP입니다. */
 	UIBar* hpBar_ = nullptr;
@@ -151,6 +157,6 @@ private:
 	/** 플레이어 외의 모든 오브젝트의 시간이 느리게 흐르는 스킬입니다. */
 	UISkill* sandevistan_ = nullptr;
 
-	/** 플레이어의 코인 수입니다. */
-	int32_t coin_ = 0;
+	/** 현재 시전 중인 스킬입니다. */
+	UISkill* currentSkill_ = nullptr;
 };
