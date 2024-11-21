@@ -38,6 +38,7 @@ GamePlayScene::GamePlayScene()
 	AddRenderEntity(player);
 	
 	mainCamera_ = entityManager_->Create<PlayerFollowCamera>();
+	entityManager_->Register("PlayerFollowCamera", mainCamera_);
 	AddUpdateEntity(mainCamera_);
 	
 	Background* background = entityManager_->Create<Background>();
