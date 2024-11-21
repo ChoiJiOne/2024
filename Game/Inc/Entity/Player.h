@@ -10,7 +10,6 @@
 
 /** 클래스 전방 선언입니다. */
 class GamePlayScene;
-class Messenger;
 class SpriteAnimator2D;
 class TextureAtlas2D;
 class Playground;
@@ -118,9 +117,6 @@ private:
 
 	/** 플레이 그라운드입니다. */
 	Playground* playground_ = nullptr;
-
-	/** 메시지 출력을 위한 메신저입니다. */
-	Messenger* messenger_ = nullptr;
 
 	/** 게임 플레이 씬입니다. */
 	GamePlayScene* gamePlayScene_ = nullptr;
