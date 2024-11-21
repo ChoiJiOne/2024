@@ -6,7 +6,6 @@
 #include "Entity/Coin.h"
 #include "Entity/CoinCollector.h"
 #include "Entity/EntityManager.h"
-#include "Entity/Messenger.h"
 #include "Entity/MiniMap.h"
 #include "Entity/Player.h"
 #include "Entity/PlayerFollowCamera.h"
@@ -28,11 +27,6 @@ GamePlayScene::GamePlayScene()
 	uiCamera_ = entityManager_->Create<UICamera>();
 	entityManager_->Register("UICamera", uiCamera_);
 	AddUpdateUIEntity(uiCamera_);
-
-	Messenger* messenger = entityManager_->Create<Messenger>(uiCamera_, glManager_->GetByName<TTFont>("Font24"));
-	entityManager_->Register("Messenger", messenger);
-	AddUpdateUIEntity(messenger);
-	AddRenderUIEntity(messenger);
 
 	Playground* playground = entityManager_->Create<Playground>();
 	entityManager_->Register("Playground", playground);
