@@ -21,8 +21,8 @@ private:
 	/** 벡그라운드 렌더링 시 사용할 텍스처 아틀라스 리소스입니다. */
 	class TextureAtlas2D* textureAtlas_ = nullptr;
 
-	/** 백그라운드의 위치를 조정할 때 참조할 플레이어입니다. */
-	class Player* player_ = nullptr;
+	/** 백그라운드의 위치를 조정할 때 참조할 카메라입니다. */
+	class PlayerFollowCamera* camera_ = nullptr;
 	
 	/** 화면 크기에 대응하는 백그라운드 영역입니다. */
 	Rect2D screenBound_;

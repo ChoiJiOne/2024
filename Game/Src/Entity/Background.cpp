@@ -1,6 +1,6 @@
 #include "Entity/Background.h"
 #include "Entity/EntityManager.h"
-#include "Entity/Player.h"
+#include "Entity/PlayerFollowCamera.h"
 #include "GL/GLManager.h"
 #include "GL/RenderManager2D.h"
 #include "GL/Texture2D.h"
@@ -12,13 +12,13 @@ Background::Background()
 	tickOrder_ = 3;
 	renderOrder_ = 0;
 
-	player_ = EntityManager::GetRef().GetByName<Player>("Player");
+	camera_ = EntityManager::GetRef().GetByName<PlayerFollowCamera>("PlayerFollowCamera");
 
 	glm::vec2 screenSize = glm::vec2(0.0f, 0.0f);
 	GLFWManager::GetRef().GetWindowSize(screenSize.x, screenSize.y);
 
 	textureAtlas_ = GLManager::GetRef().GetByName<TextureAtlas2D>("TextureAtlas");
-	screenBound_ = Rect2D(player_->GetPosition(), screenSize);
+	screenBound_ = Rect2D(camera_->GetCenter(), screenSize);
 
 	bIsInitialized_ = true;
 }
@@ -33,7 +33,7 @@ Background::~Background()
 
 void Background::Tick(float deltaSeconds)
 {
-	screenBound_.center = player_->GetPosition();
+	screenBound_.center = camera_->GetCenter();
 }
 
 void Background::Render()
@@ -46,7 +46,7 @@ void Background::Release()
 	CHECK(bIsInitialized_);
 
 	textureAtlas_ = nullptr;
-	player_ = nullptr;
+	camera_ = nullptr;
 
 	bIsInitialized_ = false;
 }
