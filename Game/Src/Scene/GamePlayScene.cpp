@@ -4,6 +4,7 @@
 #include "Entity/Background.h"
 #include "Entity/Camera2D.h"
 #include "Entity/Coin.h"
+#include "Entity/CoinCollector.h"
 #include "Entity/EntityManager.h"
 #include "Entity/MiniMap.h"
 #include "Entity/Player.h"
@@ -44,6 +45,10 @@ GamePlayScene::GamePlayScene()
 	Background* background = entityManager_->Create<Background>();
 	AddUpdateEntity(background);
 	AddRenderEntity(background);
+
+	CoinCollector* coinCollector = entityManager_->Create<CoinCollector>(glManager_->GetByName<TTFont>("Font24"));
+	AddUpdateEntity(coinCollector);
+	AddRenderEntity(coinCollector);
 
 	static const uint32_t COUNT_RANDOM_CHEST = 8;
 	float boundRadius = playground->GetSafeBound()->radius;
