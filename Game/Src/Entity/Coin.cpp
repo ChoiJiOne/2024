@@ -2,6 +2,7 @@
 #include <glm/gtx/compatibility.hpp>
 
 #include "Entity/Coin.h"
+#include "Entity/CoinCollector.h"
 #include "Entity/EntityManager.h"
 #include "Entity/Player.h"
 #include "GL/GLManager.h"
@@ -18,6 +19,7 @@ Coin::Coin(const glm::vec2& startPos, const glm::vec2& endPos)
 	renderOrder_ = 4;
 
 	textureAtlas_ = GLManager::GetRef().GetByName<TextureAtlas2D>("TextureAtlas");
+	coinCollector_ = EntityManager::GetRef().GetByName<CoinCollector>("CoinCollector");
 
 	renderBound_ = Rect2D(startPos, glm::vec2(32.0f, 32.0f));
 	collisionBound_.radius = 16.0f;
@@ -46,6 +48,8 @@ Coin::Coin(const glm::vec2& startPos, const glm::vec2& endPos)
 	state_ = EState::MOVE;
 	moveTime_ = 0.0f;
 	maxMoveTime_ = 2.0f;
+	bIsGain_ = false;
+	moveGainSpeed_ = 1000.0f;
 }
 
 Coin::~Coin()
@@ -62,10 +66,30 @@ void Coin::Tick(float deltaSeconds)
 	{
 	case EState::MOVE:
 	{
-		Move(deltaSeconds);
-		if (moveTime_ >= maxMoveTime_)
+		if (!bIsGain_) // 플레이어가 코인을 획득하지 않았을 때.
 		{
-			state_ = EState::WAIT;
+			Move(deltaSeconds);
+			if (moveTime_ >= maxMoveTime_)
+			{
+				state_ = EState::WAIT;
+			}
+		}
+		else // 플레이어가 코인을 획득했을 때.
+		{
+			glm::vec2 currentPosition = renderBound_.center;
+			glm::vec2 targetPosition = coinCollector_->GetCollider()->center;
+			glm::vec2 direction = glm::normalize(targetPosition - currentPosition);
+
+			currentPosition += direction * deltaSeconds * moveGainSpeed_;
+
+			AdjustPosition(currentPosition);
+
+			if (collisionBound_.Intersect(coinCollector_->GetCollider()))
+			{
+				int32_t coin = player_->GetCoin();
+				player_->SetCoin(coin + 1);
+				state_ = IObject::EState::DONE;
+			}
 		}
 	}
 	break;
@@ -74,10 +98,8 @@ void Coin::Tick(float deltaSeconds)
 	{
 		if (collisionBound_.Intersect(player_->GetCollider()))
 		{
-			int32_t coin = player_->GetCoin();
-			player_->SetCoin(coin + 1);
-
-			state_ = EState::DONE;
+			state_ = EState::MOVE;
+			bIsGain_ = true;
 		}
 	}
 	break;
@@ -108,6 +130,7 @@ void Coin::Release()
 		animator_ = nullptr;
 	}
 
+	coinCollector_ = nullptr;
 	textureAtlas_ = nullptr;
 
 	IObject::Release();
@@ -119,7 +142,12 @@ void Coin::Move(float deltaSeconds)
 	float timeScale = glm::clamp<float>(moveTime_ / maxMoveTime_, 0.0f, 1.0f);
 	glm::vec2 movePos = glm::lerp(moveStartPos_, moveEndPos_, timeScale);
 
-	renderBound_.center = movePos;
+	AdjustPosition(movePos);
+}
+
+void Coin::AdjustPosition(const glm::vec2& position)
+{
+	renderBound_.center = position;
 
 	collisionBound_.center = renderBound_.center;
 	collisionBound_.center.y += -renderBound_.size.y * 0.5f + collisionBound_.radius;

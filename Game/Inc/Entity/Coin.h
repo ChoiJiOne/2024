@@ -6,6 +6,7 @@
 #include "Physic/Rect2D.h"
 
 /** 클래스 전방 선언입니다. */
+class CoinCollector;
 class SpriteAnimator2D;
 class TextureAtlas2D;
 
@@ -37,12 +38,18 @@ private:
 	/** 코인을 움직입니다. */
 	void Move(float deltaSeconds);
 
+	/** 코인의 렌더링/충돌/그림자 위치를 조정합니다. */
+	void AdjustPosition(const glm::vec2& position);
+
 private:
 	/** 코인 렌더링 시 참조할 텍스처 아틀라스입니다. */
 	TextureAtlas2D* textureAtlas_ = nullptr;
 
 	/** 코인의 애니메이션을 수행하는 스프라이트 애니메이터입니다. */
 	SpriteAnimator2D* animator_ = nullptr;
+
+	/** 코인 콜렉터입니다. */
+	CoinCollector* coinCollector_ = nullptr;
 
 	/** 코인의 이동 시작 위치입니다. */
 	glm::vec2 moveStartPos_ = glm::vec2(0.0f, 0.0f);
@@ -64,4 +71,10 @@ private:
 
 	/** 코인의 최대 이동 시간입니다. */
 	float maxMoveTime_ = 0.0f;
+
+	/** 플레이어가 코인을 획득했는지 확인합니다. */
+	bool bIsGain_ = false;
+
+	/** 플레이어가 코인을 획득했을 때 움직이는 속도입니다. */
+	float moveGainSpeed_ = 0.0f;
 };
