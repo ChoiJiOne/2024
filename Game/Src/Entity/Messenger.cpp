@@ -36,6 +36,10 @@ void Messenger::Tick(float deltaSeconds)
 
 void Messenger::Render()
 {
+	for (const auto& message : messages_)
+	{
+		renderManager_->DrawString(font_, message.text, message.textBasePos, message.textColor);
+	}
 }
 
 void Messenger::Release()
