@@ -51,6 +51,12 @@ Player::Player()
 	dashSpeed_ = speed_;
 	maxDashSpeed_ = 1500.0f;
 
+	skillMpCosts_ =
+	{
+		{ ESkill::DASH,          20.0f },
+		{ ESkill::INVINCIBILITY, 90.0f },
+	};
+
 	LoadAnimations();
 	LoadUIs();
 
@@ -87,11 +93,18 @@ void Player::Tick(float deltaSeconds)
 		UISkill* skill = skills_.at(keySkill.second);
 		if (glfwManager.GetKeyPress(keySkill.first) == EPress::PRESSED && !skill->IsRemainCoolTime())
 		{
-			skills_.at(keySkill.second)->Start();
-
-			if (keySkill.second == ESkill::DASH)
+			float skillMp = skillMpCosts_.at(keySkill.second);
+			float playerMp = mpBar_->GetBar();
+			if (playerMp >= skillMp)
 			{
-				bIsDashing_ = true;
+				playerMp -= skillMp;
+				mpBar_->SetBar(playerMp);
+				skills_.at(keySkill.second)->Start();
+
+				if (keySkill.second == ESkill::DASH)
+				{
+					bIsDashing_ = true;
+				}
 			}
 		}
 	}

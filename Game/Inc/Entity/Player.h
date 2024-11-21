@@ -157,6 +157,9 @@ private:
 	/** 플레이어의 스킬입니다. */
 	std::map<ESkill, UISkill*> skills_;
 
+	/** 플레이어의 스킬을 사용할 때 소모되는 마나 값입니다. */
+	std::map<ESkill, float> skillMpCosts_;
+
 	/** 플레이어가 무적일 때 표시할 색상입니다. */
 	glm::vec4 invincibilityColor_;
 
