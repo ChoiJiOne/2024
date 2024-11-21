@@ -49,7 +49,7 @@ Coin::Coin(const glm::vec2& startPos, const glm::vec2& endPos)
 	moveTime_ = 0.0f;
 	maxMoveTime_ = 2.0f;
 	bIsGain_ = false;
-	moveGainSpeed_ = 1000.0f;
+	moveGainSpeed_ = 1500.0f;
 }
 
 Coin::~Coin()
