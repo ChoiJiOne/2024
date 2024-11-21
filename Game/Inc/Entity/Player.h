@@ -104,9 +104,12 @@ private:
 	/** 플레이어의 UI 요소를 초기화 해제합니다. */
 	void UnloadUIs();
 
+	/** 플레이어의 대쉬 스킬을 수행합니다. */
+	void UseDashSkill(float deltaSeconds);
+
 	/** 플레이어를 움직입니다 */
 	void Move(float deltaSeconds, float speed);
-
+	
 	/** 플레이어의 렌더링/충돌/그림자 위치를 조정합니다. */
 	void AdjustPosition(const glm::vec2& position);
 
@@ -140,6 +143,9 @@ private:
 
 	/** 플레이어의 대쉬 속도입니다. */
 	float dashSpeed_ = 0.0f;
+
+	/** 최대 대쉬 속도입니다. */
+	float maxDashSpeed_ = 0.0f;
 	
 	/** 현재 애니메이션의 상태입니다. */
 	EAnimationState animationState_ = EAnimationState::IDLE;
@@ -161,4 +167,7 @@ private:
 
 	/** 플레이어가 무적일 때 표시할 색상입니다. */
 	glm::vec4 invincibilityColor_;
+
+	/** 플레이어가 대쉬 중인지 확인합니다. */
+	bool bIsDashing_ = false;
 };

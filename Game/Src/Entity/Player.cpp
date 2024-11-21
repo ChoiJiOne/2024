@@ -1,6 +1,7 @@
 #include <array>
 
 #define GLM_ENABLE_EXPERIMENTAL
+#include <glm/gtx/compatibility.hpp>
 #include <glm/gtc/constants.hpp>
 #include <glm/gtc/epsilon.hpp>
 #include <glm/gtx/norm.hpp>
@@ -44,7 +45,8 @@ Player::Player()
 
 	direction_ = glm::vec2(0.0f, -1.0f);
 	speed_ = 500.0f;
-	dashSpeed_ = 1000.0f;
+	dashSpeed_ = speed_;
+	maxDashSpeed_ = 1500.0f;
 
 	LoadAnimations();
 	LoadUIs();
@@ -85,10 +87,15 @@ void Player::Tick(float deltaSeconds)
 		if (glfwManager.GetKeyPress(keySkill.first) == EPress::PRESSED && !skill->IsRemainCoolTime())
 		{
 			skills_.at(keySkill.second)->Start();
+
+			if (keySkill.second == ESkill::DASH)
+			{
+				bIsDashing_ = true;
+			}
 		}
 	}
 
-	Move(deltaSeconds, speed_);
+	UseDashSkill(deltaSeconds);
 
 	if (hpBar_->GetBar() <= 0.0f)
 	{
@@ -120,7 +127,7 @@ void Player::Release()
 	CHECK(bIsInitialized_);
 
 	UnloadUIs();
-	UnloadAnimation();
+	UnloadAnimations();
 	gamePlayScene_ = nullptr;
 	playground_ = nullptr;
 	textureAtlas_ = nullptr;
@@ -289,6 +296,29 @@ void Player::UnloadUIs()
 {
 	mpBar_ = nullptr;
 	hpBar_ = nullptr;
+}
+
+void Player::UseDashSkill(float deltaSeconds)
+{
+	if (bIsDashing_)
+	{
+		UISkill* dash = skills_.at(ESkill::DASH);
+		float scale = dash->GetSkillCoolTime() / dash->GetMaxSkillCoolTime();
+		float dashSpeed_ = glm::lerp(speed_, maxDashSpeed_, scale);
+
+		if (dash->IsRemainCoolTime())
+		{
+			Move(deltaSeconds, dashSpeed_);
+		}
+		else
+		{
+			bIsDashing_ = false;
+		}
+	}
+	else
+	{
+		Move(deltaSeconds, speed_);
+	}
 }
 
 void Player::Move(float deltaSeconds, float speed)
