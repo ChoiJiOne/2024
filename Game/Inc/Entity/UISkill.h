@@ -29,6 +29,12 @@ public:
 	/** 스킬 쿨타임을 시작합니다. */
 	void Start();
 
+	/** 스킬 쿨타임 값을 얻습니다. */
+	float GetSkillCoolTime() const { return skillCoolTime_; }
+
+	/** 최대 스킬 쿨타임 값을 얻습니다. */
+	float GetMaxSkillCoolTime() const { return maxSkillCoolTime_; }
+	
 	/** 스킬 쿨타임이 남았는지 확인합니다. */
 	bool IsRemainCoolTime() { return bIsRemainCoolTime_; }
 
