@@ -47,6 +47,7 @@ GamePlayScene::GamePlayScene()
 	AddRenderEntity(background);
 
 	CoinCollector* coinCollector = entityManager_->Create<CoinCollector>(glManager_->GetByName<TTFont>("Font24"));
+	entityManager_->Register("CoinCollector", coinCollector);
 	AddUpdateEntity(coinCollector);
 	AddRenderEntity(coinCollector);
 
