@@ -46,7 +46,14 @@ Potion::Potion(const glm::vec2& startPos, const glm::vec2& endPos, const EColor&
 	moveTime_ = 0.0f;
 	maxMoveTime_ = 2.0f;
 
-	heal_ = 10.0f;
+	if (color_ == EColor::BLUE || color_ == EColor::RED)
+	{
+		heal_ = 10.0f;
+	}
+	else
+	{
+		heal_ = 100.0f;
+	}
 
 	colorNames_ =
 	{
@@ -110,7 +117,7 @@ void Potion::Tick(float deltaSeconds)
 			case EColor::RED_POWER:
 			{
 				float maxHp = player_->GetMaxHP();
-				maxHp += heal_;
+				maxHp += heal_ / 10.0f;
 				player_->SetMaxHP(maxHp);
 
 				float hp = player_->GetHP();
@@ -122,7 +129,7 @@ void Potion::Tick(float deltaSeconds)
 			case EColor::BLUE_POWER:
 			{
 				float maxMp = player_->GetMaxMP();
-				maxMp += heal_;
+				maxMp += heal_ / 10.0f;
 				player_->SetMaxMP(maxMp);
 
 				float mp = player_->GetMP();
