@@ -52,7 +52,7 @@ Player::Player()
 	skillMpCosts_ =
 	{
 		{ ESkill::DASH,           5.0f },
-		{ ESkill::INVINCIBILITY, 50.0f },
+		{ ESkill::INVINCIBILITY, 20.0f },
 	};
 
 	LoadAnimations();
