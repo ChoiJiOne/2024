@@ -125,6 +125,16 @@
       "folder": ""
     },
     {
+      "name": "Floor_1.png",
+      "path": "D:/Work/FoxDash/Resource/Original/Floor_1.png",
+      "folder": ""
+    },
+    {
+      "name": "Floor_2.png",
+      "path": "D:/Work/FoxDash/Resource/Original/Floor_2.png",
+      "folder": ""
+    },
+    {
       "name": "Foxy_Hurt_1.png",
       "path": "D:/Work/FoxDash/Resource/Original/Foxy_Hurt_1.png",
       "folder": ""
@@ -185,8 +195,28 @@
       "folder": ""
     },
     {
+      "name": "Grass_1.png",
+      "path": "D:/Work/FoxDash/Resource/Original/Grass_1.png",
+      "folder": ""
+    },
+    {
+      "name": "Grass_2.png",
+      "path": "D:/Work/FoxDash/Resource/Original/Grass_2.png",
+      "folder": ""
+    },
+    {
       "name": "MiniMap.png",
       "path": "D:/Work/FoxDash/Resource/Original/MiniMap.png",
+      "folder": ""
+    },
+    {
+      "name": "Mushroom_1.png",
+      "path": "D:/Work/FoxDash/Resource/Original/Mushroom_1.png",
+      "folder": ""
+    },
+    {
+      "name": "Mushroom_2.png",
+      "path": "D:/Work/FoxDash/Resource/Original/Mushroom_2.png",
       "folder": ""
     },
     {
@@ -205,18 +235,8 @@
       "folder": ""
     },
     {
-      "name": "Skill_Flash.png",
-      "path": "D:/Work/FoxDash/Resource/Original/Skill_Flash.png",
-      "folder": ""
-    },
-    {
       "name": "Skill_Invincibility.png",
       "path": "D:/Work/FoxDash/Resource/Original/Skill_Invincibility.png",
-      "folder": ""
-    },
-    {
-      "name": "Skill_Sandevistan.png",
-      "path": "D:/Work/FoxDash/Resource/Original/Skill_Sandevistan.png",
       "folder": ""
     }
   ],
