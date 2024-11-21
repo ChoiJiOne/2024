@@ -121,7 +121,7 @@ void Potion::Tick(float deltaSeconds)
 				player_->SetMaxHP(maxHp);
 
 				float hp = player_->GetHP();
-				hp += heal_;
+				hp = maxHp;
 				player_->SetHP(hp);
 			}
 			break;
@@ -133,7 +133,7 @@ void Potion::Tick(float deltaSeconds)
 				player_->SetMaxMP(maxMp);
 
 				float mp = player_->GetMP();
-				mp += heal_;
+				mp = maxMp;
 				player_->SetMP(mp);
 			}
 			break;
