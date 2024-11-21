@@ -2,7 +2,7 @@
     "TextureAtlas": "TextureAtlas",
     "SkillIconName": "Skill_Dash",
     "Icon": {
-        "x": -75.0,
+        "x": -25.0,
         "y": -220.0,
         "w": 48.0,
         "h": 48.0
