@@ -79,9 +79,7 @@ private:
 	{
 		NONE          = 0x00, // 스킬을 사용하지 않는 상태입니다. 
 		DASH          = 0x01, // 플레이어의 데쉬 스킬입니다.
-		FLASH         = 0x02, // 플레이어의 점멸(flash) 스킬입니다.
-		INVINCIBILITY = 0x03, // 플레이어의 무적(invincibility) 스킬입니다.
-		SANDEVISTAN   = 0x04, // 플레이어 외의 모든 오브젝트의 시간이 느리게 흐르는 스킬입니다. 
+		INVINCIBILITY = 0x02, // 플레이어의 무적(invincibility) 스킬입니다.
 	};
 
 	/** 플레이어의 그림자입니다. */
@@ -140,13 +138,7 @@ private:
 	
 	/** 플레이어의 속도입니다. */
 	float speed_ = 0.0f;
-
-	/** 플레이어의 대쉬 속도입니다. */
-	float dashSpeed_ = 0.0f;
-
-	/** 최대 대쉬 속도입니다. */
-	float maxDashSpeed_ = 0.0f;
-	
+		
 	/** 현재 애니메이션의 상태입니다. */
 	EAnimationState animationState_ = EAnimationState::IDLE;
 
@@ -167,6 +159,12 @@ private:
 
 	/** 플레이어가 무적일 때 표시할 색상입니다. */
 	glm::vec4 invincibilityColor_;
+
+	/** 플레이어의 대쉬 속도입니다. */
+	float dashSpeed_ = 0.0f;
+
+	/** 최대 대쉬 속도입니다. */
+	float maxDashSpeed_ = 0.0f;
 
 	/** 플레이어가 대쉬 중인지 확인합니다. */
 	bool bIsDashing_ = false;

@@ -20,6 +20,7 @@
 #include "Scene/GamePlayScene.h"
 #include "Scene/SceneManager.h"
 #include "Utils/Assertion.h"
+#include "Utils/Math.h"
 
 Player::Player()
 {
@@ -45,6 +46,8 @@ Player::Player()
 
 	direction_ = glm::vec2(0.0f, -1.0f);
 	speed_ = 500.0f;
+
+	bIsDashing_ = false;
 	dashSpeed_ = speed_;
 	maxDashSpeed_ = 1500.0f;
 
@@ -75,9 +78,7 @@ void Player::Tick(float deltaSeconds)
 	static const std::map<EKey, ESkill> KEY_SKILLS =
 	{
 		{ EKey::KEY_Z, ESkill::DASH          },
-		{ EKey::KEY_X, ESkill::FLASH         },
-		{ EKey::KEY_C, ESkill::INVINCIBILITY },
-		{ EKey::KEY_V, ESkill::SANDEVISTAN   },
+		{ EKey::KEY_X, ESkill::INVINCIBILITY },
 	};
 
 	GLFWManager& glfwManager = GLFWManager::GetRef();
@@ -273,23 +274,13 @@ void Player::LoadUIs()
 	gamePlayScene_->AddUpdateUIEntity(dash);
 	gamePlayScene_->AddRenderUIEntity(dash);
 
-	UISkill* flash = entityManager.Create<UISkill>(uiCamera, font24, "Resource\\UI\\Skill_Flash.skill");
-	gamePlayScene_->AddUpdateUIEntity(flash);
-	gamePlayScene_->AddRenderUIEntity(flash);
-
 	UISkill* invincibility = entityManager.Create<UISkill>(uiCamera, font24, "Resource\\UI\\Skill_Invincibility.skill");
 	gamePlayScene_->AddUpdateUIEntity(invincibility);
 	gamePlayScene_->AddRenderUIEntity(invincibility);
 
-	UISkill* sandevistan = entityManager.Create<UISkill>(uiCamera, font24, "Resource\\UI\\Skill_Sandevistan.skill");
-	gamePlayScene_->AddUpdateUIEntity(sandevistan);
-	gamePlayScene_->AddRenderUIEntity(sandevistan);
-
 	skills_.insert({ ESkill::NONE,          nullptr       });
 	skills_.insert({ ESkill::DASH,          dash          });
-	skills_.insert({ ESkill::FLASH,         flash         });
 	skills_.insert({ ESkill::INVINCIBILITY, invincibility });
-	skills_.insert({ ESkill::SANDEVISTAN,   sandevistan   });
 }
 
 void Player::UnloadUIs()
