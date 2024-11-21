@@ -50,9 +50,9 @@ RandomChest::RandomChest(const glm::vec2& position)
 	animator_ = GLManager::GetRef().Create<SpriteAnimator2D>(textureAtlas_, chestClipNames, 1.0f, false);
 
 	waitTime_ = 0.0f;
-	maxWaitTime_ = 3.0f;
+	maxWaitTime_ = 2.0f;
 	bIsGenerateObject_ = false;
-	minFireSpeed_ = 100.0f;
+	minFireSpeed_ = 200.0f;
 	maxFireSpeed_ = 400.0f;
 	minFireLifeTime_ = 5.0f;
 	maxFireLifeTime_ = 10.0f;
