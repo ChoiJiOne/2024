@@ -50,6 +50,7 @@ Coin::Coin(const glm::vec2& startPos, const glm::vec2& endPos)
 	maxMoveTime_ = 2.0f;
 	bIsGain_ = false;
 	moveGainSpeed_ = 1500.0f;
+	downsizeScale_ = 0.98f;
 }
 
 Coin::~Coin()
@@ -83,6 +84,9 @@ void Coin::Tick(float deltaSeconds)
 			currentPosition += direction * deltaSeconds * moveGainSpeed_;
 
 			AdjustPosition(currentPosition);
+			renderBound_.size *= downsizeScale_;
+			collisionBound_.radius *= downsizeScale_;
+			shadow_.bound.size = renderBound_.size;
 
 			if (collisionBound_.Intersect(coinCollector_->GetCollider()))
 			{
