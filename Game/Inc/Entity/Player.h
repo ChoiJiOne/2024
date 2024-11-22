@@ -111,6 +111,15 @@ private:
 	/** 플레이어의 렌더링/충돌/그림자 위치를 조정합니다. */
 	void AdjustPosition(const glm::vec2& position);
 
+	/** 플레이어의 잔상을 렌더링합니다. */
+	void RenderPlayerAfterImage(TextureAtlas2D* animationTexture, const std::string& animationClipName);
+
+	/** 플레이어를 렌더링합니다. */
+	void RenderPlayer(TextureAtlas2D* animationTexture, const std::string& animationClipName);
+
+	/** 플레이어의 위치를 추적합니다. */
+	void TracePosition();
+
 private:
 	/** 플레이어 렌더링 시 참조할 텍스처 아틀라스입니다. */
 	TextureAtlas2D* textureAtlas_ = nullptr;
@@ -168,6 +177,12 @@ private:
 
 	/** 최대 대쉬 속도입니다. */
 	float maxDashSpeed_ = 0.0f;
+
+	/** 플레이어가 이동한 위치들의 최대 값입니다. */
+	static const uint32_t MAX_TRACE_POSITION = 10;
+
+	/** 플레이어가 이동한 위치들입니다. */
+	std::list<glm::vec2> tracePositions_;
 
 	/** 플레이어가 대쉬 중인지 확인합니다. */
 	bool bIsDashing_ = false;

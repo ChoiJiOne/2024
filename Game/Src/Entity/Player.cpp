@@ -111,6 +111,7 @@ void Player::Tick(float deltaSeconds)
 
 	if (hpBar_->GetBar() <= 0.0f)
 	{
+		tracePositions_.clear();
 		animationState_ = EAnimationState::HURT;
 	}
 
@@ -121,17 +122,13 @@ void Player::Render()
 {
 	TextureAtlas2D* animationTexture = animations_.at(animationState_)->GetTextureAtlas();
 	const std::string& animationClipName = animations_.at(animationState_)->GetCurrentClipName();
-	
-	if (skills_.at(ESkill::INVINCIBILITY)->IsRemainCoolTime())
+
+	if (bIsDashing_)
 	{
-		renderManager_->DrawTextureAtlas(animationTexture, animationClipName, renderBound_.center, renderBound_.size.x, renderBound_.size.y, 0.0f, invincibilityColor_, renderOption_);
-	}
-	else
-	{
-		renderManager_->DrawTextureAtlas(animationTexture, animationClipName, renderBound_.center, renderBound_.size.x, renderBound_.size.y, 0.0f, renderOption_);
+		RenderPlayerAfterImage(animationTexture, animationClipName);
 	}
 
-	renderManager_->DrawTextureAtlas(animationTexture, animationClipName, shadow_.bound.center, shadow_.bound.size.x, shadow_.bound.size.y, 0.0f, shadow_.option);
+	RenderPlayer(animationTexture, animationClipName);
 }
 
 void Player::Release()
@@ -306,21 +303,16 @@ void Player::UseDashSkill(float deltaSeconds)
 	{
 		UISkill* dash = skills_.at(ESkill::DASH);
 		float scale = dash->GetSkillCoolTime() / dash->GetMaxSkillCoolTime();
-		float dashSpeed_ = glm::lerp(speed_, maxDashSpeed_, scale);
+		dashSpeed_ = glm::lerp(speed_, maxDashSpeed_, scale);
 
-		if (dash->IsRemainCoolTime())
-		{
-			Move(deltaSeconds, dashSpeed_);
-		}
-		else
+		if (!dash->IsRemainCoolTime())
 		{
 			bIsDashing_ = false;
 		}
 	}
-	else
-	{
-		Move(deltaSeconds, speed_);
-	}
+
+	TracePosition();
+	Move(deltaSeconds, dashSpeed_);
 }
 
 void Player::Move(float deltaSeconds, float speed)
@@ -382,4 +374,48 @@ void Player::AdjustPosition(const glm::vec2& position)
 	// 그림자 위치 조정.
 	shadow_.bound.center = renderBound_.center;
 	shadow_.bound.center.y += (-renderBound_.size.y * 0.5f) + (-shadow_.bound.size.y * 0.5f);
+}
+
+void Player::RenderPlayerAfterImage(TextureAtlas2D* animationTexture, const std::string& animationClipName)
+{
+	int32_t current = 0;
+	for (const auto& tracePosiion : tracePositions_)
+	{
+		float scale = static_cast<float>(current++) / static_cast<float>(tracePositions_.size());
+		renderOption_.transparent = scale * scale;
+
+		if (skills_.at(ESkill::INVINCIBILITY)->IsRemainCoolTime())
+		{
+			renderManager_->DrawTextureAtlas(animationTexture, animationClipName, tracePosiion, renderBound_.size.x, renderBound_.size.y, 0.0f, invincibilityColor_, renderOption_);
+		}
+		else
+		{
+			renderManager_->DrawTextureAtlas(animationTexture, animationClipName, tracePosiion, renderBound_.size.x, renderBound_.size.y, 0.0f, renderOption_);
+		}
+	}
+}
+
+void Player::RenderPlayer(TextureAtlas2D* animationTexture, const std::string& animationClipName)
+{
+	renderOption_.transparent = 1.0f;
+	if (skills_.at(ESkill::INVINCIBILITY)->IsRemainCoolTime())
+	{
+		renderManager_->DrawTextureAtlas(animationTexture, animationClipName, renderBound_.center, renderBound_.size.x, renderBound_.size.y, 0.0f, invincibilityColor_, renderOption_);
+	}
+	else
+	{
+		renderManager_->DrawTextureAtlas(animationTexture, animationClipName, renderBound_.center, renderBound_.size.x, renderBound_.size.y, 0.0f, renderOption_);
+	}
+
+	renderManager_->DrawTextureAtlas(animationTexture, animationClipName, shadow_.bound.center, shadow_.bound.size.x, shadow_.bound.size.y, 0.0f, shadow_.option);
+}
+
+void Player::TracePosition()
+{
+	if (tracePositions_.size() >= MAX_TRACE_POSITION)
+	{
+		tracePositions_.pop_front();
+	}
+
+	tracePositions_.push_back(renderBound_.center);
 }
