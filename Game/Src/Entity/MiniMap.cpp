@@ -129,7 +129,16 @@ void MiniMap::ConvertMinimapObject(const IObject* object, MinimapObject& outMini
 		outMinimapObjec.position = potion->GetCollisionBound()->center / playgroundRadius_;
 		outMinimapObjec.position *= minimapRadius_;
 		outMinimapObjec.position += renderBound_.center;
-		outMinimapObjec.color = potion->GetColor() == Potion::EColor::BLUE ? bluePotionColor_ : redPotionColor_;
+
+		const Potion::EColor& color = potion->GetColor();
+		if (color == Potion::EColor::BLUE || color == Potion::EColor::BLUE_POWER)
+		{
+			outMinimapObjec.color = bluePotionColor_;
+		}
+		else
+		{
+			outMinimapObjec.color = redPotionColor_;
+		}
 	}
 	break;
 	}
