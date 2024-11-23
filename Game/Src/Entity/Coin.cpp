@@ -5,6 +5,7 @@
 #include "Entity/CoinCollector.h"
 #include "Entity/EntityManager.h"
 #include "Entity/Player.h"
+#include "Game/GameManager.h"
 #include "GL/GLManager.h"
 #include "GL/SpriteAnimator2D.h"
 #include "GL/TextureAtlas2D.h"
@@ -47,9 +48,9 @@ Coin::Coin(const glm::vec2& startPos, const glm::vec2& endPos)
 	
 	state_ = EState::MOVE;
 	moveTime_ = 0.0f;
-	maxMoveTime_ = 2.0f;
+	maxMoveTime_ = GameManager::GetRef().GetConfigValue("Coin.maxMoveTime");
 	bIsGain_ = false;
-	moveGainSpeed_ = 1500.0f;
+	moveGainSpeed_ = GameManager::GetRef().GetConfigValue("Coin.moveGainSpeed");
 	downsizeScale_ = 0.98f;
 }
 
