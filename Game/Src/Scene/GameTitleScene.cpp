@@ -52,10 +52,12 @@ void GameTitleScene::Render()
 void GameTitleScene::Enter()
 {
 	bIsEnter_ = true;
+	bIsSwitched_ = false;
 }
 
 void GameTitleScene::Exit()
 {
+	bIsSwitched_ = false;
 	bIsEnter_ = false;
 }
 
@@ -74,7 +76,13 @@ void GameTitleScene::Initailize()
 
 	TTFont* font48 = glManager_->GetByName<TTFont>("Font48");
 
-	UIButton* startBtn = entityManager_->Create<UIButton>("Resource\\UI\\Start.button", uiCamera_, font48, EMouse::LEFT, [&]() {});
+	UIButton* startBtn = entityManager_->Create<UIButton>("Resource\\UI\\Start.button", uiCamera_, font48, EMouse::LEFT, 
+		[&]() 
+		{
+			bIsSwitched_ = true;
+			switchScene_ = sceneManager_->GetByName<GamePlayScene>("GamePlayScene");
+		}
+	);
 	updateUiEntities_.insert({ "StartButton", startBtn });
 	renderUiEntities_.insert({ "StartButton", startBtn });
 
