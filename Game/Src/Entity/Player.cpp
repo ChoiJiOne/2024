@@ -10,6 +10,7 @@
 #include "Entity/UIBar.h"
 #include "Entity/UICamera.h"
 #include "Entity/UISkill.h"
+#include "Game/GameManager.h"
 #include "GL/GLManager.h"
 #include "GL/SpriteAnimator2D.h"
 #include "GL/TextureAtlas2D.h"
@@ -43,7 +44,7 @@ Player::Player()
 	shadow_.option.bIsFlipV = true;
 
 	direction_ = glm::vec2(0.0f, -1.0f);
-	speed_ = 500.0f;
+	speed_ = GameManager::GetRef().GetConfigValue("Player.Speed");
 
 	bIsDashing_ = false;
 	dashSpeed_ = speed_;
@@ -51,8 +52,8 @@ Player::Player()
 
 	skillMpCosts_ =
 	{
-		{ ESkill::DASH,           5.0f },
-		{ ESkill::INVINCIBILITY, 20.0f },
+		{ ESkill::DASH,          GameManager::GetRef().GetConfigValue("Player.DashMpCost")          },
+		{ ESkill::INVINCIBILITY, GameManager::GetRef().GetConfigValue("Player.InvincibilityMpCost") },
 	};
 
 	LoadAnimations();
