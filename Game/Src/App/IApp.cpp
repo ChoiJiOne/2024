@@ -12,8 +12,12 @@
 #include "Scene/SceneManager.h"
 #include "Utils/Assertion.h"
 
+IApp* IApp::appPtr_ = nullptr;
+
 IApp::IApp(uint32_t windowWidth, uint32_t windowHeight, const char* windowTitle, bool bIsWindowCentered)
 {
+	appPtr_ = this;
+
 	/** 앱 내부에서 사용할 매니저들의 포인터 초기화 */
 	audioManager_ = AudioManager::GetPtr();
 	crashManager_ = CrashManager::GetPtr();
@@ -61,6 +65,8 @@ IApp::~IApp()
 	entityManager_ = nullptr;
 	crashManager_ = nullptr;
 	audioManager_ = nullptr;
+
+	appPtr_ = nullptr;
 }
 
 void IApp::Run()

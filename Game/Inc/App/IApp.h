@@ -6,7 +6,10 @@
 #include "Utils/Macro.h"
 #include "Utils/Timer.h"
 
-/** 애플리케이션 인터페이스입니다. */
+/**
+ * 애플리케이션 인터페이스입니다.
+ * 이때, 이 인터페이스를 상속받은 앱 클래스는 단 하나만 존재할 수 있습니다.
+ */
 class IApp
 {
 public:
@@ -27,11 +30,17 @@ public:
 	/** 강제 루프 종료를 요청합니다. */
 	void RequestDoneLoop();
 
+	/** 애플리케이션 앱의 포인터를 얻습니다. */
+	static IApp* GetPtr() { return appPtr_; }
+
 protected:
 	/** 애플리케이션의 씬을 설정합니다. */
 	void SetAppScene(class IGameScene* appScene) { appScene_ = appScene; }
 
 protected:
+	/** 애플리케이션 앱의 정적 포인터입니다. */
+	static IApp* appPtr_;
+
 	/** 게임 앱의 루프 타이머입니다. */
 	Timer loopTimer_;
 
