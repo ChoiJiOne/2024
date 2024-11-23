@@ -25,10 +25,6 @@ UICamera::~UICamera()
 
 void UICamera::Tick(float deltaSeconds)
 {
-	if (bIsInitialized_)
-	{
-		Release();
-	}
 }
 
 void UICamera::Release()
