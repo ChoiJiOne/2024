@@ -1,5 +1,6 @@
 #pragma once
 
+#include <functional>
 #include <string>
 
 #include "Entity/IEntity2D.h"
@@ -21,6 +22,16 @@ public:
 	virtual void Tick(float deltaSeconds) override;
 	virtual void Render() override;
 	virtual void Release() override;
+
+private:
+	/** UI 버튼의 상태입니다. */
+	enum class EButtonPress : int32_t
+	{
+		DISABLED = 0x00,
+		ENABLED  = 0x01,
+		PRESSED  = 0x02,
+		RELEASED = 0x03,
+	};
 
 private:
 	/** UI 버튼의 입력 및 렌더링에 기준이 될 UI 카메라입니다. */
