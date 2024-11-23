@@ -27,7 +27,7 @@ GameTitleScene::GameTitleScene()
 	updateUiEntities_.push_back(title);
 	renderUiEntities_.push_back(title);
 
-	UIButton* button = entityManager_->Create<UIButton>(uiCamera_, glManager_->GetByName<TTFont>("Font24"), EMouse::LEFT, [&]() {});
+	UIButton* button = entityManager_->Create<UIButton>("Resource\\UI\\Start.button", uiCamera_, glManager_->GetByName<TTFont>("Font48"), EMouse::LEFT, [&]() {});
 	updateUiEntities_.push_back(button);
 	renderUiEntities_.push_back(button);
 }
