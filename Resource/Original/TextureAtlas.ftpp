@@ -238,6 +238,11 @@
       "name": "Skill_Invincibility.png",
       "path": "D:/Work/FoxDash/Resource/Original/Skill_Invincibility.png",
       "folder": ""
+    },
+    {
+      "name": "Title.png",
+      "path": "D:/Work/FoxDash/Resource/Original/Title.png",
+      "folder": ""
     }
   ],
   "folders": [],
