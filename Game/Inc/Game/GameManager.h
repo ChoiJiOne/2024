@@ -1,5 +1,7 @@
 #pragma once
 
+#include <map>
+
 #include "Utils/Macro.h"
 
 /** 
@@ -16,6 +18,9 @@ public:
 
 	/** 게임 매니저의 싱글턴 객체 포인터를 얻습니다. */
 	static GameManager* GetPtr();
+
+	/** 이름에 대응하는 설정 값을 얻습니다. */
+	float GetConfigValue(const std::string& name);
 
 private:
 	/** IApp에서 게임 매니저의 내부에 접근할 수 있도록 설정. */
@@ -35,4 +40,7 @@ private:
 private:
 	/** 게임 매니저의 싱글턴 객체입니다. */
 	static GameManager singleton_;
+
+	/** 이름에 대응하는 설정 값입니다. */
+	std::map<std::string, float> configValues_;
 };
