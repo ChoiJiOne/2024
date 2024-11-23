@@ -1,4 +1,3 @@
-#include <imgui.h>
 #include <glm/gtc/constants.hpp>
 
 #include "Entity/Background.h"
