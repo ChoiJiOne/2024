@@ -16,7 +16,8 @@ class UICamera;
 class UIButton : public IEntity2D
 {
 public:
-	UIButton(UICamera* uiCamera, TTFont* font, const EMouse& mouse, const std::function<void()>& clickEvent);
+	/** UI 버튼의 내부 속성을 설정하기 위해서는 Json 포멧의 파일이 필요합니다. */
+	UIButton(const std::string& buttonPath, UICamera* uiCamera, TTFont* font, const EMouse& mouse, const std::function<void()>& clickEvent);
 	virtual ~UIButton();
 
 	DISALLOW_COPY_AND_ASSIGN(UIButton);
@@ -34,6 +35,9 @@ private:
 		PRESSED  = 0x02,
 		RELEASED = 0x03,
 	};
+
+	/** UI 버튼의 내부 프로퍼티를 초기화합니다. */
+	void InitProperties(const std::string& buttonPath);
 
 	/** 입력 상태에 따른 버튼의 상태를 얻습니다. */
 	EButtonState GetButtonState(const EPress& press, const EButtonState& state);
@@ -65,9 +69,6 @@ private:
 	
 	/** UI 버튼에 표시할 텍스트의 색상입니다. */
 	glm::vec4 textColor_ = glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
-
-	/** UI 버튼에 표시할 텍스트의 외곽선입니다. */
-	glm::vec4 textOutlineColor_ = glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
 
 	/** UI 버튼의 상태 별 색상입니다. */
 	std::map<EButtonState, glm::vec4> stateColors_;
