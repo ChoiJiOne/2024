@@ -14,7 +14,7 @@ Title::Title()
 
 	textureAtlas_ = GLManager::GetRef().GetByName<TextureAtlas2D>("TextureAtlas");
 
-	bound_ = Rect2D(glm::vec2(0.0f, 160.0f), glm::vec2(400.0f, 120.0f));
+	bound_ = Rect2D(glm::vec2(0.0f, 160.0f), glm::vec2(600.0f, 180.0f));
 
 	bIsInitialized_ = true;
 }
