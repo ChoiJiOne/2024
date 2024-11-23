@@ -47,7 +47,7 @@ Player::Player()
 
 	bIsDashing_ = false;
 	dashSpeed_ = speed_;
-	maxDashSpeed_ = 1500.0f;
+	maxDashSpeed_ = speed_ * 3.0f;
 
 	skillMpCosts_ =
 	{
