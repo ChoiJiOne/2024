@@ -1,0 +1,15 @@
+{
+    "Coin.maxMoveTime": 2.0,
+    "Coin.moveGainSpeed": 1500.0,
+    "Fire.damage": 10.0,
+    "Player.Speed": 500.0,
+    "Player.DashMpCost": 5.0,
+    "Player.InvincibilityMpCost": 20.0,
+    "Potion.maxMoveTime": 2.0,
+    "Potion.heal": 10.0,
+    "RandomChest.maxWaitTime": 2.0,
+    "RandomChest.minFireSpeed": 200,
+    "RandomChest.maxFireSpeed": 400,
+    "RandomChest.minFireLifeTime": 5.0,
+    "RandomChest.maxFireLifeTime": 10.0
+}
