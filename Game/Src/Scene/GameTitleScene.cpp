@@ -1,9 +1,11 @@
 #include "Entity/Backdrop.h"
 #include "Entity/EntityManager.h"
 #include "Entity/Title.h"
+#include "Entity/UIButton.h"
 #include "Entity/UICamera.h"
 #include "GL/GLManager.h"
 #include "GL/RenderManager2D.h"
+#include "GL/TTFont.h"
 #include "Scene/GamePlayScene.h"
 #include "Scene/GameTitleScene.h"
 #include "Scene/SceneManager.h"
@@ -24,6 +26,10 @@ GameTitleScene::GameTitleScene()
 	Title* title = entityManager_->Create<Title>();
 	updateUiEntities_.push_back(title);
 	renderUiEntities_.push_back(title);
+
+	UIButton* button = entityManager_->Create<UIButton>(uiCamera_, glManager_->GetByName<TTFont>("Font24"), EMouse::LEFT, [&]() {});
+	updateUiEntities_.push_back(button);
+	renderUiEntities_.push_back(button);
 }
 
 GameTitleScene::~GameTitleScene()
