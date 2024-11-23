@@ -69,19 +69,21 @@ void GameTitleScene::Initailize()
 	updateUiEntities_.insert({ "Title", title });
 	renderUiEntities_.insert({ "Title", title });
 
-	UIButton* startBtn = entityManager_->Create<UIButton>("Resource\\UI\\Start.button", uiCamera_, glManager_->GetByName<TTFont>("Font48"), EMouse::LEFT, [&]() {});
+	TTFont* font48 = glManager_->GetByName<TTFont>("Font48");
+
+	UIButton* startBtn = entityManager_->Create<UIButton>("Resource\\UI\\Start.button", uiCamera_, font48, EMouse::LEFT, [&]() {});
 	updateUiEntities_.insert({ "StartButton", startBtn });
 	renderUiEntities_.insert({ "StartButton", startBtn });
 
-	UIButton* galleryBtn = entityManager_->Create<UIButton>("Resource\\UI\\Gallery.button", uiCamera_, glManager_->GetByName<TTFont>("Font48"), EMouse::LEFT, [&]() {});
+	UIButton* galleryBtn = entityManager_->Create<UIButton>("Resource\\UI\\Gallery.button", uiCamera_, font48, EMouse::LEFT, [&]() {});
 	updateUiEntities_.insert({ "GalleryButton", galleryBtn });
 	renderUiEntities_.insert({ "GalleryButton", galleryBtn });
 
-	UIButton* optionBtn = entityManager_->Create<UIButton>("Resource\\UI\\Option.button", uiCamera_, glManager_->GetByName<TTFont>("Font48"), EMouse::LEFT, [&]() {});
+	UIButton* optionBtn = entityManager_->Create<UIButton>("Resource\\UI\\Option.button", uiCamera_, font48, EMouse::LEFT, [&]() {});
 	updateUiEntities_.insert({ "OptionButton", optionBtn });
 	renderUiEntities_.insert({ "OptionButton", optionBtn });
 
-	UIButton* quitBtn = entityManager_->Create<UIButton>("Resource\\UI\\Quit.button", uiCamera_, glManager_->GetByName<TTFont>("Font48"), EMouse::LEFT, [&]() {});
+	UIButton* quitBtn = entityManager_->Create<UIButton>("Resource\\UI\\Quit.button", uiCamera_, font48, EMouse::LEFT, [&]() {});
 	updateUiEntities_.insert({ "QuitButton", quitBtn });
 	renderUiEntities_.insert({ "QuitButton", quitBtn });
 }
