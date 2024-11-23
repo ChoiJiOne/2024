@@ -5,6 +5,7 @@
 #include "GL/TextureAtlas2D.h"
 #include "GL/TTFont.h"
 #include "Scene/GamePlayScene.h"
+#include "Scene/GameTitleScene.h"
 #include "Scene/SceneManager.h"
 #include "Utils/Utils.h"
 
@@ -32,9 +33,10 @@ void GameApp::Startup()
 	UICamera* uiCamera = entityManager_->Create<UICamera>();
 	entityManager_->Register("UICamera", uiCamera);
 
+	GameTitleScene* gameTitleScene = sceneManager_->Create<GameTitleScene>();
 	GamePlayScene* gamePlayScene = sceneManager_->Create<GamePlayScene>();
 
-	SetAppScene(gamePlayScene);
+	SetAppScene(gameTitleScene);
 }
 
 void GameApp::Shutdown()
