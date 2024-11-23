@@ -1,4 +1,6 @@
+#include "Entity/Backdrop.h"
 #include "Entity/EntityManager.h"
+#include "Entity/Title.h"
 #include "Entity/UICamera.h"
 #include "GL/GLManager.h"
 #include "GL/RenderManager2D.h"
@@ -14,6 +16,14 @@ GameTitleScene::GameTitleScene()
 
 	uiCamera_ = entityManager_->GetByName<UICamera>("UICamera");
 	updateUiEntities_.push_back(uiCamera_);
+
+	Backdrop* backdrop = entityManager_->Create<Backdrop>();
+	updateUiEntities_.push_back(backdrop);
+	renderUiEntities_.push_back(backdrop);
+
+	Title* title = entityManager_->Create<Title>();
+	updateUiEntities_.push_back(title);
+	renderUiEntities_.push_back(title);
 }
 
 GameTitleScene::~GameTitleScene()
