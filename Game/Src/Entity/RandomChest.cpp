@@ -6,6 +6,7 @@
 #include "Entity/Potion.h"
 #include "Entity/Player.h"
 #include "Entity/Playground.h"
+#include "Game/GameManager.h"
 #include "GL/GLManager.h"
 #include "GL/SpriteAnimator2D.h"
 #include "GL/TextureAtlas2D.h"
@@ -50,12 +51,12 @@ RandomChest::RandomChest(const glm::vec2& position)
 	animator_ = GLManager::GetRef().Create<SpriteAnimator2D>(textureAtlas_, chestClipNames, 1.0f, false);
 
 	waitTime_ = 0.0f;
-	maxWaitTime_ = 2.0f;
+	maxWaitTime_ = GameManager::GetRef().GetConfigValue("RandomChest.maxWaitTime");
 	bIsGenerateObject_ = false;
-	minFireSpeed_ = 200.0f;
-	maxFireSpeed_ = 400.0f;
-	minFireLifeTime_ = 5.0f;
-	maxFireLifeTime_ = 10.0f;
+	minFireSpeed_ = GameManager::GetRef().GetConfigValue("RandomChest.minFireSpeed");
+	maxFireSpeed_ = GameManager::GetRef().GetConfigValue("RandomChest.maxFireSpeed");
+	minFireLifeTime_ = GameManager::GetRef().GetConfigValue("RandomChest.minFireLifeTime");
+	maxFireLifeTime_ = GameManager::GetRef().GetConfigValue("RandomChest.maxFireLifeTime");
 
 	bIsInitialized_ = true;
 }
