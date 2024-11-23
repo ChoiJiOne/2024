@@ -15,6 +15,10 @@ std::string PrintF(const char* format, ...);
 /** 표준 문자열 기반의 문자열 포멧팅을 수행합니다. */
 std::wstring PrintF(const wchar_t* format, ...);
 
+/** 표준 문자열을 변환합니다. */
+std::wstring ConvertString(const std::string& text);
+std::string ConvertString(const std::wstring& text);
+
 /** 파일을 읽어 벡터에 저장합니다. */
 bool ReadFile(const std::string& path, std::vector<uint8_t>& outBuffer, std::string& outErrMsg);
 

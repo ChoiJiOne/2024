@@ -48,10 +48,23 @@ std::wstring PrintF(const wchar_t* format, ...)
 	return std::wstring(buffer, size);
 }
 
+std::wstring ConvertString(const std::string& text)
+{
+	static wchar_t buffer[MAX_BUFFER_SIZE];
+	std::size_t size = std::mbstowcs(buffer, text.c_str(), MAX_BUFFER_SIZE);
+	return std::wstring(buffer, size);
+}
+
+std::string ConvertString(const std::wstring& text)
+{
+	static char buffer[MAX_BUFFER_SIZE];
+	std::size_t size = std::wcstombs(buffer, text.c_str(), MAX_BUFFER_SIZE);
+	return std::string(buffer, size);
+}
+
 #if defined(WIN32) || defined(WIN64)
 const char* GetWindowsErrMessage()
 {
-	static const uint32_t MAX_BUFFER_SIZE = 1024;
 	static char buffer[MAX_BUFFER_SIZE];
 
 	uint32_t size = ::FormatMessageA(FORMAT_MESSAGE_FROM_SYSTEM, nullptr, GetLastError(), MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), buffer, MAX_BUFFER_SIZE, nullptr);
