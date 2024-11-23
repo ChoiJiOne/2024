@@ -11,6 +11,9 @@ UICamera::UICamera()
 	center_ = glm::vec2(0.0f, 0.0f);
 	size_ = screenSize;
 	ortho_ = CalculateOrtho(center_, size_);
+
+	mousePointer_.radius = 1.0f;
+	mousePointer_.center = GLFWManager::GetRef().GetCurrCursorPos();
 	
 	bIsInitialized_ = true;
 }
@@ -25,6 +28,7 @@ UICamera::~UICamera()
 
 void UICamera::Tick(float deltaSeconds)
 {
+	mousePointer_.center = GLFWManager::GetRef().GetCurrCursorPos();
 }
 
 void UICamera::Release()
