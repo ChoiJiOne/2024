@@ -1,3 +1,4 @@
+#include "App/IApp.h"
 #include "Entity/Backdrop.h"
 #include "Entity/EntityManager.h"
 #include "Entity/Title.h"
@@ -50,10 +51,12 @@ void GameTitleScene::Render()
 
 void GameTitleScene::Enter()
 {
+	bIsEnter_ = true;
 }
 
 void GameTitleScene::Exit()
 {
+	bIsEnter_ = false;
 }
 
 void GameTitleScene::Initailize()
@@ -83,7 +86,8 @@ void GameTitleScene::Initailize()
 	updateUiEntities_.insert({ "OptionButton", optionBtn });
 	renderUiEntities_.insert({ "OptionButton", optionBtn });
 
-	UIButton* quitBtn = entityManager_->Create<UIButton>("Resource\\UI\\Quit.button", uiCamera_, font48, EMouse::LEFT, [&]() {});
+	auto loopDoneEvent = [&]() { IApp::GetPtr()->RequestDoneLoop(); };
+	UIButton* quitBtn = entityManager_->Create<UIButton>("Resource\\UI\\Quit.button", uiCamera_, font48, EMouse::LEFT, loopDoneEvent);
 	updateUiEntities_.insert({ "QuitButton", quitBtn });
 	renderUiEntities_.insert({ "QuitButton", quitBtn });
 }
