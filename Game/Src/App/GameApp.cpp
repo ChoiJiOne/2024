@@ -1,4 +1,6 @@
 #include "App/GameApp.h"
+#include "Entity/EntityManager.h"
+#include "Entity/UICamera.h"
 #include "GL/GLManager.h"
 #include "GL/TextureAtlas2D.h"
 #include "GL/TTFont.h"
@@ -26,6 +28,9 @@ void GameApp::Startup()
 		TTFont* font = glManager_->Create<TTFont>("Resource\\Font\\lower.ttf", 0x00, 0x128, static_cast<float>(fontSize), ITexture::EFilter::NEAREST);
 		glManager_->Register(PrintF("Font%d", fontSize), font);
 	}
+
+	UICamera* uiCamera = entityManager_->Create<UICamera>();
+	entityManager_->Register("UICamera", uiCamera);
 
 	GamePlayScene* gamePlayScene = sceneManager_->Create<GamePlayScene>();
 
