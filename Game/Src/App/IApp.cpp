@@ -84,3 +84,8 @@ void IApp::Run()
 		}
 	}
 }
+
+void IApp::RequestDoneLoop()
+{
+	bIsDoneLoop_ = true;
+}

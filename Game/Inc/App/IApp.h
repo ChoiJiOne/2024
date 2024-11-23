@@ -24,6 +24,9 @@ public:
 	/** 게임 앱을 실행합니다. */
 	void Run();
 
+	/** 강제 루프 종료를 요청합니다. */
+	void RequestDoneLoop();
+
 protected:
 	/** 애플리케이션의 씬을 설정합니다. */
 	void SetAppScene(class IGameScene* appScene) { appScene_ = appScene; }
