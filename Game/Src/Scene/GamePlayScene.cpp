@@ -70,9 +70,6 @@ GamePlayScene::GamePlayScene()
 
 GamePlayScene::~GamePlayScene()
 {
-	renderManager_ = nullptr;
-	glManager_ = nullptr;
-	entityManager_ = nullptr;
 }
 
 void GamePlayScene::Tick(float deltaSeconds)
