@@ -4,6 +4,7 @@
 #include "Entity/Fire.h"
 #include "Entity/EntityManager.h"
 #include "Entity/Player.h"
+#include "Game/GameManager.h"
 #include "GL/GLManager.h"
 #include "GL/SpriteAnimator2D.h"
 #include "GL/TextureAtlas2D.h"
@@ -29,8 +30,7 @@ Fire::Fire(const glm::vec2& position, const glm::vec2& direction, float speed, f
 
 	LoadAnimations();
 
-	damage_ = 10.0f;
-
+	damage_ = GameManager::GetRef().GetConfigValue("Fire.damage");
 	state_ = EState::MOVE;
 
 	bIsInitialized_ = true;
