@@ -24,8 +24,7 @@ GamePlayScene::GamePlayScene()
 {
 	sceneManager_->Register("GamePlayScene", this);
 
-	uiCamera_ = entityManager_->Create<UICamera>();
-	entityManager_->Register("UICamera", uiCamera_);
+	uiCamera_ = entityManager_->GetByName<UICamera>("UICamera");
 	AddUpdateUIEntity(uiCamera_);
 
 	Playground* playground = entityManager_->Create<Playground>();
