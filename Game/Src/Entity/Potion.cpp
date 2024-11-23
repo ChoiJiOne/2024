@@ -4,6 +4,7 @@
 #include "Entity/EntityManager.h"
 #include "Entity/Potion.h"
 #include "Entity/Player.h"
+#include "Game/GameManager.h"
 #include "GL/GLManager.h"
 #include "GL/TextureAtlas2D.h"
 #include "Utils/Assertion.h"
@@ -44,9 +45,8 @@ Potion::Potion(const glm::vec2& startPos, const glm::vec2& endPos, const EColor&
 
 	state_ = EState::MOVE;
 	moveTime_ = 0.0f;
-	maxMoveTime_ = 2.0f;
-
-	heal_ = 10.0f;
+	maxMoveTime_ = GameManager::GetRef().GetConfigValue("Potion.maxMoveTime");
+	heal_ = GameManager::GetRef().GetConfigValue("Potion.heal");
 
 	colorNames_ =
 	{
