@@ -8,3 +8,7 @@ TypeName(const TypeName&) = delete;           \
 TypeName& operator=(TypeName&&) = delete;     \
 TypeName& operator=(const TypeName) = delete;
 #endif
+
+/** 특정 타입을 문자열로 변환합니다. */
+#define STRINGIFY(x) #x
+#define TO_STRING(x) STRINGIFY(x)
