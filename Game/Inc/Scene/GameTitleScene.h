@@ -4,6 +4,7 @@
 #include "GL/RenderManager2D.h"
 
 /** 클래스 전방 선언입니다. */
+class FadeEffector;
 class UICamera;
 class PostProcessor;
 class FrameBuffer;
@@ -32,6 +33,9 @@ private:
 private:
 	/** 게임 타이틀 씬의 스크린 카메라입니다. */
 	UICamera* uiCamera_ = nullptr;
+
+	/** 페이드 효과를 제어할 엔티티입니다. */
+	FadeEffector* fadeEffector_ = nullptr;
 
 	/** 프레임 버퍼에 후처리를 수행하는 오브젝트입니다. */
 	PostProcessor* postProcessor_ = nullptr;

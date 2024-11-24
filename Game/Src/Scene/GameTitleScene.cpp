@@ -2,6 +2,7 @@
 #include "App/IApp.h"
 #include "Entity/Backdrop.h"
 #include "Entity/EntityManager.h"
+#include "Entity/FadeEffector.h"
 #include "Entity/Title.h"
 #include "Entity/UIButton.h"
 #include "Entity/UICamera.h"
@@ -69,6 +70,7 @@ void GameTitleScene::Exit()
 void GameTitleScene::Initailize()
 {
 	postProcessor_ = renderManager_->GetPostProcessor();
+	fadeEffector_ = entityManager_->GetByName<FadeEffector>("FadeEffector");
 	frameBuffer_ = reinterpret_cast<GameApp*>(IApp::GetPtr())->GetFrameBuffer();
 	renderTargetOption_ = RenderTargetOption{ glm::vec4(0.0f, 0.0f, 0.0f, 1.0f), true };
 
