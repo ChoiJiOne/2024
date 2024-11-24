@@ -84,6 +84,8 @@ void GameTitleScene::Enter()
 
 void GameTitleScene::Exit()
 {
+	fadeEffector_->Reset();
+
 	bIsSwitched_ = false;
 	bIsEnter_ = false;
 }
