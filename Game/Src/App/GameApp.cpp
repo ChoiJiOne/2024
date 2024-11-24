@@ -1,9 +1,11 @@
 #include "App/GameApp.h"
 #include "Entity/EntityManager.h"
 #include "Entity/UICamera.h"
+#include "GL/FrameBuffer.h"
 #include "GL/GLManager.h"
 #include "GL/TextureAtlas2D.h"
 #include "GL/TTFont.h"
+#include "GLFW/GLFWManager.h"
 #include "Scene/GamePlayScene.h"
 #include "Scene/GameTitleScene.h"
 #include "Scene/SceneManager.h"
@@ -16,10 +18,16 @@ GameApp::GameApp(uint32_t windowWidth, uint32_t windowHeight, const char* window
 
 GameApp::~GameApp()
 {
+
 }
 
 void GameApp::Startup()
 {
+	float width = 0.0f;
+	float height = 0.0f;
+	glfwManager_->GetWindowSize(width, height);
+	frameBuffer_ = glManager_->Create<FrameBuffer>(static_cast<int32_t>(width), static_cast<int32_t>(height), FrameBuffer::EPixelFormat::RGBA, FrameBuffer::EFilter::LINEAR);
+
 	TextureAtlas2D* textureAtlas = glManager_->Create<TextureAtlas2D>("Resource\\TextureAtlas\\TextureAtlas.png", "Resource\\TextureAtlas\\TextureAtlas.atlas", TextureAtlas2D::EFilter::NEAREST);
 	glManager_->Register("TextureAtlas", textureAtlas);
 
@@ -41,4 +49,9 @@ void GameApp::Startup()
 
 void GameApp::Shutdown()
 {
+	if (frameBuffer_)
+	{
+		glManager_->Destroy(frameBuffer_);
+		frameBuffer_ = nullptr;
+	}
 }
