@@ -31,6 +31,18 @@ GameTitleScene::~GameTitleScene()
 
 void GameTitleScene::Tick(float deltaSeconds)
 {
+	if (fadeEffector_->IsStart())
+	{
+		fadeEffector_->Tick(deltaSeconds);
+
+		if (!fadeEffector_->IsStart())
+		{
+			bIsSwitched_ = true;
+			switchScene_ = sceneManager_->GetByName<GamePlayScene>("GamePlayScene");
+		}
+		return;
+	}
+
 	for (auto& uiEntity : updateUiEntities_)
 	{
 		uiEntity.second->Tick(deltaSeconds);
@@ -50,7 +62,14 @@ void GameTitleScene::Render()
 		}
 		renderManager_->End();
 
-		postProcessor_->Blit(PostProcessor::EType::BLIT, frameBuffer_);
+		PostProcessor::EType type = PostProcessor::EType::BLIT;
+		if (fadeEffector_->IsStart())
+		{
+			type = PostProcessor::EType::BLEND_COLOR;
+			postProcessor_->SetBlendColor(fadeEffector_->GetBlendColor(), fadeEffector_->GetFactor());
+		}
+
+		postProcessor_->Blit(type, frameBuffer_);
 	}
 	glManager_->EndFrame();
 }
@@ -70,12 +89,14 @@ void GameTitleScene::Exit()
 void GameTitleScene::Initailize()
 {
 	postProcessor_ = renderManager_->GetPostProcessor();
-	fadeEffector_ = entityManager_->GetByName<FadeEffector>("FadeEffector");
 	frameBuffer_ = reinterpret_cast<GameApp*>(IApp::GetPtr())->GetFrameBuffer();
 	renderTargetOption_ = RenderTargetOption{ glm::vec4(0.0f, 0.0f, 0.0f, 1.0f), true };
 
 	uiCamera_ = entityManager_->GetByName<UICamera>("UICamera");
 	updateUiEntities_.insert({ "UICamera", uiCamera_ });
+
+	fadeEffector_ = entityManager_->GetByName<FadeEffector>("FadeEffector");
+	updateUiEntities_.insert({ "FadeEffector", fadeEffector_ });
 
 	Backdrop* backdrop = entityManager_->Create<Backdrop>();
 	updateUiEntities_.insert({ "Backdrop", backdrop });
@@ -90,8 +111,7 @@ void GameTitleScene::Initailize()
 	UIButton* startBtn = entityManager_->Create<UIButton>("Resource\\UI\\Start.button", uiCamera_, font48, EMouse::LEFT, 
 		[&]() 
 		{
-			bIsSwitched_ = true;
-			switchScene_ = sceneManager_->GetByName<GamePlayScene>("GamePlayScene");
+			fadeEffector_->StartOut(2.0f);
 		}
 	);
 	updateUiEntities_.insert({ "StartButton", startBtn });
