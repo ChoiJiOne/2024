@@ -1,10 +1,13 @@
+#include "App/GameApp.h"
 #include "App/IApp.h"
 #include "Entity/Backdrop.h"
 #include "Entity/EntityManager.h"
 #include "Entity/Title.h"
 #include "Entity/UIButton.h"
 #include "Entity/UICamera.h"
+#include "GL/FrameBuffer.h"
 #include "GL/GLManager.h"
+#include "GL/PostProcessor.h"
 #include "GL/RenderManager2D.h"
 #include "GL/TTFont.h"
 #include "Scene/GamePlayScene.h"
@@ -37,7 +40,7 @@ void GameTitleScene::Render()
 {
 	glManager_->BeginFrame(0.0f, 0.0f, 0.0f, 1.0f);
 	{
-		renderManager_->Begin(uiCamera_);
+		renderManager_->Begin(uiCamera_, frameBuffer_, renderTargetOption_);
 		{
 			for (auto& uiEntity : renderUiEntities_)
 			{
@@ -45,6 +48,8 @@ void GameTitleScene::Render()
 			}
 		}
 		renderManager_->End();
+
+		postProcessor_->Blit(PostProcessor::EType::BLIT, frameBuffer_);
 	}
 	glManager_->EndFrame();
 }
@@ -63,6 +68,10 @@ void GameTitleScene::Exit()
 
 void GameTitleScene::Initailize()
 {
+	postProcessor_ = renderManager_->GetPostProcessor();
+	frameBuffer_ = reinterpret_cast<GameApp*>(IApp::GetPtr())->GetFrameBuffer();
+	renderTargetOption_ = RenderTargetOption{ glm::vec4(0.0f, 0.0f, 0.0f, 1.0f), true };
+
 	uiCamera_ = entityManager_->GetByName<UICamera>("UICamera");
 	updateUiEntities_.insert({ "UICamera", uiCamera_ });
 
@@ -126,4 +135,7 @@ void GameTitleScene::UnInitailize()
 			renderUIEntity.second = nullptr;
 		}
 	}
+
+	frameBuffer_ = nullptr;
+	postProcessor_ = nullptr;
 }

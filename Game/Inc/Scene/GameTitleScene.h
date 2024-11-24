@@ -1,6 +1,12 @@
 #pragma once
 
 #include "Scene/IGameScene.h"
+#include "GL/RenderManager2D.h"
+
+/** 클래스 전방 선언입니다. */
+class UICamera;
+class PostProcessor;
+class FrameBuffer;
 
 /** 게임 타이틀 씬입니다. */
 class GameTitleScene : public IGameScene
@@ -25,7 +31,16 @@ private:
 
 private:
 	/** 게임 타이틀 씬의 스크린 카메라입니다. */
-	class UICamera* uiCamera_ = nullptr;
+	UICamera* uiCamera_ = nullptr;
+
+	/** 프레임 버퍼에 후처리를 수행하는 오브젝트입니다. */
+	PostProcessor* postProcessor_ = nullptr;
+
+	/** 렌더링을 수행할 프레임 버퍼입니다. */
+	FrameBuffer* frameBuffer_ = nullptr;
+
+	/** 프레임 버퍼에 렌더링할 때 설정할 렌더링 옵션입니다. */
+	RenderTargetOption renderTargetOption_;
 	
 	/** 업데이트할 UI 엔티티입니다. */
 	std::map<std::string, IEntity*> updateUiEntities_;
