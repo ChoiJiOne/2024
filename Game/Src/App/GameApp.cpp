@@ -1,5 +1,6 @@
 #include "App/GameApp.h"
 #include "Entity/EntityManager.h"
+#include "Entity/FadeEffector.h"
 #include "Entity/UICamera.h"
 #include "GL/FrameBuffer.h"
 #include "GL/GLManager.h"
@@ -40,6 +41,9 @@ void GameApp::Startup()
 
 	UICamera* uiCamera = entityManager_->Create<UICamera>();
 	entityManager_->Register("UICamera", uiCamera);
+
+	FadeEffector* fadeEffector = entityManager_->Create<FadeEffector>();
+	entityManager_->Register("FadeEffector", fadeEffector);
 
 	GameTitleScene* gameTitleScene = sceneManager_->Create<GameTitleScene>();
 	GamePlayScene* gamePlayScene = sceneManager_->Create<GamePlayScene>();
