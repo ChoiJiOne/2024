@@ -85,7 +85,4 @@ private:
 
 	/** 포션 색상에 대응하는 아틀라스 내의 이름입니다. */
 	std::map<EColor, std::string> colorNames_;
-
-	/** 파워 포션의 외곽선 색상입니다. */
-	std::map<EColor, glm::vec4> outlineColors_;
 };

@@ -55,12 +55,6 @@ Potion::Potion(const glm::vec2& startPos, const glm::vec2& endPos, const EColor&
 		{ EColor::RED_POWER,  "PotionRed"   },
 		{ EColor::BLUE_POWER, "PotionsBlue" },
 	};
-
-	outlineColors_ =
-	{
-		{ EColor::RED_POWER,  glm::vec4(1.0f, 0.2f, 0.2f, 1.0f) },
-		{ EColor::BLUE_POWER, glm::vec4(0.2f, 0.2f, 1.0f, 1.0f) },
-	};
 }
 
 Potion::~Potion()
@@ -152,15 +146,7 @@ void Potion::Render()
 		return;
 	}
 
-	if (color_ == EColor::BLUE || color_ == EColor::RED)
-	{
-		renderManager_->DrawTextureAtlas(textureAtlas_, colorNames_.at(color_), renderBound_.center, renderBound_.size.x, renderBound_.size.y, 0.0f);
-	}
-	else
-	{
-		renderManager_->DrawTextureAtlas(textureAtlas_, colorNames_.at(color_), renderBound_.center, renderBound_.size.x, renderBound_.size.y, 0.0f, outlineColors_.at(color_));
-	}
-	
+	renderManager_->DrawTextureAtlas(textureAtlas_, colorNames_.at(color_), renderBound_.center, renderBound_.size.x, renderBound_.size.y, 0.0f);
 	renderManager_->DrawTextureAtlas(textureAtlas_, colorNames_.at(color_), shadow_.bound.center, shadow_.bound.size.x, shadow_.bound.size.y, 0.0f, shadow_.option);
 }
 
