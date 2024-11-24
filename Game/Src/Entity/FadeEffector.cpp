@@ -60,3 +60,9 @@ void FadeEffector::StartOut(float time)
 	effectTime_ = 0.0f;
 	maxEffectTime_ = time;
 }
+
+void FadeEffector::Reset()
+{
+	state_ = EState::WAIT;
+	type_ = EType::NONE;
+}

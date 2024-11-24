@@ -39,7 +39,10 @@ public:
 
 	/** 페이드 효과를 적용할 색상의 가중치 값을 얻습니다.  */
 	float GetFactor() const { return factor_; }
-	
+
+	/** 페이드 효과의 상태를 초기화합니다. */
+	void Reset();
+
 private:
 	/** 페이드 효과의 종류입니다. */
 	enum class EType
