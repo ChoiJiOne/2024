@@ -19,7 +19,7 @@ FadeEffector::~FadeEffector()
 
 void FadeEffector::Tick(float deltaSeconds)
 {
-	if (!bIsStart_)
+	if (state_ != EState::PROGRESS)
 	{
 		return;
 	}
@@ -32,7 +32,7 @@ void FadeEffector::Tick(float deltaSeconds)
 	if (factor_ <= 0.0f || factor_ >= 1.0f)
 	{
 		type_ = EType::NONE;
-		bIsStart_ = false;
+		state_ = EState::DONE;
 	}
 }
 
@@ -46,7 +46,7 @@ void FadeEffector::Release()
 // factor 값이 1.0 => 0.0
 void FadeEffector::StartIn(float time)
 {
-	bIsStart_ = true;
+	state_ = EState::PROGRESS;
 	type_ = EType::FADE_IN;
 	effectTime_ = time;
 	maxEffectTime_ = time;
@@ -55,7 +55,7 @@ void FadeEffector::StartIn(float time)
 // factor 값이 0.0 => 1.0
 void FadeEffector::StartOut(float time)
 {
-	bIsStart_ = true;
+	state_ = EState::PROGRESS;
 	type_ = EType::FADE_OUT;
 	effectTime_ = 0.0f;
 	maxEffectTime_ = time;

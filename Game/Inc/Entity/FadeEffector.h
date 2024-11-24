@@ -8,6 +8,15 @@
 class FadeEffector : public IEntity
 {
 public:
+	/** 페이드 효과를 제어하는 엔티티의 상태입니다. */
+	enum class EState
+	{
+		WAIT     = 0x00, // 페이드 효과를 적용하지 않은 상태.
+		PROGRESS = 0x01, // 페이드 효과를 적용 중인 상태.
+		DONE     = 0x02, // 페이드 효과가 적용 완료된 상태.
+	};
+
+public:
 	FadeEffector();
 	virtual ~FadeEffector();
 
@@ -22,15 +31,15 @@ public:
 	/** 페이드 아웃 효과(화면이 밝았다가 서서이 어두어지는)를 시작합니다. */
 	void StartOut(float time);
 
-	/** 현재 페이드 효과가 시작되었는지 확인합니다. */
-	bool IsStart() const { return bIsStart_; }
+	/** 현재 페이드 효과의 상태를 얻습니다. */
+	const EState& GetState() const { return state_; }
 
 	/** 페이드 효과를 적용 할 색상을 얻습니다. */
 	const glm::vec3& GetBlendColor() const { return blendColor_; }
 
 	/** 페이드 효과를 적용할 색상의 가중치 값을 얻습니다.  */
 	float GetFactor() const { return factor_; }
-
+	
 private:
 	/** 페이드 효과의 종류입니다. */
 	enum class EType
@@ -57,9 +66,9 @@ private:
 	/** 페이드 효과 적용 전체 시간 값입니다. */
 	float maxEffectTime_ = 0.0f;
 
+	/** 현재 페이드 효과의 상태입니다. */
+	EState state_ = EState::WAIT;
+
 	/** 현재 페이드 효과입니다. */
 	EType type_ = EType::NONE;
-
-	/** 페이드 효과가 시작되었는지 확인합니다. */
-	bool bIsStart_ = false;
 };
