@@ -31,11 +31,12 @@ GameTitleScene::~GameTitleScene()
 
 void GameTitleScene::Tick(float deltaSeconds)
 {
-	if (fadeEffector_->IsStart())
+	if (fadeEffector_->GetState() == FadeEffector::EState::PROGRESS)
 	{
 		fadeEffector_->Tick(deltaSeconds);
 
-		if (!fadeEffector_->IsStart())
+		// 페이드 아웃 효과가 끝났는지 확인.
+		if (fadeEffector_->GetState() == FadeEffector::EState::DONE)
 		{
 			bIsSwitched_ = true;
 			switchScene_ = sceneManager_->GetByName<GamePlayScene>("GamePlayScene");
@@ -63,7 +64,8 @@ void GameTitleScene::Render()
 		renderManager_->End();
 
 		PostProcessor::EType type = PostProcessor::EType::BLIT;
-		if (fadeEffector_->IsStart())
+		const FadeEffector::EState& state = fadeEffector_->GetState();
+		if (state != FadeEffector::EState::WAIT)
 		{
 			type = PostProcessor::EType::BLEND_COLOR;
 			postProcessor_->SetBlendColor(fadeEffector_->GetBlendColor(), fadeEffector_->GetFactor());
@@ -110,8 +112,8 @@ void GameTitleScene::Initailize()
 
 	UIButton* startBtn = entityManager_->Create<UIButton>("Resource\\UI\\Start.button", uiCamera_, font48, EMouse::LEFT, 
 		[&]() 
-		{
-			fadeEffector_->StartOut(2.0f);
+		{ 
+			fadeEffector_->StartOut(fadeOutTime_); 
 		}
 	);
 	updateUiEntities_.insert({ "StartButton", startBtn });

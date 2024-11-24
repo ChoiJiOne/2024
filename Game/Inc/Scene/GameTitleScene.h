@@ -37,6 +37,9 @@ private:
 	/** 페이드 효과를 제어할 엔티티입니다. */
 	FadeEffector* fadeEffector_ = nullptr;
 
+	/** 페이드 아웃 시간입니다. */
+	float fadeOutTime_ = 1.0f;
+
 	/** 프레임 버퍼에 후처리를 수행하는 오브젝트입니다. */
 	PostProcessor* postProcessor_ = nullptr;
 
