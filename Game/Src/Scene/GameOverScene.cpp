@@ -30,6 +30,12 @@ GameOverScene::~GameOverScene()
 
 void GameOverScene::Tick(float deltaSeconds)
 {
+	if (fadeEffector_->GetState() == FadeEffector::EState::PROGRESS)
+	{
+		fadeEffector_->Tick(deltaSeconds);
+		return;
+	}
+
 	for (auto& uiEntity : updateUiEntities_)
 	{
 		uiEntity.second->Tick(deltaSeconds);
@@ -50,6 +56,12 @@ void GameOverScene::Render()
 		renderManager_->End();
 
 		PostProcessor::EType type = PostProcessor::EType::BLIT;
+		if (fadeEffector_->GetState() != FadeEffector::EState::WAIT)
+		{
+			type = PostProcessor::EType::BLEND_COLOR;
+			postProcessor_->SetBlendColor(fadeEffector_->GetBlendColor(), fadeEffector_->GetFactor());
+		}
+
 		postProcessor_->Blit(type, frameBuffer_);
 	}
 	glManager_->EndFrame();
@@ -59,18 +71,62 @@ void GameOverScene::Enter()
 {
 	bIsEnter_ = true;
 	bIsSwitched_ = false;
+
+	fadeEffector_->StartIn(fadeInTime_);
 }
 
 void GameOverScene::Exit()
 {
+	fadeEffector_->Reset();
+
 	bIsSwitched_ = false;
 	bIsEnter_ = false;
 }
 
 void GameOverScene::Initailize()
 {
+	postProcessor_ = renderManager_->GetPostProcessor();
+	frameBuffer_ = reinterpret_cast<GameApp*>(IApp::GetPtr())->GetFrameBuffer();
+	renderTargetOption_ = RenderTargetOption{ glm::vec4(0.0f, 0.0f, 0.0f, 1.0f), true };
+
+	uiCamera_ = entityManager_->GetByName<UICamera>("UICamera");
+	updateUiEntities_.insert({ "UICamera", uiCamera_ });
+
+	fadeEffector_ = entityManager_->GetByName<FadeEffector>("FadeEffector");
+	updateUiEntities_.insert({ "FadeEffector", fadeEffector_ });
+
+	Backdrop* backdrop = entityManager_->GetByName<Backdrop>("Backdrop");
+	updateUiEntities_.insert({ "Backdrop", backdrop });
+	renderUiEntities_.insert({ "Backdrop", backdrop });
 }
 
 void GameOverScene::UnInitailize()
-{
+{	
+	/** 외부에서 생성된 엔티티나 리소스는 초기화 해제하지 않습니다. */
+	for (auto& updateUiEntity : updateUiEntities_)
+	{
+		if (updateUiEntity.second == uiCamera_)
+		{
+			// UI 카메라는 외부에서 생성했으므로, 정리 대상에서 제외.
+			continue;
+		}
+
+		if (updateUiEntity.second && updateUiEntity.second->IsInitialized())
+		{
+			entityManager_->Destroy(updateUiEntity.second);
+			updateUiEntity.second = nullptr;
+		}
+	}
+
+	for (auto& renderUIEntity : renderUiEntities_)
+	{
+		if (renderUIEntity.second && renderUIEntity.second->IsInitialized())
+		{
+			entityManager_->Destroy(renderUIEntity.second);
+			renderUIEntity.second = nullptr;
+		}
+	}
+
+	frameBuffer_ = nullptr;
+	postProcessor_ = nullptr;
 }
