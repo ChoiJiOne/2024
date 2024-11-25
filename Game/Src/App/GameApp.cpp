@@ -7,6 +7,7 @@
 #include "GL/TextureAtlas2D.h"
 #include "GL/TTFont.h"
 #include "GLFW/GLFWManager.h"
+#include "Scene/GameOverScene.h"
 #include "Scene/GamePlayScene.h"
 #include "Scene/GameTitleScene.h"
 #include "Scene/SceneManager.h"
@@ -15,6 +16,7 @@
 GameApp::GameApp(uint32_t windowWidth, uint32_t windowHeight, const char* windowTitle, bool bIsWindowCentered)
 	: IApp(windowWidth, windowHeight, windowTitle, bIsWindowCentered)
 {
+	glManager_->SetVsyncMode(false);
 }
 
 GameApp::~GameApp()
@@ -47,6 +49,7 @@ void GameApp::Startup()
 
 	GameTitleScene* gameTitleScene = sceneManager_->Create<GameTitleScene>();
 	GamePlayScene* gamePlayScene = sceneManager_->Create<GamePlayScene>();
+	GameOverScene* gameOverScene = sceneManager_->Create<GameOverScene>();
 
 	SetAppScene(gameTitleScene);
 }
