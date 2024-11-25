@@ -102,6 +102,7 @@ void GameTitleScene::Initailize()
 	updateUiEntities_.insert({ "FadeEffector", fadeEffector_ });
 
 	Backdrop* backdrop = entityManager_->Create<Backdrop>();
+	entityManager_->Register("Backdrop", backdrop);
 	updateUiEntities_.insert({ "Backdrop", backdrop });
 	renderUiEntities_.insert({ "Backdrop", backdrop });
 
