@@ -1,10 +1,12 @@
 #include <glm/gtc/constants.hpp>
 
+#include "App/GameApp.h"
 #include "Entity/Background.h"
 #include "Entity/Camera2D.h"
 #include "Entity/Coin.h"
 #include "Entity/CoinCollector.h"
 #include "Entity/EntityManager.h"
+#include "Entity/FadeEffector.h"
 #include "Entity/MiniMap.h"
 #include "Entity/Player.h"
 #include "Entity/PlayerFollowCamera.h"
@@ -12,7 +14,7 @@
 #include "Entity/RandomChest.h"
 #include "Entity/UIBar.h"
 #include "Entity/UICamera.h"
-#include "GL/RenderManager2D.h"
+#include "GL/PostProcessor.h"
 #include "GLFW/GLFWManager.h"
 #include "Scene/SceneManager.h"
 #include "Scene/GamePlayScene.h"
@@ -66,14 +68,29 @@ GamePlayScene::GamePlayScene()
 	MiniMap* miniMap = entityManager_->Create<MiniMap>(uiCamera_, randomChests);
 	AddUpdateUIEntity(miniMap);
 	AddRenderUIEntity(miniMap);
+
+	postProcessor_ = renderManager_->GetPostProcessor();
+	frameBuffer_ = reinterpret_cast<GameApp*>(IApp::GetPtr())->GetFrameBuffer();
+	renderTargetOption_ = RenderTargetOption{ glm::vec4(0.0f, 0.0f, 0.0f, 1.0f), true };
+
+	fadeEffector_ = entityManager_->GetByName<FadeEffector>("FadeEffector");
+	AddUpdateUIEntity(fadeEffector_);
 }
 
 GamePlayScene::~GamePlayScene()
 {
+	frameBuffer_ = nullptr;
+	postProcessor_ = nullptr;
 }
 
 void GamePlayScene::Tick(float deltaSeconds)
 {
+	if (fadeEffector_->GetState() == FadeEffector::EState::PROGRESS)
+	{
+		fadeEffector_->Tick(deltaSeconds);
+		return;
+	}
+
 	if (bNeedSortUpdateEntites_)
 	{
 		updateEntites_.sort(GamePlayScene::CompareUpdateOrder);
@@ -113,7 +130,8 @@ void GamePlayScene::Render()
 	
 	glManager_->BeginFrame(0.0f, 0.0f, 0.0f, 1.0f);
 	{
-		renderManager_->Begin(mainCamera_);
+		renderTargetOption_.bIsClearBuffer = true;
+		renderManager_->Begin(mainCamera_, frameBuffer_, renderTargetOption_);
 		{
 			for (auto& renderEntity : renderEntities_)
 			{
@@ -122,7 +140,8 @@ void GamePlayScene::Render()
 		}
 		renderManager_->End();
 
-		renderManager_->Begin(uiCamera_);
+		renderTargetOption_.bIsClearBuffer = false;
+		renderManager_->Begin(uiCamera_, frameBuffer_, renderTargetOption_);
 		{
 			for (auto& uiEntity : renderUiEntities_)
 			{
@@ -130,16 +149,34 @@ void GamePlayScene::Render()
 			}
 		}
 		renderManager_->End();
+
+		PostProcessor::EType type = PostProcessor::EType::BLIT;
+		const FadeEffector::EState& state = fadeEffector_->GetState();
+		if (state != FadeEffector::EState::WAIT)
+		{
+			type = PostProcessor::EType::BLEND_COLOR;
+			postProcessor_->SetBlendColor(fadeEffector_->GetBlendColor(), fadeEffector_->GetFactor());
+		}
+
+		postProcessor_->Blit(type, frameBuffer_);
 	}
 	glManager_->EndFrame();
 }
 
 void GamePlayScene::Enter()
 {
+	bIsEnter_ = true;
+	bIsSwitched_ = false;
+
+	fadeEffector_->StartIn(fadeOutTime_);
 }
 
 void GamePlayScene::Exit()
 {
+	fadeEffector_->Reset();
+
+	bIsSwitched_ = false;
+	bIsEnter_ = false;
 }
 
 void GamePlayScene::AddUpdateEntity(IEntity* entity)

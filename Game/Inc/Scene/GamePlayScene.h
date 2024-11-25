@@ -1,6 +1,15 @@
 #pragma once
 
 #include "Scene/IGameScene.h"
+#include "GL/RenderManager2D.h"
+
+/** 클래스 전방 선언입니다. */
+class Camera2D;
+class FadeEffector;
+class UICamera;
+class PostProcessor;
+class FrameBuffer;
+
 
 /** 게임 플레이 씬입니다. */
 class GamePlayScene : public IGameScene
@@ -55,10 +64,10 @@ private:
 
 private:
 	/** 게임 플레이 씬의 메인 카메라입니다. */
-	class Camera2D* mainCamera_ = nullptr;
+	Camera2D* mainCamera_ = nullptr;
 
 	/** 게임 플레이 씬의 스크린 카메라입니다. */
-	class UICamera* uiCamera_ = nullptr;
+	UICamera* uiCamera_ = nullptr;
 
 	/** 업데이트할 엔티티입니다. */
 	std::list<IEntity*> updateEntites_;
@@ -83,4 +92,19 @@ private:
 
 	/** 렌더링할 UI 엔티티를 정렬해야 할지 확인합니다. */
 	bool bNeedSortRenderUiEntites_ = false;
+
+	/** 페이드 효과를 제어할 엔티티입니다. */
+	FadeEffector* fadeEffector_ = nullptr;
+
+	/** 페이드 아웃 시간입니다. */
+	float fadeOutTime_ = 1.0f;
+
+	/** 프레임 버퍼에 후처리를 수행하는 오브젝트입니다. */
+	PostProcessor* postProcessor_ = nullptr;
+
+	/** 렌더링을 수행할 프레임 버퍼입니다. */
+	FrameBuffer* frameBuffer_ = nullptr;
+
+	/** 프레임 버퍼에 렌더링할 때 설정할 렌더링 옵션입니다. */
+	RenderTargetOption renderTargetOption_;
 };
