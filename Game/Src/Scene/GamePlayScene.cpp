@@ -33,10 +33,10 @@ GamePlayScene::GamePlayScene()
 	AddUpdateEntity(playground);
 	AddRenderEntity(playground);
 
-	Player* player = entityManager_->Create<Player>();
-	entityManager_->Register("Player", player);
-	AddUpdateEntity(player);
-	AddRenderEntity(player);
+	player_ = entityManager_->Create<Player>();
+	entityManager_->Register("Player", player_);
+	AddUpdateEntity(player_);
+	AddRenderEntity(player_);
 	
 	mainCamera_ = entityManager_->Create<PlayerFollowCamera>();
 	entityManager_->Register("PlayerFollowCamera", mainCamera_);
@@ -151,8 +151,8 @@ void GamePlayScene::Render()
 		renderManager_->End();
 
 		PostProcessor::EType type = PostProcessor::EType::BLIT;
-		const FadeEffector::EState& state = fadeEffector_->GetState();
-		if (state != FadeEffector::EState::WAIT)
+		const FadeEffector::EState& fadeEffectState = fadeEffector_->GetState();
+		if (fadeEffectState != FadeEffector::EState::WAIT)
 		{
 			type = PostProcessor::EType::BLEND_COLOR;
 			postProcessor_->SetBlendColor(fadeEffector_->GetBlendColor(), fadeEffector_->GetFactor());
