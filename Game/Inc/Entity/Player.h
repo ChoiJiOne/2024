@@ -121,9 +121,6 @@ private:
 	/** 플레이어를 렌더링합니다. */
 	void RenderPlayer(TextureAtlas2D* animationTexture, const std::string& animationClipName);
 
-	/** 플레이어의 위치를 추적합니다. */
-	void TracePosition();
-
 private:
 	/** 플레이어 렌더링 시 참조할 텍스처 아틀라스입니다. */
 	TextureAtlas2D* textureAtlas_ = nullptr;
@@ -178,18 +175,21 @@ private:
 
 	/** 플레이어의 대쉬 속도입니다. */
 	float dashSpeed_ = 0.0f;
-
+	
 	/** 최대 대쉬 속도입니다. */
 	float maxDashSpeed_ = 0.0f;
 
-	/** 플레이어가 이동한 위치들의 최대 값입니다. */
-	static const uint32_t MAX_TRACE_POSITION = 10;
+	/** 플레이어의 대쉬 거리입니다. */
+	float dashLength_ = 0.0f;
 
-	/** 플레이어가 이동한 위치들의 거리 간격 길이 제곱입니다. */
-	float traceLengthSquare_ = 0.0f;
+	/** 플레이어의 이전 프레임 상의 위치입니다. */
+	glm::vec2 prevPosition_ = glm::vec2(0.0f, 0.0f);
 
-	/** 플레이어가 이동한 위치들입니다. */
-	std::list<glm::vec2> tracePositions_;
+	/** 플레이어의 현재 프레임 상의 위치입니다. */
+	glm::vec2 currPosition_ = glm::vec2(0.0f, 0.0f);
+
+	/** 플레이어 대쉬의 잔상 표현을 위한 렌더링 카운트 수입니다. */
+	static const uint32_t DASH_AFTER_IMAGE_COUNT = 10;
 
 	/** 플레이어가 대쉬 중인지 확인합니다. */
 	bool bIsDashing_ = false;

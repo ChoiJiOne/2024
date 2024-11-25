@@ -49,7 +49,7 @@ Player::Player()
 	bIsDashing_ = false;
 	dashSpeed_ = speed_;
 	maxDashSpeed_ = speed_ * 3.0f;
-	traceLengthSquare_ = GameManager::GetRef().GetConfigValue("Player.TraceLengthSquare");
+	dashLength_ = GameManager::GetRef().GetConfigValue("Player.DashLength");
 
 	skillMpCosts_ =
 	{
@@ -110,10 +110,18 @@ void Player::Tick(float deltaSeconds)
 	}
 
 	UseDashSkill(deltaSeconds);
+	
+	glm::vec2 countDirection = glm::normalize(-direction_);
+	float radian = GetRadianVec2(countDirection);
+	float xoff = dashLength_ * glm::cos(radian);
+	float yoff = dashLength_ * glm::sin(radian);
+
+	prevPosition_ = renderBound_.center + glm::vec2(xoff, yoff);
+	currPosition_ = renderBound_.center;
 
 	if (hpBar_->GetBar() <= 0.0f)
 	{
-		tracePositions_.clear();
+		bIsDashing_ = false;
 		state_ = EState::HURT;
 	}
 
@@ -313,7 +321,6 @@ void Player::UseDashSkill(float deltaSeconds)
 		}
 	}
 
-	TracePosition();
 	Move(deltaSeconds, dashSpeed_);
 }
 
@@ -329,12 +336,12 @@ void Player::Move(float deltaSeconds, float speed)
 	};
 
 	GLFWManager& glfwManager = GLFWManager::GetRef();
-	glm::vec2 direction = glm::vec2(0.0f, 0.0f);
+	direction_ = glm::vec2(0.0f, 0.0f);
 	for (const auto& keyDirection : KEY_DIRECTIONS)
 	{
 		if (glfwManager.GetKeyPress(keyDirection.first) == EPress::HELD)
 		{
-			direction += keyDirection.second;
+			direction_ += keyDirection.second;
 			bIsPress = true;
 		}
 	}
@@ -342,7 +349,6 @@ void Player::Move(float deltaSeconds, float speed)
 	if (bIsPress)
 	{
 		state_ = EState::RUN;
-		direction_ = direction;
 
 		glm::vec2 originPosition = renderBound_.center;
 		glm::vec2 movePosition = originPosition + direction_ * speed * deltaSeconds;
@@ -380,19 +386,19 @@ void Player::AdjustPosition(const glm::vec2& position)
 
 void Player::RenderPlayerAfterImage(TextureAtlas2D* animationTexture, const std::string& animationClipName)
 {
-	int32_t current = 0;
-	for (const auto& tracePosiion : tracePositions_)
+	for (uint32_t count = 0; count <= DASH_AFTER_IMAGE_COUNT; ++count)
 	{
-		float scale = static_cast<float>(current++) / static_cast<float>(tracePositions_.size());
-		renderOption_.transparent = scale * scale;
+		float scale = static_cast<float>(count) / static_cast<float>(DASH_AFTER_IMAGE_COUNT);
+		glm::vec2 position = glm::lerp(prevPosition_, currPosition_, scale);
 
+		renderOption_.transparent = scale * scale;
 		if (skills_.at(ESkill::INVINCIBILITY)->IsRemainCoolTime())
 		{
-			renderManager_->DrawTextureAtlas(animationTexture, animationClipName, tracePosiion, renderBound_.size.x, renderBound_.size.y, 0.0f, invincibilityColor_, renderOption_);
+			renderManager_->DrawTextureAtlas(animationTexture, animationClipName, position, renderBound_.size.x, renderBound_.size.y, 0.0f, invincibilityColor_, renderOption_);
 		}
 		else
 		{
-			renderManager_->DrawTextureAtlas(animationTexture, animationClipName, tracePosiion, renderBound_.size.x, renderBound_.size.y, 0.0f, renderOption_);
+			renderManager_->DrawTextureAtlas(animationTexture, animationClipName, position, renderBound_.size.x, renderBound_.size.y, 0.0f, renderOption_);
 		}
 	}
 }
@@ -410,27 +416,4 @@ void Player::RenderPlayer(TextureAtlas2D* animationTexture, const std::string& a
 	}
 
 	renderManager_->DrawTextureAtlas(animationTexture, animationClipName, shadow_.bound.center, shadow_.bound.size.x, shadow_.bound.size.y, 0.0f, shadow_.option);
-}
-
-void Player::TracePosition()
-{
-	if (tracePositions_.size() >= MAX_TRACE_POSITION)
-	{
-		tracePositions_.pop_front();
-	}
-
-	if (tracePositions_.empty())
-	{
-		tracePositions_.push_back(renderBound_.center);
-		return;
-	}
-
-	glm::vec2 prevPosition = tracePositions_.back();
-	glm::vec2 currPosition = renderBound_.center;
-	glm::vec2 diff = currPosition - prevPosition;
-	float lengthSquare = glm::length2(diff);
-	if (lengthSquare >= traceLengthSquare_)
-	{
-		tracePositions_.push_back(renderBound_.center);
-	}
 }
