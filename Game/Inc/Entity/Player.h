@@ -20,6 +20,15 @@ class UISkill;
 class Player : public IEntity2D
 {
 public:
+	/** 플레이어의 상태입니다. */
+	enum class EState
+	{
+		IDLE = 0x00,
+		RUN  = 0x01,
+		HURT = 0x02,
+	};
+
+public:
 	Player();
 	virtual ~Player();
 
@@ -66,14 +75,6 @@ public:
 	void SetCoin(int32_t coin) { coin_ = coin; }
 
 private:
-	/** 플레이어의 애니메이션 상태입니다. */
-	enum class EAnimationState
-	{
-		IDLE = 0x00,
-		RUN  = 0x01,
-		HURT = 0x02,
-	};
-
 	/** 플레이어의 스킬 종류입니다. */
 	enum class ESkill
 	{
@@ -148,11 +149,11 @@ private:
 	/** 플레이어의 속도입니다. */
 	float speed_ = 0.0f;
 		
-	/** 현재 애니메이션의 상태입니다. */
-	EAnimationState animationState_ = EAnimationState::IDLE;
+	/** 현재 플레이어의 상태입니다. */
+	EState animationState_ = EState::IDLE;
 
-	/** 플레이어의 애니메이션 상태 별 애니메이션 리소스입니다. */
-	std::map<EAnimationState, SpriteAnimator2D*> animations_;
+	/** 플레이어의 상태 별 애니메이션 리소스입니다. */
+	std::map<EState, SpriteAnimator2D*> animations_;
 
 	/** 플레이어의 코인 수입니다. */
 	int32_t coin_ = 0;

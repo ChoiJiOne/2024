@@ -46,7 +46,6 @@ Player::Player()
 	direction_ = glm::vec2(0.0f, -1.0f);
 	speed_ = GameManager::GetRef().GetConfigValue("Player.Speed");
 	
-
 	bIsDashing_ = false;
 	dashSpeed_ = speed_;
 	maxDashSpeed_ = speed_ * 3.0f;
@@ -76,7 +75,7 @@ Player::~Player()
 
 void Player::Tick(float deltaSeconds)
 {
-	if (animationState_ == EAnimationState::HURT)
+	if (animationState_ == EState::HURT)
 	{
 		animations_.at(animationState_)->Update(deltaSeconds);
 		return;
@@ -115,7 +114,7 @@ void Player::Tick(float deltaSeconds)
 	if (hpBar_->GetBar() <= 0.0f)
 	{
 		tracePositions_.clear();
-		animationState_ = EAnimationState::HURT;
+		animationState_ = EState::HURT;
 	}
 
 	animations_.at(animationState_)->Update(deltaSeconds);
@@ -159,7 +158,7 @@ float Player::GetHP() const
 
 void Player::SetHP(float hp)
 {
-	if (animationState_ != EAnimationState::IDLE && animationState_ != EAnimationState::RUN)
+	if (animationState_ != EState::IDLE && animationState_ != EState::RUN)
 	{
 		return;
 	}
@@ -183,7 +182,7 @@ float Player::GetMaxHP() const
 
 void Player::SetMaxHP(float maxHp)
 {
-	if (animationState_ != EAnimationState::IDLE && animationState_ != EAnimationState::RUN)
+	if (animationState_ != EState::IDLE && animationState_ != EState::RUN)
 	{
 		return;
 	}
@@ -198,7 +197,7 @@ float Player::GetMP() const
 
 void Player::SetMP(float mp)
 {
-	if (animationState_ != EAnimationState::IDLE && animationState_ != EAnimationState::RUN)
+	if (animationState_ != EState::IDLE && animationState_ != EState::RUN)
 	{
 		return;
 	}
@@ -213,7 +212,7 @@ float Player::GetMaxMP() const
 
 void Player::SetMaxMP(float maxMP)
 {
-	if (animationState_ != EAnimationState::IDLE && animationState_ != EAnimationState::RUN)
+	if (animationState_ != EState::IDLE && animationState_ != EState::RUN)
 	{
 		return;
 	}
@@ -233,7 +232,7 @@ void Player::LoadAnimations()
 		"Foxy_Idle_4",
 	};
 	SpriteAnimator2D* idleAnimation = glManager.Create<SpriteAnimator2D>(textureAtlas_, idleClipNames, 0.5f, true);
-	animations_.insert( { EAnimationState::IDLE, idleAnimation } );
+	animations_.insert( { EState::IDLE, idleAnimation } );
 
 	std::vector<std::string> runClipNames =
 	{
@@ -245,7 +244,7 @@ void Player::LoadAnimations()
 		"Foxy_Run_6",
 	};
 	SpriteAnimator2D* runAnimation = glManager.Create<SpriteAnimator2D>(textureAtlas_, runClipNames, 0.5f, true);
-	animations_.insert({ EAnimationState::RUN, runAnimation });
+	animations_.insert({ EState::RUN, runAnimation });
 
 	std::vector<std::string> hurtClipNames =
 	{
@@ -253,7 +252,7 @@ void Player::LoadAnimations()
 		"Foxy_Hurt_2",
 	};
 	SpriteAnimator2D* hurtAnimation = glManager.Create<SpriteAnimator2D>(textureAtlas_, hurtClipNames, 0.3f, true);
-	animations_.insert({ EAnimationState::HURT, hurtAnimation });
+	animations_.insert({ EState::HURT, hurtAnimation });
 }
 
 void Player::UnloadAnimations()
@@ -342,7 +341,7 @@ void Player::Move(float deltaSeconds, float speed)
 
 	if (bIsPress)
 	{
-		animationState_ = EAnimationState::RUN;
+		animationState_ = EState::RUN;
 		direction_ = direction;
 
 		glm::vec2 originPosition = renderBound_.center;
@@ -362,7 +361,7 @@ void Player::Move(float deltaSeconds, float speed)
 	}
 	else
 	{
-		animationState_ = EAnimationState::IDLE;
+		animationState_ = EState::IDLE;
 	}
 }
 
