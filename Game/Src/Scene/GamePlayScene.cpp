@@ -17,6 +17,7 @@
 #include "GL/PostProcessor.h"
 #include "GLFW/GLFWManager.h"
 #include "Scene/SceneManager.h"
+#include "Scene/GameOverScene.h"
 #include "Scene/GamePlayScene.h"
 #include "Utils/Assertion.h"
 #include "Utils/Utils.h"
@@ -85,10 +86,36 @@ GamePlayScene::~GamePlayScene()
 
 void GamePlayScene::Tick(float deltaSeconds)
 {
-	if (fadeEffector_->GetState() == FadeEffector::EState::PROGRESS)
+	const Player::EState& playerState = player_->GetState();
+	if (playerState == Player::EState::HURT)
 	{
-		fadeEffector_->Tick(deltaSeconds);
-		return;
+		const FadeEffector::EState& state = fadeEffector_->GetState();
+
+		if (state == FadeEffector::EState::WAIT)
+		{
+			fadeEffector_->StartOut(fadeOutTime_);
+		}
+		else if (state == FadeEffector::EState::PROGRESS)
+		{
+			fadeEffector_->Tick(deltaSeconds);
+		}
+		else // state == FadeEffector::EState::DONE
+		{
+			bIsSwitched_ = true;
+			switchScene_ = sceneManager_->GetByName<GameOverScene>("GameOverScene");
+		}
+	}
+	else
+	{
+		if (fadeEffector_->GetState() == FadeEffector::EState::PROGRESS)
+		{
+			fadeEffector_->Tick(deltaSeconds);
+			if (fadeEffector_->GetState() == FadeEffector::EState::DONE)
+			{
+				fadeEffector_->Reset();
+			}
+			return;
+		}
 	}
 
 	if (bNeedSortUpdateEntites_)
@@ -151,8 +178,7 @@ void GamePlayScene::Render()
 		renderManager_->End();
 
 		PostProcessor::EType type = PostProcessor::EType::BLIT;
-		const FadeEffector::EState& fadeEffectState = fadeEffector_->GetState();
-		if (fadeEffectState != FadeEffector::EState::WAIT)
+		if (fadeEffector_->GetState() != FadeEffector::EState::WAIT)
 		{
 			type = PostProcessor::EType::BLEND_COLOR;
 			postProcessor_->SetBlendColor(fadeEffector_->GetBlendColor(), fadeEffector_->GetFactor());
@@ -168,7 +194,7 @@ void GamePlayScene::Enter()
 	bIsEnter_ = true;
 	bIsSwitched_ = false;
 
-	fadeEffector_->StartIn(fadeOutTime_);
+	fadeEffector_->StartIn(fadeInTime_);
 }
 
 void GamePlayScene::Exit()
