@@ -74,6 +74,9 @@ public:
 	/** 플레이어의 코인 수를 설정합니다. */
 	void SetCoin(int32_t coin) { coin_ = coin; }
 
+	/** 플레이어의 상태를 얻습니다. */
+	const EState& GetState() const { return state_; }
+
 private:
 	/** 플레이어의 스킬 종류입니다. */
 	enum class ESkill
