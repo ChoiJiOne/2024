@@ -3,7 +3,7 @@
     "Coin.moveGainSpeed": 1500.0,
     "Fire.damage": 10.0,
     "Player.Speed": 500.0,
-    "Player.TraceLengthSquare": 100.0,
+    "Player.TraceLengthSquare": 10.0,
     "Player.DashMpCost": 5.0,
     "Player.InvincibilityMpCost": 20.0,
     "Potion.maxMoveTime": 2.0,
