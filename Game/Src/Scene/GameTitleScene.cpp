@@ -9,7 +9,6 @@
 #include "GL/FrameBuffer.h"
 #include "GL/GLManager.h"
 #include "GL/PostProcessor.h"
-#include "GL/RenderManager2D.h"
 #include "GL/TTFont.h"
 #include "Scene/GamePlayScene.h"
 #include "Scene/GameTitleScene.h"
