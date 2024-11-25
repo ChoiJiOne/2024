@@ -51,7 +51,6 @@ Coin::Coin(const glm::vec2& startPos, const glm::vec2& endPos)
 	maxMoveTime_ = GameManager::GetRef().GetConfigValue("Coin.maxMoveTime");
 	bIsGain_ = false;
 	moveGainSpeed_ = GameManager::GetRef().GetConfigValue("Coin.moveGainSpeed");
-	downsizeScale_ = 0.98f;
 }
 
 Coin::~Coin()
@@ -83,11 +82,7 @@ void Coin::Tick(float deltaSeconds)
 			glm::vec2 direction = glm::normalize(targetPosition - currentPosition);
 
 			currentPosition += direction * deltaSeconds * moveGainSpeed_;
-
 			AdjustPosition(currentPosition);
-			renderBound_.size *= downsizeScale_;
-			collisionBound_.radius *= downsizeScale_;
-			shadow_.bound.size = renderBound_.size;
 
 			if (collisionBound_.Intersect(coinCollector_->GetCollider()))
 			{

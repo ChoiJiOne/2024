@@ -77,7 +77,4 @@ private:
 
 	/** 플레이어가 코인을 획득했을 때 움직이는 속도입니다. */
 	float moveGainSpeed_ = 0.0f;
-
-	/** 플레이어가 코인을 획득했을 때 감소하는 크기 스케일 값입니다. */
-	float downsizeScale_ = 0.0f;
 };
