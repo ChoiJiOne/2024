@@ -45,10 +45,12 @@ Player::Player()
 
 	direction_ = glm::vec2(0.0f, -1.0f);
 	speed_ = GameManager::GetRef().GetConfigValue("Player.Speed");
+	
 
 	bIsDashing_ = false;
 	dashSpeed_ = speed_;
 	maxDashSpeed_ = speed_ * 3.0f;
+	traceLengthSquare_ = GameManager::GetRef().GetConfigValue("Player.TraceLengthSquare");
 
 	skillMpCosts_ =
 	{
@@ -418,5 +420,18 @@ void Player::TracePosition()
 		tracePositions_.pop_front();
 	}
 
-	tracePositions_.push_back(renderBound_.center);
+	if (tracePositions_.empty())
+	{
+		tracePositions_.push_back(renderBound_.center);
+		return;
+	}
+
+	glm::vec2 prevPosition = tracePositions_.back();
+	glm::vec2 currPosition = renderBound_.center;
+	glm::vec2 diff = currPosition - prevPosition;
+	float lengthSquare = glm::length2(diff);
+	if (lengthSquare >= traceLengthSquare_)
+	{
+		tracePositions_.push_back(renderBound_.center);
+	}
 }

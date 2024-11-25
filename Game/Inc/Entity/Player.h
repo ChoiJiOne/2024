@@ -181,6 +181,9 @@ private:
 	/** 플레이어가 이동한 위치들의 최대 값입니다. */
 	static const uint32_t MAX_TRACE_POSITION = 10;
 
+	/** 플레이어가 이동한 위치들의 거리 간격 길이 제곱입니다. */
+	float traceLengthSquare_ = 0.0f;
+
 	/** 플레이어가 이동한 위치들입니다. */
 	std::list<glm::vec2> tracePositions_;
 
