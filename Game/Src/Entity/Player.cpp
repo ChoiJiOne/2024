@@ -75,9 +75,9 @@ Player::~Player()
 
 void Player::Tick(float deltaSeconds)
 {
-	if (animationState_ == EState::HURT)
+	if (state_ == EState::HURT)
 	{
-		animations_.at(animationState_)->Update(deltaSeconds);
+		animations_.at(state_)->Update(deltaSeconds);
 		return;
 	}
 
@@ -114,16 +114,16 @@ void Player::Tick(float deltaSeconds)
 	if (hpBar_->GetBar() <= 0.0f)
 	{
 		tracePositions_.clear();
-		animationState_ = EState::HURT;
+		state_ = EState::HURT;
 	}
 
-	animations_.at(animationState_)->Update(deltaSeconds);
+	animations_.at(state_)->Update(deltaSeconds);
 }
 
 void Player::Render()
 {
-	TextureAtlas2D* animationTexture = animations_.at(animationState_)->GetTextureAtlas();
-	const std::string& animationClipName = animations_.at(animationState_)->GetCurrentClipName();
+	TextureAtlas2D* animationTexture = animations_.at(state_)->GetTextureAtlas();
+	const std::string& animationClipName = animations_.at(state_)->GetCurrentClipName();
 
 	if (bIsDashing_)
 	{
@@ -158,7 +158,7 @@ float Player::GetHP() const
 
 void Player::SetHP(float hp)
 {
-	if (animationState_ != EState::IDLE && animationState_ != EState::RUN)
+	if (state_ != EState::IDLE && state_ != EState::RUN)
 	{
 		return;
 	}
@@ -182,7 +182,7 @@ float Player::GetMaxHP() const
 
 void Player::SetMaxHP(float maxHp)
 {
-	if (animationState_ != EState::IDLE && animationState_ != EState::RUN)
+	if (state_ != EState::IDLE && state_ != EState::RUN)
 	{
 		return;
 	}
@@ -197,7 +197,7 @@ float Player::GetMP() const
 
 void Player::SetMP(float mp)
 {
-	if (animationState_ != EState::IDLE && animationState_ != EState::RUN)
+	if (state_ != EState::IDLE && state_ != EState::RUN)
 	{
 		return;
 	}
@@ -212,7 +212,7 @@ float Player::GetMaxMP() const
 
 void Player::SetMaxMP(float maxMP)
 {
-	if (animationState_ != EState::IDLE && animationState_ != EState::RUN)
+	if (state_ != EState::IDLE && state_ != EState::RUN)
 	{
 		return;
 	}
@@ -341,7 +341,7 @@ void Player::Move(float deltaSeconds, float speed)
 
 	if (bIsPress)
 	{
-		animationState_ = EState::RUN;
+		state_ = EState::RUN;
 		direction_ = direction;
 
 		glm::vec2 originPosition = renderBound_.center;
@@ -361,7 +361,7 @@ void Player::Move(float deltaSeconds, float speed)
 	}
 	else
 	{
-		animationState_ = EState::IDLE;
+		state_ = EState::IDLE;
 	}
 }
 

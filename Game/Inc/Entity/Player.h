@@ -150,7 +150,7 @@ private:
 	float speed_ = 0.0f;
 		
 	/** 현재 플레이어의 상태입니다. */
-	EState animationState_ = EState::IDLE;
+	EState state_ = EState::IDLE;
 
 	/** 플레이어의 상태 별 애니메이션 리소스입니다. */
 	std::map<EState, SpriteAnimator2D*> animations_;
