@@ -3,6 +3,7 @@
 #include "Entity/Backdrop.h"
 #include "Entity/EntityManager.h"
 #include "Entity/FadeEffector.h"
+#include "Entity/GameOver.h"
 #include "Entity/UIButton.h"
 #include "Entity/UICamera.h"
 #include "GL/FrameBuffer.h"
@@ -10,7 +11,6 @@
 #include "GL/PostProcessor.h"
 #include "GL/TTFont.h"
 #include "Scene/GameOverScene.h"
-#include "Scene/GamePlayScene.h"
 #include "Scene/GameTitleScene.h"
 #include "Scene/SceneManager.h"
 #include "Utils/Assertion.h"
@@ -98,6 +98,21 @@ void GameOverScene::Initailize()
 	Backdrop* backdrop = entityManager_->GetByName<Backdrop>("Backdrop");
 	updateUiEntities_.insert({ "Backdrop", backdrop });
 	renderUiEntities_.insert({ "Backdrop", backdrop });
+
+	GameOver* gameOver = entityManager_->Create<GameOver>();
+	updateUiEntities_.insert({ "GameOver", gameOver });
+	renderUiEntities_.insert({ "GameOver", gameOver });
+
+	TTFont* font48 = glManager_->GetByName<TTFont>("Font48");
+	UIButton* doneBtn = entityManager_->Create<UIButton>("Resource\\UI\\Done.button", uiCamera_, font48, EMouse::LEFT, 
+		[&]() 
+		{
+			bIsSwitched_ = true;
+			switchScene_ = sceneManager_->GetByName<GameTitleScene>("GameTitleScene");
+		}
+	);
+	updateUiEntities_.insert({ "DoneButton", doneBtn });
+	renderUiEntities_.insert({ "DoneButton", doneBtn });
 }
 
 void GameOverScene::UnInitailize()
