@@ -63,6 +63,8 @@ private:
 		return lhs->GetRenderOrder() < rhs->GetRenderOrder();
 	}
 
+	void PreTick(float deltaSeconds);
+
 private:
 	/** 게임 플레이 씬의 메인 카메라입니다. */
 	Camera2D* mainCamera_ = nullptr;

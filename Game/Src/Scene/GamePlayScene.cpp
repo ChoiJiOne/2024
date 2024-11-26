@@ -86,55 +86,13 @@ GamePlayScene::~GamePlayScene()
 
 void GamePlayScene::Tick(float deltaSeconds)
 {
-	const Player::EState& playerState = player_->GetState();
-	if (playerState == Player::EState::HURT)
-	{
-		const FadeEffector::EState& state = fadeEffector_->GetState();
-
-		if (state == FadeEffector::EState::WAIT)
-		{
-			fadeEffector_->StartOut(fadeOutTime_);
-		}
-		else if (state == FadeEffector::EState::PROGRESS)
-		{
-			fadeEffector_->Tick(deltaSeconds);
-		}
-		else // state == FadeEffector::EState::DONE
-		{
-			bIsSwitched_ = true;
-			switchScene_ = sceneManager_->GetByName<GameOverScene>("GameOverScene");
-		}
-	}
-	else
-	{
-		if (fadeEffector_->GetState() == FadeEffector::EState::PROGRESS)
-		{
-			fadeEffector_->Tick(deltaSeconds);
-			if (fadeEffector_->GetState() == FadeEffector::EState::DONE)
-			{
-				fadeEffector_->Reset();
-			}
-			return;
-		}
-	}
-
-	if (bNeedSortUpdateEntites_)
-	{
-		updateEntites_.sort(GamePlayScene::CompareUpdateOrder);
-		bNeedSortUpdateEntites_ = false;
-	}
+	PreTick(deltaSeconds);
 
 	for (auto& updateEntity : updateEntites_)
 	{
 		updateEntity->Tick(deltaSeconds);
 	}
-
-	if (bNeedSortUpdateUiEntites_)
-	{
-		updateUiEntities_.sort(GamePlayScene::CompareUpdateOrder);
-		bNeedSortUpdateUiEntites_ = false;
-	}
-
+	
 	for (auto& uiEntity : updateUiEntities_)
 	{
 		uiEntity->Tick(deltaSeconds);
@@ -247,4 +205,50 @@ void GamePlayScene::AddRenderUIEntity(IEntity2D* entity)
 void GamePlayScene::RemoveRenderUIEntity(IEntity2D* entity)
 {
 	renderUiEntities_.remove(entity);
+}
+
+void GamePlayScene::PreTick(float deltaSeconds)
+{
+	const Player::EState& playerState = player_->GetState();
+	if (playerState == Player::EState::HURT)
+	{
+		const FadeEffector::EState& state = fadeEffector_->GetState();
+
+		if (state == FadeEffector::EState::WAIT)
+		{
+			fadeEffector_->StartOut(fadeOutTime_);
+		}
+		else if (state == FadeEffector::EState::PROGRESS)
+		{
+			fadeEffector_->Tick(deltaSeconds);
+		}
+		else // state == FadeEffector::EState::DONE
+		{
+			bIsSwitched_ = true;
+			switchScene_ = sceneManager_->GetByName<GameOverScene>("GameOverScene");
+		}
+		return;
+	}
+
+	if (fadeEffector_->GetState() == FadeEffector::EState::PROGRESS)
+	{
+		fadeEffector_->Tick(deltaSeconds);
+		if (fadeEffector_->GetState() == FadeEffector::EState::DONE)
+		{
+			fadeEffector_->Reset();
+		}
+		return;
+	}
+
+	if (bNeedSortUpdateEntites_)
+	{
+		updateEntites_.sort(GamePlayScene::CompareUpdateOrder);
+		bNeedSortUpdateEntites_ = false;
+	}
+
+	if (bNeedSortUpdateUiEntites_)
+	{
+		updateUiEntities_.sort(GamePlayScene::CompareUpdateOrder);
+		bNeedSortUpdateUiEntites_ = false;
+	}
 }
