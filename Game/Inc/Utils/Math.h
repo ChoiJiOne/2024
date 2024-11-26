@@ -14,6 +14,9 @@ int32_t GenerateRandomInt(int32_t minValue, int32_t maxValue);
 /** [minValue, maxValue] 범위의 임의의 부동 소수점 난수를 생성합니다. */
 float GenerateRandomFloat(float minValue, float maxValue);
 
+/** 반지름 위의 임의의 벡터를 생성합니다. */
+glm::vec2 GenerateRandomRadius(float radius);
+
 /** 반지름 내의 임의의 벡터를 생성합니다. */
 glm::vec2 GenerateRandomDisk(float radius);
 
