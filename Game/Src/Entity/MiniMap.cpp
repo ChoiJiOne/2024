@@ -13,12 +13,17 @@
 #include "GLFW/GLFWManager.h"
 #include "Utils/Assertion.h"
 
-MiniMap::MiniMap(UICamera* uiCamera, const std::vector<RandomChest*>& randomChests)
+MiniMap::MiniMap(UICamera* uiCamera, RandomChest** randomChests, uint32_t countRandomChest)
 	: uiCamera_(uiCamera)
-	, randomChests_(randomChests)
+	, randomChests_(countRandomChest)
 {
 	tickOrder_ = 0;
 	renderOrder_ = 0;
+
+	for (uint32_t index = 0; index < countRandomChest; ++index)
+	{
+		randomChests_[index] = randomChests[index];
+	}
 
 	textureAtlas_ = GLManager::GetRef().GetByName<TextureAtlas2D>("TextureAtlas");
 	player_ = EntityManager::GetRef().GetByName<Player>("Player");

@@ -18,7 +18,7 @@ class TextureAtlas2D;
 class MiniMap : public IEntity2D
 {
 public:
-	MiniMap(UICamera* uiCamera, const std::vector<RandomChest*>& randomChests);
+	MiniMap(UICamera* uiCamera, RandomChest** randomChests, uint32_t countRandomChest);
 	virtual ~MiniMap();
 
 	DISALLOW_COPY_AND_ASSIGN(MiniMap);
