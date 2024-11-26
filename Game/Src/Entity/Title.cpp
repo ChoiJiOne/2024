@@ -1,4 +1,3 @@
-#include <imgui.h>
 #include <glm/gtc/type_ptr.hpp>
 
 #include "Entity/Title.h"
