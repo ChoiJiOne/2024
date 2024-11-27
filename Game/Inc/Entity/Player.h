@@ -10,6 +10,7 @@
 
 /** 클래스 전방 선언입니다. */
 class GamePlayScene;
+class GamePlayRecorder;
 class SpriteAnimator2D;
 class TextureAtlas2D;
 class Playground;
@@ -124,6 +125,9 @@ private:
 private:
 	/** 플레이어 렌더링 시 참조할 텍스처 아틀라스입니다. */
 	TextureAtlas2D* textureAtlas_ = nullptr;
+
+	/** 게임 플레이 기록을 수행하는 엔티티입니다. */
+	GamePlayRecorder* gamePlayRecorder_ = nullptr;
 
 	/** 플레이 그라운드입니다. */
 	Playground* playground_ = nullptr;

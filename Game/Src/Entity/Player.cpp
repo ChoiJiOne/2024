@@ -5,6 +5,7 @@
 #include <glm/gtx/norm.hpp>
 
 #include "Entity/EntityManager.h"
+#include "Entity/GamePlayRecorder.h"
 #include "Entity/Player.h"
 #include "Entity/Playground.h"
 #include "Entity/UIBar.h"
@@ -24,6 +25,7 @@
 Player::Player()
 {
 	textureAtlas_ = GLManager::GetRef().GetByName<TextureAtlas2D>("TextureAtlas");
+	gamePlayRecorder_ = EntityManager::GetRef().GetByName<GamePlayRecorder>("GamePlayRecorder");
 	playground_ = EntityManager::GetRef().GetByName<Playground>("Playground");
 	gamePlayScene_ = SceneManager::GetRef().GetByName<GamePlayScene>("GamePlayScene");
 	renderBound_ = Rect2D(glm::vec2(0.0f, 0.0f), glm::vec2(66.0f, 64.0f));
@@ -146,6 +148,7 @@ void Player::Release()
 	UnloadAnimations();
 	gamePlayScene_ = nullptr;
 	playground_ = nullptr;
+	gamePlayRecorder_ = nullptr;
 	textureAtlas_ = nullptr;
 
 	bIsInitialized_ = false;
