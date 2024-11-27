@@ -1,8 +1,9 @@
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/gtx/vector_angle.hpp>
 
-#include "Entity/Fire.h"
 #include "Entity/EntityManager.h"
+#include "Entity/Fire.h"
+#include "Entity/GamePlayRecorder.h"
 #include "Entity/Player.h"
 #include "Game/GameManager.h"
 #include "GL/GLManager.h"
@@ -29,6 +30,9 @@ Fire::Fire(const glm::vec2& position, const glm::vec2& direction, float speed, f
 
 	damage_ = GameManager::GetRef().GetConfigValue("Fire.damage");
 	state_ = EState::MOVE;
+
+	GamePlayRecorder* gamePlayRecorder = EntityManager::GetRef().GetByName<GamePlayRecorder>("GamePlayRecorder");
+	gamePlayRecorder->AddRecord(GamePlayRecorder::ERecordType::GEN_FIRE, 1);
 
 	bIsInitialized_ = true;
 }
