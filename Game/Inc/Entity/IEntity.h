@@ -19,16 +19,7 @@ public:
 	/** 엔티티가 초기화 되었는지 확인합니다. */
 	bool IsInitialized() const { return bIsInitialized_; }
 
-	/** 엔티티의 업데이트 순위 값을 설정합니다. */
-	void SetTickOrder(uint32_t tickOrder) { tickOrder_ = tickOrder; }
-
-	/** 엔티티의 업데이트 순위 값을 얻습니다. */
-	uint32_t GetTickOrder() const { return tickOrder_; }
-
 protected:
 	/** 엔티티가 초기화 되었는지 확인합니다. */
 	bool bIsInitialized_ = false;
-	
-	/** 엔티티의 업데이트 순위 값입니다. 이 값은 낮을수록 우선순위가 높아집니다. */
-	uint32_t tickOrder_ = 0;
 };
