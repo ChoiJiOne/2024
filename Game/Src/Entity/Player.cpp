@@ -251,6 +251,12 @@ void Player::SetMaxMP(float maxMP)
 	mpBar_->SetMaxBar(maxMP);
 }
 
+void Player::AddCoin()
+{
+	coin_++;
+	gamePlayRecorder_->AddRecord<int32_t>(GamePlayRecorder::ERecordType::GET_COIN, 1);
+}
+
 void Player::LoadAnimations()
 {
 	GLManager& glManager = GLManager::GetRef();

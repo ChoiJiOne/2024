@@ -72,8 +72,8 @@ public:
 	/** 플레이어의 코인 수를 얻습니다. */
 	int32_t GetCoin() const { return coin_; }
 
-	/** 플레이어의 코인 수를 설정합니다. */
-	void SetCoin(int32_t coin) { coin_ = coin; }
+	/** 플레이어의 코인 수를 하나 증가시킵니다. */
+	void AddCoin();
 
 	/** 플레이어의 상태를 얻습니다. */
 	const EState& GetState() const { return state_; }
