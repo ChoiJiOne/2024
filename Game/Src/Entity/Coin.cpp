@@ -83,8 +83,7 @@ void Coin::Tick(float deltaSeconds)
 
 			if (collisionBound_.Intersect(coinCollector_->GetCollider()))
 			{
-				int32_t coin = player_->GetCoin();
-				player_->SetCoin(coin + 1);
+				player_->AddCoin();
 				state_ = IObject::EState::DONE;
 			}
 		}
