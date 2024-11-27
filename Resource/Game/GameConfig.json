@@ -9,8 +9,8 @@
     "Potion.maxMoveTime": 2.0,
     "Potion.heal": 10.0,
     "RandomChest.maxWaitTime": 2.0,
-    "RandomChest.minFireSpeed": 200,
-    "RandomChest.maxFireSpeed": 400,
+    "RandomChest.minFireSpeed": 200.0,
+    "RandomChest.maxFireSpeed": 400.0,
     "RandomChest.minFireLifeTime": 5.0,
     "RandomChest.maxFireLifeTime": 10.0
 }
