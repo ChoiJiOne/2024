@@ -9,9 +9,6 @@
 
 Background::Background()
 {
-	tickOrder_ = 3;
-	renderOrder_ = 0;
-
 	camera_ = EntityManager::GetRef().GetByName<PlayerFollowCamera>("PlayerFollowCamera");
 
 	glm::vec2 screenSize = glm::vec2(0.0f, 0.0f);
