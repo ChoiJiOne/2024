@@ -17,9 +17,6 @@ Fire::Fire(const glm::vec2& position, const glm::vec2& direction, float speed, f
 	, speed_(speed)
 	, lifeTime_(lifeTime)
 {
-	tickOrder_ = 3;
-	renderOrder_ = 4;
-
 	textureAtlas_ = GLManager::GetRef().GetByName<TextureAtlas2D>("TextureAtlas");
 	
 	float rotate = GetRadianVec2(direction_);
