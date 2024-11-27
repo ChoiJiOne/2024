@@ -2,6 +2,7 @@
 #include <glm/gtx/compatibility.hpp>
 
 #include "Entity/EntityManager.h"
+#include "Entity/GamePlayRecorder.h"
 #include "Entity/Potion.h"
 #include "Entity/Player.h"
 #include "Game/GameManager.h"
@@ -52,6 +53,16 @@ Potion::Potion(const glm::vec2& startPos, const glm::vec2& endPos, const EColor&
 		{ EColor::RED_POWER,  "PotionRed"   },
 		{ EColor::BLUE_POWER, "PotionsBlue" },
 	};
+
+	static const std::map<EColor, GamePlayRecorder::ERecordType> colorRecordTypes =
+	{ 
+		{ EColor::RED,        GamePlayRecorder::ERecordType::GEN_RED_POTION          },
+		{ EColor::BLUE,       GamePlayRecorder::ERecordType::GEN_BLUE_POTION         },
+		{ EColor::RED_POWER,  GamePlayRecorder::ERecordType::GEN_POWER_RED_POTION    },
+		{ EColor::BLUE_POWER, GamePlayRecorder::ERecordType::GEN_POWER_BLUE_POTION   },
+	};
+	GamePlayRecorder* gamePlayRecorder = EntityManager::GetRef().GetByName<GamePlayRecorder>("GamePlayRecorder");
+	gamePlayRecorder->AddRecord(colorRecordTypes.at(color_), 1);
 }
 
 Potion::~Potion()
