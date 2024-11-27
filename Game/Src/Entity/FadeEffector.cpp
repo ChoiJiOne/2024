@@ -4,8 +4,6 @@
 
 FadeEffector::FadeEffector()
 {
-	tickOrder_ = 15;
-
 	bIsInitialized_ = true;
 }
 
