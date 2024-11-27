@@ -16,7 +16,6 @@
 GameApp::GameApp(uint32_t windowWidth, uint32_t windowHeight, const char* windowTitle, bool bIsWindowCentered)
 	: IApp(windowWidth, windowHeight, windowTitle, bIsWindowCentered)
 {
-	glManager_->SetVsyncMode(false);
 }
 
 GameApp::~GameApp()
