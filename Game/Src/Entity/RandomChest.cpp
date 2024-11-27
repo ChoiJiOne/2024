@@ -17,9 +17,6 @@
 
 RandomChest::RandomChest(const glm::vec2& position)
 {
-	tickOrder_ = 5;
-	renderOrder_ = 1;
-	
 	textureAtlas_ = GLManager::GetRef().GetByName<TextureAtlas2D>("TextureAtlas");
 	player_ = EntityManager::GetRef().GetByName<Player>("Player");
 	playground_ = EntityManager::GetRef().GetByName<Playground>("Playground");
