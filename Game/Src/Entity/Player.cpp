@@ -99,6 +99,7 @@ void Player::Tick(float deltaSeconds)
 				playerMp -= skillMp;
 				mpBar_->SetBar(playerMp);
 				skills_.at(keySkill.second)->Start();
+				gamePlayRecorder_->AddRecord<float>(GamePlayRecorder::ERecordType::LOST_MP, skillMp);
 
 				if (keySkill.second == ESkill::DASH)
 				{
