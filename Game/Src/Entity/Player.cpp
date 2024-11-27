@@ -93,13 +93,12 @@ void Player::Tick(float deltaSeconds)
 		if (glfwManager.GetKeyPress(keySkill.first) == EPress::PRESSED && !skill->IsRemainCoolTime())
 		{
 			float skillMp = skillMpCosts_.at(keySkill.second);
-			float playerMp = mpBar_->GetBar();
+			float playerMp = GetMP();
 			if (playerMp >= skillMp)
 			{
 				playerMp -= skillMp;
-				mpBar_->SetBar(playerMp);
+				SetMP(playerMp);
 				skills_.at(keySkill.second)->Start();
-				gamePlayRecorder_->AddRecord<float>(GamePlayRecorder::ERecordType::LOST_MP, skillMp);
 
 				if (keySkill.second == ESkill::DASH)
 				{
@@ -172,13 +171,22 @@ void Player::SetHP(float hp)
 		return;
 	}
 
-	if (skills_.at(ESkill::INVINCIBILITY)->IsRemainCoolTime())
+	float currentHp = hpBar_->GetBar();
+	if (skills_.at(ESkill::INVINCIBILITY)->IsRemainCoolTime() && hp < currentHp)
 	{
-		float currentHp = hpBar_->GetBar();
-		if (hp < currentHp)
-		{
-			return;
-		}
+		return;
+	}
+
+	hp = glm::clamp<float>(hp, 0.0f, hpBar_->GetMaxBar());
+	if (hp < currentHp)
+	{
+		float lostHp = currentHp - hp;
+		gamePlayRecorder_->AddRecord<float>(GamePlayRecorder::ERecordType::LOST_HP, lostHp);
+	}
+	else // hp > currentHp
+	{
+		float healHp = hp - currentHp;
+		gamePlayRecorder_->AddRecord<float>(GamePlayRecorder::ERecordType::HEAL_HP, healHp);
 	}
 
 	hpBar_->SetBar(hp);
@@ -209,6 +217,19 @@ void Player::SetMP(float mp)
 	if (state_ != EState::IDLE && state_ != EState::RUN)
 	{
 		return;
+	}
+
+	float currentMp = mpBar_->GetBar();
+	mp = glm::clamp<float>(mp, 0.0f, mpBar_->GetMaxBar());
+	if (mp < currentMp)
+	{
+		float lostMp = currentMp - mp;
+		gamePlayRecorder_->AddRecord<float>(GamePlayRecorder::ERecordType::LOST_MP, lostMp);
+	}
+	else // hp > currentMp
+	{
+		float healMp = mp - currentMp;
+		gamePlayRecorder_->AddRecord<float>(GamePlayRecorder::ERecordType::HEAL_MP, healMp);
 	}
 
 	mpBar_->SetBar(mp);
