@@ -16,9 +16,6 @@ Coin::Coin(const glm::vec2& startPos, const glm::vec2& endPos)
 	, moveStartPos_(startPos)
 	, moveEndPos_(endPos)
 {
-	tickOrder_ = 3;
-	renderOrder_ = 4;
-
 	textureAtlas_ = GLManager::GetRef().GetByName<TextureAtlas2D>("TextureAtlas");
 	coinCollector_ = EntityManager::GetRef().GetByName<CoinCollector>("CoinCollector");
 
