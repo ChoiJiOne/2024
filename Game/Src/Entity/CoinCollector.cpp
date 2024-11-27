@@ -12,9 +12,6 @@
 CoinCollector::CoinCollector(TTFont* font)
 	: font_(font)
 {
-	tickOrder_ = 4;
-	renderOrder_ = 5;
-
 	player_ = EntityManager::GetRef().GetByName<Player>("Player");
 	playerFollowCamera_ = EntityManager::GetRef().GetByName<PlayerFollowCamera>("PlayerFollowCamera");
 	textureAtlas_ = GLManager::GetRef().GetByName<TextureAtlas2D>("TextureAtlas");
