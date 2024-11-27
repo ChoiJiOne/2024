@@ -94,6 +94,9 @@ void GamePlayScene::Enter()
 {
 	bIsEnter_ = true;
 	bIsSwitched_ = false;
+
+	gamePlayRecorder_ = entityManager_->Create<GamePlayRecorder>();
+	entityManager_->Register("GamePlayRecorder", gamePlayRecorder_);
 	
 	player_ = entityManager_->Create<Player>();
 	entityManager_->Register("Player", player_);
@@ -124,9 +127,6 @@ void GamePlayScene::Enter()
 
 	MiniMap* miniMap = entityManager_->Create<MiniMap>(uiCamera_, randomChests.data(), static_cast<uint32_t>(randomChests.size()));
 	
-	gamePlayRecorder_ = entityManager_->Create<GamePlayRecorder>();
-	entityManager_->Register("GamePlayRecorder", gamePlayRecorder_);
-
 	/** 인게임 엔티티입니다. */
 	AddEntity(player_, 1, 6);
 	AddEntity(mainCamera_, 2);
