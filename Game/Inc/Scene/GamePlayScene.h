@@ -6,10 +6,13 @@
 #include "GL/RenderManager2D.h"
 
 /** 클래스 전방 선언입니다. */
+class Background;
 class Camera2D;
+class CoinCollector;
 class FadeEffector;
 class UICamera;
 class Player;
+class Playground;
 class PostProcessor;
 class FrameBuffer;
 
@@ -49,12 +52,21 @@ private:
 	/** Tick을 수행하기 전에 호출합니다. */
 	void PreTick(float deltaSeconds);
 
+	/** 게임 플레이 씬을 초기화합니다. */
+	void Initialize();
+
+	/** 게임 플레이 씬의 초기화를 해제합니다. */
+	void UnInitialize();
+
 private:
 	/** 업데이트할 엔티티입니다. */
 	std::multimap<int32_t, IEntity*> updateEntites_;
 
 	/** 렌더링할 엔티티입니다. */
 	std::multimap<int32_t, IEntity2D*> renderEntities_;
+
+	/** 게임 플레이 영역을 나타내는 엔티티입니다. */
+	Playground* playground_ = nullptr;
 
 	/** 게임 플레이 씬의 메인 카메라입니다. */
 	Camera2D* mainCamera_ = nullptr;
@@ -64,7 +76,13 @@ private:
 
 	/** 게임을 플레이할 플레이어입니다. */
 	Player* player_ = nullptr;
+
+	/** 게임의 백그라운드 엔티티입니다. */
+	Background* background_ = nullptr;
 	
+	/** 플레이어가 획득한 코인을 수집하는 엔티티입니다. */
+	CoinCollector* coinCollector_ = nullptr;
+
 	/** 페이드 효과를 제어할 엔티티입니다. */
 	FadeEffector* fadeEffector_ = nullptr;
 

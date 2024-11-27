@@ -28,62 +28,12 @@ GamePlayScene::GamePlayScene()
 {
 	sceneManager_->Register("GamePlayScene", this);
 
-	uiCamera_ = entityManager_->GetByName<UICamera>("UICamera");
-	AddUpdateUIEntity(uiCamera_);
-
-	Playground* playground = entityManager_->Create<Playground>();
-	entityManager_->Register("Playground", playground);
-	AddUpdateEntity(playground);
-	AddRenderEntity(playground);
-
-	player_ = entityManager_->Create<Player>();
-	entityManager_->Register("Player", player_);
-	AddUpdateEntity(player_);
-	AddRenderEntity(player_);
-	
-	mainCamera_ = entityManager_->Create<PlayerFollowCamera>();
-	entityManager_->Register("PlayerFollowCamera", mainCamera_);
-	AddUpdateEntity(mainCamera_);
-	
-	Background* background = entityManager_->Create<Background>();
-	AddUpdateEntity(background);
-	AddRenderEntity(background);
-
-	CoinCollector* coinCollector = entityManager_->Create<CoinCollector>(glManager_->GetByName<TTFont>("Font24"));
-	entityManager_->Register("CoinCollector", coinCollector);
-	AddUpdateEntity(coinCollector);
-	AddRenderEntity(coinCollector);
-
-	static const uint32_t COUNT_RANDOM_CHEST = 8;
-	float boundRadius = playground->GetSafeBound()->radius;
-	std::vector<RandomChest*> randomChests(COUNT_RANDOM_CHEST);
-	for (uint32_t count = 0; count < COUNT_RANDOM_CHEST; ++count)
-	{
-		float theta = (2.0f * glm::pi<float>() * static_cast<float>(count)) / 8.0f;
-		RandomChest* randomChest = entityManager_->Create<RandomChest>(glm::vec2(boundRadius * glm::cos(theta), boundRadius * glm::sin(theta)));
-
-		AddUpdateEntity(randomChest);
-		AddRenderEntity(randomChest);
-
-		randomChests[count] = randomChest;
-	}
-	
-	MiniMap* miniMap = entityManager_->Create<MiniMap>(uiCamera_, randomChests);
-	AddUpdateUIEntity(miniMap);
-	AddRenderUIEntity(miniMap);
-
-	postProcessor_ = renderManager_->GetPostProcessor();
-	frameBuffer_ = reinterpret_cast<GameApp*>(IApp::GetPtr())->GetFrameBuffer();
-	renderTargetOption_ = RenderTargetOption{ glm::vec4(0.0f, 0.0f, 0.0f, 1.0f), true };
-
-	fadeEffector_ = entityManager_->GetByName<FadeEffector>("FadeEffector");
-	AddUpdateUIEntity(fadeEffector_);
+	Initialize();
 }
 
 GamePlayScene::~GamePlayScene()
 {
-	frameBuffer_ = nullptr;
-	postProcessor_ = nullptr;
+	UnInitialize();
 }
 
 void GamePlayScene::Tick(float deltaSeconds)
@@ -92,12 +42,7 @@ void GamePlayScene::Tick(float deltaSeconds)
 
 	for (auto& updateEntity : updateEntites_)
 	{
-		updateEntity->Tick(deltaSeconds);
-	}
-	
-	for (auto& uiEntity : updateUiEntities_)
-	{
-		uiEntity->Tick(deltaSeconds);
+		updateEntity.second->Tick(deltaSeconds);
 	}
 }
 
@@ -110,7 +55,10 @@ void GamePlayScene::Render()
 		{
 			for (auto& renderEntity : renderEntities_)
 			{
-				renderEntity->Render();
+				if (renderEntity.first < 50.0f)
+				{
+					renderEntity.second->Render();
+				}
 			}
 		}
 		renderManager_->End();
@@ -118,9 +66,12 @@ void GamePlayScene::Render()
 		renderTargetOption_.bIsClearBuffer = false;
 		renderManager_->Begin(uiCamera_, frameBuffer_, renderTargetOption_);
 		{
-			for (auto& uiEntity : renderUiEntities_)
+			for (auto& renderEntity : renderEntities_)
 			{
-				uiEntity->Render();
+				if (renderEntity.first >= 50.0f)
+				{
+					renderEntity.second->Render();
+				}
 			}
 		}
 		renderManager_->End();
@@ -141,12 +92,84 @@ void GamePlayScene::Enter()
 {
 	bIsEnter_ = true;
 	bIsSwitched_ = false;
+	
+	player_ = entityManager_->Create<Player>();
+	entityManager_->Register("Player", player_);
 
+	mainCamera_ = entityManager_->Create<PlayerFollowCamera>();
+	entityManager_->Register("PlayerFollowCamera", mainCamera_);
+
+	background_ = entityManager_->Create<Background>();
+
+	coinCollector_ = entityManager_->Create<CoinCollector>(glManager_->GetByName<TTFont>("Font24"));
+	entityManager_->Register("CoinCollector", coinCollector_);
+
+	static const uint32_t COUNT_RANDOM_CHEST = 8;
+	std::array<RandomChest*, COUNT_RANDOM_CHEST> randomChests;
+	for (uint32_t index = 0; index < randomChests.size(); ++index)
+	{
+		float radius = playground_->GetSafeBound()->radius;
+		float theta = 2.0f * glm::pi<float>();
+		theta *= static_cast<float>(index) / static_cast<float>(randomChests.size());
+
+		glm::vec2 randomChestPos = glm::vec2(radius * glm::cos(theta), radius * glm::sin(theta));
+
+		RandomChest* randomChest = entityManager_->Create<RandomChest>(randomChestPos);
+
+		AddEntity(randomChest, 10, 10);
+		randomChests[index] = randomChest;
+	}
+
+	MiniMap* miniMap = entityManager_->Create<MiniMap>(uiCamera_, randomChests.data(), static_cast<uint32_t>(randomChests.size()));
+	
+	/** 인게임 엔티티입니다. */
+	AddEntity(player_, 1, 6);
+	AddEntity(mainCamera_, 2);
+	AddEntity(background_, 10, 1);
+	AddEntity(coinCollector_, 15, 10);
+	
+	/** UI 및 기타 엔티티입니다. */
+	AddEntity(miniMap, 51, 51);
+	
 	fadeEffector_->StartIn(fadeInTime_);
 }
 
 void GamePlayScene::Exit()
 {
+	RemoveEntity(player_);
+	entityManager_->Unregister("Player");
+	entityManager_->Destroy(player_);
+	player_ = nullptr;
+
+	RemoveEntity(mainCamera_);
+	entityManager_->Unregister("PlayerFollowCamera");
+	entityManager_->Destroy(mainCamera_);
+	mainCamera_ = nullptr;
+
+	RemoveEntity(background_);
+	entityManager_->Destroy(background_);
+	background_ = nullptr;
+
+	RemoveEntity(coinCollector_);
+	entityManager_->Unregister("CoinCollector");
+	entityManager_->Destroy(coinCollector_);
+	coinCollector_ = nullptr;
+
+	std::list<IEntity*> removeEntities;
+	for (auto& entity : updateEntites_)
+	{
+		if (entity.second != fadeEffector_ && entity.second != uiCamera_ && entity.second != playground_)
+		{
+			removeEntities.push_back(entity.second);
+		}
+	}
+
+	for (auto& removeEntity : removeEntities)
+	{
+		RemoveEntity(removeEntity);
+		entityManager_->Destroy(removeEntity);
+	}
+
 	fadeEffector_->Reset();
 
 	bIsSwitched_ = false;
@@ -207,10 +230,43 @@ void GamePlayScene::PreTick(float deltaSeconds)
 	if (fadeEffector_->GetState() == FadeEffector::EState::PROGRESS)
 	{
 		fadeEffector_->Tick(deltaSeconds);
-		if (fadeEffector_->GetState() == FadeEffector::EState::DONE)
-		{
-			fadeEffector_->Reset();
-		}
-		return;
 	}
+	else if (fadeEffector_->GetState() == FadeEffector::EState::DONE)
+	{
+		fadeEffector_->Reset();
+	}
+}
+
+void GamePlayScene::Initialize()
+{
+	postProcessor_ = renderManager_->GetPostProcessor();
+	frameBuffer_ = reinterpret_cast<GameApp*>(IApp::GetPtr())->GetFrameBuffer();
+	renderTargetOption_ = RenderTargetOption{ glm::vec4(0.0f, 0.0f, 0.0f, 1.0f), true };
+
+	uiCamera_ = entityManager_->GetByName<UICamera>("UICamera");
+	AddEntity(uiCamera_, 50);
+
+	fadeEffector_ = entityManager_->GetByName<FadeEffector>("FadeEffector");
+	AddEntity(fadeEffector_, 52);
+
+	playground_ = entityManager_->Create<Playground>();
+	AddEntity(playground_, 10, 5);
+
+	entityManager_->Register("Playground", playground_);
+}
+
+void GamePlayScene::UnInitialize()
+{
+	if (playground_)
+	{
+		RemoveEntity(playground_);
+		entityManager_->Unregister("Playground");
+		entityManager_->Destroy(playground_);
+		playground_ = nullptr;
+	}
+
+	fadeEffector_ = nullptr;
+	uiCamera_ = nullptr;
+	frameBuffer_ = nullptr;
+	postProcessor_ = nullptr;
 }
