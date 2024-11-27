@@ -1,3 +1,5 @@
+#include <algorithm>
+
 #include <glm/gtc/constants.hpp>
 
 #include "App/GameApp.h"
@@ -101,18 +103,6 @@ void GamePlayScene::Tick(float deltaSeconds)
 
 void GamePlayScene::Render()
 {
-	if (bNeedSortRenderEntites_)
-	{
-		renderEntities_.sort(GamePlayScene::CompareRenderOrder);
-		bNeedSortRenderEntites_ = false;
-	}
-
-	if (bNeedSortRenderUiEntites_)
-	{
-		renderUiEntities_.sort(GamePlayScene::CompareRenderOrder);
-		bNeedSortRenderUiEntites_ = false;
-	}
-	
 	glManager_->BeginFrame(0.0f, 0.0f, 0.0f, 1.0f);
 	{
 		renderTargetOption_.bIsClearBuffer = true;
@@ -163,48 +153,32 @@ void GamePlayScene::Exit()
 	bIsEnter_ = false;
 }
 
-void GamePlayScene::AddUpdateEntity(IEntity* entity)
+void GamePlayScene::AddEntity(IEntity* entity, int32_t updateOrder)
 {
-	updateEntites_.push_back(entity);
-	bNeedSortUpdateEntites_ = true;
+	updateEntites_.insert({ updateOrder, entity });
 }
 
-void GamePlayScene::RemoveUpdateEntity(IEntity* entity)
+void GamePlayScene::AddEntity(IEntity2D* entity, int32_t updateOrder, int32_t renderOrder)
 {
-	updateEntites_.remove(entity);
+	updateEntites_.insert({ updateOrder, entity });
+	renderEntities_.insert({ renderOrder, entity });
 }
 
-void GamePlayScene::AddRenderEntity(IEntity2D* entity)
+void GamePlayScene::RemoveEntity(IEntity* entity)
 {
-	renderEntities_.push_back(entity);
-	bNeedSortRenderEntites_ = true;
-}
+	auto updateTargetEntity = std::find_if(updateEntites_.begin(), updateEntites_.end(), [&](const std::pair<int32_t, IEntity*>& pair) { return pair.second == entity; });
+	if (updateTargetEntity == updateEntites_.end())
+	{
+		return;
+	}
+	updateEntites_.erase(updateTargetEntity);
 
-void GamePlayScene::RemoveRenderEntity(IEntity2D* entity)
-{
-	renderEntities_.remove(entity);
-}
-
-void GamePlayScene::AddUpdateUIEntity(IEntity* entity)
-{
-	updateUiEntities_.push_back(entity);
-	bNeedSortUpdateUiEntites_ = true;
-}
-
-void GamePlayScene::RemoveUpdateUIEntity(IEntity* entity)
-{
-	updateUiEntities_.remove(entity);
-}
-
-void GamePlayScene::AddRenderUIEntity(IEntity2D* entity)
-{
-	renderUiEntities_.push_back(entity);
-	bNeedSortRenderUiEntites_ = true;
-}
-
-void GamePlayScene::RemoveRenderUIEntity(IEntity2D* entity)
-{
-	renderUiEntities_.remove(entity);
+	auto renderTargetEntity = std::find_if(renderEntities_.begin(), renderEntities_.end(), [&](const std::pair<int32_t, IEntity2D*>& pair) { return pair.second == entity; });
+	if (renderTargetEntity == renderEntities_.end())
+	{
+		return;
+	}
+	renderEntities_.erase(renderTargetEntity);
 }
 
 void GamePlayScene::PreTick(float deltaSeconds)
@@ -238,17 +212,5 @@ void GamePlayScene::PreTick(float deltaSeconds)
 			fadeEffector_->Reset();
 		}
 		return;
-	}
-
-	if (bNeedSortUpdateEntites_)
-	{
-		updateEntites_.sort(GamePlayScene::CompareUpdateOrder);
-		bNeedSortUpdateEntites_ = false;
-	}
-
-	if (bNeedSortUpdateUiEntites_)
-	{
-		updateUiEntities_.sort(GamePlayScene::CompareUpdateOrder);
-		bNeedSortUpdateUiEntites_ = false;
 	}
 }
