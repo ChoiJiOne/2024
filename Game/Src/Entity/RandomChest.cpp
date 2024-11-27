@@ -91,8 +91,7 @@ void RandomChest::Tick(float deltaSeconds)
 			IObject* randomObject = GenerateRandomObject();
 
 			objects_.push_back(randomObject);
-			gamePlayScene_->AddUpdateEntity(randomObject);
-			gamePlayScene_->AddRenderEntity(randomObject);
+			gamePlayScene_->AddEntity(randomObject, 5, 8);
 
 			bIsGenerateObject_ = true;
 		}
@@ -195,8 +194,7 @@ void RandomChest::CleanupObjects()
 	{
 		if (object && object->GetState() == IObject::EState::DONE)
 		{
-			gamePlayScene_->RemoveUpdateEntity(object);
-			gamePlayScene_->RemoveRenderEntity(object);
+			gamePlayScene_->RemoveEntity(object);
 			EntityManager::GetRef().Destroy(object);
 			object = nullptr;
 		}
