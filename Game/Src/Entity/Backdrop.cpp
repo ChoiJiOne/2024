@@ -7,9 +7,6 @@
 
 Backdrop::Backdrop()
 {
-	tickOrder_ = 0;
-	renderOrder_ = 0;
-
 	glm::vec2 screenSize = glm::vec2(0.0f, 0.0f);
 	GLFWManager::GetRef().GetWindowSize(screenSize.x, screenSize.y);
 
