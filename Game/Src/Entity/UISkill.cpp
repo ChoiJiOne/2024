@@ -15,9 +15,6 @@ UISkill::UISkill(UICamera* uiCamera, TTFont* font, const std::string& skillPath)
 	: uiCamera_(uiCamera)
 	, font_(font)
 {
-	tickOrder_ = 2;
-	renderOrder_ = 2;
-
 	InitProperties(skillPath);
 
 	bIsInitialized_ = true;

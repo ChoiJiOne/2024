@@ -8,9 +8,6 @@
 
 GameOver::GameOver()
 {
-	tickOrder_ = 1;
-	renderOrder_ = 1;
-
 	textureAtlas_ = GLManager::GetRef().GetByName<TextureAtlas2D>("TextureAtlas");
 
 	bound_ = Rect2D(glm::vec2(0.0f, 160.0f), glm::vec2(650.0f, 195.0f));

@@ -7,9 +7,6 @@
 
 Playground::Playground()
 {
-	tickOrder_ = 3;
-	renderOrder_ = 1;
-
 	textureAtlas_ = GLManager::GetRef().GetByName<TextureAtlas2D>("TextureAtlas");
 
 	safeBound_ = Circle2D(glm::vec2(0.0f, 0.0f), 1000.0f);

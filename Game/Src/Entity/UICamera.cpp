@@ -3,8 +3,6 @@
 
 UICamera::UICamera()
 {
-	tickOrder_ = 10;
-	
 	glm::vec2 screenSize = glm::vec2(0.0f, 0.0f);
 	GLFWManager::GetRef().GetWindowSize(screenSize.x, screenSize.y);
 

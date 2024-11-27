@@ -16,9 +16,6 @@ UIBar::UIBar(UICamera* uiCamera, TTFont* font, const std::string& barPath)
 	: uiCamera_(uiCamera)
 	, font_(font)
 {
-	tickOrder_ = 1;
-	renderOrder_ = 1;
-
 	InitProperties(barPath);
 	
 	text_ = PrintF(L"%3d / %3d", static_cast<int32_t>(barMark_), static_cast<int32_t>(maxBar_));

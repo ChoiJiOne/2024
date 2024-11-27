@@ -17,9 +17,6 @@ MiniMap::MiniMap(UICamera* uiCamera, RandomChest** randomChests, uint32_t countR
 	: uiCamera_(uiCamera)
 	, randomChests_(countRandomChest)
 {
-	tickOrder_ = 0;
-	renderOrder_ = 0;
-
 	for (uint32_t index = 0; index < countRandomChest; ++index)
 	{
 		randomChests_[index] = randomChests[index];

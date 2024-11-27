@@ -15,9 +15,6 @@ Potion::Potion(const glm::vec2& startPos, const glm::vec2& endPos, const EColor&
 	, moveEndPos_(endPos)
 	, color_(color)
 {
-	tickOrder_ = 3;
-	renderOrder_ = 4;
-
 	textureAtlas_ = GLManager::GetRef().GetByName<TextureAtlas2D>("TextureAtlas");
 
 	renderBound_.center = startPos;

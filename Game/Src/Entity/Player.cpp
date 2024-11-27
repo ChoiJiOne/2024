@@ -23,9 +23,6 @@
 
 Player::Player()
 {
-	tickOrder_ = 0;
-	renderOrder_ = 2;
-
 	textureAtlas_ = GLManager::GetRef().GetByName<TextureAtlas2D>("TextureAtlas");
 	playground_ = EntityManager::GetRef().GetByName<Playground>("Playground");
 	gamePlayScene_ = SceneManager::GetRef().GetByName<GamePlayScene>("GamePlayScene");

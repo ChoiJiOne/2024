@@ -14,9 +14,6 @@ UIButton::UIButton(const std::string& buttonPath, UICamera* uiCamera, TTFont* fo
 	, mouse_(mouse)
 	, clickEvent_(clickEvent)
 {
-	tickOrder_ = 2;
-	renderOrder_ = 2;
-
 	InitProperties(buttonPath);
 	
 	bIsInitialized_ = true;
