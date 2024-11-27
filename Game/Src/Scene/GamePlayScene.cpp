@@ -9,6 +9,7 @@
 #include "Entity/CoinCollector.h"
 #include "Entity/EntityManager.h"
 #include "Entity/FadeEffector.h"
+#include "Entity/GamePlayRecorder.h"
 #include "Entity/MiniMap.h"
 #include "Entity/Player.h"
 #include "Entity/PlayerFollowCamera.h"
@@ -123,12 +124,16 @@ void GamePlayScene::Enter()
 
 	MiniMap* miniMap = entityManager_->Create<MiniMap>(uiCamera_, randomChests.data(), static_cast<uint32_t>(randomChests.size()));
 	
+	gamePlayRecorder_ = entityManager_->Create<GamePlayRecorder>();
+	entityManager_->Register("GamePlayRecorder", gamePlayRecorder_);
+
 	/** 인게임 엔티티입니다. */
 	AddEntity(player_, 1, 6);
 	AddEntity(mainCamera_, 2);
 	AddEntity(background_, 10, 1);
 	AddEntity(coinCollector_, 15, 10);
-	
+	AddEntity(gamePlayRecorder_, 20);
+
 	/** UI 및 기타 엔티티입니다. */
 	AddEntity(miniMap, 51, 51);
 	
@@ -155,6 +160,11 @@ void GamePlayScene::Exit()
 	entityManager_->Unregister("CoinCollector");
 	entityManager_->Destroy(coinCollector_);
 	coinCollector_ = nullptr;
+
+	RemoveEntity(gamePlayRecorder_);
+	entityManager_->Unregister("GamePlayRecorder");
+	entityManager_->Destroy(gamePlayRecorder_);
+	gamePlayRecorder_ = nullptr;
 
 	std::list<IEntity*> removeEntities;
 	for (auto& entity : updateEntites_)

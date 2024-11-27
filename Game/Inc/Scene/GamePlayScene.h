@@ -10,6 +10,7 @@ class Background;
 class Camera2D;
 class CoinCollector;
 class FadeEffector;
+class GamePlayRecorder;
 class UICamera;
 class Player;
 class Playground;
@@ -88,6 +89,9 @@ private:
 	
 	/** 플레이어가 획득한 코인을 수집하는 엔티티입니다. */
 	CoinCollector* coinCollector_ = nullptr;
+
+	/** 게임 플레이 기록을 저장하는 엔티티입니다. */
+	GamePlayRecorder* gamePlayRecorder_ = nullptr;
 
 	/** 페이드 효과를 제어할 엔티티입니다. */
 	FadeEffector* fadeEffector_ = nullptr;
