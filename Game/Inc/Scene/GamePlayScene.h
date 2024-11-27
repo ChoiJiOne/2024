@@ -65,6 +65,12 @@ private:
 	/** 렌더링할 엔티티입니다. */
 	std::multimap<int32_t, IEntity2D*> renderEntities_;
 
+	/** 게임 엔티티의 범위입니다. */
+	std::pair<int32_t, int32_t> gameEntityRange_;
+
+	/** UI 엔티티의 범위입니다. */
+	std::pair<int32_t, int32_t> uiEntityRange_;
+
 	/** 게임 플레이 영역을 나타내는 엔티티입니다. */
 	Playground* playground_ = nullptr;
 
@@ -85,7 +91,7 @@ private:
 
 	/** 페이드 효과를 제어할 엔티티입니다. */
 	FadeEffector* fadeEffector_ = nullptr;
-
+	
 	/** 페이드 인 시간입니다. */
 	float fadeInTime_ = 1.0f;
 

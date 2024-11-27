@@ -16,6 +16,7 @@
 #include "Entity/RandomChest.h"
 #include "Entity/UIBar.h"
 #include "Entity/UICamera.h"
+#include "Game/GameManager.h"
 #include "GL/PostProcessor.h"
 #include "GLFW/GLFWManager.h"
 #include "Scene/SceneManager.h"
@@ -55,7 +56,7 @@ void GamePlayScene::Render()
 		{
 			for (auto& renderEntity : renderEntities_)
 			{
-				if (renderEntity.first < 50.0f)
+				if (gameEntityRange_.first <= renderEntity.first && renderEntity.first <= gameEntityRange_.second)
 				{
 					renderEntity.second->Render();
 				}
@@ -68,7 +69,7 @@ void GamePlayScene::Render()
 		{
 			for (auto& renderEntity : renderEntities_)
 			{
-				if (renderEntity.first >= 50.0f)
+				if (uiEntityRange_.first <= renderEntity.first && renderEntity.first <= uiEntityRange_.second)
 				{
 					renderEntity.second->Render();
 				}
@@ -253,6 +254,9 @@ void GamePlayScene::Initialize()
 	AddEntity(playground_, 10, 5);
 
 	entityManager_->Register("Playground", playground_);
+
+	gameEntityRange_ = std::pair{ 0, 49 };
+	uiEntityRange_ = std::pair{ 50, 99 };
 }
 
 void GamePlayScene::UnInitialize()
