@@ -52,6 +52,16 @@ void GameManager::AddGamePlayRecord(const GamePlayRecorder* gamePlayRecorder)
 	gamePlayRecords_.push_back(gamePlayRecord);
 }
 
+const GamePlayRecord* GameManager::GetRecentGamePlayRecord() const
+{
+	if (gamePlayRecords_.empty())
+	{
+		return nullptr;
+	}
+	
+	return &gamePlayRecords_.back();
+}
+
 void GameManager::Startup()
 {
 	configPath_ = "Resource\\Game\\GameConfig.json";

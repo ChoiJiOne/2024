@@ -50,6 +50,9 @@ public:
 	/** 게임 플레이 기록을 추가합니다. */
 	void AddGamePlayRecord(const GamePlayRecorder* gamePlayRecorder);
 
+	/** 최근 게임 플레이 기록을 얻습니다. */
+	const GamePlayRecord* GetRecentGamePlayRecord() const;
+
 private:
 	/** IApp에서 게임 매니저의 내부에 접근할 수 있도록 설정. */
 	friend class IApp;
