@@ -1,5 +1,3 @@
-#include <imgui.h>
-
 #include "Entity/GamePlayRecorder.h"
 #include "Utils/Assertion.h"
 
@@ -24,7 +22,6 @@ GamePlayRecorder::GamePlayRecorder()
 		{ ERecordType::LOST_HP,   0.0f },
 		{ ERecordType::HEAL_MP,   0.0f },
 		{ ERecordType::LOST_MP,   0.0f },
-		{ ERecordType::DAMAGE,    0.0f },
 	};
 
 	bIsInitialized_ = true;
@@ -107,10 +104,6 @@ void GamePlayRecorder::SetRecord(const ERecordType& type, const float& value)
 void GamePlayRecorder::Tick(float deltaSeconds)
 {
 	floatRecords_.at(ERecordType::PLAY_TIME) += deltaSeconds;
-
-	ImGui::Begin("RECORD");
-	ImGui::Text("PLAY_TIME: %f", floatRecords_.at(ERecordType::PLAY_TIME));
-	ImGui::End();
 }
 
 void GamePlayRecorder::Release()
