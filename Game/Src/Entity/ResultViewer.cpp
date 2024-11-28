@@ -31,7 +31,7 @@ ResultViewer::~ResultViewer()
 
 void ResultViewer::Tick(float deltaSeconds)
 {
-	if (state_ == EState::WAIT)
+	if (state_ == EState::WAIT || state_ == EState::DONE)
 	{
 		return;
 	}
