@@ -1,5 +1,6 @@
 #include "Entity/GamePlayRecorder.h"
 #include "Utils/Assertion.h"
+#include "Utils/Utils.h"
 
 GamePlayRecorder::GamePlayRecorder()
 {
@@ -23,6 +24,8 @@ GamePlayRecorder::GamePlayRecorder()
 		{ ERecordType::HEAL_MP,   0.0f },
 		{ ERecordType::LOST_MP,   0.0f },
 	};
+
+	startSystemTime_ = GetCurrentSystemTimeAsString();
 
 	bIsInitialized_ = true;
 }

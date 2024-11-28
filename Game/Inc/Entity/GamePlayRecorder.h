@@ -1,6 +1,7 @@
 #pragma once
 
 #include <map>
+#include <string>
 
 #include "IEntity.h"
 
@@ -48,11 +49,17 @@ public:
 
 	template <typename T>
 	void SetRecord(const ERecordType& type, const T& value);
-	
+
+	/** 게임 플레이 시작 시간을 얻습니다. */
+	const std::string& GetStartSystemTime() const { return startSystemTime_; }
+
 private:
 	/** 정수 타입의 기록 값입니다. */
 	std::map<ERecordType, int32_t> integerRecords_;
 
 	/** 부동 소수점 타입의 기록 값입니다. */
 	std::map<ERecordType, float> floatRecords_;
+
+	/** 게임 플레이 시작 시간입니다. */
+	std::string startSystemTime_;
 };
