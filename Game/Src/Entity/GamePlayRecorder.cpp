@@ -79,13 +79,13 @@ void GamePlayRecorder::SubRecord(const ERecordType& type, const float& value)
 }
 
 template <>
-int32_t GamePlayRecorder::GetRecord(const ERecordType& type)
+int32_t GamePlayRecorder::GetRecord(const ERecordType& type) const
 {
 	return integerRecords_.at(type);
 }
 
 template <>
-float GamePlayRecorder::GetRecord(const ERecordType& type)
+float GamePlayRecorder::GetRecord(const ERecordType& type) const
 {
 	return floatRecords_.at(type);
 }

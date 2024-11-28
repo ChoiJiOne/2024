@@ -45,7 +45,7 @@ public:
 	void SubRecord(const ERecordType& type, const T& value);
 
 	template <typename T>
-	T GetRecord(const ERecordType& type);
+	T GetRecord(const ERecordType& type) const;
 
 	template <typename T>
 	void SetRecord(const ERecordType& type, const T& value);
