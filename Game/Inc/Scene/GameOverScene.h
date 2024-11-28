@@ -5,9 +5,10 @@
 
 /** 클래스 전방 선언입니다. */
 class FadeEffector;
-class UICamera;
-class PostProcessor;
 class FrameBuffer;
+class PostProcessor;
+class ResultViewer;
+class UICamera;
 
 /** 게임 오버 씬입니다. */
 class GameOverScene : public IGameScene
@@ -54,4 +55,13 @@ private:
 
 	/** 렌더링할 UI 엔티티입니다. */
 	std::map<std::string, IEntity2D*> renderUiEntities_;
+
+	/** 결과를 표시할 시간입니다. */
+	float resultViewTime_ = 0.0f;
+
+	/** 플레이어의 플레이 타임을 표시하는 엔티티입니다. */
+	ResultViewer* playTimeResultViewer_ = nullptr;
+
+	/** 플레이어가 획득한 코인을 표시하는 엔티티입니다. */
+	ResultViewer* getCoinResultViewer_ = nullptr;
 };

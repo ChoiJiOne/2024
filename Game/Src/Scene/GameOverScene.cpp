@@ -4,8 +4,10 @@
 #include "Entity/EntityManager.h"
 #include "Entity/FadeEffector.h"
 #include "Entity/GameOver.h"
+#include "Entity/ResultViewer.h"
 #include "Entity/UIButton.h"
 #include "Entity/UICamera.h"
+#include "Game/GameManager.h"
 #include "GL/FrameBuffer.h"
 #include "GL/GLManager.h"
 #include "GL/PostProcessor.h"
@@ -30,12 +32,6 @@ GameOverScene::~GameOverScene()
 
 void GameOverScene::Tick(float deltaSeconds)
 {
-	if (fadeEffector_->GetState() == FadeEffector::EState::PROGRESS)
-	{
-		fadeEffector_->Tick(deltaSeconds);
-		return;
-	}
-
 	for (auto& uiEntity : updateUiEntities_)
 	{
 		uiEntity.second->Tick(deltaSeconds);
@@ -56,7 +52,7 @@ void GameOverScene::Render()
 		renderManager_->End();
 
 		PostProcessor::EType type = PostProcessor::EType::BLIT;
-		if (fadeEffector_->GetState() != FadeEffector::EState::WAIT)
+		if (fadeEffector_->GetState() == FadeEffector::EState::PROGRESS)
 		{
 			type = PostProcessor::EType::BLEND_COLOR;
 			postProcessor_->SetBlendColor(fadeEffector_->GetBlendColor(), fadeEffector_->GetFactor());
@@ -71,6 +67,9 @@ void GameOverScene::Enter()
 {
 	bIsEnter_ = true;
 	bIsSwitched_ = false;
+
+	playTimeResultViewer_->Start(static_cast<int32_t>(gameManager_->GetRecentGamePlayRecord()->playTime));
+	getCoinResultViewer_->Start(gameManager_->GetRecentGamePlayRecord()->getCoin);
 
 	fadeEffector_->StartIn(fadeInTime_);
 }
@@ -91,10 +90,7 @@ void GameOverScene::Initailize()
 
 	uiCamera_ = entityManager_->GetByName<UICamera>("UICamera");
 	updateUiEntities_.insert({ "UICamera", uiCamera_ });
-
-	fadeEffector_ = entityManager_->GetByName<FadeEffector>("FadeEffector");
-	updateUiEntities_.insert({ "FadeEffector", fadeEffector_ });
-
+	
 	Backdrop* backdrop = entityManager_->GetByName<Backdrop>("Backdrop");
 	updateUiEntities_.insert({ "Backdrop", backdrop });
 	renderUiEntities_.insert({ "Backdrop", backdrop });
@@ -104,6 +100,16 @@ void GameOverScene::Initailize()
 	renderUiEntities_.insert({ "GameOver", gameOver });
 
 	TTFont* font48 = glManager_->GetByName<TTFont>("Font48");
+	resultViewTime_ = 5.0f;
+
+	playTimeResultViewer_ = entityManager_->Create<ResultViewer>(font48, glm::vec2(0.0f, 0.0f), L"TIME", glm::vec4(0.0f, 0.0f, 0.0f, 1.0f), resultViewTime_);
+	updateUiEntities_.insert({ "PlayTimeResultViewer", playTimeResultViewer_ });
+	renderUiEntities_.insert({ "PlayTimeResultViewer", playTimeResultViewer_ });
+
+	getCoinResultViewer_ = entityManager_->Create<ResultViewer>(font48, glm::vec2(0.0f, -50.0f), L"COIN", glm::vec4(0.0f, 0.0f, 0.0f, 1.0f), resultViewTime_);
+	updateUiEntities_.insert({ "GetCoinResultViewer", getCoinResultViewer_ });
+	renderUiEntities_.insert({ "GetCoinResultViewer", getCoinResultViewer_ });
+
 	UIButton* doneBtn = entityManager_->Create<UIButton>("Resource\\UI\\Done.button", uiCamera_, font48, EMouse::LEFT, 
 		[&]() 
 		{
@@ -113,6 +119,9 @@ void GameOverScene::Initailize()
 	);
 	updateUiEntities_.insert({ "DoneButton", doneBtn });
 	renderUiEntities_.insert({ "DoneButton", doneBtn });
+
+	fadeEffector_ = entityManager_->GetByName<FadeEffector>("FadeEffector");
+	updateUiEntities_.insert({ "FadeEffector", fadeEffector_ });
 }
 
 void GameOverScene::UnInitailize()
