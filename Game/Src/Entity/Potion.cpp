@@ -63,6 +63,8 @@ Potion::Potion(const glm::vec2& startPos, const glm::vec2& endPos, const EColor&
 	};
 	GamePlayRecorder* gamePlayRecorder = EntityManager::GetRef().GetByName<GamePlayRecorder>("GamePlayRecorder");
 	gamePlayRecorder->AddRecord(colorRecordTypes.at(color_), 1);
+
+	bIsInitialized_ = true;
 }
 
 Potion::~Potion()
