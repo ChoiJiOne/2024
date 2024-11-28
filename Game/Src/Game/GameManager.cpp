@@ -54,16 +54,41 @@ void GameManager::AddGamePlayRecord(const GamePlayRecorder* gamePlayRecorder)
 
 void GameManager::Startup()
 {
-	std::string gameConfigPath = "Resource\\Game\\GameConfig.json";
+	configPath_ = "Resource\\Game\\GameConfig.json";
+	recordPath_ = "Cache\\GameRecord.bin";
 
+	LoadConfigs(configPath_);
+	LoadRecords(recordPath_);
+}
+
+void GameManager::Shutdown()
+{
+	uint32_t recordByteSize = sizeof(GamePlayRecord);
+	uint32_t byteSize = recordByteSize * static_cast<uint32_t>(gamePlayRecords_.size());
+
+	std::vector<uint8_t> buffer(byteSize);
+	std::memcpy(buffer.data(), gamePlayRecords_.data(), byteSize);
+
+	std::string basePath = GetBasePath(recordPath_);
+	std::string errMsg;
+	if (!IsValidPath(basePath))
+	{
+		ASSERTION(MakeDirectory(basePath, errMsg), "Failed to create folder '%s'", errMsg.c_str());
+	}
+
+	ASSERTION(WriteFile(recordPath_, buffer, errMsg), "%s", errMsg.c_str());
+}
+
+void GameManager::LoadConfigs(const std::string& path)
+{
 	std::vector<uint8_t> buffer;
 	std::string errMsg;
-	ASSERTION(ReadFile(gameConfigPath, buffer, errMsg), "%s", errMsg.c_str());
+	ASSERTION(ReadFile(path, buffer, errMsg), "%s", errMsg.c_str());
 
 	std::string jsonString(buffer.begin(), buffer.end());
 	Json::Value root;
 	Json::Reader reader;
-	ASSERTION(reader.parse(jsonString, root), "Failed to parse '%s' file.", gameConfigPath.c_str());
+	ASSERTION(reader.parse(jsonString, root), "Failed to parse '%s' file.", path.c_str());
 
 	Json::Value::Members members = root.getMemberNames();
 	for (uint32_t index = 0; index < members.size(); ++index)
@@ -77,6 +102,30 @@ void GameManager::Startup()
 	}
 }
 
-void GameManager::Shutdown()
+void GameManager::LoadRecords(const std::string& path)
 {
+	std::string basePath = GetBasePath(path);
+	std::string errMsg;
+	if (!IsValidPath(basePath))
+	{
+		ASSERTION(MakeDirectory(basePath, errMsg), "Failed to create folder '%s'", errMsg.c_str());
+	}
+
+	if (!IsValidPath(path))
+	{
+		return;
+	}
+
+	std::vector<uint8_t> buffer;
+	ASSERTION(ReadFile(path, buffer, errMsg), "%s", errMsg.c_str());
+
+	uint32_t bufferByteSize = static_cast<uint32_t>(buffer.size());
+	uint32_t recordByteSize = sizeof(GamePlayRecord);
+	uint32_t count = bufferByteSize / recordByteSize;
+
+	GamePlayRecord* gamePlayRecordPtr = reinterpret_cast<GamePlayRecord*>(buffer.data());
+	for (uint32_t index = 0; index < count; ++index)
+	{
+		gamePlayRecords_.push_back(gamePlayRecordPtr[index]);
+	}
 }

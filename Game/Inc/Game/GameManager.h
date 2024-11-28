@@ -24,7 +24,7 @@ struct GamePlayRecord
 	int32_t genPowerRedPotion  = 0; // 생성된 빨간(HP 전체 회복) 파워 포션 엔티티의 수입니다.
 	int32_t genPowerBluePotion = 0; // 생성된 파란(MP 전체 회복) 파워 포션 엔티티의 수입니다.
 
-	static const uint32_t MAX_TIME_LENGTH = 20;
+	static const uint32_t MAX_TIME_LENGTH = 21;
 	char startPlayTime[MAX_TIME_LENGTH]; // 게임 시작 시간입니다.
 	char endPlayTime[MAX_TIME_LENGTH];   // 게임 종료 시간입니다.
 };
@@ -65,9 +65,21 @@ private:
 	void Startup();
 	void Shutdown();
 
+	/** 설정 값을 로딩합니다. */
+	void LoadConfigs(const std::string& path);
+
+	/** 게임 플레이 기록 값을 로딩합니다. */
+	void LoadRecords(const std::string& path);
+
 private:
 	/** 게임 매니저의 싱글턴 객체입니다. */
 	static GameManager singleton_;
+
+	/** 설정 파일 경로입니다. */
+	std::string configPath_;
+
+	/** 게임 플레이 기록 파일 경로입니다. */
+	std::string recordPath_;
 
 	/** 이름에 대응하는 설정 값입니다. */
 	std::map<std::string, float> configValues_;
