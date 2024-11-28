@@ -89,4 +89,25 @@ private:
 
 	/** 게임 플레이 기록입니다. */
 	std::vector<GamePlayRecord> gamePlayRecords_;
+
+	/** 플레이어가 플레이한 전체 시간입니다. */
+	float totalPlayTime_ = 0.0f;
+
+	/** 플레이어가 획득한 전체 코인 수 입니다. */
+	int32_t totalCoin_ = 0;
+
+	/** 플레이어가 시전한 전체 스킬 수 입니다. */
+	int32_t totalUseSkill_ = 0;
+
+	/** 플레이어가 회복한 전체 HP입니다. */
+	float totalHealHp_ = 0.0f;
+
+	/** 플레이어가 잃은 전체 HP입니다. */
+	float totalLostHp_ = 0.0f;
+
+	/** 플레이어가 회복한 전체 MP입니다. */
+	float totalHealMp_ = 0.0f;
+
+	/** 플레이어가 잃은 전체 MP입니다. */
+	float totalLostMp_ = 0.0f;
 };

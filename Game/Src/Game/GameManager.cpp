@@ -69,6 +69,17 @@ void GameManager::Startup()
 
 	LoadConfigs(configPath_);
 	LoadRecords(recordPath_);
+
+	for (const auto& gamePlayRecord : gamePlayRecords_)
+	{
+		totalPlayTime_ += gamePlayRecord.playTime;
+		totalCoin_ += gamePlayRecord.getCoin;
+		totalUseSkill_ += gamePlayRecord.useSkill;
+		totalHealHp_ += gamePlayRecord.healHp;
+		totalLostHp_ += gamePlayRecord.lostHp;
+		totalHealMp_ += gamePlayRecord.healMp;
+		totalLostMp_ += gamePlayRecord.lostMp;
+	}
 }
 
 void GameManager::Shutdown()
