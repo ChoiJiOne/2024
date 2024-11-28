@@ -142,6 +142,8 @@ void GamePlayScene::Enter()
 
 void GamePlayScene::Exit()
 {
+	gameManager_->AddGamePlayRecord(gamePlayRecorder_);
+
 	RemoveEntity(player_);
 	entityManager_->Unregister("Player");
 	entityManager_->Destroy(player_);
