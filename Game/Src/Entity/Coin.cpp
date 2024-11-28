@@ -4,6 +4,7 @@
 #include "Entity/Coin.h"
 #include "Entity/CoinCollector.h"
 #include "Entity/EntityManager.h"
+#include "Entity/GamePlayRecorder.h"
 #include "Entity/Player.h"
 #include "Game/GameManager.h"
 #include "GL/GLManager.h"
@@ -48,6 +49,11 @@ Coin::Coin(const glm::vec2& startPos, const glm::vec2& endPos)
 	maxMoveTime_ = GameManager::GetRef().GetConfigValue("Coin.maxMoveTime");
 	bIsGain_ = false;
 	moveGainSpeed_ = GameManager::GetRef().GetConfigValue("Coin.moveGainSpeed");
+
+	GamePlayRecorder* gamePlayRecorder = EntityManager::GetRef().GetByName<GamePlayRecorder>("GamePlayRecorder");
+	gamePlayRecorder->AddRecord(GamePlayRecorder::ERecordType::GEN_COIN, 1);
+
+	bIsInitialized_ = true;
 }
 
 Coin::~Coin()
