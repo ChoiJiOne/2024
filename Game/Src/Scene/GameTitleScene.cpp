@@ -11,6 +11,7 @@
 #include "GL/PostProcessor.h"
 #include "GL/TTFont.h"
 #include "Scene/GamePlayScene.h"
+#include "Scene/GameRecordScene.h"
 #include "Scene/GameTitleScene.h"
 #include "Scene/SceneManager.h"
 #include "Utils/Assertion.h"
@@ -121,7 +122,13 @@ void GameTitleScene::Initailize()
 	updateUiEntities_.insert({ "StartButton", startBtn });
 	renderUiEntities_.insert({ "StartButton", startBtn });
 
-	UIButton* recordBtn = entityManager_->Create<UIButton>("Resource\\UI\\Record.button", uiCamera_, font48, EMouse::LEFT, [&]() {});
+	UIButton* recordBtn = entityManager_->Create<UIButton>("Resource\\UI\\Record.button", uiCamera_, font48, EMouse::LEFT, 
+		[&]() 
+		{
+			bIsSwitched_ = true;
+			switchScene_ = sceneManager_->GetByName<GameRecordScene>("GameRecordScene");
+		}
+	);
 	updateUiEntities_.insert({ "RecordButton", recordBtn });
 	renderUiEntities_.insert({ "RecordButton", recordBtn });
 
