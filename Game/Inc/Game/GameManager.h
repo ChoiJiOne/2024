@@ -55,7 +55,7 @@ public:
 
 	/** 통합 게임 플레이 기록에 대한 Getter 입니다. */
 	float GetTotalPlayTime() const { return totalPlayTime_; }
-	float GetTotalCoin() const { return totalCoin_; };
+	int32_t GetTotalCoin() const { return totalCoin_; };
 	int32_t GetTotalUseSkill() const { return totalUseSkill_; }
 	float GetTotalHealHp() const { return totalHealHp_; }
 	float GetTotalLostHp() const { return totalLostHp_; }
