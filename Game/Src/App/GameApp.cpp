@@ -7,6 +7,7 @@
 #include "GL/TextureAtlas2D.h"
 #include "GL/TTFont.h"
 #include "GLFW/GLFWManager.h"
+#include "Scene/GameOptionScene.h"
 #include "Scene/GameOverScene.h"
 #include "Scene/GamePlayScene.h"
 #include "Scene/GameRecordScene.h"
@@ -49,6 +50,7 @@ void GameApp::Startup()
 
 	GameTitleScene* gameTitleScene = sceneManager_->Create<GameTitleScene>();
 	GameRecordScene* gameRecordScene = sceneManager_->Create<GameRecordScene>();
+	GameOptionScene* gameOptionScene = sceneManager_->Create<GameOptionScene>();
 	GamePlayScene* gamePlayScene = sceneManager_->Create<GamePlayScene>();
 	GameOverScene* gameOverScene = sceneManager_->Create<GameOverScene>();
 
