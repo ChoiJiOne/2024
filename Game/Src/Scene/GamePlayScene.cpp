@@ -121,7 +121,7 @@ void GamePlayScene::Enter()
 
 		RandomChest* randomChest = entityManager_->Create<RandomChest>(randomChestPos);
 
-		AddEntity(randomChest, 10, 10);
+		AddEntity(randomChest, 10, 3);
 		randomChests[index] = randomChest;
 	}
 
@@ -130,7 +130,7 @@ void GamePlayScene::Enter()
 	/** 인게임 엔티티입니다. */
 	AddEntity(player_, 1, 6);
 	AddEntity(mainCamera_, 2);
-	AddEntity(background_, 10, 1);
+	AddEntity(background_, 10, 0);
 	AddEntity(coinCollector_, 15, 10);
 	AddEntity(gamePlayRecorder_, 20);
 
@@ -263,7 +263,7 @@ void GamePlayScene::Initialize()
 	AddEntity(fadeEffector_, 52);
 
 	playground_ = entityManager_->Create<Playground>();
-	AddEntity(playground_, 10, 5);
+	AddEntity(playground_, 10, 2);
 
 	entityManager_->Register("Playground", playground_);
 
