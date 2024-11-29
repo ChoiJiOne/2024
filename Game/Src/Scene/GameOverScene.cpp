@@ -3,10 +3,10 @@
 #include "Entity/Backdrop.h"
 #include "Entity/EntityManager.h"
 #include "Entity/FadeEffector.h"
-#include "Entity/GameOver.h"
 #include "Entity/ResultViewer.h"
 #include "Entity/UIButton.h"
 #include "Entity/UICamera.h"
+#include "Entity/UIPanel.h"
 #include "Game/GameManager.h"
 #include "GL/FrameBuffer.h"
 #include "GL/GLManager.h"
@@ -34,7 +34,7 @@ void GameOverScene::Tick(float deltaSeconds)
 {
 	for (auto& uiEntity : updateUiEntities_)
 	{
-		uiEntity.second->Tick(deltaSeconds);
+		uiEntity->Tick(deltaSeconds);
 	}
 }
 
@@ -46,7 +46,7 @@ void GameOverScene::Render()
 		{
 			for (auto& uiEntity : renderUiEntities_)
 			{
-				uiEntity.second->Render();
+				uiEntity->Render();
 			}
 		}
 		renderManager_->End();
@@ -89,26 +89,26 @@ void GameOverScene::Initailize()
 	renderTargetOption_ = RenderTargetOption{ glm::vec4(0.0f, 0.0f, 0.0f, 1.0f), true };
 
 	uiCamera_ = entityManager_->GetByName<UICamera>("UICamera");
-	updateUiEntities_.insert({ "UICamera", uiCamera_ });
+	updateUiEntities_.push_back(uiCamera_);
 	
 	Backdrop* backdrop = entityManager_->GetByName<Backdrop>("Backdrop");
-	updateUiEntities_.insert({ "Backdrop", backdrop });
-	renderUiEntities_.insert({ "Backdrop", backdrop });
+	updateUiEntities_.push_back(backdrop);
+	renderUiEntities_.push_back(backdrop);
 
-	GameOver* gameOver = entityManager_->Create<GameOver>();
-	updateUiEntities_.insert({ "GameOver", gameOver });
-	renderUiEntities_.insert({ "GameOver", gameOver });
+	UIPanel* gameOverPanel = entityManager_->Create<UIPanel>("Resource\\UI\\GameOver.panel", glManager_->GetByName<TextureAtlas2D>("TextureAtlas"));
+	updateUiEntities_.push_back(gameOverPanel);
+	renderUiEntities_.push_back(gameOverPanel);
 
 	TTFont* font48 = glManager_->GetByName<TTFont>("Font48");
 	resultViewTime_ = 5.0f;
 
 	playTimeResultViewer_ = entityManager_->Create<ResultViewer>(font48, glm::vec2(0.0f, 0.0f), L"TIME", glm::vec4(0.0f, 0.0f, 0.0f, 1.0f), resultViewTime_);
-	updateUiEntities_.insert({ "PlayTimeResultViewer", playTimeResultViewer_ });
-	renderUiEntities_.insert({ "PlayTimeResultViewer", playTimeResultViewer_ });
+	updateUiEntities_.push_back(playTimeResultViewer_);
+	renderUiEntities_.push_back(playTimeResultViewer_);
 
 	getCoinResultViewer_ = entityManager_->Create<ResultViewer>(font48, glm::vec2(0.0f, -50.0f), L"COIN", glm::vec4(0.0f, 0.0f, 0.0f, 1.0f), resultViewTime_);
-	updateUiEntities_.insert({ "GetCoinResultViewer", getCoinResultViewer_ });
-	renderUiEntities_.insert({ "GetCoinResultViewer", getCoinResultViewer_ });
+	updateUiEntities_.push_back(getCoinResultViewer_);
+	renderUiEntities_.push_back(getCoinResultViewer_);
 
 	UIButton* doneBtn = entityManager_->Create<UIButton>("Resource\\UI\\Done.button", uiCamera_, font48, EMouse::LEFT, 
 		[&]() 
@@ -117,11 +117,11 @@ void GameOverScene::Initailize()
 			switchScene_ = sceneManager_->GetByName<GameTitleScene>("GameTitleScene");
 		}
 	);
-	updateUiEntities_.insert({ "DoneButton", doneBtn });
-	renderUiEntities_.insert({ "DoneButton", doneBtn });
+	updateUiEntities_.push_back(doneBtn);
+	renderUiEntities_.push_back(doneBtn);
 
 	fadeEffector_ = entityManager_->GetByName<FadeEffector>("FadeEffector");
-	updateUiEntities_.insert({ "FadeEffector", fadeEffector_ });
+	updateUiEntities_.push_back(fadeEffector_);
 }
 
 void GameOverScene::UnInitailize()
@@ -129,25 +129,16 @@ void GameOverScene::UnInitailize()
 	/** 외부에서 생성된 엔티티나 리소스는 초기화 해제하지 않습니다. */
 	for (auto& updateUiEntity : updateUiEntities_)
 	{
-		if (updateUiEntity.second == uiCamera_)
+		if (updateUiEntity == uiCamera_)
 		{
 			// UI 카메라는 외부에서 생성했으므로, 정리 대상에서 제외.
 			continue;
 		}
 
-		if (updateUiEntity.second && updateUiEntity.second->IsInitialized())
+		if (updateUiEntity && updateUiEntity->IsInitialized())
 		{
-			entityManager_->Destroy(updateUiEntity.second);
-			updateUiEntity.second = nullptr;
-		}
-	}
-
-	for (auto& renderUIEntity : renderUiEntities_)
-	{
-		if (renderUIEntity.second && renderUIEntity.second->IsInitialized())
-		{
-			entityManager_->Destroy(renderUIEntity.second);
-			renderUIEntity.second = nullptr;
+			entityManager_->Destroy(updateUiEntity);
+			updateUiEntity = nullptr;
 		}
 	}
 
