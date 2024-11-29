@@ -1,5 +1,6 @@
 #include "Entity/EntityManager.h"
 #include "Entity/Playground.h"
+#include "Game/GameManager.h"
 #include "GL/RenderManager2D.h"
 #include "GL/TextureAtlas2D.h"
 #include "Utils/Assertion.h"
@@ -9,8 +10,9 @@ Playground::Playground()
 {
 	textureAtlas_ = GLManager::GetRef().GetByName<TextureAtlas2D>("TextureAtlas");
 
-	safeBound_ = Circle2D(glm::vec2(0.0f, 0.0f), 1000.0f);
-	warnBound_ = Circle2D(glm::vec2(0.0f, 0.0f), 1050.0f);
+	float radius = GameManager::GetRef().GetConfigValue("Playground.radius");
+	safeBound_ = Circle2D(glm::vec2(0.0f, 0.0f), radius);
+	warnBound_ = Circle2D(glm::vec2(0.0f, 0.0f), radius + 50.0f);
 
 	static const std::array<std::string, 6> TEXTURE_NAMES =
 	{
