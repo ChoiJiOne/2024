@@ -10,6 +10,7 @@
 #include "GL/GLManager.h"
 #include "GL/PostProcessor.h"
 #include "GL/TTFont.h"
+#include "Scene/GameOptionScene.h"
 #include "Scene/GamePlayScene.h"
 #include "Scene/GameRecordScene.h"
 #include "Scene/GameTitleScene.h"
@@ -126,7 +127,13 @@ void GameTitleScene::Initailize()
 	updateUiEntities_.push_back(recordBtn);
 	renderUiEntities_.push_back(recordBtn);
 
-	UIButton* optionBtn = entityManager_->Create<UIButton>("Resource\\UI\\Option.button", uiCamera_, font48, EMouse::LEFT, [&]() {});
+	UIButton* optionBtn = entityManager_->Create<UIButton>("Resource\\UI\\Option.button", uiCamera_, font48, EMouse::LEFT, 
+		[&]() 
+		{
+			bIsSwitched_ = true;
+			switchScene_ = sceneManager_->GetByName<GameOptionScene>("GameOptionScene");
+		}
+	);
 	updateUiEntities_.push_back(optionBtn);
 	renderUiEntities_.push_back(optionBtn);
 
