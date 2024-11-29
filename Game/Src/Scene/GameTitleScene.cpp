@@ -121,9 +121,9 @@ void GameTitleScene::Initailize()
 	updateUiEntities_.insert({ "StartButton", startBtn });
 	renderUiEntities_.insert({ "StartButton", startBtn });
 
-	UIButton* galleryBtn = entityManager_->Create<UIButton>("Resource\\UI\\Gallery.button", uiCamera_, font48, EMouse::LEFT, [&]() {});
-	updateUiEntities_.insert({ "GalleryButton", galleryBtn });
-	renderUiEntities_.insert({ "GalleryButton", galleryBtn });
+	UIButton* recordBtn = entityManager_->Create<UIButton>("Resource\\UI\\Record.button", uiCamera_, font48, EMouse::LEFT, [&]() {});
+	updateUiEntities_.insert({ "RecordButton", recordBtn });
+	renderUiEntities_.insert({ "RecordButton", recordBtn });
 
 	UIButton* optionBtn = entityManager_->Create<UIButton>("Resource\\UI\\Option.button", uiCamera_, font48, EMouse::LEFT, [&]() {});
 	updateUiEntities_.insert({ "OptionButton", optionBtn });
