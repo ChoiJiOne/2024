@@ -1,5 +1,6 @@
 #include "Entity/Backdrop.h"
 #include "Entity/EntityManager.h"
+#include "Entity/PlayRecordViewer.h"
 #include "Entity/UIButton.h"
 #include "Entity/UICamera.h"
 #include "Entity/UIPanel.h"
@@ -51,6 +52,8 @@ void GameRecordScene::Enter()
 {
 	bIsEnter_ = true;
 	bIsSwitched_ = false;
+
+	playRecordViewer_->Update();
 }
 
 void GameRecordScene::Exit()
@@ -70,8 +73,16 @@ void GameRecordScene::Initailize()
 
 	TTFont* font48 = glManager_->GetByName<TTFont>("Font48");
 
-	UIButton* backBtn = entityManager_->Create<UIButton>("Resource\\UI\\Back.button", uiCamera_, font48, EMouse::LEFT, 
-		[&]() 
+	UIPanel* recordPanel = entityManager_->Create<UIPanel>("Resource\\UI\\Record.panel", glManager_->GetByName<TextureAtlas2D>("TextureAtlas"));
+	updateUiEntities_.push_back(recordPanel);
+	renderUiEntities_.push_back(recordPanel);
+
+	playRecordViewer_ = entityManager_->Create<PlayRecordViewer>();
+	updateUiEntities_.push_back(playRecordViewer_);
+	renderUiEntities_.push_back(playRecordViewer_);
+
+	UIButton* backBtn = entityManager_->Create<UIButton>("Resource\\UI\\Back.button", uiCamera_, font48, EMouse::LEFT,
+		[&]()
 		{
 			bIsSwitched_ = true;
 			switchScene_ = sceneManager_->GetByName<GameTitleScene>("GameTitleScene");
@@ -79,10 +90,6 @@ void GameRecordScene::Initailize()
 	);
 	updateUiEntities_.push_back(backBtn);
 	renderUiEntities_.push_back(backBtn);
-
-	UIPanel* recordPanel = entityManager_->Create<UIPanel>("Resource\\UI\\Record.panel", glManager_->GetByName<TextureAtlas2D>("TextureAtlas"));
-	updateUiEntities_.push_back(recordPanel);
-	renderUiEntities_.push_back(recordPanel);
 }
 
 void GameRecordScene::UnInitailize()
@@ -100,15 +107,6 @@ void GameRecordScene::UnInitailize()
 		{
 			entityManager_->Destroy(updateUiEntity);
 			updateUiEntity = nullptr;
-		}
-	}
-
-	for (auto& renderUIEntity : renderUiEntities_)
-	{
-		if (renderUIEntity && renderUIEntity->IsInitialized())
-		{
-			entityManager_->Destroy(renderUIEntity);
-			renderUIEntity = nullptr;
 		}
 	}
 }
