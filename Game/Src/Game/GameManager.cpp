@@ -17,11 +17,21 @@ GameManager* GameManager::GetPtr()
 	return &singleton_;
 }
 
+template <>
 float GameManager::GetConfigValue(const std::string& name)
 {
-	auto it = configValues_.find(name);
-	ASSERTION(it != configValues_.end(), "Can't find %s in game config file.", name.c_str());
-	
+	auto it = floatConfigValues_.find(name);
+	ASSERTION(it != floatConfigValues_.end(), "Can't find %s in game config file.", name.c_str());
+
+	return it->second;
+}
+
+template <>
+int32_t GameManager::GetConfigValue(const std::string& name)
+{
+	auto it = integerConfigValues_.find(name);
+	ASSERTION(it != integerConfigValues_.end(), "Can't find %s in game config file.", name.c_str());
+
 	return it->second;
 }
 
@@ -123,10 +133,26 @@ void GameManager::LoadConfigs(const std::string& path)
 	for (uint32_t index = 0; index < members.size(); ++index)
 	{
 		const std::string& name = members[index];
-		if (root[name].isDouble() && !root[name].isNull())
+		const Json::Value& object = root[name];
+
+		if (!object["type"].isNull() && object["type"].isString())
 		{
-			float configValue = root[name].asFloat();
-			configValues_.insert({ name , configValue });
+			const std::string& type = object["type"].asString();
+			if (object["value"].isNull())
+			{
+				continue;
+			}
+
+			if (type == "int")
+			{
+				int32_t value = object["value"].asInt();
+				integerConfigValues_.insert({ name, value });
+			}
+			else if (type == "float")
+			{
+				float value = object["value"].asFloat();
+				floatConfigValues_.insert({ name, value });
+			}
 		}
 	}
 }

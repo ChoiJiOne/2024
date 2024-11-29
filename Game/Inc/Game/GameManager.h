@@ -46,7 +46,8 @@ public:
 	static GameManager* GetPtr();
 
 	/** 이름에 대응하는 설정 값을 얻습니다. */
-	float GetConfigValue(const std::string& name);
+	template <typename T>
+	T GetConfigValue(const std::string& name);
 
 	/** 게임 플레이 기록을 추가합니다. */
 	void AddGamePlayRecord(const GamePlayRecorder* gamePlayRecorder);
@@ -94,8 +95,11 @@ private:
 	/** 게임 플레이 기록 파일 경로입니다. */
 	std::string recordPath_;
 
-	/** 이름에 대응하는 설정 값입니다. */
-	std::map<std::string, float> configValues_;
+	/** 이름에 대응하는 float 타입의 설정 값입니다. */
+	std::map<std::string, float> floatConfigValues_;
+
+	/** 이름에 대응하는 int 타입의 설정 값입니다. */
+	std::map<std::string, int32_t> integerConfigValues_;
 
 	/** 게임 플레이 기록입니다. */
 	std::vector<GamePlayRecord> gamePlayRecords_;
