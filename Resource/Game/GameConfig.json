@@ -1,4 +1,5 @@
 {
+    "Playground.radius": 1500.0,
     "Coin.maxMoveTime": 2.0,
     "Coin.moveGainSpeed": 1500.0,
     "Fire.damage": 10.0,
