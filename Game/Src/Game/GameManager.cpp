@@ -43,6 +43,14 @@ void GameManager::AddGamePlayRecord(const GamePlayRecorder* gamePlayRecorder)
 	gamePlayRecord.genPowerRedPotion = gamePlayRecorder->GetRecord<int32_t>(GamePlayRecorder::ERecordType::GEN_POWER_RED_POTION);
 	gamePlayRecord.genPowerBluePotion = gamePlayRecorder->GetRecord<int32_t>(GamePlayRecorder::ERecordType::GEN_POWER_BLUE_POTION);
 
+	totalPlayTime_ += gamePlayRecord.playTime;
+	totalCoin_ += gamePlayRecord.getCoin;
+	totalUseSkill_ += gamePlayRecord.useSkill;
+	totalHealHp_ += gamePlayRecord.healHp;
+	totalLostHp_ += gamePlayRecord.lostHp;
+	totalHealMp_ += gamePlayRecord.healMp;
+	totalLostMp_ += gamePlayRecord.lostMp;
+
 	const std::string& startPlayTime = gamePlayRecorder->GetStartSystemTime();
 	std::copy(startPlayTime.begin(), startPlayTime.end(), gamePlayRecord.startPlayTime);
 
