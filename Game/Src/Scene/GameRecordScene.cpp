@@ -2,6 +2,7 @@
 #include "Entity/EntityManager.h"
 #include "Entity/UIButton.h"
 #include "Entity/UICamera.h"
+#include "Entity/UIPanel.h"
 #include "GL/GLManager.h"
 #include "GL/RenderManager2D.h"
 #include "GL/TTFont.h"
@@ -78,6 +79,10 @@ void GameRecordScene::Initailize()
 	);
 	updateUiEntities_.push_back(backBtn);
 	renderUiEntities_.push_back(backBtn);
+
+	UIPanel* recordPanel = entityManager_->Create<UIPanel>("Resource\\UI\\Record.panel", glManager_->GetByName<TextureAtlas2D>("TextureAtlas"));
+	updateUiEntities_.push_back(recordPanel);
+	renderUiEntities_.push_back(recordPanel);
 }
 
 void GameRecordScene::UnInitailize()
