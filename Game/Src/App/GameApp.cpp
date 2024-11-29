@@ -9,6 +9,7 @@
 #include "GLFW/GLFWManager.h"
 #include "Scene/GameOverScene.h"
 #include "Scene/GamePlayScene.h"
+#include "Scene/GameRecordScene.h"
 #include "Scene/GameTitleScene.h"
 #include "Scene/SceneManager.h"
 #include "Utils/Utils.h"
@@ -47,6 +48,7 @@ void GameApp::Startup()
 	entityManager_->Register("FadeEffector", fadeEffector);
 
 	GameTitleScene* gameTitleScene = sceneManager_->Create<GameTitleScene>();
+	GameRecordScene* gameRecordScene = sceneManager_->Create<GameRecordScene>();
 	GamePlayScene* gamePlayScene = sceneManager_->Create<GamePlayScene>();
 	GameOverScene* gameOverScene = sceneManager_->Create<GameOverScene>();
 
