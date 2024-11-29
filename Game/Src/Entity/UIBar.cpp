@@ -12,9 +12,8 @@
 #include "Utils/Assertion.h"
 #include "Utils/Utils.h"
 
-UIBar::UIBar(UICamera* uiCamera, TTFont* font, const std::string& barPath)
-	: uiCamera_(uiCamera)
-	, font_(font)
+UIBar::UIBar(TTFont* font, const std::string& barPath)
+	: font_(font)
 {
 	InitProperties(barPath);
 	

@@ -8,14 +8,13 @@
 
 /** 클래스의 전방 선언입니다. */
 class TTFont;
-class UICamera;
 
 /** UI 바 엔티티입니다. */
 class UIBar : public IEntity2D
 {
 public:
 	/** UI 바의 내부 속성을 설정하기 위해서는 Json 포멧의 파일이 필요합니다. */
-	UIBar(UICamera* uiCamera, TTFont* font, const std::string& barPath);
+	UIBar(TTFont* font, const std::string& barPath);
 	virtual ~UIBar();
 
 	DISALLOW_COPY_AND_ASSIGN(UIBar);
@@ -41,9 +40,6 @@ private:
 	void InitProperties(const std::string& barPath);
 
 private:
-	/** UI바 렌더링에 기준이 될 UI 카메라입니다. */
-	UICamera* uiCamera_ = nullptr;
-
 	/** UI바에 텍스트를 렌더링할 때 참조할 폰트입니다. */
 	TTFont* font_ = nullptr;
 
