@@ -10,14 +10,13 @@
 /** 클래스의 전방 선언입니다. */
 class TTFont;
 class TextureAtlas2D;
-class UICamera;
 
 /** UI 스킬 엔티티입니다. */
 class UISkill : public IEntity2D
 {
 public:
 	/** UI 스킬의 내부 속성을 설정하기 위해서는 Json 포멧의 파일이 필요합니다. */
-	UISkill(UICamera* uiCamera, TTFont* font, const std::string& skillPath);
+	UISkill(TTFont* font, const std::string& skillPath);
 	virtual ~UISkill();
 
 	DISALLOW_COPY_AND_ASSIGN(UISkill);
@@ -52,9 +51,6 @@ private:
 	void InitProperties(const std::string& skillPath);
 
 private:
-	/** UI 스킬 렌더링에 기준이 될 UI 카메라입니다. */
-	UICamera* uiCamera_ = nullptr;
-
 	/** UI 스킬의 남은 쿨타임 시간을 표시할 때 사용할 폰트입니다. */
 	TTFont* font_ = nullptr;
 

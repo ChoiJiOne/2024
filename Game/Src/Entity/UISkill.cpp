@@ -4,16 +4,14 @@
 #include <json/json.h>
 
 #include "Entity/EntityManager.h"
-#include "Entity/UICamera.h"
 #include "Entity/UISkill.h"
 #include "GL/GLManager.h"
 #include "GL/TextureAtlas2D.h"
 #include "GL/TTFont.h"
 #include "Utils/Assertion.h"
 
-UISkill::UISkill(UICamera* uiCamera, TTFont* font, const std::string& skillPath)
-	: uiCamera_(uiCamera)
-	, font_(font)
+UISkill::UISkill(TTFont* font, const std::string& skillPath)
+	: font_(font)
 {
 	InitProperties(skillPath);
 
@@ -96,7 +94,6 @@ void UISkill::Release()
 
 	textureAtlas_ = nullptr;
 	font_ = nullptr;
-	uiCamera_ = nullptr;
 
 	bIsInitialized_ = false;
 }
