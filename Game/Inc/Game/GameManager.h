@@ -53,6 +53,15 @@ public:
 	/** 최근 게임 플레이 기록을 얻습니다. */
 	const GamePlayRecord* GetRecentGamePlayRecord() const;
 
+	/** 통합 게임 플레이 기록에 대한 Getter 입니다. */
+	float GetTotalPlayTime() const { return totalPlayTime_; }
+	float GetTotalCoin() const { return totalCoin_; };
+	int32_t GetTotalUseSkill() const { return totalUseSkill_; }
+	float GetTotalHealHp() const { return totalHealHp_; }
+	float GetTotalLostHp() const { return totalLostHp_; }
+	float GetTotalHealMp() const { return totalHealMp_; }
+	float GetTotalLostMp() const { return totalLostMp_; }
+
 private:
 	/** IApp에서 게임 매니저의 내부에 접근할 수 있도록 설정. */
 	friend class IApp;
