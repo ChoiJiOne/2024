@@ -74,7 +74,6 @@ void UIBar::Release()
 	CHECK(bIsInitialized_);
 
 	font_ = nullptr;
-	uiCamera_ = nullptr;
 
 	bIsInitialized_ = false;
 }
