@@ -28,7 +28,7 @@ Fire::Fire(const glm::vec2& position, const glm::vec2& direction, float speed, f
 
 	LoadAnimations();
 
-	damage_ = GameManager::GetRef().GetConfigValue("Fire.damage");
+	damage_ = GameManager::GetRef().GetConfigValue<float>("Fire.damage");
 	state_ = EState::MOVE;
 
 	GamePlayRecorder* gamePlayRecorder = EntityManager::GetRef().GetByName<GamePlayRecorder>("GamePlayRecorder");

@@ -48,12 +48,12 @@ RandomChest::RandomChest(const glm::vec2& position)
 	animator_ = GLManager::GetRef().Create<SpriteAnimator2D>(textureAtlas_, chestClipNames, 1.0f, false);
 
 	waitTime_ = 0.0f;
-	maxWaitTime_ = GameManager::GetRef().GetConfigValue("RandomChest.maxWaitTime");
+	maxWaitTime_ = GameManager::GetRef().GetConfigValue<float>("RandomChest.maxWaitTime");
 	bIsGenerateObject_ = false;
-	minFireSpeed_ = GameManager::GetRef().GetConfigValue("RandomChest.minFireSpeed");
-	maxFireSpeed_ = GameManager::GetRef().GetConfigValue("RandomChest.maxFireSpeed");
-	minFireLifeTime_ = GameManager::GetRef().GetConfigValue("RandomChest.minFireLifeTime");
-	maxFireLifeTime_ = GameManager::GetRef().GetConfigValue("RandomChest.maxFireLifeTime");
+	minFireSpeed_ = GameManager::GetRef().GetConfigValue<float>("RandomChest.minFireSpeed");
+	maxFireSpeed_ = GameManager::GetRef().GetConfigValue<float>("RandomChest.maxFireSpeed");
+	minFireLifeTime_ = GameManager::GetRef().GetConfigValue<float>("RandomChest.minFireLifeTime");
+	maxFireLifeTime_ = GameManager::GetRef().GetConfigValue<float>("RandomChest.maxFireLifeTime");
 
 	bIsInitialized_ = true;
 }

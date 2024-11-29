@@ -46,9 +46,9 @@ Coin::Coin(const glm::vec2& startPos, const glm::vec2& endPos)
 	
 	state_ = EState::MOVE;
 	moveTime_ = 0.0f;
-	maxMoveTime_ = GameManager::GetRef().GetConfigValue("Coin.maxMoveTime");
+	maxMoveTime_ = GameManager::GetRef().GetConfigValue<float>("Coin.maxMoveTime");
 	bIsGain_ = false;
-	moveGainSpeed_ = GameManager::GetRef().GetConfigValue("Coin.moveGainSpeed");
+	moveGainSpeed_ = GameManager::GetRef().GetConfigValue<float>("Coin.moveGainSpeed");
 
 	GamePlayRecorder* gamePlayRecorder = EntityManager::GetRef().GetByName<GamePlayRecorder>("GamePlayRecorder");
 	gamePlayRecorder->AddRecord(GamePlayRecorder::ERecordType::GEN_COIN, 1);

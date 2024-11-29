@@ -43,17 +43,17 @@ Player::Player()
 	shadow_.option.bIsFlipV = true;
 
 	direction_ = glm::vec2(0.0f, -1.0f);
-	speed_ = GameManager::GetRef().GetConfigValue("Player.speed");
+	speed_ = GameManager::GetRef().GetConfigValue<float>("Player.speed");
 	
 	bIsDashing_ = false;
 	dashSpeed_ = speed_;
 	maxDashSpeed_ = speed_ * 3.0f;
-	dashLength_ = GameManager::GetRef().GetConfigValue("Player.dashLength");
+	dashLength_ = GameManager::GetRef().GetConfigValue<float>("Player.dashLength");
 
 	skillMpCosts_ =
 	{
-		{ ESkill::DASH,          GameManager::GetRef().GetConfigValue("Player.dashMpCost")          },
-		{ ESkill::INVINCIBILITY, GameManager::GetRef().GetConfigValue("Player.invincibilityMpCost") },
+		{ ESkill::DASH,          GameManager::GetRef().GetConfigValue<float>("Player.dashMpCost")          },
+		{ ESkill::INVINCIBILITY, GameManager::GetRef().GetConfigValue<float>("Player.invincibilityMpCost") },
 	};
 
 	LoadAnimations();
@@ -62,8 +62,8 @@ Player::Player()
 	invincibilityColor_ = glm::vec4(1.0f, 0.0f, 0.0f, 1.0f);
 	lostHpColor_ = glm::vec4(1.0f, 0.5f, 0.1f, 1.0f);
 
-	maxLostHpEffectCount_ = 5;
-	maxLostHpEffectTime_ = GameManager::GetRef().GetConfigValue("Player.maxLostHpEffectTime");
+	maxLostHpEffectCount_ = GameManager::GetRef().GetConfigValue<int32_t>("Player.maxLostHpEffectCount");
+	maxLostHpEffectTime_ = GameManager::GetRef().GetConfigValue<float>("Player.maxLostHpEffectTime");
 
 	bIsInitialized_ = true;
 }

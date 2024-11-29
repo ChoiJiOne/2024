@@ -10,7 +10,7 @@ Playground::Playground()
 {
 	textureAtlas_ = GLManager::GetRef().GetByName<TextureAtlas2D>("TextureAtlas");
 
-	float radius = GameManager::GetRef().GetConfigValue("Playground.radius");
+	float radius = GameManager::GetRef().GetConfigValue<float>("Playground.radius");
 	safeBound_ = Circle2D(glm::vec2(0.0f, 0.0f), radius);
 	warnBound_ = Circle2D(glm::vec2(0.0f, 0.0f), radius + 50.0f);
 

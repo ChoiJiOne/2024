@@ -43,8 +43,8 @@ Potion::Potion(const glm::vec2& startPos, const glm::vec2& endPos, const EColor&
 
 	state_ = EState::MOVE;
 	moveTime_ = 0.0f;
-	maxMoveTime_ = GameManager::GetRef().GetConfigValue("Potion.maxMoveTime");
-	heal_ = GameManager::GetRef().GetConfigValue("Potion.heal");
+	maxMoveTime_ = GameManager::GetRef().GetConfigValue<float>("Potion.maxMoveTime");
+	heal_ = GameManager::GetRef().GetConfigValue<float>("Potion.heal");
 
 	colorNames_ =
 	{
