@@ -1,18 +1,70 @@
 {
-    "Playground.radius": 1500.0,
-    "Coin.maxMoveTime": 2.0,
-    "Coin.moveGainSpeed": 1500.0,
-    "Fire.damage": 10.0,
-    "Player.speed": 500.0,
-    "Player.dashLength": 20.0,
-    "Player.dashMpCost": 5.0,
-    "Player.invincibilityMpCost": 20.0,
-    "Player.maxLostHpEffectTime": 0.05,
-    "Potion.maxMoveTime": 2.0,
-    "Potion.heal": 10.0,
-    "RandomChest.maxWaitTime": 2.0,
-    "RandomChest.minFireSpeed": 300.0,
-    "RandomChest.maxFireSpeed": 500.0,
-    "RandomChest.minFireLifeTime": 10.0,
-    "RandomChest.maxFireLifeTime": 15.0
+    "Playground.radius": {
+        "type": "float",
+        "value": 1500.0
+    },
+    "Coin.maxMoveTime": {
+        "type": "float",
+        "value": 2.0
+    },
+    "Coin.moveGainSpeed": {
+        "type": "float",
+        "value": 1500.0
+    },
+    "Fire.damage": {
+        "type": "float",
+        "value": 10.0
+    },
+    "Player.speed": {
+        "type": "float",
+        "value": 500.0
+    },
+    "Player.dashLength": {
+        "type": "float",
+        "value": 20.0
+    },
+    "Player.dashMpCost": {
+        "type": "float",
+        "value": 5.0
+    },
+    "Player.invincibilityMpCost": {
+        "type": "float",
+        "value": 20.0
+    },
+    "Player.maxLostHpEffectTime": {
+        "type": "float",
+        "value": 0.05
+    },
+    "Player.maxLostHpEffectCount": {
+        "type": "int",
+        "value": 5
+    },
+    "Potion.maxMoveTime": {
+        "type": "float",
+        "value": 2.0
+    },
+    "Potion.heal": {
+        "type": "float",
+        "value": 10.0
+    },
+    "RandomChest.maxWaitTime": {
+        "type": "float",
+        "value": 2.0
+    },
+    "RandomChest.minFireSpeed": {
+        "type": "float",
+        "value": 300.0
+    },
+    "RandomChest.maxFireSpeed": {
+        "type": "float",
+        "value": 500.0
+    },
+    "RandomChest.minFireLifeTime": {
+        "type": "float",
+        "value": 10.0
+    },
+    "RandomChest.maxFireLifeTime": {
+        "type": "float",
+        "value": 15.0
+    }
 }
