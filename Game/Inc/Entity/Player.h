@@ -110,6 +110,9 @@ private:
 	/** 플레이어의 대쉬 스킬을 수행합니다. */
 	void UseDashSkill(float deltaSeconds);
 
+	/** 플레이어의 체력 감소 이펙트를 수행합니다. */
+	void LostHpEffect(float deltaSeconds);
+
 	/** 플레이어를 움직입니다 */
 	void Move(float deltaSeconds, float speed);
 	
@@ -197,4 +200,22 @@ private:
 
 	/** 플레이어가 대쉬 중인지 확인합니다. */
 	bool bIsDashing_ = false;
+
+	/** 플레이어 체력이 감소했을 때 표시할 색상입니다. */
+	glm::vec4 lostHpColor_;
+
+	/** 플레이어가 체력이 감소했는지 확인합니다. */
+	bool bIsLostHp_ = false;
+
+	/** 플레이어의 체력이 감소했을 때 깜빡거리는 효과의 최대 횟수입니다. */
+	int32_t maxLostHpEffectCount_ = 0;
+
+	/** 플레이어의 체력 감소 효과 시간의 최대값입니다. */
+	float maxLostHpEffectTime_ = 0.0f;
+
+	/** 플레이어의 체력이 감소했을 때 깜빡거리는 효과의 횟수입니다. */
+	int32_t lostHpEffectCount_ = 0;
+
+	/** 현재 체력 감소 효과 시간 값입니다. */
+	float lostHpEffectTime_ = 0.0f;
 };

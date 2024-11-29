@@ -43,23 +43,27 @@ Player::Player()
 	shadow_.option.bIsFlipV = true;
 
 	direction_ = glm::vec2(0.0f, -1.0f);
-	speed_ = GameManager::GetRef().GetConfigValue("Player.Speed");
+	speed_ = GameManager::GetRef().GetConfigValue("Player.speed");
 	
 	bIsDashing_ = false;
 	dashSpeed_ = speed_;
 	maxDashSpeed_ = speed_ * 3.0f;
-	dashLength_ = GameManager::GetRef().GetConfigValue("Player.DashLength");
+	dashLength_ = GameManager::GetRef().GetConfigValue("Player.dashLength");
 
 	skillMpCosts_ =
 	{
-		{ ESkill::DASH,          GameManager::GetRef().GetConfigValue("Player.DashMpCost")          },
-		{ ESkill::INVINCIBILITY, GameManager::GetRef().GetConfigValue("Player.InvincibilityMpCost") },
+		{ ESkill::DASH,          GameManager::GetRef().GetConfigValue("Player.dashMpCost")          },
+		{ ESkill::INVINCIBILITY, GameManager::GetRef().GetConfigValue("Player.invincibilityMpCost") },
 	};
 
 	LoadAnimations();
 	LoadUIs();
 
 	invincibilityColor_ = glm::vec4(1.0f, 0.0f, 0.0f, 1.0f);
+	lostHpColor_ = glm::vec4(1.0f, 0.5f, 0.1f, 1.0f);
+
+	maxLostHpEffectCount_ = 5;
+	maxLostHpEffectTime_ = GameManager::GetRef().GetConfigValue("Player.maxLostHpEffectTime");
 
 	bIsInitialized_ = true;
 }
@@ -110,7 +114,8 @@ void Player::Tick(float deltaSeconds)
 	}
 
 	UseDashSkill(deltaSeconds);
-	
+	LostHpEffect(deltaSeconds);
+
 	glm::vec2 countDirection = glm::normalize(-direction_);
 	float radian = GetRadianVec2(countDirection);
 	float xoff = dashLength_ * glm::cos(radian);
@@ -118,7 +123,7 @@ void Player::Tick(float deltaSeconds)
 
 	prevPosition_ = renderBound_.center + glm::vec2(xoff, yoff);
 	currPosition_ = renderBound_.center;
-
+	
 	if (hpBar_->GetBar() <= 0.0f)
 	{
 		bIsDashing_ = false;
@@ -130,6 +135,17 @@ void Player::Tick(float deltaSeconds)
 
 void Player::Render()
 {
+	if (bIsLostHp_ && state_ != EState::HURT)
+	{
+		renderOption_.blend = glm::vec3(lostHpColor_.x, lostHpColor_.y, lostHpColor_.z);
+		renderOption_.factor = lostHpEffectTime_ / maxLostHpEffectTime_;
+	}
+	else
+	{
+		renderOption_.blend = glm::vec3(0.0f, 0.0f, 0.0f);
+		renderOption_.factor = 0.0f;
+	}
+
 	TextureAtlas2D* animationTexture = animations_.at(state_)->GetTextureAtlas();
 	const std::string& animationClipName = animations_.at(state_)->GetCurrentClipName();
 
@@ -181,6 +197,10 @@ void Player::SetHP(float hp)
 	hp = glm::clamp<float>(hp, 0.0f, hpBar_->GetMaxBar());
 	if (hp < currentHp)
 	{
+		bIsLostHp_ = true;
+		lostHpEffectCount_ = 0;
+		lostHpEffectTime_ = maxLostHpEffectTime_;
+
 		float lostHp = currentHp - hp;
 		gamePlayRecorder_->AddRecord<float>(GamePlayRecorder::ERecordType::LOST_HP, lostHp);
 	}
@@ -346,6 +366,33 @@ void Player::UseDashSkill(float deltaSeconds)
 	}
 
 	Move(deltaSeconds, dashSpeed_);
+}
+
+void Player::LostHpEffect(float deltaSeconds)
+{
+	if (!bIsLostHp_)
+	{
+		return;
+	}
+
+	lostHpEffectTime_ -= deltaSeconds;
+	lostHpEffectTime_ = glm::clamp<float>(lostHpEffectTime_, 0.0f, maxLostHpEffectTime_);
+
+	if (lostHpEffectTime_ > 0.0f)
+	{
+		return;
+	}
+
+	// lostHpEffectTime_ <= 0.0f
+	lostHpEffectCount_++;
+	if (lostHpEffectCount_ >= maxLostHpEffectCount_)
+	{
+		bIsLostHp_ = false;
+	}
+	else
+	{
+		lostHpEffectTime_ = maxLostHpEffectTime_;
+	}
 }
 
 void Player::Move(float deltaSeconds, float speed)
