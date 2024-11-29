@@ -14,7 +14,7 @@ class UIBar : public IEntity2D
 {
 public:
 	/** UI 바의 내부 속성을 설정하기 위해서는 Json 포멧의 파일이 필요합니다. */
-	UIBar(TTFont* font, const std::string& barPath);
+	UIBar(const std::string& barPath, TTFont* font);
 	virtual ~UIBar();
 
 	DISALLOW_COPY_AND_ASSIGN(UIBar);

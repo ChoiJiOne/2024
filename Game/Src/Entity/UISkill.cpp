@@ -10,7 +10,7 @@
 #include "GL/TTFont.h"
 #include "Utils/Assertion.h"
 
-UISkill::UISkill(TTFont* font, const std::string& skillPath)
+UISkill::UISkill(const std::string& skillPath, TTFont* font)
 	: font_(font)
 {
 	InitProperties(skillPath);

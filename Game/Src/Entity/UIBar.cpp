@@ -12,7 +12,7 @@
 #include "Utils/Assertion.h"
 #include "Utils/Utils.h"
 
-UIBar::UIBar(TTFont* font, const std::string& barPath)
+UIBar::UIBar(const std::string& barPath, TTFont* font)
 	: font_(font)
 {
 	InitProperties(barPath);

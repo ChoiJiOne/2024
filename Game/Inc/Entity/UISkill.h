@@ -16,7 +16,7 @@ class UISkill : public IEntity2D
 {
 public:
 	/** UI 스킬의 내부 속성을 설정하기 위해서는 Json 포멧의 파일이 필요합니다. */
-	UISkill(TTFont* font, const std::string& skillPath);
+	UISkill(const std::string& skillPath, TTFont* font);
 	virtual ~UISkill();
 
 	DISALLOW_COPY_AND_ASSIGN(UISkill);
