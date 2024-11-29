@@ -10,6 +10,8 @@
 #include "GL/TextureAtlas2D.h"
 #include "Utils/Assertion.h"
 
+std::map<Potion::EColor, std::string> Potion::colorNames_;
+
 Potion::Potion(const glm::vec2& startPos, const glm::vec2& endPos, const EColor& color)
 	: IObject(IObject::EType::POTION)
 	, moveStartPos_(startPos)

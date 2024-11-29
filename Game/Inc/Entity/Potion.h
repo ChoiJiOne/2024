@@ -84,5 +84,5 @@ private:
 	EColor color_ = EColor::NONE;
 
 	/** 포션 색상에 대응하는 아틀라스 내의 이름입니다. */
-	std::map<EColor, std::string> colorNames_;
+	static std::map<EColor, std::string> colorNames_;
 };
