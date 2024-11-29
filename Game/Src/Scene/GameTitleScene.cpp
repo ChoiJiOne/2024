@@ -3,9 +3,9 @@
 #include "Entity/Backdrop.h"
 #include "Entity/EntityManager.h"
 #include "Entity/FadeEffector.h"
-#include "Entity/Title.h"
 #include "Entity/UIButton.h"
 #include "Entity/UICamera.h"
+#include "Entity/UIPanel.h"
 #include "GL/FrameBuffer.h"
 #include "GL/GLManager.h"
 #include "GL/PostProcessor.h"
@@ -46,7 +46,7 @@ void GameTitleScene::Tick(float deltaSeconds)
 
 	for (auto& uiEntity : updateUiEntities_)
 	{
-		uiEntity.second->Tick(deltaSeconds);
+		uiEntity->Tick(deltaSeconds);
 	}
 }
 
@@ -58,7 +58,7 @@ void GameTitleScene::Render()
 		{
 			for (auto& uiEntity : renderUiEntities_)
 			{
-				uiEntity.second->Render();
+				uiEntity->Render();
 			}
 		}
 		renderManager_->End();
@@ -97,30 +97,24 @@ void GameTitleScene::Initailize()
 	renderTargetOption_ = RenderTargetOption{ glm::vec4(0.0f, 0.0f, 0.0f, 1.0f), true };
 
 	uiCamera_ = entityManager_->GetByName<UICamera>("UICamera");
-	updateUiEntities_.insert({ "UICamera", uiCamera_ });
-
-	fadeEffector_ = entityManager_->GetByName<FadeEffector>("FadeEffector");
-	updateUiEntities_.insert({ "FadeEffector", fadeEffector_ });
+	updateUiEntities_.push_back(uiCamera_);
 
 	Backdrop* backdrop = entityManager_->Create<Backdrop>();
 	entityManager_->Register("Backdrop", backdrop);
-	updateUiEntities_.insert({ "Backdrop", backdrop });
-	renderUiEntities_.insert({ "Backdrop", backdrop });
+	updateUiEntities_.push_back(backdrop);
+	renderUiEntities_.push_back(backdrop);
 
-	Title* title = entityManager_->Create<Title>();
-	updateUiEntities_.insert({ "Title", title });
-	renderUiEntities_.insert({ "Title", title });
+	UIPanel* titlePanel = entityManager_->Create<UIPanel>("Resource\\UI\\Title.panel", glManager_->GetByName<TextureAtlas2D>("TextureAtlas"));
+	updateUiEntities_.push_back(titlePanel);
+	renderUiEntities_.push_back(titlePanel);
 
 	TTFont* font48 = glManager_->GetByName<TTFont>("Font48");
 
 	UIButton* startBtn = entityManager_->Create<UIButton>("Resource\\UI\\Start.button", uiCamera_, font48, EMouse::LEFT, 
-		[&]() 
-		{ 
-			fadeEffector_->StartOut(fadeOutTime_); 
-		}
+		[&]() { fadeEffector_->StartOut(fadeOutTime_); }
 	);
-	updateUiEntities_.insert({ "StartButton", startBtn });
-	renderUiEntities_.insert({ "StartButton", startBtn });
+	updateUiEntities_.push_back(startBtn);
+	renderUiEntities_.push_back(startBtn);
 
 	UIButton* recordBtn = entityManager_->Create<UIButton>("Resource\\UI\\Record.button", uiCamera_, font48, EMouse::LEFT, 
 		[&]() 
@@ -129,17 +123,20 @@ void GameTitleScene::Initailize()
 			switchScene_ = sceneManager_->GetByName<GameRecordScene>("GameRecordScene");
 		}
 	);
-	updateUiEntities_.insert({ "RecordButton", recordBtn });
-	renderUiEntities_.insert({ "RecordButton", recordBtn });
+	updateUiEntities_.push_back(recordBtn);
+	renderUiEntities_.push_back(recordBtn);
 
 	UIButton* optionBtn = entityManager_->Create<UIButton>("Resource\\UI\\Option.button", uiCamera_, font48, EMouse::LEFT, [&]() {});
-	updateUiEntities_.insert({ "OptionButton", optionBtn });
-	renderUiEntities_.insert({ "OptionButton", optionBtn });
+	updateUiEntities_.push_back(optionBtn);
+	renderUiEntities_.push_back(optionBtn);
 
 	auto loopDoneEvent = [&]() { IApp::GetPtr()->RequestDoneLoop(); };
 	UIButton* quitBtn = entityManager_->Create<UIButton>("Resource\\UI\\Quit.button", uiCamera_, font48, EMouse::LEFT, loopDoneEvent);
-	updateUiEntities_.insert({ "QuitButton", quitBtn });
-	renderUiEntities_.insert({ "QuitButton", quitBtn });
+	updateUiEntities_.push_back(quitBtn);
+	renderUiEntities_.push_back(quitBtn);
+
+	fadeEffector_ = entityManager_->GetByName<FadeEffector>("FadeEffector");
+	updateUiEntities_.push_back(fadeEffector_);
 }
 
 void GameTitleScene::UnInitailize()
@@ -147,28 +144,19 @@ void GameTitleScene::UnInitailize()
 	/** 외부에서 생성된 엔티티나 리소스는 초기화 해제하지 않습니다. */
 	for (auto& updateUiEntity : updateUiEntities_)
 	{
-		if (updateUiEntity.second == uiCamera_)
+		if (updateUiEntity == uiCamera_)
 		{
 			// UI 카메라는 외부에서 생성했으므로, 정리 대상에서 제외.
 			continue;
 		}
 
-		if (updateUiEntity.second && updateUiEntity.second->IsInitialized())
+		if (updateUiEntity && updateUiEntity->IsInitialized())
 		{
-			entityManager_->Destroy(updateUiEntity.second);
-			updateUiEntity.second = nullptr;
+			entityManager_->Destroy(updateUiEntity);
+			updateUiEntity = nullptr;
 		}
 	}
 	
-	for (auto& renderUIEntity : renderUiEntities_)
-	{
-		if (renderUIEntity.second && renderUIEntity.second->IsInitialized())
-		{
-			entityManager_->Destroy(renderUIEntity.second);
-			renderUIEntity.second = nullptr;
-		}
-	}
-
 	frameBuffer_ = nullptr;
 	postProcessor_ = nullptr;
 }

@@ -50,8 +50,8 @@ private:
 	RenderTargetOption renderTargetOption_;
 	
 	/** 업데이트할 UI 엔티티입니다. */
-	std::map<std::string, IEntity*> updateUiEntities_;
+	std::list<IEntity*> updateUiEntities_;
 
 	/** 렌더링할 UI 엔티티입니다. */
-	std::map<std::string, IEntity2D*> renderUiEntities_;
+	std::list<IEntity2D*> renderUiEntities_;
 };
