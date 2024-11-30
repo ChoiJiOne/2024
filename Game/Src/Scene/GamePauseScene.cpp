@@ -85,7 +85,7 @@ void GamePauseScene::Initailize()
 	updateUiEntities_.push_back(continueBtn);
 	renderUiEntities_.push_back(continueBtn);
 
-	UIButton* doneBtn = entityManager_->Create<UIButton>("Resource\\UI\\Done.button", uiCamera_, font48, EMouse::LEFT,
+	UIButton* doneBtn = entityManager_->Create<UIButton>("Resource\\UI\\Done_GamePauseScene.button", uiCamera_, font48, EMouse::LEFT,
 		[&]()
 		{
 			bIsSwitched_ = true;
