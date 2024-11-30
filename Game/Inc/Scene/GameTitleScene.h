@@ -5,9 +5,10 @@
 
 /** 클래스 전방 선언입니다. */
 class FadeEffector;
-class UICamera;
-class PostProcessor;
 class FrameBuffer;
+class PostProcessor;
+class TitleFox;
+class UICamera;
 
 /** 게임 타이틀 씬입니다. */
 class GameTitleScene : public IGameScene
@@ -45,6 +46,9 @@ private:
 
 	/** 렌더링을 수행할 프레임 버퍼입니다. */
 	FrameBuffer* frameBuffer_ = nullptr;
+
+	/** 타이틀 화면의 여우입니다. */
+	TitleFox* titleFox_ = nullptr;
 
 	/** 프레임 버퍼에 렌더링할 때 설정할 렌더링 옵션입니다. */
 	RenderTargetOption renderTargetOption_;

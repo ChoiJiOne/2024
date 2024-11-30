@@ -3,6 +3,7 @@
 #include "Entity/Backdrop.h"
 #include "Entity/EntityManager.h"
 #include "Entity/FadeEffector.h"
+#include "Entity/TitleFox.h"
 #include "Entity/UIButton.h"
 #include "Entity/UICamera.h"
 #include "Entity/UIPanel.h"
@@ -35,6 +36,7 @@ void GameTitleScene::Tick(float deltaSeconds)
 {
 	if (fadeEffector_->GetState() == FadeEffector::EState::PROGRESS)
 	{
+		titleFox_->Tick(deltaSeconds);
 		fadeEffector_->Tick(deltaSeconds);
 
 		// 페이드 아웃 효과가 끝났는지 확인.
@@ -81,6 +83,8 @@ void GameTitleScene::Enter()
 {
 	bIsEnter_ = true;
 	bIsSwitched_ = false;
+
+	titleFox_->Reset();
 }
 
 void GameTitleScene::Exit()
@@ -116,7 +120,11 @@ void GameTitleScene::Initailize()
 	renderUiEntities_.push_back(menuText);
 
 	UIButton* startBtn = entityManager_->Create<UIButton>("Resource\\UI\\Start.button", uiCamera_, font48, EMouse::LEFT, 
-		[&]() { fadeEffector_->StartOut(fadeOutTime_); }
+		[&]() 
+		{
+			titleFox_->RunWayout();
+			fadeEffector_->StartOut(fadeOutTime_); 
+		}
 	);
 	updateUiEntities_.push_back(startBtn);
 	renderUiEntities_.push_back(startBtn);
@@ -149,6 +157,10 @@ void GameTitleScene::Initailize()
 	);
 	updateUiEntities_.push_back(quitBtn);
 	renderUiEntities_.push_back(quitBtn);
+
+	titleFox_ = entityManager_->Create<TitleFox>();
+	updateUiEntities_.push_back(titleFox_);
+	renderUiEntities_.push_back(titleFox_);
 
 	fadeEffector_ = entityManager_->GetByName<FadeEffector>("FadeEffector");
 	updateUiEntities_.push_back(fadeEffector_);
