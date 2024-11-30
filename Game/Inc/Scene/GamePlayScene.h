@@ -50,6 +50,9 @@ public:
 	void RemoveEntity(IEntity* entity);
 
 private:
+	/** 게임 중지 씬에서 게임 플레이 씬 내부에 접근할 수 있도록 설정합니다. */
+	friend class GamePauseScene;
+
 	/** Tick을 수행하기 전에 호출합니다. */
 	void PreTick(float deltaSeconds);
 
