@@ -1,5 +1,7 @@
 #pragma once
 
+#include <list>
+
 #include "Scene/IGameScene.h"
 #include "GL/RenderManager2D.h"
 
@@ -30,16 +32,19 @@ private:
 	/** 게임 중지 씬의 초기화를 해제합니다. */
 	void UnInitailize();
 
+	/** 게임 플레이 씬을 렌더링합니다. */
+	void RenderGamePlayScene();
+
 private:
-	/** 프레임 버퍼에 후처리를 수행하는 오브젝트입니다. */
-	PostProcessor* postProcessor_ = nullptr;
-
-	/** 렌더링을 수행할 프레임 버퍼입니다. */
-	FrameBuffer* frameBuffer_ = nullptr;
-
-	/** 프레임 버퍼에 렌더링할 때 설정할 렌더링 옵션입니다. */
-	RenderTargetOption renderTargetOption_;
-
 	/** 게임을 중지시킨 플레이 씬입니다. */
 	GamePlayScene* gamePlayScene_ = nullptr;
+
+	/** 게임 기록 씬의 스크린 카메라입니다. */
+	UICamera* uiCamera_ = nullptr;
+
+	/** 업데이트할 UI 엔티티입니다. */
+	std::list<IEntity*> updateUiEntities_;
+
+	/** 렌더링할 UI 엔티티입니다. */
+	std::list<IEntity2D*> renderUiEntities_;
 };
