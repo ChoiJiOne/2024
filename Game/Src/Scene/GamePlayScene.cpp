@@ -334,7 +334,7 @@ void GamePlayScene::UnloadEntity()
 	std::list<IEntity*> removeEntities;
 	for (auto& entity : updateEntites_)
 	{
-		if (entity.second != fadeEffector_ && entity.second != uiCamera_ && entity.second != playground_)
+		if (entity.second != fadeEffector_ && entity.second != uiCamera_ && entity.second != playground_ && entity.second != gamePauseTrigger_)
 		{
 			removeEntities.push_back(entity.second);
 		}
