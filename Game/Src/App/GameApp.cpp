@@ -9,6 +9,7 @@
 #include "GLFW/GLFWManager.h"
 #include "Scene/GameOptionScene.h"
 #include "Scene/GameOverScene.h"
+#include "Scene/GamePauseScene.h"
 #include "Scene/GamePlayScene.h"
 #include "Scene/GameRecordScene.h"
 #include "Scene/GameTitleScene.h"
@@ -22,7 +23,6 @@ GameApp::GameApp(uint32_t windowWidth, uint32_t windowHeight, const char* window
 
 GameApp::~GameApp()
 {
-
 }
 
 void GameApp::Startup()
@@ -53,6 +53,7 @@ void GameApp::Startup()
 	GameOptionScene* gameOptionScene = sceneManager_->Create<GameOptionScene>();
 	GamePlayScene* gamePlayScene = sceneManager_->Create<GamePlayScene>();
 	GameOverScene* gameOverScene = sceneManager_->Create<GameOverScene>();
+	GamePauseScene* gamePauseScene = sceneManager_->Create<GamePauseScene>();
 
 	SetAppScene(gameTitleScene);
 }
