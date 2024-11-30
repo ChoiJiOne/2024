@@ -10,6 +10,7 @@
 #include "Entity/EntityManager.h"
 #include "Entity/FadeEffector.h"
 #include "Entity/GamePlayRecorder.h"
+#include "Entity/KeyEventTrigger.h"
 #include "Entity/MiniMap.h"
 #include "Entity/Player.h"
 #include "Entity/PlayerFollowCamera.h"
@@ -45,13 +46,6 @@ void GamePlayScene::Tick(float deltaSeconds)
 	for (auto& updateEntity : updateEntites_)
 	{
 		updateEntity.second->Tick(deltaSeconds);
-	}
-
-	if (GLFWManager::GetRef().GetKeyPress(EKey::KEY_ESCAPE) == EPress::PRESSED)
-	{
-		bIsPause_ = true;
-		bIsSwitched_ = true;
-		switchScene_ = sceneManager_->GetByName<GamePauseScene>("GamePauseScene");
 	}
 }
 
@@ -216,6 +210,15 @@ void GamePlayScene::Initialize()
 	playground_ = entityManager_->Create<Playground>();
 	AddEntity(playground_, 10, 2);
 
+	gamePauseTrigger_ = entityManager_->Create<KeyEventTrigger>(EKey::KEY_ESCAPE, EPress::PRESSED, 
+		[&]() 
+		{
+			bIsPause_ = true;
+			bIsSwitched_ = true;
+			switchScene_ = sceneManager_->GetByName<GamePauseScene>("GamePauseScene");
+		});
+	AddEntity(gamePauseTrigger_, 100);
+
 	entityManager_->Register("Playground", playground_);
 
 	gameEntityRange_ = std::pair{ 0, 49 };
@@ -242,6 +245,13 @@ void GamePlayScene::UnInitialize()
 		entityManager_->Unregister("Playground");
 		entityManager_->Destroy(playground_);
 		playground_ = nullptr;
+	}
+
+	if (gamePauseTrigger_)
+	{
+		RemoveEntity(gamePauseTrigger_);
+		entityManager_->Destroy(gamePauseTrigger_);
+		gamePauseTrigger_ = nullptr;
 	}
 
 	fadeEffector_ = nullptr;

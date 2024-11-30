@@ -11,12 +11,13 @@ class Background;
 class Camera2D;
 class CoinCollector;
 class FadeEffector;
+class FrameBuffer;
 class GamePlayRecorder;
-class UICamera;
+class KeyEventTrigger;
 class Player;
 class Playground;
 class PostProcessor;
-class FrameBuffer;
+class UICamera;
 
 
 /** 게임 플레이 씬입니다. */
@@ -102,6 +103,9 @@ private:
 
 	/** 게임 플레이 기록을 저장하는 엔티티입니다. */
 	GamePlayRecorder* gamePlayRecorder_ = nullptr;
+
+	/** ESC 클릭 시 게임을 중지시키는 엔티티입니다. */
+	KeyEventTrigger* gamePauseTrigger_ = nullptr;
 
 	/** 페이드 효과를 제어할 엔티티입니다. */
 	FadeEffector* fadeEffector_ = nullptr;
