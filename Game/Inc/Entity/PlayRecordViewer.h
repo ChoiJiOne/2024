@@ -5,7 +5,8 @@
 
 #include <glm/glm.hpp>
 
-#include "IEntity2D.h"
+#include "Entity/IEntity2D.h"
+#include "Physic/Rect2D.h"
 
 /** 클래스의 전방선언입니다. */
 class TTFont;
@@ -49,9 +50,15 @@ private:
 	};
 
 private:
+	/** 플레이 기록 백그라운드의 위치 및 크기입니다. */
+	Rect2D background_;
+
+	/** 플레이 기록 백그라운드의 색상입니다. */
+	glm::vec4 backgroundColor_ = glm::vec4(0.0f, 0.0f, 0.0f, 0.0f);
+	
 	/** 플레이 기록을 렌더링할 때 참조할 폰트입니다. */
 	TTFont* font_ = nullptr;
-
+	
 	/** 플레이 기록을 렌더링할 때의 기준 위치입니다. */
 	glm::vec2 basePos_ = glm::vec2(0.0f, 0.0f);
 

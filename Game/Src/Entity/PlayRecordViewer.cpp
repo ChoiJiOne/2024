@@ -8,6 +8,9 @@
 
 PlayRecordViewer::PlayRecordViewer()
 {
+	background_ = Rect2D(glm::vec2(0.0f, -65.0f), glm::vec2(520.0f, 360.0f));
+	backgroundColor_ = glm::vec4(0.0f, 0.0f, 0.0f, 0.3f);
+
 	font_ = GLManager::GetRef().GetByName<TTFont>("Font48");
 	basePos_ = glm::vec2(-170.0f, +70.0f);
 	outlineColor_ = glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
@@ -55,6 +58,7 @@ void PlayRecordViewer::Tick(float deltaSeconds)
 
 void PlayRecordViewer::Render()
 {
+	renderManager_->DrawRect(background_.center, background_.size.x, background_.size.y, backgroundColor_, 0.0f);
 	for (const auto& playRecord : playRecords_)
 	{
 		renderManager_->DrawString(font_, playRecord.text, playRecord.basePos, playRecord.textColor, outlineColor_);
