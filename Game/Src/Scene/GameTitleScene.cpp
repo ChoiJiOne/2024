@@ -65,8 +65,7 @@ void GameTitleScene::Render()
 		renderManager_->End();
 
 		PostProcessor::EType type = PostProcessor::EType::BLIT;
-		const FadeEffector::EState& state = fadeEffector_->GetState();
-		if (state != FadeEffector::EState::WAIT)
+		if (fadeEffector_->GetState() != FadeEffector::EState::WAIT)
 		{
 			type = PostProcessor::EType::BLEND_COLOR;
 			postProcessor_->SetBlendColor(fadeEffector_->GetBlendColor(), fadeEffector_->GetFactor());
@@ -137,8 +136,12 @@ void GameTitleScene::Initailize()
 	updateUiEntities_.push_back(optionBtn);
 	renderUiEntities_.push_back(optionBtn);
 
-	auto loopDoneEvent = [&]() { IApp::GetPtr()->RequestDoneLoop(); };
-	UIButton* quitBtn = entityManager_->Create<UIButton>("Resource\\UI\\Quit.button", uiCamera_, font48, EMouse::LEFT, loopDoneEvent);
+	UIButton* quitBtn = entityManager_->Create<UIButton>("Resource\\UI\\Quit.button", uiCamera_, font48, EMouse::LEFT, 
+		[&]()
+		{ 
+			IApp::GetPtr()->RequestDoneLoop(); 
+		}
+	);
 	updateUiEntities_.push_back(quitBtn);
 	renderUiEntities_.push_back(quitBtn);
 
@@ -148,15 +151,10 @@ void GameTitleScene::Initailize()
 
 void GameTitleScene::UnInitailize()
 {
-	/** 외부에서 생성된 엔티티나 리소스는 초기화 해제하지 않습니다. */
+	updateUiEntities_.remove(uiCamera_);
+
 	for (auto& updateUiEntity : updateUiEntities_)
 	{
-		if (updateUiEntity == uiCamera_)
-		{
-			// UI 카메라는 외부에서 생성했으므로, 정리 대상에서 제외.
-			continue;
-		}
-
 		if (updateUiEntity && updateUiEntity->IsInitialized())
 		{
 			entityManager_->Destroy(updateUiEntity);
