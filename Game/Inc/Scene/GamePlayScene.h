@@ -4,6 +4,7 @@
 
 #include "Scene/IGameScene.h"
 #include "GL/RenderManager2D.h"
+#include "GLFW/GLFWManager.h"
 
 /** 클래스 전방 선언입니다. */
 class Background;
@@ -62,6 +63,12 @@ private:
 	/** 게임 플레이 씬의 초기화를 해제합니다. */
 	void UnInitialize();
 
+	/** 게임 플레이 씬의 엔티티를 로딩합니다. */
+	void LoadEntity();
+
+	/** 게임 플레이 씬의 엔티티를 로딩 해제합니다. */
+	void UnloadEntity();
+
 private:
 	/** 업데이트할 엔티티입니다. */
 	std::multimap<int32_t, IEntity*> updateEntites_;
@@ -113,4 +120,10 @@ private:
 
 	/** 프레임 버퍼에 렌더링할 때 설정할 렌더링 옵션입니다. */
 	RenderTargetOption renderTargetOption_;
+
+	/** 게임 중지를 유발하는 윈도우 이벤트입니다. */
+	std::map<EWindowEvent, WindowEventID> windowPauseEvents_;
+
+	/** 게임이 중지되었는지 확인합니다. */
+	bool bIsPause_ = false;
 };

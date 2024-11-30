@@ -19,9 +19,9 @@
 #include "Entity/UICamera.h"
 #include "Game/GameManager.h"
 #include "GL/PostProcessor.h"
-#include "GLFW/GLFWManager.h"
 #include "Scene/SceneManager.h"
 #include "Scene/GameOverScene.h"
+#include "Scene/GamePauseScene.h"
 #include "Scene/GamePlayScene.h"
 #include "Utils/Assertion.h"
 #include "Utils/Utils.h"
@@ -45,6 +45,13 @@ void GamePlayScene::Tick(float deltaSeconds)
 	for (auto& updateEntity : updateEntites_)
 	{
 		updateEntity.second->Tick(deltaSeconds);
+	}
+
+	if (GLFWManager::GetRef().GetKeyPress(EKey::KEY_ESCAPE) == EPress::PRESSED)
+	{
+		bIsPause_ = true;
+		bIsSwitched_ = true;
+		switchScene_ = sceneManager_->GetByName<GamePauseScene>("GamePauseScene");
 	}
 }
 
@@ -92,99 +99,43 @@ void GamePlayScene::Render()
 
 void GamePlayScene::Enter()
 {
-	bIsEnter_ = true;
-	bIsSwitched_ = false;
-
-	gamePlayRecorder_ = entityManager_->Create<GamePlayRecorder>();
-	entityManager_->Register("GamePlayRecorder", gamePlayRecorder_);
-	
-	player_ = entityManager_->Create<Player>();
-	entityManager_->Register("Player", player_);
-
-	mainCamera_ = entityManager_->Create<PlayerFollowCamera>();
-	entityManager_->Register("PlayerFollowCamera", mainCamera_);
-
-	background_ = entityManager_->Create<Background>();
-
-	coinCollector_ = entityManager_->Create<CoinCollector>(glManager_->GetByName<TTFont>("Font24"));
-	entityManager_->Register("CoinCollector", coinCollector_);
-
-	static const uint32_t COUNT_RANDOM_CHEST = 8;
-	std::array<RandomChest*, COUNT_RANDOM_CHEST> randomChests;
-	for (uint32_t index = 0; index < randomChests.size(); ++index)
+	for (const auto& windowPauseEvent : windowPauseEvents_)
 	{
-		float radius = playground_->GetSafeBound()->radius;
-		float theta = 2.0f * glm::pi<float>();
-		theta *= static_cast<float>(index) / static_cast<float>(randomChests.size());
-
-		glm::vec2 randomChestPos = glm::vec2(radius * glm::cos(theta), radius * glm::sin(theta));
-
-		RandomChest* randomChest = entityManager_->Create<RandomChest>(randomChestPos);
-
-		AddEntity(randomChest, 10, 3);
-		randomChests[index] = randomChest;
+		GLFWManager::GetRef().SetActiveWindowEventAction(windowPauseEvent.second, true);
 	}
 
-	MiniMap* miniMap = entityManager_->Create<MiniMap>(uiCamera_, randomChests.data(), static_cast<uint32_t>(randomChests.size()));
-	
-	/** 인게임 엔티티입니다. */
-	AddEntity(player_, 1, 6);
-	AddEntity(mainCamera_, 2);
-	AddEntity(background_, 10, 0);
-	AddEntity(coinCollector_, 15, 10);
-	AddEntity(gamePlayRecorder_, 20);
+	bIsEnter_ = true;
+	bIsSwitched_ = false;
+	if (bIsPause_)
+	{
+		bIsPause_ = false;
+		return;
+	}
 
-	/** UI 및 기타 엔티티입니다. */
-	AddEntity(miniMap, 51, 51);
-	
+	LoadEntity();
+
 	fadeEffector_->StartIn(fadeInTime_);
 }
 
 void GamePlayScene::Exit()
 {
+	for (const auto& windowPauseEvent : windowPauseEvents_)
+	{
+		GLFWManager::GetRef().SetActiveWindowEventAction(windowPauseEvent.second, false);
+	}
+
+	if (bIsPause_)
+	{
+		bIsSwitched_ = false;
+		bIsEnter_ = false;
+		return;
+	}
+
 	gameManager_->AddGamePlayRecord(gamePlayRecorder_);
-
-	RemoveEntity(player_);
-	entityManager_->Unregister("Player");
-	entityManager_->Destroy(player_);
-	player_ = nullptr;
-
-	RemoveEntity(mainCamera_);
-	entityManager_->Unregister("PlayerFollowCamera");
-	entityManager_->Destroy(mainCamera_);
-	mainCamera_ = nullptr;
-
-	RemoveEntity(background_);
-	entityManager_->Destroy(background_);
-	background_ = nullptr;
-
-	RemoveEntity(coinCollector_);
-	entityManager_->Unregister("CoinCollector");
-	entityManager_->Destroy(coinCollector_);
-	coinCollector_ = nullptr;
-
-	RemoveEntity(gamePlayRecorder_);
-	entityManager_->Unregister("GamePlayRecorder");
-	entityManager_->Destroy(gamePlayRecorder_);
-	gamePlayRecorder_ = nullptr;
-
-	std::list<IEntity*> removeEntities;
-	for (auto& entity : updateEntites_)
-	{
-		if (entity.second != fadeEffector_ && entity.second != uiCamera_ && entity.second != playground_)
-		{
-			removeEntities.push_back(entity.second);
-		}
-	}
-
-	for (auto& removeEntity : removeEntities)
-	{
-		RemoveEntity(removeEntity);
-		entityManager_->Destroy(removeEntity);
-	}
-
 	fadeEffector_->Reset();
 
+	UnloadEntity();
+	
 	bIsSwitched_ = false;
 	bIsEnter_ = false;
 }
@@ -269,6 +220,18 @@ void GamePlayScene::Initialize()
 
 	gameEntityRange_ = std::pair{ 0, 49 };
 	uiEntityRange_ = std::pair{ 50, 99 };
+
+	auto gamePauseEvent = [&]()
+		{
+			bIsPause_ = true;
+			bIsSwitched_ = true;
+			switchScene_ = sceneManager_->GetByName<GamePauseScene>("GamePauseScene");
+		};
+	windowPauseEvents_ =
+	{
+		{ EWindowEvent::MOVE_ENTER, GLFWManager::GetRef().AddWindowEventAction(EWindowEvent::MOVE_ENTER, gamePauseEvent, false) },
+		{ EWindowEvent::FOCUS_LOST, GLFWManager::GetRef().AddWindowEventAction(EWindowEvent::FOCUS_LOST, gamePauseEvent, false) },
+	};
 }
 
 void GamePlayScene::UnInitialize()
@@ -285,4 +248,91 @@ void GamePlayScene::UnInitialize()
 	uiCamera_ = nullptr;
 	frameBuffer_ = nullptr;
 	postProcessor_ = nullptr;
+}
+
+void GamePlayScene::LoadEntity()
+{
+	gamePlayRecorder_ = entityManager_->Create<GamePlayRecorder>();
+	entityManager_->Register("GamePlayRecorder", gamePlayRecorder_);
+
+	player_ = entityManager_->Create<Player>();
+	entityManager_->Register("Player", player_);
+
+	mainCamera_ = entityManager_->Create<PlayerFollowCamera>();
+	entityManager_->Register("PlayerFollowCamera", mainCamera_);
+
+	background_ = entityManager_->Create<Background>();
+
+	coinCollector_ = entityManager_->Create<CoinCollector>(glManager_->GetByName<TTFont>("Font24"));
+	entityManager_->Register("CoinCollector", coinCollector_);
+
+	static const uint32_t COUNT_RANDOM_CHEST = 8;
+	std::array<RandomChest*, COUNT_RANDOM_CHEST> randomChests;
+	for (uint32_t index = 0; index < randomChests.size(); ++index)
+	{
+		float radius = playground_->GetSafeBound()->radius;
+		float theta = 2.0f * glm::pi<float>();
+		theta *= static_cast<float>(index) / static_cast<float>(randomChests.size());
+
+		glm::vec2 randomChestPos = glm::vec2(radius * glm::cos(theta), radius * glm::sin(theta));
+
+		RandomChest* randomChest = entityManager_->Create<RandomChest>(randomChestPos);
+
+		AddEntity(randomChest, 10, 3);
+		randomChests[index] = randomChest;
+	}
+
+	MiniMap* miniMap = entityManager_->Create<MiniMap>(uiCamera_, randomChests.data(), static_cast<uint32_t>(randomChests.size()));
+
+	/** 인게임 엔티티입니다. */
+	AddEntity(player_, 1, 6);
+	AddEntity(mainCamera_, 2);
+	AddEntity(background_, 10, 0);
+	AddEntity(coinCollector_, 15, 10);
+	AddEntity(gamePlayRecorder_, 20);
+
+	/** UI 및 기타 엔티티입니다. */
+	AddEntity(miniMap, 51, 51);
+}
+
+void GamePlayScene::UnloadEntity()
+{
+	RemoveEntity(player_);
+	entityManager_->Unregister("Player");
+	entityManager_->Destroy(player_);
+	player_ = nullptr;
+
+	RemoveEntity(mainCamera_);
+	entityManager_->Unregister("PlayerFollowCamera");
+	entityManager_->Destroy(mainCamera_);
+	mainCamera_ = nullptr;
+
+	RemoveEntity(background_);
+	entityManager_->Destroy(background_);
+	background_ = nullptr;
+
+	RemoveEntity(coinCollector_);
+	entityManager_->Unregister("CoinCollector");
+	entityManager_->Destroy(coinCollector_);
+	coinCollector_ = nullptr;
+
+	RemoveEntity(gamePlayRecorder_);
+	entityManager_->Unregister("GamePlayRecorder");
+	entityManager_->Destroy(gamePlayRecorder_);
+	gamePlayRecorder_ = nullptr;
+
+	std::list<IEntity*> removeEntities;
+	for (auto& entity : updateEntites_)
+	{
+		if (entity.second != fadeEffector_ && entity.second != uiCamera_ && entity.second != playground_)
+		{
+			removeEntities.push_back(entity.second);
+		}
+	}
+
+	for (auto& removeEntity : removeEntities)
+	{
+		RemoveEntity(removeEntity);
+		entityManager_->Destroy(removeEntity);
+	}
 }
