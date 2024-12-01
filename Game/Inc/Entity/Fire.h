@@ -9,6 +9,7 @@
 
 /** 클래스 전방 선언입니다. */
 class SpriteAnimator2D;
+class Sound;
 class TextureAtlas2D;
 
 /** 플레이어가 피해야 할 불입니다. */
@@ -72,4 +73,7 @@ private:
 
 	/** 불의 상태 별 애니메이션입니다. */
 	std::map<EAnimationState, SpriteAnimator2D*> animations_;
+
+	/** 불 폭발 시 출력할 사운드입니다. */
+	Sound* explosionSound_ = nullptr;
 };

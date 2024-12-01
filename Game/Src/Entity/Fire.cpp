@@ -1,6 +1,8 @@
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/gtx/vector_angle.hpp>
 
+#include "Audio/AudioManager.h"
+#include "Audio/Sound.h"
 #include "Entity/EntityManager.h"
 #include "Entity/Fire.h"
 #include "Entity/GamePlayRecorder.h"
@@ -19,6 +21,7 @@ Fire::Fire(const glm::vec2& position, const glm::vec2& direction, float speed, f
 	, lifeTime_(lifeTime)
 {
 	textureAtlas_ = GLManager::GetRef().GetByName<TextureAtlas2D>("TextureAtlas");
+	explosionSound_ = AudioManager::GetRef().GetByName<Sound>("Explosion");
 	
 	float rotate = GetRadianVec2(direction_);
 	renderBound_ = OrientedRect2D(position, glm::vec2(58.0f, 54.0f), rotate);
@@ -70,6 +73,11 @@ void Fire::Tick(float deltaSeconds)
 			animationState_ = EAnimationState::EXPLOSION;
 			state_ = EState::WAIT;
 		}
+
+		if (animationState_ == EAnimationState::EXPLOSION && player_->GetState() != Player::EState::HURT)
+		{
+			explosionSound_->Start();
+		}
 	}
 	break;
 
@@ -105,6 +113,7 @@ void Fire::Release()
 
 	UnloadAnimation();
 
+	explosionSound_ = nullptr;
 	textureAtlas_ = nullptr;
 	
 	IObject::Release();
