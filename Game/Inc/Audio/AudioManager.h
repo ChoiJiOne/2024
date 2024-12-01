@@ -1,6 +1,7 @@
 #pragma once
 
 #include <array>
+#include <map>
 #include <memory>
 #include <string>
 
@@ -57,6 +58,28 @@ public:
 	/** 사운드를 파괴합니다. */
 	void Destroy(const Sound* sound);
 
+	/** 사운드를 사운드 매니저에 등록합니다. */
+	void Register(const std::string& name, Sound* sound);
+
+	/** 사운드 이름이 등록 되었는지 확인합니다. */
+	bool IsRegistration(const std::string& name);
+
+	/** 사운드 매니저에 등록을 해제합니다. */
+	void Unregister(const std::string& name);
+
+	/** 이름에 대응하는 사운드를 얻습니다. */
+	template <typename TSound>
+	TSound* GetByName(const std::string& name)
+	{
+		auto it = nameSounds_.find(name);
+		if (it == nameSounds_.end())
+		{
+			return nullptr;
+		}
+
+		return reinterpret_cast<TSound*>(it->second);
+	}
+
 private:
 	/** IApp에서 오디오 매니저의 내부에 접근할 수 있도록 설정. */
 	friend class IApp;
@@ -87,4 +110,7 @@ private:
 
 	/** 오디오 매니저 내에서 관리하는 사운드와 그 사운드의 사용 여부입니다. */
 	std::array<std::pair<std::unique_ptr<Sound>, bool>, MAX_SOUND_SIZE> sounds_;
+
+	/** 이름을 가진 사운드입니다. */
+	std::map<std::string, Sound*> nameSounds_;
 };

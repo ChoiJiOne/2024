@@ -48,6 +48,27 @@ void AudioManager::Destroy(const Sound* sound)
 	}
 }
 
+void AudioManager::Register(const std::string& name, Sound* sound)
+{
+	auto it = nameSounds_.find(name);
+	ASSERTION(it == nameSounds_.end(), "Already register '%s'", name.c_str());
+
+	nameSounds_.insert({ name, sound });
+}
+
+bool AudioManager::IsRegistration(const std::string& name)
+{
+	return nameSounds_.find(name) != nameSounds_.end();
+}
+
+void AudioManager::Unregister(const std::string& name)
+{
+	auto it = nameSounds_.find(name);
+	ASSERTION(it != nameSounds_.end(), "Can't find '%s' in AudioManager.", name.c_str());
+
+	nameSounds_.erase(it);
+}
+
 void AudioManager::Startup()
 {
 	audioEngine_ = std::make_unique<ma_engine>();
