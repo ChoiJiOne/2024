@@ -137,12 +137,12 @@ void UISlider::InitProperties(const std::string& sliderPath)
 	slider_.size = background_.size;
 	slider_.size.x *= sliderScale;
 
-	CHECK(root["SliderX"].isDouble() && !root["SliderX"].isNull());
-	sliderX_ = root["SliderX"].asFloat();
+	CHECK(root["SliderXScale"].isDouble() && !root["SliderXScale"].isNull());
+	float sliderXScale = root["SliderXScale"].asFloat();
 
 	sliderMinX_ = background_.center.x - (background_.size.x - slider_.size.x) * 0.5f;
 	sliderMaxX_ = background_.center.x + (background_.size.x - slider_.size.x) * 0.5f;
-	slider_.center = glm::vec2(sliderX_, background_.center.y);
+	slider_.center = glm::vec2(sliderMinX_ + (sliderMaxX_ - sliderMinX_) * sliderXScale, background_.center.y);
 }
 
 UISlider::EState UISlider::GetState(const EPress& press, const EState& state)
