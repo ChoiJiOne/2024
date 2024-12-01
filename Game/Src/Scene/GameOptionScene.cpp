@@ -2,6 +2,7 @@
 #include "Audio/Sound.h"
 #include "Entity/Backdrop.h"
 #include "Entity/EntityManager.h"
+#include "Entity/UIBar.h"
 #include "Entity/UIButton.h"
 #include "Entity/UICamera.h"
 #include "Entity/UIPanel.h"
@@ -75,6 +76,35 @@ void GameOptionScene::Initailize()
 	renderUiEntities_.push_back(optionPanel);
 
 	TTFont* font48 = glManager_->GetByName<TTFont>("Font48");
+	TTFont* font24 = glManager_->GetByName<TTFont>("Font24");
+		
+	UIBar* chargeSound = entityManager_->Create<UIBar>("Resource\\UI\\ChargeSound.bar", font24);
+	updateUiEntities_.push_back(chargeSound);
+	renderUiEntities_.push_back(chargeSound);
+
+	UIBar* clickSound = entityManager_->Create<UIBar>("Resource\\UI\\ClickSound.bar", font24);
+	updateUiEntities_.push_back(clickSound);
+	renderUiEntities_.push_back(clickSound);
+
+	UIBar* coinSound = entityManager_->Create<UIBar>("Resource\\UI\\CoinSound.bar", font24);
+	updateUiEntities_.push_back(coinSound);
+	renderUiEntities_.push_back(coinSound);
+
+	UIBar* dashSound = entityManager_->Create<UIBar>("Resource\\UI\\DashSound.bar", font24);
+	updateUiEntities_.push_back(dashSound);
+	renderUiEntities_.push_back(dashSound);
+
+	UIBar* endSound = entityManager_->Create<UIBar>("Resource\\UI\\EndSound.bar", font24);
+	updateUiEntities_.push_back(endSound);
+	renderUiEntities_.push_back(endSound);
+
+	UIBar* explosionSound = entityManager_->Create<UIBar>("Resource\\UI\\ExplosionSound.bar", font24);
+	updateUiEntities_.push_back(explosionSound);
+	renderUiEntities_.push_back(explosionSound);
+
+	UIBar* themeSound = entityManager_->Create<UIBar>("Resource\\UI\\ThemeSound.bar", font24);
+	updateUiEntities_.push_back(themeSound);
+	renderUiEntities_.push_back(themeSound);
 
 	UIButton* backBtn = entityManager_->Create<UIButton>("Resource\\UI\\Back.button", uiCamera_, font48, EMouse::LEFT,
 		[&]()
