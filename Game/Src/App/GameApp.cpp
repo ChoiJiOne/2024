@@ -19,29 +19,16 @@
 GameApp::GameApp(uint32_t windowWidth, uint32_t windowHeight, const char* windowTitle, bool bIsWindowCentered)
 	: IApp(windowWidth, windowHeight, windowTitle, bIsWindowCentered)
 {
+	LoadResource();
 }
 
 GameApp::~GameApp()
 {
+	UnloadResource();
 }
 
 void GameApp::Startup()
 {
-	float width = 0.0f;
-	float height = 0.0f;
-	glfwManager_->GetWindowSize(width, height);
-	frameBuffer_ = glManager_->Create<FrameBuffer>(static_cast<int32_t>(width), static_cast<int32_t>(height), FrameBuffer::EPixelFormat::RGBA, FrameBuffer::EFilter::LINEAR);
-
-	TextureAtlas2D* textureAtlas = glManager_->Create<TextureAtlas2D>("Resource\\TextureAtlas\\TextureAtlas.png", "Resource\\TextureAtlas\\TextureAtlas.atlas", TextureAtlas2D::EFilter::NEAREST);
-	glManager_->Register("TextureAtlas", textureAtlas);
-
-	std::array<int32_t, 3> fontSizes = { 24, 32, 48 };
-	for (const auto& fontSize : fontSizes)
-	{
-		TTFont* font = glManager_->Create<TTFont>("Resource\\Font\\lower.ttf", 0x00, 0x128, static_cast<float>(fontSize), ITexture::EFilter::LINEAR);
-		glManager_->Register(PrintF("Font%d", fontSize), font);
-	}
-
 	UICamera* uiCamera = entityManager_->Create<UICamera>();
 	entityManager_->Register("UICamera", uiCamera);
 
@@ -60,6 +47,45 @@ void GameApp::Startup()
 
 void GameApp::Shutdown()
 {
+}
+
+void GameApp::LoadResource()
+{
+	float width = 0.0f;
+	float height = 0.0f;
+	glfwManager_->GetWindowSize(width, height);
+	frameBuffer_ = glManager_->Create<FrameBuffer>(static_cast<int32_t>(width), static_cast<int32_t>(height), FrameBuffer::EPixelFormat::RGBA, FrameBuffer::EFilter::LINEAR);
+	glManager_->Register("FrameBuffer", frameBuffer_);
+
+	textureAtlas_ = glManager_->Create<TextureAtlas2D>("Resource\\TextureAtlas\\TextureAtlas.png", "Resource\\TextureAtlas\\TextureAtlas.atlas", TextureAtlas2D::EFilter::NEAREST);
+	glManager_->Register("TextureAtlas", textureAtlas_);
+
+	fontSizes_ = { 24, 32, 48 };
+	for (const auto& fontSize : fontSizes_)
+	{
+		TTFont* font = glManager_->Create<TTFont>("Resource\\Font\\lower.ttf", 0x00, 0x128, static_cast<float>(fontSize), ITexture::EFilter::LINEAR);
+		glManager_->Register(PrintF("Font%d", fontSize), font);
+	}
+}
+
+void GameApp::UnloadResource()
+{
+	for (const auto& fontSize : fontSizes_)
+	{
+		std::string name = PrintF("Font%d", fontSize);
+		TTFont* font = glManager_->GetByName<TTFont>(name);
+		
+		glManager_->Unregister(name);
+		glManager_->Destroy(font);
+	}
+
+	if (textureAtlas_)
+	{
+		glManager_->Unregister("TextureAtlas");
+		glManager_->Destroy(textureAtlas_);
+		textureAtlas_ = nullptr;
+	}
+
 	if (frameBuffer_)
 	{
 		glManager_->Destroy(frameBuffer_);
