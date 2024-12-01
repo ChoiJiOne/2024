@@ -1,6 +1,8 @@
 #define GLM_ENABLE_EXPERIMENTAL 
 #include <glm/gtx/compatibility.hpp>
 
+#include "Audio/AudioManager.h"
+#include "Audio/Sound.h"
 #include "Entity/Coin.h"
 #include "Entity/CoinCollector.h"
 #include "Entity/EntityManager.h"
@@ -19,6 +21,7 @@ Coin::Coin(const glm::vec2& startPos, const glm::vec2& endPos)
 {
 	textureAtlas_ = GLManager::GetRef().GetByName<TextureAtlas2D>("TextureAtlas");
 	coinCollector_ = EntityManager::GetRef().GetByName<CoinCollector>("CoinCollector");
+	getCoinSound_ = AudioManager::GetRef().GetByName<Sound>("Coin");
 
 	renderBound_ = Rect2D(startPos, glm::vec2(32.0f, 32.0f));
 	collisionBound_.radius = 16.0f;
@@ -100,6 +103,7 @@ void Coin::Tick(float deltaSeconds)
 	{
 		if (collisionBound_.Intersect(player_->GetCollider()))
 		{
+			getCoinSound_->Start();
 			state_ = EState::MOVE;
 			bIsGain_ = true;
 		}
@@ -132,6 +136,7 @@ void Coin::Release()
 		animator_ = nullptr;
 	}
 
+	getCoinSound_ = nullptr;
 	coinCollector_ = nullptr;
 	textureAtlas_ = nullptr;
 

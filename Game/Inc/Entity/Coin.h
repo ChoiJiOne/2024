@@ -8,6 +8,7 @@
 /** 클래스 전방 선언입니다. */
 class CoinCollector;
 class SpriteAnimator2D;
+class Sound;
 class TextureAtlas2D;
 
 /** 플레이어가 획득할 코인입니다. */
@@ -77,4 +78,7 @@ private:
 
 	/** 플레이어가 코인을 획득했을 때 움직이는 속도입니다. */
 	float moveGainSpeed_ = 0.0f;
+
+	/** 플레이어가 코인을 획득했을 때 출력할 사운드입니다. */
+	Sound* getCoinSound_ = nullptr;
 };
