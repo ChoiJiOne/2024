@@ -110,6 +110,7 @@ void Player::Tick(float deltaSeconds)
 
 				if (keySkill.second == ESkill::DASH)
 				{
+					dashSound_->Start();
 					bIsDashing_ = true;
 				}
 			}
@@ -130,6 +131,7 @@ void Player::Tick(float deltaSeconds)
 	if (hpBar_->GetBar() <= 0.0f)
 	{
 		bIsDashing_ = false;
+		hurtSound_->Start();
 		state_ = EState::HURT;
 	}
 
@@ -210,6 +212,7 @@ void Player::SetHP(float hp)
 	}
 	else // hp > currentHp
 	{
+		chargeSound_->Start();
 		float healHp = hp - currentHp;
 		gamePlayRecorder_->AddRecord<float>(GamePlayRecorder::ERecordType::HEAL_HP, healHp);
 	}
@@ -253,6 +256,7 @@ void Player::SetMP(float mp)
 	}
 	else // hp > currentMp
 	{
+		chargeSound_->Start();
 		float healMp = mp - currentMp;
 		gamePlayRecorder_->AddRecord<float>(GamePlayRecorder::ERecordType::HEAL_MP, healMp);
 	}
