@@ -79,8 +79,7 @@ void GamePauseScene::Initailize()
 	UIButton* continueBtn = entityManager_->Create<UIButton>("Resource\\UI\\Continue.button", uiCamera_, font48, EMouse::LEFT,
 		[&]()
 		{
-			AudioManager::GetRef().GetByName<Sound>("Click")->Reset();
-			AudioManager::GetRef().GetByName<Sound>("Click")->Play();
+			AudioManager::GetRef().GetByName<Sound>("Click")->Start();
 
 			bIsSwitched_ = true;
 			switchScene_ = sceneManager_->GetByName<GamePlayScene>("GamePlayScene");
@@ -92,8 +91,7 @@ void GamePauseScene::Initailize()
 	UIButton* doneBtn = entityManager_->Create<UIButton>("Resource\\UI\\Done_GamePauseScene.button", uiCamera_, font48, EMouse::LEFT,
 		[&]()
 		{
-			AudioManager::GetRef().GetByName<Sound>("Click")->Reset();
-			AudioManager::GetRef().GetByName<Sound>("Click")->Play();
+			AudioManager::GetRef().GetByName<Sound>("Click")->Start();
 
 			bIsSwitched_ = true;
 			switchScene_ = sceneManager_->GetByName<GameTitleScene>("GameTitleScene");

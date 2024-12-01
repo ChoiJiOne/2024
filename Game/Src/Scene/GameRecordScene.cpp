@@ -86,8 +86,7 @@ void GameRecordScene::Initailize()
 	UIButton* backBtn = entityManager_->Create<UIButton>("Resource\\UI\\Back.button", uiCamera_, font48, EMouse::LEFT,
 		[&]()
 		{
-			AudioManager::GetRef().GetByName<Sound>("Click")->Reset();
-			AudioManager::GetRef().GetByName<Sound>("Click")->Play();
+			AudioManager::GetRef().GetByName<Sound>("Click")->Start();
 
 			bIsSwitched_ = true;
 			switchScene_ = sceneManager_->GetByName<GameTitleScene>("GameTitleScene");

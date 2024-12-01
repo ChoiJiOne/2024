@@ -124,8 +124,7 @@ void GameTitleScene::Initailize()
 	UIButton* startBtn = entityManager_->Create<UIButton>("Resource\\UI\\Start.button", uiCamera_, font48, EMouse::LEFT, 
 		[&]() 
 		{
-			AudioManager::GetRef().GetByName<Sound>("Click")->Reset();
-			AudioManager::GetRef().GetByName<Sound>("Click")->Play();
+			AudioManager::GetRef().GetByName<Sound>("Click")->Start();
 
 			titleFox_->RunWayout();
 			fadeEffector_->StartOut(fadeOutTime_); 
@@ -137,8 +136,7 @@ void GameTitleScene::Initailize()
 	UIButton* recordBtn = entityManager_->Create<UIButton>("Resource\\UI\\Record.button", uiCamera_, font48, EMouse::LEFT, 
 		[&]() 
 		{			
-			AudioManager::GetRef().GetByName<Sound>("Click")->Reset();
-			AudioManager::GetRef().GetByName<Sound>("Click")->Play();
+			AudioManager::GetRef().GetByName<Sound>("Click")->Start();
 
 			bIsSwitched_ = true;
 			switchScene_ = sceneManager_->GetByName<GameRecordScene>("GameRecordScene");
