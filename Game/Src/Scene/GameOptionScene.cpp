@@ -1,3 +1,5 @@
+#include <windows.h>
+
 #include "Audio/AudioManager.h"
 #include "Audio/Sound.h"
 #include "Entity/Backdrop.h"
@@ -5,6 +7,7 @@
 #include "Entity/UIButton.h"
 #include "Entity/UICamera.h"
 #include "Entity/UIPanel.h"
+#include "Entity/UISlider.h"
 #include "GL/GLManager.h"
 #include "GL/RenderManager2D.h"
 #include "GL/TTFont.h"
@@ -75,6 +78,68 @@ void GameOptionScene::Initailize()
 	renderUiEntities_.push_back(optionPanel);
 
 	TTFont* font48 = glManager_->GetByName<TTFont>("Font48");
+
+	UISlider* chargeSlider = entityManager_->Create<UISlider>("Resource\\UI\\Charge.slider", uiCamera_, EMouse::LEFT,
+		[&](float rate) 
+		{
+		}
+	);
+	updateUiEntities_.push_back(chargeSlider);
+	renderUiEntities_.push_back(chargeSlider);
+
+	UISlider* clickSlider = entityManager_->Create<UISlider>("Resource\\UI\\Click.slider", uiCamera_, EMouse::LEFT,
+		[&](float rate)
+		{
+		}
+	);
+	updateUiEntities_.push_back(clickSlider);
+	renderUiEntities_.push_back(clickSlider);
+
+
+	UISlider* coinSlider = entityManager_->Create<UISlider>("Resource\\UI\\Coin.slider", uiCamera_, EMouse::LEFT,
+		[&](float rate)
+		{
+		}
+	);
+	updateUiEntities_.push_back(coinSlider);
+	renderUiEntities_.push_back(coinSlider);
+
+
+	UISlider* dashSlider = entityManager_->Create<UISlider>("Resource\\UI\\Dash.slider", uiCamera_, EMouse::LEFT,
+		[&](float rate)
+		{
+		}
+	);
+	updateUiEntities_.push_back(dashSlider);
+	renderUiEntities_.push_back(dashSlider);
+
+
+
+	UISlider* endSoundSlider = entityManager_->Create<UISlider>("Resource\\UI\\EndSound.slider", uiCamera_, EMouse::LEFT,
+		[&](float rate)
+		{
+		}
+	);
+	updateUiEntities_.push_back(endSoundSlider);
+	renderUiEntities_.push_back(endSoundSlider);
+
+
+
+	UISlider* explosionSlider = entityManager_->Create<UISlider>("Resource\\UI\\Explosion.slider", uiCamera_, EMouse::LEFT,
+		[&](float rate)
+		{
+		}
+	);
+	updateUiEntities_.push_back(explosionSlider);
+	renderUiEntities_.push_back(explosionSlider);
+
+	UISlider* themeSlider = entityManager_->Create<UISlider>("Resource\\UI\\Theme.slider", uiCamera_, EMouse::LEFT,
+		[&](float rate)
+		{
+		}
+	);
+	updateUiEntities_.push_back(themeSlider);
+	renderUiEntities_.push_back(themeSlider);
 
 	UIButton* backBtn = entityManager_->Create<UIButton>("Resource\\UI\\Back.button", uiCamera_, font48, EMouse::LEFT,
 		[&]()
