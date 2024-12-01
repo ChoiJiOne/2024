@@ -1,6 +1,7 @@
 #pragma once
 
 #include <array>
+#include <string>
 
 #include "IApp.h"
 
@@ -35,4 +36,7 @@ private:
 
 	/** 게임 앱 내에서 사용하는 폰트 크기입니다. */
 	std::array<int32_t, 3> fontSizes_;
+
+	/** 게임 앱 내에서 사용하는 사운드 리소스 이름입니다. */
+	std::array<std::string, 7> soundNames_;
 };

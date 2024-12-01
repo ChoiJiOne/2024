@@ -1,4 +1,5 @@
 #include "App/GameApp.h"
+#include "Audio/AudioManager.h"
 #include "Entity/EntityManager.h"
 #include "Entity/FadeEffector.h"
 #include "Entity/UICamera.h"
@@ -66,10 +67,35 @@ void GameApp::LoadResource()
 		TTFont* font = glManager_->Create<TTFont>("Resource\\Font\\lower.ttf", 0x00, 0x128, static_cast<float>(fontSize), ITexture::EFilter::LINEAR);
 		glManager_->Register(PrintF("Font%d", fontSize), font);
 	}
+
+	soundNames_ = 
+	{
+		"Charge",
+		"Click",
+		"Coin",
+		"Dash",
+		"EndSound",
+		"Explosion",
+		"Theme",
+	};
+
+	for (const std::string& name : soundNames_)
+	{
+		std::string soundPath = PrintF("Resource\\Sound\\%s.mp3", name.c_str());
+		Sound* sound = audioManager_->Create<Sound>(soundPath);
+		audioManager_->Register(name, sound);
+	}
 }
 
 void GameApp::UnloadResource()
 {
+	for (const std::string& name : soundNames_)
+	{
+		Sound* sound = audioManager_->GetByName<Sound>(name);
+		audioManager_->Unregister(name);
+		audioManager_->Destroy(sound);
+	}
+
 	for (const auto& fontSize : fontSizes_)
 	{
 		std::string name = PrintF("Font%d", fontSize);
@@ -88,6 +114,7 @@ void GameApp::UnloadResource()
 
 	if (frameBuffer_)
 	{
+		glManager_->Unregister("FrameBuffer");
 		glManager_->Destroy(frameBuffer_);
 		frameBuffer_ = nullptr;
 	}
