@@ -1,3 +1,5 @@
+#include "Audio/AudioManager.h"
+#include "Audio/Sound.h"
 #include "Entity/Backdrop.h"
 #include "Entity/EntityManager.h"
 #include "Entity/UIButton.h"
@@ -77,6 +79,9 @@ void GameOptionScene::Initailize()
 	UIButton* backBtn = entityManager_->Create<UIButton>("Resource\\UI\\Back.button", uiCamera_, font48, EMouse::LEFT,
 		[&]()
 		{
+			AudioManager::GetRef().GetByName<Sound>("Click")->Reset();
+			AudioManager::GetRef().GetByName<Sound>("Click")->Play();
+
 			bIsSwitched_ = true;
 			switchScene_ = sceneManager_->GetByName<GameTitleScene>("GameTitleScene");
 		}
