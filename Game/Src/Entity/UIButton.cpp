@@ -1,6 +1,5 @@
 #include <json/json.h>
 
-#include "Entity/EntityManager.h"
 #include "Entity/UIButton.h"
 #include "Entity/UICamera.h"
 #include "GL/RenderManager2D.h"
