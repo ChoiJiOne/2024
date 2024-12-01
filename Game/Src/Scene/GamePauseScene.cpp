@@ -1,4 +1,3 @@
-#include "App/GameApp.h"
 #include "Entity/Camera2D.h"
 #include "Entity/EntityManager.h"
 #include "Entity/UIButton.h"
