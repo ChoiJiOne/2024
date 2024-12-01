@@ -56,8 +56,5 @@ private:
 	bool bIsInitialized_ = false;
 
 	/** 사운드 리소스 원본입니다. */
-	std::unique_ptr<ma_sound> sound_;
-
-	/** 사운드 리소스의 포인터입니다. */
-	ma_sound* soundPtr_ = nullptr;
+	ma_sound sound_;
 };
