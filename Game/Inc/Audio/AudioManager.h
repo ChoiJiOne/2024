@@ -52,7 +52,7 @@ public:
 		sounds_[soundID].second = true;
 		sounds_[soundID].first = std::make_unique<TSound>(args...);
 
-		return reinterpret_cast<TSound*>(sounds_[soundID].get());
+		return reinterpret_cast<TSound*>(sounds_[soundID].first.get());
 	}
 
 	/** 사운드를 파괴합니다. */
