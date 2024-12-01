@@ -36,5 +36,5 @@
         "a": 1.0
     },
     "SliderScale": 0.05,
-    "SliderX": 0.0
+    "SliderXScale": 1.0
 }
