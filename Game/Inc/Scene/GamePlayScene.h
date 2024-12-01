@@ -114,7 +114,7 @@ private:
 	float fadeInTime_ = 1.0f;
 
 	/** 페이드 아웃 시간입니다. */
-	float fadeOutTime_ = 3.0f;
+	float fadeOutTime_ = 4.0f;
 
 	/** 프레임 버퍼에 후처리를 수행하는 오브젝트입니다. */
 	PostProcessor* postProcessor_ = nullptr;
