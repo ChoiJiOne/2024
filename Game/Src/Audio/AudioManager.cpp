@@ -23,7 +23,7 @@ void AudioManager::Destroy(const Sound* sound)
 	int32_t soundID = -1;
 	for (uint32_t index = 0; index < soundSize_; ++index)
 	{
-		Sound* soundPtr = sounds_[index].get();
+		Sound* soundPtr = sounds_[index].first.get();
 		if (sound == soundPtr)
 		{
 			soundID = static_cast<int32_t>(index);
@@ -36,15 +36,15 @@ void AudioManager::Destroy(const Sound* sound)
 		return; // 해당 사운드는 이미 할당 해제 되었거나, 오디오 매니저에 의해 할당 해제된 사운드 입니다.
 	}
 
-	if (sounds_[soundID])
+	if (sounds_[soundID].first)
 	{
-		if (sounds_[soundID]->IsInitialized())
+		if (sounds_[soundID].first->IsInitialized())
 		{
-			sounds_[soundID]->Release();
+			sounds_[soundID].first->Release();
 		}
 
-		sounds_[soundID].reset();
-		usages_[soundID] = false;
+		sounds_[soundID].first.reset();
+		sounds_[soundID].second = false;
 	}
 }
 
@@ -72,15 +72,15 @@ void AudioManager::Shutdown()
 {
 	for (uint32_t index = 0; index < soundSize_; ++index)
 	{
-		if (sounds_[index])
+		if (sounds_[index].first)
 		{
-			if (sounds_[index]->IsInitialized())
+			if (sounds_[index].first->IsInitialized())
 			{
-				sounds_[index]->Release();
+				sounds_[index].first->Release();
 			}
 
-			sounds_[index].reset();
-			usages_[index] = false;
+			sounds_[index].first.reset();
+			sounds_[index].second = false;
 		}
 	}
 

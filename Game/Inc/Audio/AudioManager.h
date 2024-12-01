@@ -9,8 +9,8 @@
 #include "Audio/Sound.h"
 #include "Utils/Macro.h"
 
-/** 
- * 오디오 엔진 초기화/해제 및 사운드 리소스를 관리하는 매니저입니다. 
+/**
+ * 오디오 엔진 초기화/해제 및 사운드 리소스를 관리하는 매니저입니다.
  * 이때, 이 매니저 클래스는 싱글턴입니다.
  */
 class AudioManager
@@ -36,7 +36,7 @@ public:
 		int32_t soundID = -1;
 		for (uint32_t index = 0; index < soundSize_; ++index)
 		{
-			if (!sounds_[index] && !usages_[index])
+			if (!sounds_[index].first && !sounds_[index].second)
 			{
 				soundID = static_cast<int32_t>(index);
 				break;
@@ -48,8 +48,8 @@ public:
 			soundID = soundSize_++;
 		}
 
-		usages_[soundID] = true;
-		sounds_[soundID] = std::make_unique<TSound>(args...);
+		sounds_[soundID].second = true;
+		sounds_[soundID].first = std::make_unique<TSound>(args...);
 
 		return reinterpret_cast<TSound*>(sounds_[soundID].get());
 	}
@@ -80,12 +80,11 @@ private:
 	std::unique_ptr<ma_engine> audioEngine_ = nullptr;
 
 	/** 오디오 매니저에서 관리하는 사운드의 최대 개수입니다. */
-	static const uint32_t MAX_SOUND_SIZE = 50;
+	static const uint32_t MAX_SOUND_SIZE = 10;
 
 	/** 사운드 매니저의 크기입니다. 최대 MAX_SOUND_SIZE개 까지 지원합니다. */
 	uint32_t soundSize_ = 0;
 
 	/** 오디오 매니저 내에서 관리하는 사운드와 그 사운드의 사용 여부입니다. */
-	std::array<std::unique_ptr<Sound>, MAX_SOUND_SIZE> sounds_;
-	std::array<bool, MAX_SOUND_SIZE> usages_;
+	std::array<std::pair<std::unique_ptr<Sound>, bool>, MAX_SOUND_SIZE> sounds_;
 };
