@@ -212,6 +212,11 @@ void GamePlayScene::Initialize()
 	gamePauseTrigger_ = entityManager_->Create<KeyEventTrigger>(EKey::KEY_ESCAPE, EPress::PRESSED, 
 		[&]() 
 		{
+			if (fadeEffector_->GetState() == FadeEffector::EState::PROGRESS)
+			{
+				return;
+			}
+
 			bIsPause_ = true;
 			bIsSwitched_ = true;
 			switchScene_ = sceneManager_->GetByName<GamePauseScene>("GamePauseScene");
