@@ -9,7 +9,6 @@
 #include "Entity/UIButton.h"
 #include "Entity/UICamera.h"
 #include "Entity/UIPanel.h"
-#include "Entity/UIText.h"
 #include "GL/FrameBuffer.h"
 #include "GL/GLManager.h"
 #include "GL/PostProcessor.h"
@@ -116,11 +115,7 @@ void GameTitleScene::Initailize()
 	renderUiEntities_.push_back(titlePanel);
 
 	TTFont* font48 = glManager_->GetByName<TTFont>("Font48");
-
-	UIText* menuText = entityManager_->Create<UIText>("Resource\\UI\\Menu.text", font48);
-	updateUiEntities_.push_back(menuText);
-	renderUiEntities_.push_back(menuText);
-
+	
 	UIButton* startBtn = entityManager_->Create<UIButton>("Resource\\UI\\Start.button", uiCamera_, font48, EMouse::LEFT, 
 		[&]() 
 		{
