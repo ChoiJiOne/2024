@@ -98,7 +98,7 @@ void GameTitleScene::Exit()
 void GameTitleScene::Initailize()
 {
 	postProcessor_ = renderManager_->GetPostProcessor();
-	frameBuffer_ = reinterpret_cast<GameApp*>(IApp::GetPtr())->GetFrameBuffer();
+	frameBuffer_ = glManager_->GetByName<FrameBuffer>("FrameBuffer");
 	renderTargetOption_ = RenderTargetOption{ glm::vec4(0.0f, 0.0f, 0.0f, 1.0f), true };
 
 	uiCamera_ = entityManager_->GetByName<UICamera>("UICamera");

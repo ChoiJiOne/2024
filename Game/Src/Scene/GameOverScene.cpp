@@ -1,5 +1,3 @@
-#include "App/GameApp.h"
-#include "App/IApp.h"
 #include "Entity/Backdrop.h"
 #include "Entity/EntityManager.h"
 #include "Entity/FadeEffector.h"
@@ -84,8 +82,8 @@ void GameOverScene::Exit()
 
 void GameOverScene::Initailize()
 {
-	postProcessor_ = renderManager_->GetPostProcessor();
-	frameBuffer_ = reinterpret_cast<GameApp*>(IApp::GetPtr())->GetFrameBuffer();
+	postProcessor_ = renderManager_->GetPostProcessor(); 
+	frameBuffer_ = glManager_->GetByName<FrameBuffer>("FrameBuffer");
 	renderTargetOption_ = RenderTargetOption{ glm::vec4(0.0f, 0.0f, 0.0f, 1.0f), true };
 
 	uiCamera_ = entityManager_->GetByName<UICamera>("UICamera");

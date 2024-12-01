@@ -2,7 +2,6 @@
 
 #include <glm/gtc/constants.hpp>
 
-#include "App/GameApp.h"
 #include "Entity/Background.h"
 #include "Entity/Camera2D.h"
 #include "Entity/Coin.h"
@@ -198,7 +197,7 @@ void GamePlayScene::PreTick(float deltaSeconds)
 void GamePlayScene::Initialize()
 {
 	postProcessor_ = renderManager_->GetPostProcessor();
-	frameBuffer_ = reinterpret_cast<GameApp*>(IApp::GetPtr())->GetFrameBuffer();
+	frameBuffer_ = glManager_->GetByName<FrameBuffer>("FrameBuffer");
 	renderTargetOption_ = RenderTargetOption{ glm::vec4(0.0f, 0.0f, 0.0f, 1.0f), true };
 
 	uiCamera_ = entityManager_->GetByName<UICamera>("UICamera");
