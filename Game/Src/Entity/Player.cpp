@@ -4,6 +4,8 @@
 #include <glm/gtc/epsilon.hpp>
 #include <glm/gtx/norm.hpp>
 
+#include "Audio/AudioManager.h"
+#include "Audio/Sound.h"
 #include "Entity/EntityManager.h"
 #include "Entity/GamePlayRecorder.h"
 #include "Entity/Player.h"
@@ -58,6 +60,7 @@ Player::Player()
 
 	LoadAnimations();
 	LoadUIs();
+	LoadSounds();
 
 	invincibilityColor_ = glm::vec4(1.0f, 0.0f, 0.0f, 1.0f);
 	lostHpColor_ = glm::vec4(1.0f, 0.5f, 0.1f, 1.0f);
@@ -161,6 +164,7 @@ void Player::Release()
 {
 	CHECK(bIsInitialized_);
 
+	UnloadSounds();
 	UnloadUIs();
 	UnloadAnimations();
 	gamePlayScene_ = nullptr;
@@ -349,6 +353,22 @@ void Player::UnloadUIs()
 {
 	mpBar_ = nullptr;
 	hpBar_ = nullptr;
+}
+
+void Player::LoadSounds()
+{
+	AudioManager& audioManager = AudioManager::GetRef();
+
+	chargeSound_ = audioManager.GetByName<Sound>("Charge");
+	dashSound_ = audioManager.GetByName<Sound>("Dash");
+	hurtSound_ = audioManager.GetByName<Sound>("EndSound");
+}
+
+void Player::UnloadSounds()
+{
+	hurtSound_ = nullptr;
+	dashSound_ = nullptr;
+	chargeSound_ = nullptr;
 }
 
 void Player::UseDashSkill(float deltaSeconds)

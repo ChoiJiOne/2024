@@ -13,6 +13,7 @@ class GamePlayScene;
 class GamePlayRecorder;
 class SpriteAnimator2D;
 class TextureAtlas2D;
+class Sound;
 class Playground;
 class UIBar;
 class UISkill;
@@ -106,6 +107,12 @@ private:
 
 	/** 플레이어의 UI 요소를 초기화 해제합니다. */
 	void UnloadUIs();
+
+	/** 플레이어의 사운드 요소를 초기화합니다. */
+	void LoadSounds();
+
+	/** 플레이어의 사운드 요소를 초기화 해제합니다. */
+	void UnloadSounds();
 
 	/** 플레이어의 대쉬 스킬을 수행합니다. */
 	void UseDashSkill(float deltaSeconds);
@@ -218,4 +225,13 @@ private:
 
 	/** 현재 체력 감소 효과 시간 값입니다. */
 	float lostHpEffectTime_ = 0.0f;
+
+	/** HP/MP가 회복되었을 때 출력할 사운드입니다. */
+	Sound* chargeSound_ = nullptr;
+
+	/** 플레이어가 대쉬 스킬을 사용했을 때 출력할 사운드입니다. */
+	Sound* dashSound_ = nullptr;
+
+	/** 플레이어가 hurt 상태가 되었을 때 출력할 사운드입니다. */
+	Sound* hurtSound_ = nullptr;
 };
