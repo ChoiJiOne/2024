@@ -33,6 +33,9 @@ public:
 	/** 사운드의 반복 여부를 얻습니다. */
 	virtual bool IsLooping();
 
+	/** 사운드 플레이를 시작합니다. */
+	virtual void Start();
+
 	/** 사운드를 플레이합니다. 이전에 중지한 적이 있다면 중지한 시점부터 플레이됩니다. */
 	virtual void Play();
 

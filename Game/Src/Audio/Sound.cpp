@@ -52,6 +52,12 @@ bool Sound::IsLooping()
 	return ma_sound_is_looping(&sound_) == MA_TRUE;
 }
 
+void Sound::Start()
+{
+	ma_sound_seek_to_pcm_frame(&sound_, 0);
+	ma_sound_start(&sound_);
+}
+
 void Sound::Play()
 {
 	ma_sound_start(&sound_);
