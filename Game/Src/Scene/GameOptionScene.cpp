@@ -1,3 +1,5 @@
+#include <array>
+
 #include "Audio/AudioManager.h"
 #include "Audio/Sound.h"
 #include "Entity/Backdrop.h"
@@ -78,117 +80,38 @@ void GameOptionScene::Initailize()
 
 	TTFont* font48 = glManager_->GetByName<TTFont>("Font48");
 
-	UISlider* chargeSlider = entityManager_->Create<UISlider>("Resource\\UI\\Charge.slider", uiCamera_, EMouse::LEFT,
-		[&](float rate) 
-		{
-			Sound* sound = AudioManager::GetRef().GetByName<Sound>("Charge");
-			sound->SetVolume(rate);
-			sound->Start();
-		}
-	);
-	updateUiEntities_.push_back(chargeSlider);
-	renderUiEntities_.push_back(chargeSlider);
+	std::array<std::string, 7> uiNames =
+	{
+		"Charge",
+		"Click",
+		"Coin",
+		"Dash",
+		"EndSound",
+		"Explosion",
+		"Theme"
+	};
 
-	UIText* chargeText = entityManager_->Create<UIText>("Resource\\UI\\Charge.text", font48);
-	updateUiEntities_.push_back(chargeText);
-	renderUiEntities_.push_back(chargeText);
+	for (const auto& uiName : uiNames)
+	{
+		std::string sliderUIPath = PrintF("Resource\\UI\\%s.slider", uiName.c_str());
+		UISlider* sliderUI = entityManager_->Create<UISlider>(sliderUIPath, uiCamera_, EMouse::LEFT,
+			[&](float rate)
+			{
+				Sound* sound = AudioManager::GetRef().GetByName<Sound>(uiName);
+				sound->SetVolume(rate);
+				sound->Start();
+			}
+		);
+		updateUiEntities_.push_back(sliderUI);
+		renderUiEntities_.push_back(sliderUI);
 
-	UISlider* clickSlider = entityManager_->Create<UISlider>("Resource\\UI\\Click.slider", uiCamera_, EMouse::LEFT,
-		[&](float rate)
-		{
-			Sound* sound = AudioManager::GetRef().GetByName<Sound>("Click");
-			sound->SetVolume(rate);
-			sound->Start();
-		}
-	);
-	updateUiEntities_.push_back(clickSlider);
-	renderUiEntities_.push_back(clickSlider);
+		std::string textUIPath = PrintF("Resource\\UI\\%s.text", uiName.c_str());
 
-	UIText* clickText = entityManager_->Create<UIText>("Resource\\UI\\Click.text", font48);
-	updateUiEntities_.push_back(clickText);
-	renderUiEntities_.push_back(clickText);
-
-	UISlider* coinSlider = entityManager_->Create<UISlider>("Resource\\UI\\Coin.slider", uiCamera_, EMouse::LEFT,
-		[&](float rate)
-		{			
-			Sound* sound = AudioManager::GetRef().GetByName<Sound>("Coin");
-			sound->SetVolume(rate);
-			sound->Start();
-		}
-	);
-	updateUiEntities_.push_back(coinSlider);
-	renderUiEntities_.push_back(coinSlider);
-
-	UIText* coinText = entityManager_->Create<UIText>("Resource\\UI\\Coin.text", font48);
-	updateUiEntities_.push_back(coinText);
-	renderUiEntities_.push_back(coinText);
-
-	UISlider* dashSlider = entityManager_->Create<UISlider>("Resource\\UI\\Dash.slider", uiCamera_, EMouse::LEFT,
-		[&](float rate)
-		{			
-			Sound* sound = AudioManager::GetRef().GetByName<Sound>("Dash");
-			sound->SetVolume(rate);
-			sound->Start();
-		}
-	);
-	updateUiEntities_.push_back(dashSlider);
-	renderUiEntities_.push_back(dashSlider);
-
-	UIText* dashText = entityManager_->Create<UIText>("Resource\\UI\\Dash.text", font48);
-	updateUiEntities_.push_back(dashText);
-	renderUiEntities_.push_back(dashText);
-
-
-
-	UISlider* endSoundSlider = entityManager_->Create<UISlider>("Resource\\UI\\EndSound.slider", uiCamera_, EMouse::LEFT,
-		[&](float rate)
-		{
-			Sound* sound = AudioManager::GetRef().GetByName<Sound>("EndSound");
-			sound->SetVolume(rate);
-			sound->Start();
-		}
-	);
-	updateUiEntities_.push_back(endSoundSlider);
-	renderUiEntities_.push_back(endSoundSlider);
-
-	UIText* endSoundText = entityManager_->Create<UIText>("Resource\\UI\\EndSound.text", font48);
-	updateUiEntities_.push_back(endSoundText);
-	renderUiEntities_.push_back(endSoundText);
-
-
-
-	UISlider* explosionSlider = entityManager_->Create<UISlider>("Resource\\UI\\Explosion.slider", uiCamera_, EMouse::LEFT,
-		[&](float rate)
-		{
-			Sound* sound = AudioManager::GetRef().GetByName<Sound>("Explosion");
-			sound->SetVolume(rate);
-			sound->Start();
-		}
-	);
-	updateUiEntities_.push_back(explosionSlider);
-	renderUiEntities_.push_back(explosionSlider);
-
-	UIText* explosionText = entityManager_->Create<UIText>("Resource\\UI\\Explosion.text", font48);
-	updateUiEntities_.push_back(explosionText);
-	renderUiEntities_.push_back(explosionText);
-
-
-	UISlider* themeSlider = entityManager_->Create<UISlider>("Resource\\UI\\Theme.slider", uiCamera_, EMouse::LEFT,
-		[&](float rate)
-		{
-			Sound* sound = AudioManager::GetRef().GetByName<Sound>("Theme");
-			sound->SetVolume(rate);
-			sound->Start();
-		}
-	);
-	updateUiEntities_.push_back(themeSlider);
-	renderUiEntities_.push_back(themeSlider);
-
-	UIText* themeText = entityManager_->Create<UIText>("Resource\\UI\\Theme.text", font48);
-	updateUiEntities_.push_back(themeText);
-	renderUiEntities_.push_back(themeText);
-
-
+		UIText* textUI = entityManager_->Create<UIText>(textUIPath, font48);
+		updateUiEntities_.push_back(textUI);
+		renderUiEntities_.push_back(textUI);
+	}
+	
 	UIButton* backBtn = entityManager_->Create<UIButton>("Resource\\UI\\Back.button", uiCamera_, font48, EMouse::LEFT,
 		[&]()
 		{
