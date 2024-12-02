@@ -1,5 +1,3 @@
-#include <windows.h>
-
 #include "Audio/AudioManager.h"
 #include "Audio/Sound.h"
 #include "Entity/Backdrop.h"
