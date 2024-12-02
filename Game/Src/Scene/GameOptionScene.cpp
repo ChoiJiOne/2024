@@ -8,6 +8,7 @@
 #include "Entity/UICamera.h"
 #include "Entity/UIPanel.h"
 #include "Entity/UISlider.h"
+#include "Entity/UIText.h"
 #include "GL/GLManager.h"
 #include "GL/RenderManager2D.h"
 #include "GL/TTFont.h"
@@ -82,64 +83,113 @@ void GameOptionScene::Initailize()
 	UISlider* chargeSlider = entityManager_->Create<UISlider>("Resource\\UI\\Charge.slider", uiCamera_, EMouse::LEFT,
 		[&](float rate) 
 		{
+			Sound* sound = AudioManager::GetRef().GetByName<Sound>("Charge");
+			sound->SetVolume(rate);
+			sound->Start();
 		}
 	);
 	updateUiEntities_.push_back(chargeSlider);
 	renderUiEntities_.push_back(chargeSlider);
 
+	UIText* chargeText = entityManager_->Create<UIText>("Resource\\UI\\Charge.text", font48);
+	updateUiEntities_.push_back(chargeText);
+	renderUiEntities_.push_back(chargeText);
+
 	UISlider* clickSlider = entityManager_->Create<UISlider>("Resource\\UI\\Click.slider", uiCamera_, EMouse::LEFT,
 		[&](float rate)
 		{
+			Sound* sound = AudioManager::GetRef().GetByName<Sound>("Click");
+			sound->SetVolume(rate);
+			sound->Start();
 		}
 	);
 	updateUiEntities_.push_back(clickSlider);
 	renderUiEntities_.push_back(clickSlider);
 
+	UIText* clickText = entityManager_->Create<UIText>("Resource\\UI\\Click.text", font48);
+	updateUiEntities_.push_back(clickText);
+	renderUiEntities_.push_back(clickText);
 
 	UISlider* coinSlider = entityManager_->Create<UISlider>("Resource\\UI\\Coin.slider", uiCamera_, EMouse::LEFT,
 		[&](float rate)
-		{
+		{			
+			Sound* sound = AudioManager::GetRef().GetByName<Sound>("Coin");
+			sound->SetVolume(rate);
+			sound->Start();
 		}
 	);
 	updateUiEntities_.push_back(coinSlider);
 	renderUiEntities_.push_back(coinSlider);
 
+	UIText* coinText = entityManager_->Create<UIText>("Resource\\UI\\Coin.text", font48);
+	updateUiEntities_.push_back(coinText);
+	renderUiEntities_.push_back(coinText);
 
 	UISlider* dashSlider = entityManager_->Create<UISlider>("Resource\\UI\\Dash.slider", uiCamera_, EMouse::LEFT,
 		[&](float rate)
-		{
+		{			
+			Sound* sound = AudioManager::GetRef().GetByName<Sound>("Dash");
+			sound->SetVolume(rate);
+			sound->Start();
 		}
 	);
 	updateUiEntities_.push_back(dashSlider);
 	renderUiEntities_.push_back(dashSlider);
+
+	UIText* dashText = entityManager_->Create<UIText>("Resource\\UI\\Dash.text", font48);
+	updateUiEntities_.push_back(dashText);
+	renderUiEntities_.push_back(dashText);
 
 
 
 	UISlider* endSoundSlider = entityManager_->Create<UISlider>("Resource\\UI\\EndSound.slider", uiCamera_, EMouse::LEFT,
 		[&](float rate)
 		{
+			Sound* sound = AudioManager::GetRef().GetByName<Sound>("EndSound");
+			sound->SetVolume(rate);
+			sound->Start();
 		}
 	);
 	updateUiEntities_.push_back(endSoundSlider);
 	renderUiEntities_.push_back(endSoundSlider);
+
+	UIText* endSoundText = entityManager_->Create<UIText>("Resource\\UI\\EndSound.text", font48);
+	updateUiEntities_.push_back(endSoundText);
+	renderUiEntities_.push_back(endSoundText);
 
 
 
 	UISlider* explosionSlider = entityManager_->Create<UISlider>("Resource\\UI\\Explosion.slider", uiCamera_, EMouse::LEFT,
 		[&](float rate)
 		{
+			Sound* sound = AudioManager::GetRef().GetByName<Sound>("Explosion");
+			sound->SetVolume(rate);
+			sound->Start();
 		}
 	);
 	updateUiEntities_.push_back(explosionSlider);
 	renderUiEntities_.push_back(explosionSlider);
 
+	UIText* explosionText = entityManager_->Create<UIText>("Resource\\UI\\Explosion.text", font48);
+	updateUiEntities_.push_back(explosionText);
+	renderUiEntities_.push_back(explosionText);
+
+
 	UISlider* themeSlider = entityManager_->Create<UISlider>("Resource\\UI\\Theme.slider", uiCamera_, EMouse::LEFT,
 		[&](float rate)
 		{
+			Sound* sound = AudioManager::GetRef().GetByName<Sound>("Theme");
+			sound->SetVolume(rate);
+			sound->Start();
 		}
 	);
 	updateUiEntities_.push_back(themeSlider);
 	renderUiEntities_.push_back(themeSlider);
+
+	UIText* themeText = entityManager_->Create<UIText>("Resource\\UI\\Theme.text", font48);
+	updateUiEntities_.push_back(themeText);
+	renderUiEntities_.push_back(themeText);
+
 
 	UIButton* backBtn = entityManager_->Create<UIButton>("Resource\\UI\\Back.button", uiCamera_, font48, EMouse::LEFT,
 		[&]()
