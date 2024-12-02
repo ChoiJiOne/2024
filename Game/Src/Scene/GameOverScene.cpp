@@ -95,7 +95,7 @@ void GameOverScene::Initailize()
 	updateUiEntities_.push_back(backdrop);
 	renderUiEntities_.push_back(backdrop);
 
-	UIPanel* gameOverPanel = entityManager_->Create<UIPanel>("Resource\\UI\\GameOver.panel", glManager_->GetByName<TextureAtlas2D>("TextureAtlas"));
+	UIPanel* gameOverPanel = entityManager_->Create<UIPanel>("Resource\\UI\\GameOverScene\\GameOver.panel", glManager_->GetByName<TextureAtlas2D>("TextureAtlas"));
 	updateUiEntities_.push_back(gameOverPanel);
 	renderUiEntities_.push_back(gameOverPanel);
 
@@ -110,7 +110,7 @@ void GameOverScene::Initailize()
 	updateUiEntities_.push_back(getCoinResultViewer_);
 	renderUiEntities_.push_back(getCoinResultViewer_);
 
-	UIButton* doneBtn = entityManager_->Create<UIButton>("Resource\\UI\\Done.button", uiCamera_, font48, EMouse::LEFT, 
+	UIButton* doneBtn = entityManager_->Create<UIButton>("Resource\\UI\\GameOverScene\\Done.button", uiCamera_, font48, EMouse::LEFT, 
 		[&]() 
 		{
 			AudioManager::GetRef().GetByName<Sound>("Click")->Start();
