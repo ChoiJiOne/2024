@@ -66,5 +66,33 @@
     "RandomChest.maxFireLifeTime": {
         "type": "float",
         "value": 15.0
+    },
+    "Sound.Charge": {
+        "type": "float",
+        "value": 0.5
+    },
+    "Sound.Click": {
+        "type": "float",
+        "value": 0.5
+    },
+    "Sound.Coin": {
+        "type": "float",
+        "value": 0.5
+    },
+    "Sound.Dash": {
+        "type": "float",
+        "value": 0.5
+    },
+    "Sound.EndSound": {
+        "type": "float",
+        "value": 0.5
+    },
+    "Sound.Explosion": {
+        "type": "float",
+        "value": 0.5
+    },
+    "Sound.Theme": {
+        "type": "float",
+        "value": 0.5
     }
 }
