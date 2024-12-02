@@ -143,8 +143,7 @@ void GameTitleScene::Initailize()
 	UIButton* optionBtn = entityManager_->Create<UIButton>("Resource\\UI\\Option.button", uiCamera_, font48, EMouse::LEFT, 
 		[&]() 
 		{
-			AudioManager::GetRef().GetByName<Sound>("Click")->Reset();
-			AudioManager::GetRef().GetByName<Sound>("Click")->Play();
+			AudioManager::GetRef().GetByName<Sound>("Click")->Start();
 
 			bIsSwitched_ = true;
 			switchScene_ = sceneManager_->GetByName<GameOptionScene>("GameOptionScene");
@@ -168,6 +167,10 @@ void GameTitleScene::Initailize()
 
 	fadeEffector_ = entityManager_->GetByName<FadeEffector>("FadeEffector");
 	updateUiEntities_.push_back(fadeEffector_);
+	
+	Sound* themeSound = AudioManager::GetRef().GetByName<Sound>("Theme");
+	themeSound->SetLooping(true);
+	themeSound->Play();
 }
 
 void GameTitleScene::UnInitailize()
