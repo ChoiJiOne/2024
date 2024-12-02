@@ -123,7 +123,7 @@ void GameOptionScene::Initailize()
 			AudioManager::GetRef().GetByName<Sound>("Click")->Start();
 
 			bIsSwitched_ = true;
-			switchScene_ = sceneManager_->GetByName<GameTitleScene>("GameTitleScene");
+			switchScene_ = backScene_;
 		}
 	);
 	updateUiEntities_.push_back(backBtn);

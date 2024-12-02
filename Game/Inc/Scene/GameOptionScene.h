@@ -22,6 +22,9 @@ public:
 	virtual void Enter() override;
 	virtual void Exit() override;
 
+	/** 뒤로 갈 때 돌아갈 씬을 설정합니다. */
+	void SetBackwardsScene(IGameScene* backScene) { backScene_ = backScene; }
+
 private:
 	/** 게임 옵션 설정 씬을 초기화합니다. */
 	void Initailize();
@@ -32,6 +35,9 @@ private:
 private:
 	/** 게임 옵션 설정 씬의 스크린 카메라입니다. */
 	UICamera* uiCamera_ = nullptr;
+
+	/** 뒤로 갈 때 돌아갈 씬입니다. */
+	IGameScene* backScene_ = nullptr;
 
 	/** 업데이트할 UI 엔티티입니다. */
 	std::list<IEntity*> updateUiEntities_;
