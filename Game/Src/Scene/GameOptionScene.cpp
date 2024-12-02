@@ -9,6 +9,7 @@
 #include "Entity/UIPanel.h"
 #include "Entity/UISlider.h"
 #include "Entity/UIText.h"
+#include "Game/GameManager.h"
 #include "GL/GLManager.h"
 #include "GL/RenderManager2D.h"
 #include "GL/TTFont.h"
@@ -93,6 +94,10 @@ void GameOptionScene::Initailize()
 
 	for (const auto& uiName : uiNames)
 	{
+		float volume = gameManager_->GetConfigValue<float>(PrintF("Sound.%s", uiName.c_str()));
+		Sound* sound = AudioManager::GetRef().GetByName<Sound>(uiName);
+		sound->SetVolume(volume);
+
 		std::string sliderUIPath = PrintF("Resource\\UI\\%s.slider", uiName.c_str());
 		UISlider* sliderUI = entityManager_->Create<UISlider>(sliderUIPath, uiCamera_, EMouse::LEFT,
 			[&](float rate)
