@@ -75,7 +75,7 @@ void GameOptionScene::Initailize()
 	updateUiEntities_.push_back(backdrop);
 	renderUiEntities_.push_back(backdrop);
 
-	UIPanel* optionPanel = entityManager_->Create<UIPanel>("Resource\\UI\\Option.panel", glManager_->GetByName<TextureAtlas2D>("TextureAtlas"));
+	UIPanel* optionPanel = entityManager_->Create<UIPanel>("Resource\\UI\\GameOptionScene\\Option.panel", glManager_->GetByName<TextureAtlas2D>("TextureAtlas"));
 	updateUiEntities_.push_back(optionPanel);
 	renderUiEntities_.push_back(optionPanel);
 
@@ -98,7 +98,7 @@ void GameOptionScene::Initailize()
 		Sound* sound = AudioManager::GetRef().GetByName<Sound>(uiName);
 		sound->SetVolume(volume);
 
-		std::string sliderUIPath = PrintF("Resource\\UI\\%s.slider", uiName.c_str());
+		std::string sliderUIPath = PrintF("Resource\\UI\\GameOptionScene\\%s.slider", uiName.c_str());
 		UISlider* sliderUI = entityManager_->Create<UISlider>(sliderUIPath, uiCamera_, EMouse::LEFT,
 			[&](float rate)
 			{
@@ -110,14 +110,14 @@ void GameOptionScene::Initailize()
 		updateUiEntities_.push_back(sliderUI);
 		renderUiEntities_.push_back(sliderUI);
 
-		std::string textUIPath = PrintF("Resource\\UI\\%s.text", uiName.c_str());
+		std::string textUIPath = PrintF("Resource\\UI\\GameOptionScene\\%s.text", uiName.c_str());
 
 		UIText* textUI = entityManager_->Create<UIText>(textUIPath, font48);
 		updateUiEntities_.push_back(textUI);
 		renderUiEntities_.push_back(textUI);
 	}
 	
-	UIButton* backBtn = entityManager_->Create<UIButton>("Resource\\UI\\Back.button", uiCamera_, font48, EMouse::LEFT,
+	UIButton* backBtn = entityManager_->Create<UIButton>("Resource\\UI\\GameOptionScene\\Back.button", uiCamera_, font48, EMouse::LEFT,
 		[&]()
 		{
 			AudioManager::GetRef().GetByName<Sound>("Click")->Start();
