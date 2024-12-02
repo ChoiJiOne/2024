@@ -110,13 +110,13 @@ void GameTitleScene::Initailize()
 	updateUiEntities_.push_back(backdrop);
 	renderUiEntities_.push_back(backdrop);
 
-	UIPanel* titlePanel = entityManager_->Create<UIPanel>("Resource\\UI\\Title.panel", glManager_->GetByName<TextureAtlas2D>("TextureAtlas"));
+	UIPanel* titlePanel = entityManager_->Create<UIPanel>("Resource\\UI\\GameTitleScene\\Title.panel", glManager_->GetByName<TextureAtlas2D>("TextureAtlas"));
 	updateUiEntities_.push_back(titlePanel);
 	renderUiEntities_.push_back(titlePanel);
 
 	TTFont* font48 = glManager_->GetByName<TTFont>("Font48");
 	
-	UIButton* startBtn = entityManager_->Create<UIButton>("Resource\\UI\\Start.button", uiCamera_, font48, EMouse::LEFT, 
+	UIButton* startBtn = entityManager_->Create<UIButton>("Resource\\UI\\GameTitleScene\\Start.button", uiCamera_, font48, EMouse::LEFT, 
 		[&]() 
 		{
 			AudioManager::GetRef().GetByName<Sound>("Click")->Start();
@@ -128,7 +128,7 @@ void GameTitleScene::Initailize()
 	updateUiEntities_.push_back(startBtn);
 	renderUiEntities_.push_back(startBtn);
 
-	UIButton* recordBtn = entityManager_->Create<UIButton>("Resource\\UI\\Record.button", uiCamera_, font48, EMouse::LEFT, 
+	UIButton* recordBtn = entityManager_->Create<UIButton>("Resource\\UI\\GameTitleScene\\Record.button", uiCamera_, font48, EMouse::LEFT, 
 		[&]() 
 		{			
 			AudioManager::GetRef().GetByName<Sound>("Click")->Start();
@@ -140,7 +140,7 @@ void GameTitleScene::Initailize()
 	updateUiEntities_.push_back(recordBtn);
 	renderUiEntities_.push_back(recordBtn);
 
-	UIButton* optionBtn = entityManager_->Create<UIButton>("Resource\\UI\\Option.button", uiCamera_, font48, EMouse::LEFT, 
+	UIButton* optionBtn = entityManager_->Create<UIButton>("Resource\\UI\\GameTitleScene\\Option.button", uiCamera_, font48, EMouse::LEFT, 
 		[&]() 
 		{
 			AudioManager::GetRef().GetByName<Sound>("Click")->Start();
@@ -155,7 +155,7 @@ void GameTitleScene::Initailize()
 	updateUiEntities_.push_back(optionBtn);
 	renderUiEntities_.push_back(optionBtn);
 
-	UIButton* quitBtn = entityManager_->Create<UIButton>("Resource\\UI\\Quit.button", uiCamera_, font48, EMouse::LEFT, 
+	UIButton* quitBtn = entityManager_->Create<UIButton>("Resource\\UI\\GameTitleScene\\Quit.button", uiCamera_, font48, EMouse::LEFT, 
 		[&]()
 		{ 
 			IApp::GetPtr()->RequestDoneLoop(); 
