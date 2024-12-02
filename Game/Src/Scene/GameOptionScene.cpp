@@ -80,7 +80,7 @@ void GameOptionScene::Initailize()
 
 	TTFont* font48 = glManager_->GetByName<TTFont>("Font48");
 
-	std::array<std::string, 7> uiNames =
+	static std::array<std::string, 7> uiNames =
 	{
 		"Charge",
 		"Click",
