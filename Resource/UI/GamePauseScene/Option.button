@@ -1,11 +1,11 @@
 {
     "Background": {
         "x": -270.0,
-        "y": -80.0,
+        "y": -220.0,
         "w": 300.0,
         "h": 50.0
     },
-    "Text": "CONTINUE",
+    "Text": "OPTION",
     "TextColor": {
         "r": 1.0,
         "g": 1.0,

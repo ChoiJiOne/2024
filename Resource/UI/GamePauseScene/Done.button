@@ -1,11 +1,11 @@
 {
     "Background": {
         "x": -270.0,
-        "y": -150.0,
+        "y": -290.0,
         "w": 300.0,
         "h": 50.0
     },
-    "Text": "OPTION",
+    "Text": "DONE",
     "TextColor": {
         "r": 1.0,
         "g": 1.0,
