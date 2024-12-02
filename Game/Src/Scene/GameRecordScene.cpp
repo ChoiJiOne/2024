@@ -95,7 +95,7 @@ void GameRecordScene::Initailize()
 
 	TTFont* font48 = glManager_->GetByName<TTFont>("Font48");
 
-	UIPanel* recordPanel = entityManager_->Create<UIPanel>("Resource\\UI\\Record.panel", glManager_->GetByName<TextureAtlas2D>("TextureAtlas"));
+	UIPanel* recordPanel = entityManager_->Create<UIPanel>("Resource\\UI\\GameRecordScene\\Record.panel", glManager_->GetByName<TextureAtlas2D>("TextureAtlas"));
 	updateUiEntities_.push_back(recordPanel);
 	renderUiEntities_.push_back(recordPanel);
 
@@ -138,7 +138,7 @@ void GameRecordScene::Initailize()
 	updateUiEntities_.push_back(totalLostMpResultViewer_);
 	renderUiEntities_.push_back(totalLostMpResultViewer_);
 
-	UIButton* backBtn = entityManager_->Create<UIButton>("Resource\\UI\\Back.button", uiCamera_, font48, EMouse::LEFT,
+	UIButton* backBtn = entityManager_->Create<UIButton>("Resource\\UI\\GameRecordScene\\Back.button", uiCamera_, font48, EMouse::LEFT,
 		[&]()
 		{
 			AudioManager::GetRef().GetByName<Sound>("Click")->Start();
