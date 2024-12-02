@@ -7,6 +7,7 @@
 #include "GL/FrameBuffer.h"
 #include "GL/GLManager.h"
 #include "GL/PostProcessor.h"
+#include "Scene/GameOptionScene.h"
 #include "Scene/GamePauseScene.h"
 #include "Scene/GamePlayScene.h"
 #include "Scene/GameTitleScene.h"
@@ -59,7 +60,8 @@ void GamePauseScene::Enter()
 
 void GamePauseScene::Exit()
 {
-	if (switchScene_ != gamePlayScene_)
+	GameTitleScene* gameTitleScene = sceneManager_->GetByName<GameTitleScene>("GameTitleScene");
+	if (switchScene_ == gameTitleScene)
 	{
 		gamePlayScene_->bIsPause_ = false;
 		gamePlayScene_->Exit();
@@ -76,7 +78,7 @@ void GamePauseScene::Initailize()
 
 	TTFont* font48 = glManager_->GetByName<TTFont>("Font48");
 
-	UIButton* continueBtn = entityManager_->Create<UIButton>("Resource\\UI\\Continue.button", uiCamera_, font48, EMouse::LEFT,
+	UIButton* continueBtn = entityManager_->Create<UIButton>("Resource\\UI\\GamePauseScene\\Continue.button", uiCamera_, font48, EMouse::LEFT,
 		[&]()
 		{
 			AudioManager::GetRef().GetByName<Sound>("Click")->Start();
@@ -88,7 +90,22 @@ void GamePauseScene::Initailize()
 	updateUiEntities_.push_back(continueBtn);
 	renderUiEntities_.push_back(continueBtn);
 
-	UIButton* doneBtn = entityManager_->Create<UIButton>("Resource\\UI\\Done_GamePauseScene.button", uiCamera_, font48, EMouse::LEFT,
+	UIButton* optionBtn = entityManager_->Create<UIButton>("Resource\\UI\\GamePauseScene\\Option.button", uiCamera_, font48, EMouse::LEFT,
+		[&]()
+		{
+			AudioManager::GetRef().GetByName<Sound>("Click")->Start();
+
+			GameOptionScene* gameOptionScene = sceneManager_->GetByName<GameOptionScene>("GameOptionScene");
+			gameOptionScene->SetBackwardsScene(this);
+
+			bIsSwitched_ = true;
+			switchScene_ = gameOptionScene;
+		}
+	);
+	updateUiEntities_.push_back(optionBtn);
+	renderUiEntities_.push_back(optionBtn);
+
+	UIButton* doneBtn = entityManager_->Create<UIButton>("Resource\\UI\\GamePauseScene\\Done.button", uiCamera_, font48, EMouse::LEFT,
 		[&]()
 		{
 			AudioManager::GetRef().GetByName<Sound>("Click")->Start();
