@@ -336,16 +336,16 @@ void Player::LoadUIs()
 
 	TTFont* font24 = glManager.GetByName<TTFont>("Font24");
 
-	hpBar_ = entityManager.Create<UIBar>("Resource\\UI\\HP.bar", font24);
+	hpBar_ = entityManager.Create<UIBar>("Resource\\UI\\Player\\HP.bar", font24);
 	gamePlayScene_->AddEntity(hpBar_,52, 52);
 
-	mpBar_ = entityManager.Create<UIBar>("Resource\\UI\\MP.bar", font24);
+	mpBar_ = entityManager.Create<UIBar>("Resource\\UI\\Player\\MP.bar", font24);
 	gamePlayScene_->AddEntity(mpBar_, 52, 52);
 
-	UISkill* dash = entityManager.Create<UISkill>("Resource\\UI\\Skill_Dash.skill", font24);
+	UISkill* dash = entityManager.Create<UISkill>("Resource\\UI\\Player\\Dash.skill", font24);
 	gamePlayScene_->AddEntity(dash, 52, 52);
 
-	UISkill* invincibility = entityManager.Create<UISkill>("Resource\\UI\\Skill_Invincibility.skill", font24);
+	UISkill* invincibility = entityManager.Create<UISkill>("Resource\\UI\\Player\\Invincibility.skill", font24);
 	gamePlayScene_->AddEntity(invincibility, 52, 52);
 
 	skills_.insert({ ESkill::NONE,          nullptr       });
