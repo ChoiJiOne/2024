@@ -6,7 +6,7 @@
 #include "GL/RenderManager2D.h"
 
 /** 클래스 전방 선언입니다. */
-class PlayRecordViewer;
+class ResultViewer;
 class UICamera;
 
 /** 게임 기록을 보여주는 씬입니다. */
@@ -41,5 +41,14 @@ private:
 	std::list<IEntity2D*> renderUiEntities_;
 
 	/** 게임 플레이 기록을 보여주는 엔티티입니다. */
-	PlayRecordViewer* playRecordViewer_ = nullptr;
+	ResultViewer* playTimeResultViewer_ = nullptr;
+	ResultViewer* getCoinResultViewer_ = nullptr;
+	ResultViewer* useSkillResultViewer_ = nullptr;
+	ResultViewer* totalHealHpResultViewer_ = nullptr;
+	ResultViewer* totalLostHpResultViewer_ = nullptr;
+	ResultViewer* totalHealMpResultViewer_ = nullptr;
+	ResultViewer* totalLostMpResultViewer_ = nullptr;
+
+	/** 게임 플레이 기록을 표시할 시간입니다. */
+	float playRecordViewTime_ = 0.0f;
 };
