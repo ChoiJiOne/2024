@@ -13,7 +13,7 @@
 class IApp
 {
 public:
-	IApp(uint32_t windowWidth, uint32_t windowHeight, const char* windowTitle, bool bIsWindowCentered);
+	IApp(uint32_t windowWidth, uint32_t windowHeight, const char* windowTitle, const char* windowIcon, bool bIsWindowCentered);
 	virtual ~IApp();
 
 	DISALLOW_COPY_AND_ASSIGN(IApp);

@@ -14,7 +14,7 @@
 
 IApp* IApp::appPtr_ = nullptr;
 
-IApp::IApp(uint32_t windowWidth, uint32_t windowHeight, const char* windowTitle, bool bIsWindowCentered)
+IApp::IApp(uint32_t windowWidth, uint32_t windowHeight, const char* windowTitle, const char* windowIcon, bool bIsWindowCentered)
 {
 	appPtr_ = this;
 
@@ -30,7 +30,7 @@ IApp::IApp(uint32_t windowWidth, uint32_t windowHeight, const char* windowTitle,
 
 	/** 앱 내부에서 사용할 매니저들의 초기화. */
 	crashManager_->Startup();
-	glfwManager_->Startup(windowWidth, windowHeight, windowTitle, bIsWindowCentered);
+	glfwManager_->Startup(windowWidth, windowHeight, windowTitle, windowIcon, bIsWindowCentered);
 	glManager_->Startup();
 	renderManager_->Startup();
 	audioManager_->Startup();
