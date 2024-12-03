@@ -306,8 +306,11 @@ private:
 	virtual ~GLFWManager() {}
 
 	/** GLFW 매니저의 초기화 및 해제는 IApp 내부에서만 수행됩니다. */
-	void Startup(int32_t width, int32_t height, const char* title, bool bIsWindowCentered);
+	void Startup(int32_t width, int32_t height, const char* title, const char* icon, bool bIsWindowCentered);
 	void Shutdown();
+
+	/** GLFW 윈도우의 아이콘을 로딩합니다. */
+	void LoadIcon(const char* icon);
 	
 private:
 	/** GLFW 매니저의 싱글턴 객체입니다. */

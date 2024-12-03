@@ -1,8 +1,7 @@
-#include <Windows.h>
-
 #include <imgui.h>
 #include <imgui_impl_glfw.h>
 #include <imgui_impl_opengl3.h>
+#include <stb_image.h>
 
 #include "GLFW/GLFWAssertion.h"
 #include "GLFW/GLFWManager.h"
@@ -460,7 +459,7 @@ void GLFWManager::RunWindowEventAction(const EWindowEvent& windowEvent)
 	}
 }
 
-void GLFWManager::Startup(int32_t width, int32_t height, const char* title, bool bIsWindowCentered)
+void GLFWManager::Startup(int32_t width, int32_t height, const char* title, const char* icon, bool bIsWindowCentered)
 {
 	glfwSetErrorCallback(ErrorCallback);
 
@@ -524,6 +523,8 @@ void GLFWManager::Startup(int32_t width, int32_t height, const char* title, bool
 		int32_t centerY = monitorY + (mode->height - mainWindowHeight_) / 2;
 		glfwSetWindowPos(mainWindow_, centerX, centerY);
 	}
+
+	LoadIcon(icon);
 }
 
 void GLFWManager::Shutdown()
@@ -538,4 +539,17 @@ void GLFWManager::Shutdown()
 	}
 
 	glfwTerminate();
+}
+
+void GLFWManager::LoadIcon(const char* icon)
+{
+	int32_t channels = 0;
+	GLFWimage image;
+	image.pixels = stbi_load(icon, &image.width, &image.height, &channels, 0);
+	ASSERTION(image.pixels != nullptr, "Failed to load %s file.", icon);
+	
+	GLFW_API_CHECK(glfwSetWindowIcon(mainWindow_, 1, &image));
+
+	stbi_image_free(image.pixels);
+	image.pixels = nullptr;
 }
