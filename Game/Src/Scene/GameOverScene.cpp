@@ -102,11 +102,14 @@ void GameOverScene::Initailize()
 	TTFont* font48 = glManager_->GetByName<TTFont>("Font48");
 	resultViewTime_ = 5.0f;
 
-	playTimeResultViewer_ = entityManager_->Create<ResultViewer>(font48, glm::vec2(0.0f, 0.0f), L"TIME", glm::vec4(0.0f, 0.0f, 0.0f, 1.0f), resultViewTime_);
+	glm::vec2 basePos = glm::vec2(-150.0f, -20.0f);
+	float stride = 50.0f;
+
+	playTimeResultViewer_ = entityManager_->Create<ResultViewer>(font48, basePos, L"PLAY TIME (S)", glm::vec4(0.0f, 0.0f, 0.0f, 1.0f), resultViewTime_);
 	updateUiEntities_.push_back(playTimeResultViewer_);
 	renderUiEntities_.push_back(playTimeResultViewer_);
 
-	getCoinResultViewer_ = entityManager_->Create<ResultViewer>(font48, glm::vec2(0.0f, -50.0f), L"COIN", glm::vec4(0.0f, 0.0f, 0.0f, 1.0f), resultViewTime_);
+	getCoinResultViewer_ = entityManager_->Create<ResultViewer>(font48, basePos + glm::vec2(0.0f, -stride), L"GET COIN", glm::vec4(0.0f, 0.0f, 0.0f, 1.0f), resultViewTime_);
 	updateUiEntities_.push_back(getCoinResultViewer_);
 	renderUiEntities_.push_back(getCoinResultViewer_);
 

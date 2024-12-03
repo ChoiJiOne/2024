@@ -101,10 +101,10 @@ void GameRecordScene::Initailize()
 
 	playRecordViewTime_ = 5.0f;
 
-	glm::vec2 basePos = glm::vec2(0.0f, +90.0f);
+	glm::vec2 basePos = glm::vec2(-150.0f, +70.0f);
 	float stride = 50.0f;
 
-	playTimeResultViewer_ = entityManager_->Create<ResultViewer>(font48, basePos, L"PLAY TIME", glm::vec4(0.0f, 0.0f, 0.0f, 1.0f), playRecordViewTime_);
+	playTimeResultViewer_ = entityManager_->Create<ResultViewer>(font48, basePos, L"PLAY TIME (S)", glm::vec4(0.0f, 0.0f, 0.0f, 1.0f), playRecordViewTime_);
 	updateUiEntities_.push_back(playTimeResultViewer_);
 	renderUiEntities_.push_back(playTimeResultViewer_);
 	
