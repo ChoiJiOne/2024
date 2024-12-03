@@ -23,7 +23,7 @@ public:
 	};
 
 public:
-	ResultViewer(TTFont* font, const glm::vec2& position, const std::wstring& text, const glm::vec4& textColor, float showTime);
+	ResultViewer(TTFont* font, const glm::vec2& basePos, const std::wstring& text, const glm::vec4& textColor, float showTime);
 	virtual ~ResultViewer();
 
 	DISALLOW_COPY_AND_ASSIGN(ResultViewer);
@@ -48,8 +48,8 @@ private:
 	/** 현재 플레이 결과 값입니다. */
 	int32_t currentPlayResult_ = 0;
 
-	/** 결과를 표시할 중앙 위치입니다. */
-	glm::vec2 position_;
+	/** 결과를 표시할 텍스트의 위치입니다. */
+	glm::vec2 basePos_;
 
 	/** 화면에 표시할 때 참조할 텍스트입니다. */
 	std::wstring text_;

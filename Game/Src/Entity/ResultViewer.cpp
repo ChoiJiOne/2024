@@ -8,9 +8,9 @@
 #include "Utils/Assertion.h"
 #include "Utils/Utils.h"
 
-ResultViewer::ResultViewer(TTFont* font, const glm::vec2& position, const std::wstring& text, const glm::vec4& textColor, float showTime)
+ResultViewer::ResultViewer(TTFont* font, const glm::vec2& basePos, const std::wstring& text, const glm::vec4& textColor, float showTime)
 	: font_(font)
-	, position_(position)
+	, basePos_(basePos)
 	, text_(text)
 	, textColor_(textColor)
 	, maxResultShowTime_(showTime)
@@ -62,9 +62,8 @@ void ResultViewer::Render()
 		return;
 	}
 
-	glm::vec2 basePos = font_->MeasureBasePos(resultText_, position_);
-	renderManager_->DrawString(font_, resultText_, basePos + shadowOffset_, shadowColor_);
-	renderManager_->DrawString(font_, resultText_, basePos, textColor_);
+	renderManager_->DrawString(font_, resultText_, basePos_ + shadowOffset_, shadowColor_);
+	renderManager_->DrawString(font_, resultText_, basePos_, textColor_);
 }
 
 void ResultViewer::Release()
