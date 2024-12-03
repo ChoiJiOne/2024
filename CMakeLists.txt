@@ -18,3 +18,9 @@ add_subdirectory(ThirdParty)
 add_subdirectory(Game)
 
 set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT ${PROJECT_NAME})
+
+option(REQUIRE_ADMINISTRATOR "Enable Require Administrator." OFF)
+if(REQUIRE_ADMINISTRATOR)
+message("-- Enable Require Administrator.")
+set_target_properties(${PROJECT_NAME} PROPERTIES LINK_FLAGS "/level='requireAdministrator' /uiAccess='false'")
+endif()
