@@ -17,8 +17,8 @@
 #include "Scene/SceneManager.h"
 #include "Utils/Utils.h"
 
-GameApp::GameApp(uint32_t windowWidth, uint32_t windowHeight, const char* windowTitle, bool bIsWindowCentered)
-	: IApp(windowWidth, windowHeight, windowTitle, bIsWindowCentered)
+GameApp::GameApp(uint32_t windowWidth, uint32_t windowHeight, const char* windowTitle, const char* windowIcon, bool bIsWindowCentered)
+	: IApp(windowWidth, windowHeight, windowTitle, windowIcon, bIsWindowCentered)
 {
 	LoadResource();
 }

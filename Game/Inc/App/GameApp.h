@@ -12,7 +12,7 @@ class TextureAtlas2D;
 class GameApp : public IApp
 {
 public:
-	GameApp(uint32_t windowWidth, uint32_t windowHeight, const char* windowTitle, bool bIsWindowCentered);
+	GameApp(uint32_t windowWidth, uint32_t windowHeight, const char* windowTitle, const char* windowIcon, bool bIsWindowCentered);
 	virtual ~GameApp();
 
 	DISALLOW_COPY_AND_ASSIGN(GameApp);
