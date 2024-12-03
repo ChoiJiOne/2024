@@ -18,6 +18,12 @@ configure_file(
     "${CMAKE_CURRENT_SOURCE_DIR}/Inc/App/AppConfig.h"
 )
 
+set(EXE_ICON_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../Resource/Icon/Icon.ico")
+configure_file(
+    "${CMAKE_CURRENT_SOURCE_DIR}/Inc/Resource.rc.in"
+    "${CMAKE_CURRENT_SOURCE_DIR}/Inc/Resource.rc"
+)
+
 set(PROJECT_PATH ${CMAKE_CURRENT_SOURCE_DIR})
 set(PROJECT_INCLUDE_PATH "${PROJECT_PATH}/Inc")
 set(PROJECT_SOURCE_PATH "${PROJECT_PATH}/Src")
