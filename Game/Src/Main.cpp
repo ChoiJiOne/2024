@@ -14,7 +14,7 @@ int32_t WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstan
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 #endif
 	
-	std::unique_ptr<GameApp> app = std::make_unique<GameApp>(WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_TITLE, IS_WINDOW_CENTERED);
+	std::unique_ptr<GameApp> app = std::make_unique<GameApp>(WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_TITLE, WINDOW_ICON_PATH, IS_WINDOW_CENTERED);
 	app->Startup();
 	app->Run();
 	app->Shutdown();
