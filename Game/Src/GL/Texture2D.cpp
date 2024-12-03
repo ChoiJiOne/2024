@@ -49,7 +49,7 @@ void Texture2D::Active(uint32_t unit) const
 uint32_t Texture2D::CreateTextureFromImage(const std::string& path, const EFilter& filter)
 {
 	uint8_t* imagePtr = stbi_load(path.c_str(), &width_, &height_, &channels_, 0);
-	ASSERTION(imagePtr != nullptr, "failed to load %s file", path.c_str());
+	ASSERTION(imagePtr != nullptr, "Failed to load %s file.", path.c_str());
 
 	std::size_t bufferSize = static_cast<std::size_t>(width_ * height_ * channels_);
 	std::vector<uint8_t> buffer(bufferSize);
