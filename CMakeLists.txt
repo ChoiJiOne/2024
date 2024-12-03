@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.27)
 
 project(FoxDash)
 
+set(PROJECT_NAME "FoxDash")
+
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
@@ -24,3 +26,56 @@ if(REQUIRE_ADMINISTRATOR)
 message("-- Enable Require Administrator.")
 set_target_properties(${PROJECT_NAME} PROPERTIES LINK_FLAGS "/level='requireAdministrator' /uiAccess='false'")
 endif()
+
+set(CPACK_GENERATOR "NSIS")
+set(CPACK_PACKAGE_NAME ${PROJECT_NAME})
+set(CPACK_PACKAGE_VERSION "0.0.0")
+set(CPACK_PACKAGE_VENDOR "Github-ChoiJiOne")
+set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "https://github.com/ChoiJiOne/FoxDash")
+set(CPACK_PACKAGE_INSTALL_DIRECTORY ${PROJECT_NAME})
+set(CPACK_PACKAGE_EXECUTABLES ${PROJECT_NAME} ${PROJECT_NAME})
+set(CPACK_NSIS_MUI_ICON ${CMAKE_CURRENT_SOURCE_DIR}\\\\Resource\\\\Icon\\\\Icon.ico)
+set(CPACK_NSIS_MUI_UNIICON ${CMAKE_CURRENT_SOURCE_DIR}\\\\Resource\\\\Icon\\\\Icon.ico)
+# set(CPACK_NSIS_MUI_HEADERIMAGE  ${CMAKE_CURRENT_SOURCE_DIR}\\\\${PROJECT_NAME}\\\\Res\\\\Installer\\\\Header.bmp)
+# set(CPACK_NSIS_MUI_HEADERIMAGE_UNBITMAP  ${CMAKE_CURRENT_SOURCE_DIR}\\\\${PROJECT_NAME}\\\\Res\\\\Installer\\\\Header.bmp)
+# set(CPACK_NSIS_MUI_WELCOMEFINISHPAGE_BITMAP ${CMAKE_CURRENT_SOURCE_DIR}\\\\${PROJECT_NAME}\\\\Res\\\\Installer\\\\Installer.bmp)
+# set(CPACK_NSIS_MUI_UNWELCOMEFINISHPAGE_BITMAP ${CMAKE_CURRENT_SOURCE_DIR}\\\\${PROJECT_NAME}\\\\Res\\\\Installer\\\\Installer.bmp)
+set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/LICENSE.txt")
+
+set(CPACK_NSIS_EXTRA_INSTALL_COMMANDS "
+  CreateShortCut '$DESKTOP\\\\${PROJECT_NAME}.lnk' '$INSTDIR\\\\${PROJECT_NAME}.exe'
+  CreateShortCut '$SMPROGRAMS\\\\${PROJECT_NAME}\\\\${PROJECT_NAME}.lnk' '$INSTDIR\\\\${PROJECT_NAME}.exe'
+")
+
+set(CPACK_NSIS_EXTRA_UNINSTALL_COMMANDS "
+  Delete '$DESKTOP\\\\${PROJECT_NAME}.lnk'
+  Delete '$SMPROGRAMS\\\\${PROJECT_NAME}\\\\${PROJECT_NAME}.lnk'
+  RMDir '$SMPROGRAMS\\\\${PROJECT_NAME}'
+")
+
+install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/Shader DESTINATION .)
+install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/Resource DESTINATION .)
+install(FILES 
+    "$<$<CONFIG:Debug>:${CMAKE_BINARY_DIR}/Debug/glfw3.dll>"
+    "$<$<CONFIG:Release>:${CMAKE_BINARY_DIR}/Release/glfw3.dll>"
+    "$<$<CONFIG:RelWithDebInfo>:${CMAKE_BINARY_DIR}/RelWithDebInfo/glfw3.dll>"
+    "$<$<CONFIG:MinSizeRel>:${CMAKE_BINARY_DIR}/MinSizeRel/glfw3.dll>"
+    DESTINATION .
+)
+install(FILES 
+    "$<$<CONFIG:Debug>:${CMAKE_BINARY_DIR}/Debug/mimalloc.dll>"
+    "$<$<CONFIG:Release>:${CMAKE_BINARY_DIR}/Release/mimalloc.dll>"
+    "$<$<CONFIG:RelWithDebInfo>:${CMAKE_BINARY_DIR}/RelWithDebInfo/mimalloc.dll>"
+    "$<$<CONFIG:MinSizeRel>:${CMAKE_BINARY_DIR}/MinSizeRel/mimalloc.dll>"
+    DESTINATION .
+)
+install(FILES 
+    "$<$<CONFIG:Debug>:${CMAKE_BINARY_DIR}/Debug/mimalloc-redirect.dll>"
+    "$<$<CONFIG:Release>:${CMAKE_BINARY_DIR}/Release/mimalloc-redirect.dll>"
+    "$<$<CONFIG:RelWithDebInfo>:${CMAKE_BINARY_DIR}/RelWithDebInfo/mimalloc-redirect.dll>"
+    "$<$<CONFIG:MinSizeRel>:${CMAKE_BINARY_DIR}/MinSizeRel/mimalloc-redirect.dll>"
+    DESTINATION .
+)
+install(TARGETS ${PROJECT_NAME} DESTINATION .)
+
+include(CPack)
