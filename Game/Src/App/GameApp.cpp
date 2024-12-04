@@ -84,6 +84,7 @@ void GameApp::LoadResource()
 		std::string soundPath = PrintF("Resource\\Sound\\%s.mp3", name.c_str());
 		Sound* sound = audioManager_->Create<Sound>(soundPath);
 		sound->SetLooping(false);
+		sound->SetVolume(0.5f);
 
 		audioManager_->Register(name, sound);
 	}
