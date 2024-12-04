@@ -543,6 +543,11 @@ void GLFWManager::Shutdown()
 
 void GLFWManager::LoadIcon(const char* icon)
 {
+	if (icon == nullptr)
+	{
+		return;
+	}
+
 	int32_t channels = 0;
 	GLFWimage image;
 	image.pixels = stbi_load(icon, &image.width, &image.height, &channels, 0);
