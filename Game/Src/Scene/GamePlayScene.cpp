@@ -9,6 +9,7 @@
 #include "Entity/EntityManager.h"
 #include "Entity/FadeEffector.h"
 #include "Entity/GamePlayRecorder.h"
+#include "Entity/KeyArrowPressViewer.h"
 #include "Entity/KeyEventTrigger.h"
 #include "Entity/MiniMap.h"
 #include "Entity/Player.h"
@@ -221,7 +222,7 @@ void GamePlayScene::Initialize()
 			bIsSwitched_ = true;
 			switchScene_ = sceneManager_->GetByName<GamePauseScene>("GamePauseScene");
 		});
-	AddEntity(gamePauseTrigger_, 100);
+	AddEntity(gamePauseTrigger_, 99);
 
 	entityManager_->Register("Playground", playground_);
 
@@ -274,7 +275,7 @@ void GamePlayScene::LoadEntity()
 
 	mainCamera_ = entityManager_->Create<PlayerFollowCamera>();
 	entityManager_->Register("PlayerFollowCamera", mainCamera_);
-
+	
 	background_ = entityManager_->Create<Background>();
 
 	coinCollector_ = entityManager_->Create<CoinCollector>(glManager_->GetByName<TTFont>("Font24"));
@@ -296,12 +297,14 @@ void GamePlayScene::LoadEntity()
 		randomChests[index] = randomChest;
 	}
 
+	KeyArrowPressViewer* keyArrowPressViewer = entityManager_->Create<KeyArrowPressViewer>();
 	MiniMap* miniMap = entityManager_->Create<MiniMap>(uiCamera_, randomChests.data(), static_cast<uint32_t>(randomChests.size()));
 
 	/** 인게임 엔티티입니다. */
 	AddEntity(player_, 1, 6);
 	AddEntity(mainCamera_, 2);
 	AddEntity(background_, 10, 0);
+	AddEntity(keyArrowPressViewer, 9, 4);
 	AddEntity(coinCollector_, 15, 10);
 	AddEntity(gamePlayRecorder_, 20);
 
