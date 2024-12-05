@@ -55,6 +55,9 @@ public:
 	/** 최근 게임 플레이 기록을 얻습니다. */
 	const GamePlayRecord* GetRecentGamePlayRecord() const;
 
+	/** 전체 게임 플레이 기록을 얻습니다. */
+	const std::vector<GamePlayRecord>& GetGamePlayRecords() const { return gamePlayRecords_; }
+
 	/** 통합 게임 플레이 기록에 대한 Getter 입니다. */
 	float GetTotalPlayTime() const { return totalPlayTime_; }
 	int32_t GetTotalCoin() const { return totalCoin_; };
