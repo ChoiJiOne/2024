@@ -30,6 +30,18 @@ private:
 	/** 게임 기록 씬의 초기화를 해제합니다. */
 	void UnInitailize();
 
+	/** 전체 게임 플레이 기록을 보여주는 엔티티를 초기화합니다. */
+	void InitTotalResultViewers();
+
+	/** 평균 게임 플레이 기록을 보여주는 엔티티를 초기화합니다. */
+	void InitAverageResultViewers();
+
+	/** 전체 게임 플레이 기록을 보여주는 엔티티를 업데이트합니다. */
+	void UpdateTotalResultViewers();
+
+	/** 평균 게임 플레이 기록을 보여주는 엔티티를 업데이트합니다. */
+	void UpdateAverageResultViewers();
+
 private:	
 	/** 게임 기록 씬의 스크린 카메라입니다. */
 	UICamera* uiCamera_ = nullptr;
@@ -40,14 +52,23 @@ private:
 	/** 렌더링할 UI 엔티티입니다. */
 	std::list<IEntity2D*> renderUiEntities_;
 
-	/** 게임 플레이 기록을 보여주는 엔티티입니다. */
-	ResultViewer* playTimeResultViewer_ = nullptr;
-	ResultViewer* getCoinResultViewer_ = nullptr;
-	ResultViewer* useSkillResultViewer_ = nullptr;
-	ResultViewer* totalHealHpResultViewer_ = nullptr;
-	ResultViewer* totalLostHpResultViewer_ = nullptr;
-	ResultViewer* totalHealMpResultViewer_ = nullptr;
-	ResultViewer* totalLostMpResultViewer_ = nullptr;
+	/** 전체 게임 플레이 기록을 보여주는 엔티티입니다. */
+	ResultViewer* totalPlayTime_ = nullptr;
+	ResultViewer* totalGetCoin_ = nullptr;
+	ResultViewer* totalUseSkill_ = nullptr;
+	ResultViewer* totalHealHp_ = nullptr;
+	ResultViewer* totalLostHp_ = nullptr;
+	ResultViewer* totalHealMp_ = nullptr;
+	ResultViewer* totalLostMp_ = nullptr;
+
+	/** 평균 게임 플레이 기록을 보여주는 엔티티입니다. */
+	ResultViewer* avgPlayTime_ = nullptr;
+	ResultViewer* avgGetCoin_ = nullptr;
+	ResultViewer* avgUseSkill_ = nullptr;
+	ResultViewer* avgHealHp_ = nullptr;
+	ResultViewer* avgLostHp_ = nullptr;
+	ResultViewer* avgHealMp_ = nullptr;
+	ResultViewer* avgLostMp_ = nullptr;
 
 	/** 게임 플레이 기록을 표시할 시간입니다. */
 	float playRecordViewTime_ = 0.0f;
