@@ -42,4 +42,7 @@ private:
 
 	/** 방향 키 입력 상태의 목록입니다. */
 	std::list<KeyArrowState> keyArrowStates_;
+
+	/** 방향 키 입력 상태의 표시 시간입니다. */
+	float showTime_ = 0.0f;
 };

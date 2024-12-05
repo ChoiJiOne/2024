@@ -57,6 +57,8 @@ KeyArrowPressViewer::KeyArrowPressViewer()
 		downKeyArrowState,
 	};
 
+	showTime_ = 10.0f;
+
 	bIsInitialized_ = true;
 }
 
@@ -70,6 +72,13 @@ KeyArrowPressViewer::~KeyArrowPressViewer()
 
 void KeyArrowPressViewer::Tick(float deltaSeconds)
 {
+	if (showTime_ <= 0.0f)
+	{
+		return;
+	}
+
+	showTime_ -= deltaSeconds;
+
 	static const std::map<EKey, glm::vec2> KEY_POSITIONS =
 	{
 		{ EKey::KEY_LEFT,  glm::vec2(-30.0f, -100.0f) },
@@ -90,6 +99,11 @@ void KeyArrowPressViewer::Tick(float deltaSeconds)
 
 void KeyArrowPressViewer::Render()
 {
+	if (showTime_ <= 0.0f)
+	{
+		return;
+	}
+
 	for (const auto& keyArrowState : keyArrowStates_)
 	{
 		const Rect2D& renderBound = keyArrowState.renderBound;
