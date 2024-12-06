@@ -12,6 +12,7 @@ if %ERRORLEVEL% EQU 0 (
     GOTO:EOF
 )
 
+SET VISUAL_STUDIO="Visual Studio 17 2022"
 SET SOLUTION_PATH=%~dp0..\Solution
 
 if not exist "%SOLUTION_PATH%" (
@@ -33,11 +34,31 @@ if "%MODE%" == "Debug" (
     GOTO:EOF
 )
 
+SET ADMIN=%2
+
+if "%ADMIN%" == "ON" (
+    SET ADMIN_OPTION="ON"
+    ECHO "Enable Require Administrator."
+) else if "%ADMIN%" == "on" (
+    SET ADMIN_OPTION="ON"
+    ECHO "Enable Require Administrator."
+) else if "%ADMIN%" == "OFF" (
+    SET ADMIN_OPTION="OFF"
+    ECHO "Disable Require Administrator."
+) else if "%ADMIN%" == "off" (
+    SET ADMIN_OPTION="OFF"
+    ECHO "Disable Require Administrator."
+) else (
+    ECHO "%ADMIN%" is illegal parameter...
+    GOTO:EOF
+)
+
 SET CURRENT_PATH=%~dp0
 
 PUSHD "%CURRENT_PATH%"
 PUSHD "%SOLUTION_PATH%"
 
+cmake .. -G %VISUAL_STUDIO% -A x64 -DREQUIRE_ADMINISTRATOR=%ADMIN_OPTION%
 cmake --build . --config %mode% --clean-first --parallel  
 
 POPD
