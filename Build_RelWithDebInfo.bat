@@ -2,5 +2,6 @@
 
 SET MODE=RelWithDebInfo
 SET SCRIPT=Script\\Build.bat
+SET ADMIN_OPTION=%1
 
-%SCRIPT% %MODE%
+%SCRIPT% %MODE% %ADMIN_OPTION%
