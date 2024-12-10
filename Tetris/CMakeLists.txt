@@ -38,7 +38,6 @@ target_link_libraries(
     Dbghelp.lib 
     Pathcch.lib 
     Shlwapi.lib 
-    cgltf
     glad
     imgui
     jsoncpp
