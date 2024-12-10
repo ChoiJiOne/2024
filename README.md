@@ -1,5 +1,5 @@
-# Tetris2D
-- `Tetris2D` is a project for developing a 2D tetris game.
+# Tetris
+- `Tetris` is a project for developing a 2D tetris game.
 
 ## Support Platform
 - Windows 10/11 Home/Pro
@@ -16,7 +16,7 @@
 You can obtain a copy of the repository using the following command.
 
 ```
-git clone https://github.com/ChoiJiOne/Tetris2D.git
+git clone https://github.com/ChoiJiOne/Tetris.git
 ```
 
 ## How to Generate Visual Studio Solution?
@@ -85,10 +85,6 @@ This project supports generating an exe file that allows the project to be insta
   ```
   Package_MinSizeRel.bat
   ```
-
-## Download
-
-If you want to download a 2D Tetris game that is ready to play right away, you can download it [here](https://choijione.itch.io/tetris2d).
 
 ## License
 
