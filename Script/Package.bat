@@ -4,7 +4,7 @@ ECHO ======================
 ECHO Start Project Package
 ECHO ======================
 
-SET SOLUTION_PATH=%~dp0..\..\Solution
+SET SOLUTION_PATH=%~dp0..\Solution
 
 if not exist %SOLUTION_PATH% (
     ECHO Can't find Visual Studio Solution...

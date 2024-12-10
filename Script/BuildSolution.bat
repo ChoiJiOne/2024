@@ -12,7 +12,7 @@ if %ERRORLEVEL% EQU 0 (
     GOTO:EOF
 )
 
-SET SOLUTION_PATH=%~dp0..\..\Solution
+SET SOLUTION_PATH=%~dp0..\Solution
 
 if not exist "%SOLUTION_PATH%" (
     mkdir "%SOLUTION_PATH%"
