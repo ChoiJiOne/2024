@@ -29,17 +29,17 @@ GameOverScene2D::GameOverScene2D()
 	entityMgr_->Register("HighScoreViewer", highScoreViewer);
 
 	TTFont* font64 = resourceMgr_->GetByName<TTFont>("Font64");
-	TextUI* gameOver = uiMgr_->CreateTextUI("Tetris2D\\Res\\UI\\GameOver.ui", font64);
+	TextUI* gameOver = uiMgr_->CreateTextUI("Resource\\UI\\GameOver.ui", font64);
 
 	TTFont* font32 = resourceMgr_->GetByName<TTFont>("Font32");
-	ButtonUI* resetBtn = uiMgr_->CreateButtonUI("Tetris2D\\Res\\UI\\Reset_GameOverScene2D.ui", Mouse::LEFT, font32,
+	ButtonUI* resetBtn = uiMgr_->CreateButtonUI("Resource\\UI\\Reset_GameOverScene2D.ui", Mouse::LEFT, font32,
 		[&]()
 		{
 			GamePlayScene2D* scene = Switch<GamePlayScene2D>("GamePlayScene");
 			scene->Reset();
 		}
 	);
-	ButtonUI* quitBtn = uiMgr_->CreateButtonUI("Tetris2D\\Res\\UI\\Quit_GameOverScene2D.ui", Mouse::LEFT, font32, [&]() { Switch<GameTitleScene2D>("GameTitleScene"); });
+	ButtonUI* quitBtn = uiMgr_->CreateButtonUI("Resource\\UI\\Quit_GameOverScene2D.ui", Mouse::LEFT, font32, [&]() { Switch<GameTitleScene2D>("GameTitleScene"); });
 
 	updateEntities_.push_back(highScoreViewer);
 

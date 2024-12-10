@@ -68,9 +68,9 @@ void RenderManager2D::Startup()
 	}
 	GL_CHECK(glBindVertexArray(0));
 
-	Shader* geometry2D = resourceMgr_->Create<Shader>("MiniGame/Shader/Geometry2D.vert", "MiniGame/Shader/Geometry2D.frag");
-	Shader* sprite2D = resourceMgr_->Create<Shader>("MiniGame/Shader/Sprite2D.vert", "MiniGame/Shader/Sprite2D.frag");
-	Shader* string2D = resourceMgr_->Create<Shader>("MiniGame/Shader/String2D.vert", "MiniGame/Shader/String2D.frag");
+	Shader* geometry2D = resourceMgr_->Create<Shader>("Shader/Geometry2D.vert", "Shader/Geometry2D.frag");
+	Shader* sprite2D = resourceMgr_->Create<Shader>("Shader/Sprite2D.vert", "Shader/Sprite2D.frag");
+	Shader* string2D = resourceMgr_->Create<Shader>("Shader/String2D.vert", "Shader/String2D.frag");
 
 	shaders_.insert({ RenderCommand::Type::GEOMETRY, geometry2D });
 	shaders_.insert({ RenderCommand::Type::SPRITE,   sprite2D });

@@ -45,15 +45,15 @@ GamePauseScene2D::GamePauseScene2D()
 	PanelUI* level = entityMgr_->GetByName<PanelUI>("Level");
 	
 	TTFont* font32 = resourceMgr_->GetByName<TTFont>("Font32");
-	ButtonUI* continueBtn = uiMgr_->CreateButtonUI("Tetris2D\\Res\\UI\\Continue.ui", Mouse::LEFT, font32, [&]() { Switch<GamePlayScene2D>("GamePlayScene"); });
-	ButtonUI* resetBtn = uiMgr_->CreateButtonUI("Tetris2D\\Res\\UI\\Reset_GamePauseScene2D.ui", Mouse::LEFT, font32, 
+	ButtonUI* continueBtn = uiMgr_->CreateButtonUI("Resource\\UI\\Continue.ui", Mouse::LEFT, font32, [&]() { Switch<GamePlayScene2D>("GamePlayScene"); });
+	ButtonUI* resetBtn = uiMgr_->CreateButtonUI("Resource\\UI\\Reset_GamePauseScene2D.ui", Mouse::LEFT, font32, 
 		[&]() 
 		{
 			GamePlayScene2D* scene = Switch<GamePlayScene2D>("GamePlayScene");
 			scene->Reset();
 		}
 	);
-	ButtonUI* quitBtn = uiMgr_->CreateButtonUI("Tetris2D\\Res\\UI\\Quit_GamePauseScene2D.ui", Mouse::LEFT, font32, [&]() { Switch<GameTitleScene2D>("GameTitleScene"); });
+	ButtonUI* quitBtn = uiMgr_->CreateButtonUI("Resource\\UI\\Quit_GamePauseScene2D.ui", Mouse::LEFT, font32, [&]() { Switch<GameTitleScene2D>("GameTitleScene"); });
 
 	renderEntities_.push_back(background);
 	renderEntities_.push_back(emptyPanel);

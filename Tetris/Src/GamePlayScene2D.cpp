@@ -69,19 +69,19 @@ GamePlayScene2D::GamePlayScene2D()
 
 	TTFont* font32 = resourceMgr_->GetByName<TTFont>("Font32");
 
-	TextUI* nextText = uiMgr_->CreateTextUI("Tetris2D\\Res\\UI\\Next.ui", font32);
+	TextUI* nextText = uiMgr_->CreateTextUI("Resource\\UI\\Next.ui", font32);
 	entityMgr_->Register("NextText", nextText);
 
-	TextUI* scoreText = uiMgr_->CreateTextUI("Tetris2D\\Res\\UI\\ScoreText.ui", font32);
+	TextUI* scoreText = uiMgr_->CreateTextUI("Resource\\UI\\ScoreText.ui", font32);
 	entityMgr_->Register("ScoreText", scoreText);
 
-	PanelUI* score = uiMgr_->CreatePanelUI("Tetris2D\\Res\\UI\\ScorePanel.ui", font32);
+	PanelUI* score = uiMgr_->CreatePanelUI("Resource\\UI\\ScorePanel.ui", font32);
 	entityMgr_->Register("Score", score);
 
-	TextUI* levelText = uiMgr_->CreateTextUI("Tetris2D\\Res\\UI\\LevelText.ui", font32);
+	TextUI* levelText = uiMgr_->CreateTextUI("Resource\\UI\\LevelText.ui", font32);
 	entityMgr_->Register("LevelText", levelText);
 
-	PanelUI* level = uiMgr_->CreatePanelUI("Tetris2D\\Res\\UI\\LevelPanel.ui", font32);
+	PanelUI* level = uiMgr_->CreatePanelUI("Resource\\UI\\LevelPanel.ui", font32);
 	entityMgr_->Register("Level", level);
 
 	updateEntities_.push_back(mainCamera_);

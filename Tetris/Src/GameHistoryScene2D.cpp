@@ -28,9 +28,9 @@ GameHistoryScene2D::GameHistoryScene2D()
 	TTFont* font32 = resourceMgr_->GetByName<TTFont>("Font32");
 	TTFont* font64 = resourceMgr_->GetByName<TTFont>("Font64");
 
-	ButtonUI* backBtn = uiMgr_->CreateButtonUI("Tetris2D\\Res\\UI\\Back.ui", Mouse::LEFT, font32, [&]() { Switch<GameTitleScene2D>("GameTitleScene"); });
-	TextUI* historyText = uiMgr_->CreateTextUI("Tetris2D\\Res\\UI\\HistoryText.ui", font32);
-	TextUI* bestText = uiMgr_->CreateTextUI("Tetris2D\\Res\\UI\\BestText.ui", font32);
+	ButtonUI* backBtn = uiMgr_->CreateButtonUI("Resource\\UI\\Back.ui", Mouse::LEFT, font32, [&]() { Switch<GameTitleScene2D>("GameTitleScene"); });
+	TextUI* historyText = uiMgr_->CreateTextUI("Resource\\UI\\HistoryText.ui", font32);
+	TextUI* bestText = uiMgr_->CreateTextUI("Resource\\UI\\BestText.ui", font32);
 
 	HistoryViewer* historyViewer = entityMgr_->Create<HistoryViewer>();
 	entityMgr_->Register("HistoryViewer", historyViewer);

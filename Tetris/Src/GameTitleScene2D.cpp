@@ -28,21 +28,21 @@ GameTitleScene2D::GameTitleScene2D()
 	TTFont* font32 = resourceMgr_->GetByName<TTFont>("Font32");
 	TTFont* font128 = resourceMgr_->GetByName<TTFont>("Font128");
 
-	TextUI* title = uiMgr_->CreateTextUI("Tetris2D\\Res\\UI\\Title.ui", font128);
-	ButtonUI* startBtn = uiMgr_->CreateButtonUI("Tetris2D\\Res\\UI\\Start.ui", Mouse::LEFT, font32, 
+	TextUI* title = uiMgr_->CreateTextUI("Resource\\UI\\Title.ui", font128);
+	ButtonUI* startBtn = uiMgr_->CreateButtonUI("Resource\\UI\\Start.ui", Mouse::LEFT, font32, 
 		[&]() 
 		{
 			GamePlayScene2D* scene = Switch<GamePlayScene2D>("GamePlayScene");
 			scene->Reset();
 		}
 	);
-	ButtonUI* historyBtn = uiMgr_->CreateButtonUI("Tetris2D\\Res\\UI\\History.ui", Mouse::LEFT, font32,
+	ButtonUI* historyBtn = uiMgr_->CreateButtonUI("Resource\\UI\\History.ui", Mouse::LEFT, font32,
 		[&] 
 		{
 			Switch<GameHistoryScene2D>("GameHistoryScene");
 		}
 	);
-	ButtonUI* quitBtn = uiMgr_->CreateButtonUI("Tetris2D\\Res\\UI\\Quit_GameTitleScene2D.ui", Mouse::LEFT, font32, 
+	ButtonUI* quitBtn = uiMgr_->CreateButtonUI("Resource\\UI\\Quit_GameTitleScene2D.ui", Mouse::LEFT, font32, 
 		[&]() 
 		{  
 			InputManager::GetRef().RequestQuit();
