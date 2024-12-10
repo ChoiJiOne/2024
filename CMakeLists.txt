@@ -17,47 +17,47 @@ add_subdirectory(${PROJECT_NAME})
 
 set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT ${PROJECT_NAME})
 
-# option(REQUIRE_ADMINISTRATOR "Enable Require Administrator." OFF)
-# if(REQUIRE_ADMINISTRATOR)
-# message("-- Enable Require Administrator.")
-# set_target_properties(${PROJECT_NAME} PROPERTIES LINK_FLAGS "/level='requireAdministrator' /uiAccess='false'")
-# endif()
+option(REQUIRE_ADMINISTRATOR "Enable Require Administrator." ON)
+if(REQUIRE_ADMINISTRATOR)
+message("-- Enable Require Administrator.")
+set_target_properties(${PROJECT_NAME} PROPERTIES LINK_FLAGS "/level='requireAdministrator' /uiAccess='false'")
+endif()
 
-# set(CPACK_GENERATOR "NSIS")
-# set(CPACK_PACKAGE_NAME ${PROJECT_NAME})
-# set(CPACK_PACKAGE_VERSION "0.0.0")
-# set(CPACK_PACKAGE_VENDOR "Github-ChoiJiOne")
-# set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "https://github.com/ChoiJiOne/Tetris")
-# set(CPACK_PACKAGE_INSTALL_DIRECTORY ${PROJECT_NAME})
-# set(CPACK_PACKAGE_EXECUTABLES ${PROJECT_NAME} ${PROJECT_NAME})
-# set(CPACK_NSIS_MUI_ICON ${CMAKE_CURRENT_SOURCE_DIR}\\\\${PROJECT_NAME}\\\\Res\\\\Installer\\\\Icon.ico)
-# set(CPACK_NSIS_MUI_UNIICON ${CMAKE_CURRENT_SOURCE_DIR}\\\\${PROJECT_NAME}\\\\Res\\\\Installer\\\\Icon.ico)
-# set(CPACK_NSIS_MUI_HEADERIMAGE  ${CMAKE_CURRENT_SOURCE_DIR}\\\\${PROJECT_NAME}\\\\Res\\\\Installer\\\\Header.bmp)
-# set(CPACK_NSIS_MUI_HEADERIMAGE_UNBITMAP  ${CMAKE_CURRENT_SOURCE_DIR}\\\\${PROJECT_NAME}\\\\Res\\\\Installer\\\\Header.bmp)
-# set(CPACK_NSIS_MUI_WELCOMEFINISHPAGE_BITMAP ${CMAKE_CURRENT_SOURCE_DIR}\\\\${PROJECT_NAME}\\\\Res\\\\Installer\\\\Installer.bmp)
-# set(CPACK_NSIS_MUI_UNWELCOMEFINISHPAGE_BITMAP ${CMAKE_CURRENT_SOURCE_DIR}\\\\${PROJECT_NAME}\\\\Res\\\\Installer\\\\Installer.bmp)
-# set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/LICENSE.txt")
+set(CPACK_GENERATOR "NSIS")
+set(CPACK_PACKAGE_NAME ${PROJECT_NAME})
+set(CPACK_PACKAGE_VERSION "0.0.0")
+set(CPACK_PACKAGE_VENDOR "Github-ChoiJiOne")
+set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "https://github.com/ChoiJiOne/Tetris")
+set(CPACK_PACKAGE_INSTALL_DIRECTORY ${PROJECT_NAME})
+set(CPACK_PACKAGE_EXECUTABLES ${PROJECT_NAME} ${PROJECT_NAME})
+set(CPACK_NSIS_MUI_ICON ${CMAKE_CURRENT_SOURCE_DIR}\\\\Resource\\\\Installer\\\\Icon.ico)
+set(CPACK_NSIS_MUI_UNIICON ${CMAKE_CURRENT_SOURCE_DIR}\\\\Resource\\\\Installer\\\\Icon.ico)
+set(CPACK_NSIS_MUI_HEADERIMAGE  ${CMAKE_CURRENT_SOURCE_DIR}\\\\Resource\\\\Installer\\\\Header.bmp)
+set(CPACK_NSIS_MUI_HEADERIMAGE_UNBITMAP  ${CMAKE_CURRENT_SOURCE_DIR}\\\\Resource\\\\Installer\\\\Header.bmp)
+set(CPACK_NSIS_MUI_WELCOMEFINISHPAGE_BITMAP ${CMAKE_CURRENT_SOURCE_DIR}\\\\Resource\\\\Installer\\\\Installer.bmp)
+set(CPACK_NSIS_MUI_UNWELCOMEFINISHPAGE_BITMAP ${CMAKE_CURRENT_SOURCE_DIR}\\\\Resource\\\\Installer\\\\Installer.bmp)
+set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/LICENSE.txt")
 
-# set(CPACK_NSIS_EXTRA_INSTALL_COMMANDS "
-#   CreateShortCut '$DESKTOP\\\\${PROJECT_NAME}.lnk' '$INSTDIR\\\\${PROJECT_NAME}.exe'
-#   CreateShortCut '$SMPROGRAMS\\\\${PROJECT_NAME}\\\\${PROJECT_NAME}.lnk' '$INSTDIR\\\\${PROJECT_NAME}.exe'
-# ")
+set(CPACK_NSIS_EXTRA_INSTALL_COMMANDS "
+  CreateShortCut '$DESKTOP\\\\${PROJECT_NAME}.lnk' '$INSTDIR\\\\${PROJECT_NAME}.exe'
+  CreateShortCut '$SMPROGRAMS\\\\${PROJECT_NAME}\\\\${PROJECT_NAME}.lnk' '$INSTDIR\\\\${PROJECT_NAME}.exe'
+")
 
-# set(CPACK_NSIS_EXTRA_UNINSTALL_COMMANDS "
-#   Delete '$DESKTOP\\\\${PROJECT_NAME}.lnk'
-#   Delete '$SMPROGRAMS\\\\${PROJECT_NAME}\\\\${PROJECT_NAME}.lnk'
-#   RMDir '$SMPROGRAMS\\\\${PROJECT_NAME}'
-# ")
+set(CPACK_NSIS_EXTRA_UNINSTALL_COMMANDS "
+  Delete '$DESKTOP\\\\${PROJECT_NAME}.lnk'
+  Delete '$SMPROGRAMS\\\\${PROJECT_NAME}\\\\${PROJECT_NAME}.lnk'
+  RMDir '$SMPROGRAMS\\\\${PROJECT_NAME}'
+")
 
-# install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/MiniGame/Shader DESTINATION ./MiniGame)
-# install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/${PROJECT_NAME}/Res DESTINATION ./${PROJECT_NAME})
-# install(FILES 
-#     "$<$<CONFIG:Debug>:${CMAKE_BINARY_DIR}/Debug/SDL2d.dll>"
-#     "$<$<CONFIG:Release>:${CMAKE_BINARY_DIR}/Release/SDL2.dll>"
-#     "$<$<CONFIG:RelWithDebInfo>:${CMAKE_BINARY_DIR}/RelWithDebInfo/SDL2.dll>"
-#     "$<$<CONFIG:MinSizeRel>:${CMAKE_BINARY_DIR}/MinSizeRel/SDL2.dll>"
-#     DESTINATION .
-# )
-# install(TARGETS ${PROJECT_NAME} DESTINATION .)
+install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/Shader DESTINATION .)
+install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/Resource DESTINATION .)
+install(FILES 
+    "$<$<CONFIG:Debug>:${CMAKE_BINARY_DIR}/Debug/SDL2d.dll>"
+    "$<$<CONFIG:Release>:${CMAKE_BINARY_DIR}/Release/SDL2.dll>"
+    "$<$<CONFIG:RelWithDebInfo>:${CMAKE_BINARY_DIR}/RelWithDebInfo/SDL2.dll>"
+    "$<$<CONFIG:MinSizeRel>:${CMAKE_BINARY_DIR}/MinSizeRel/SDL2.dll>"
+    DESTINATION .
+)
+install(TARGETS ${PROJECT_NAME} DESTINATION .)
 
-# include(CPack)
+include(CPack)
