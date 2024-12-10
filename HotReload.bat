@@ -1,7 +1,6 @@
 @ECHO OFF
 
-SET PROJECT_NAME=Tetris2D
-SET SCRIPT_PATH=MiniGame\Script
-SET SCRIPT=%SCRIPT_PATH%\GenerateProjectFiles.bat
+SET PROJECT_NAME=Tetris
+SET SCRIPT=Script\GenerateProjectFiles.bat
 
 %SCRIPT% %PROJECT_NAME% Off
