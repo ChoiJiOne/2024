@@ -21,7 +21,7 @@
 #include "GameTitleScene2D.h"
 #include "MainCamera2D.h"
 
-GameApp::GameApp() : IApp("Tetris2D", 200, 200, 600, 800, false, false)
+GameApp::GameApp() : IApp("Tetris", 200, 200, 600, 800, false, false)
 {}
 
 GameApp::~GameApp()
