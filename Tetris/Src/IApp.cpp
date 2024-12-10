@@ -18,14 +18,12 @@
 #include "AudioManager.h"
 #include "CrashManager.h"
 #include "Config.h"
-#include "DebugDrawManager3D.h"
 #include "EntityManager.h"
 #include "GameTimer.h"
 #include "IApp.h"
 #include "IGameScene.h"
 #include "InputManager.h"
 #include "RenderManager2D.h"
-#include "RenderManager3D.h"
 #include "RenderStateManager.h"
 #include "ResourceManager.h"
 #include "UIManager.h"
@@ -49,8 +47,6 @@ IApp::IApp(const char* title, int32_t x, int32_t y, int32_t w, int32_t h, bool b
 
 	AudioManager::GetRef().Startup();
 	RenderManager2D::GetRef().Startup();
-	RenderManager3D::GetRef().Startup();
-	DebugDrawManager3D::GetRef().Startup();
 	UIManager::GetRef().Startup();
 	InputManager::GetRef().Startup();
 }
@@ -59,8 +55,6 @@ IApp::~IApp()
 {
 	UIManager::GetRef().Shutdown();
 	EntityManager::GetRef().Cleanup();
-	DebugDrawManager3D::GetRef().Shutdown();
-	RenderManager3D::GetRef().Shutdown();
 	RenderManager2D::GetRef().Shutdown();
 	ResourceManager::GetRef().Cleanup();
 	AudioManager::GetRef().Shutdown();
