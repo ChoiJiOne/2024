@@ -1,7 +1,0 @@
-@ECHO OFF
-
-SET MODE={MODE}
-SET SCRIPT_PATH=MiniGame\Script
-SET SCRIPT=%SCRIPT_PATH%\Package.bat
-
-%SCRIPT% %MODE%
