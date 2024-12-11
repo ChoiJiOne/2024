@@ -1,5 +1,5 @@
 # Tetris
-- `Tetris` is a project for developing a 2D tetris game.
+- `Tetris` is a project for developing a simple tetris game without using a game engine.
 
 ## Support Platform
 - Windows 10/11 Home/Pro
