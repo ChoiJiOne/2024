@@ -1,5 +1,5 @@
 # FoxDash
-- `FoxDash` is a project for developing a fox dash game.
+- `FoxDash` is a project for developing a simple Tetris game without using a game engine.
 
 ## Support Platform
 - Windows 10/11 Home/Pro
