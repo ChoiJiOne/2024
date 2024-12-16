@@ -61,6 +61,35 @@ Therefore, you can perform the build for each mode by executing the following ba
   Build_MinSizeRel.bat
   ```
 
+## How to run game?
+
+This project supports the ability to run the game without Visual Studio. The game execution script supports the following build modes: `Debug`, `Release`, `RelWithDebInfo`, and `MinSizeRel`, each with the following characteristics.
+
+| mode | description |
+|:---:|:---|
+| Debug | Runs the project executable without optimization. |
+| Release | Runs the project executable with optimization. |
+| RelWithDebInfo | Runs the project executable with optimization and includes debug information files. |
+| MinSizeRel | Runs the project executable with maximum optimization. |
+
+Therefore, you can perform the build for each mode by executing the following batch script.
+- `Debug`
+  ```
+  Run_Debug.bat
+  ```
+- `Release`
+  ```
+  Run_Release.bat
+  ```
+- `RelWithDebInfo`
+  ```
+  Run_RelWithDebInfo.bat
+  ```
+- `MinSizeRel`
+  ```
+  Run_MinSizeRel.bat
+  ```
+
 ## How to package project?
 
 This project supports generating an exe file that allows the project to be installed on the user's machine. To use this feature, NSIS (Nullsoft Scriptable Install System) must be installed, and its installation path must be registered in the environment variables. The packaging script supports the same modes as the build modes: Debug, Release, RelWithDebInfo, and MinSizeRel. Therefore, by running the following commands in CMD or PowerShell, you can obtain the package file for each mode.
@@ -85,6 +114,10 @@ This project supports generating an exe file that allows the project to be insta
   ```
   Package_MinSizeRel.bat
   ```
+
+## Document
+
+The documentation for this project can be found [here](https://choijione.github.io/FoxDash/).
 
 ## License
 
