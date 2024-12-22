@@ -1,7 +1,7 @@
 @echo off
 
 SET visualstudio=vs2022
-SET project=Animation3D
+SET project=Animation
 SET script=Script\GenerateProjectFiles.bat
 
 %script% %visualstudio% %project% On
