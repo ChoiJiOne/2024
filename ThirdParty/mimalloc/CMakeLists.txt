@@ -13,15 +13,15 @@ option(MI_SHOW_ERRORS       "Show error and warning messages by default (only en
 option(MI_TRACK_VALGRIND    "Compile with Valgrind support (adds a small overhead)" OFF)
 option(MI_TRACK_ASAN        "Compile with address sanitizer support (adds a small overhead)" OFF)
 option(MI_TRACK_ETW         "Compile with Windows event tracing (ETW) support (adds a small overhead)" OFF)
-option(MI_USE_CXX           "Use the C++ compiler to compile the library (instead of the C compiler)" OFF)
+option(MI_USE_CXX           "Use the C++ compiler to compile the library (instead of the C compiler)" ON)
 option(MI_SEE_ASM           "Generate assembly files" OFF)
-option(MI_OSX_INTERPOSE     "Use interpose to override standard malloc on macOS" ON)
-option(MI_OSX_ZONE          "Use malloc zone to override standard malloc on macOS" ON)
+option(MI_OSX_INTERPOSE     "Use interpose to override standard malloc on macOS" OFF)
+option(MI_OSX_ZONE          "Use malloc zone to override standard malloc on macOS" OFF)
 option(MI_WIN_REDIRECT      "Use redirection module ('mimalloc-redirect') on Windows if compiling mimalloc as a DLL" ON)
 option(MI_LOCAL_DYNAMIC_TLS "Use slightly slower, dlopen-compatible TLS mechanism (Unix)" OFF)
 option(MI_LIBC_MUSL         "Set this when linking with musl libc" OFF)
-option(MI_BUILD_SHARED      "Build shared library" ON)
-option(MI_BUILD_STATIC      "Build static library" OFF)
+option(MI_BUILD_SHARED      "Build shared library" OFF)
+option(MI_BUILD_STATIC      "Build static library" ON)
 option(MI_BUILD_OBJECT      "Build object library" OFF)
 option(MI_BUILD_TESTS       "Build test executables" OFF)
 option(MI_DEBUG_TSAN        "Build with thread sanitizer (needs clang)" OFF)
@@ -471,11 +471,11 @@ if(MI_BUILD_SHARED)
     add_custom_command(TARGET mimalloc POST_BUILD
       COMMAND "${CMAKE_COMMAND}" -E copy "${CMAKE_CURRENT_SOURCE_DIR}/bin/mimalloc-redirect${MIMALLOC_REDIRECT_SUFFIX}.dll" $<TARGET_FILE_DIR:mimalloc>
       COMMENT "Copy mimalloc-redirect${MIMALLOC_REDIRECT_SUFFIX}.dll to output directory")
-    # install(FILES "$<TARGET_FILE_DIR:mimalloc>/mimalloc-redirect${MIMALLOC_REDIRECT_SUFFIX}.dll" DESTINATION ${mi_install_bindir})
+    install(FILES "$<TARGET_FILE_DIR:mimalloc>/mimalloc-redirect${MIMALLOC_REDIRECT_SUFFIX}.dll" DESTINATION ${mi_install_bindir})
   endif()
 
-  # install(TARGETS mimalloc EXPORT mimalloc ARCHIVE DESTINATION ${mi_install_libdir} RUNTIME DESTINATION ${mi_install_bindir} LIBRARY DESTINATION ${mi_install_libdir})
-  # install(EXPORT mimalloc DESTINATION ${mi_install_cmakedir})
+  install(TARGETS mimalloc EXPORT mimalloc ARCHIVE DESTINATION ${mi_install_libdir} RUNTIME DESTINATION ${mi_install_bindir} LIBRARY DESTINATION ${mi_install_libdir})
+  install(EXPORT mimalloc DESTINATION ${mi_install_cmakedir})
 endif()
 
 # static library
@@ -490,6 +490,7 @@ if (MI_BUILD_STATIC)
       $<INSTALL_INTERFACE:${mi_install_incdir}>
   )
   if(WIN32)
+    set_property(TARGET mimalloc-static PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
     # When building both static and shared libraries on Windows, a static library should use a
     # different output name to avoid the conflict with the import library of a shared one.
     string(REPLACE "mimalloc" "mimalloc-static" mi_output_name ${mi_basename})
