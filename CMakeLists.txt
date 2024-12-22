@@ -62,20 +62,6 @@ install(FILES
     "$<$<CONFIG:MinSizeRel>:${CMAKE_BINARY_DIR}/MinSizeRel/glfw3.dll>"
     DESTINATION .
 )
-install(FILES 
-    "$<$<CONFIG:Debug>:${CMAKE_BINARY_DIR}/Debug/mimalloc.dll>"
-    "$<$<CONFIG:Release>:${CMAKE_BINARY_DIR}/Release/mimalloc.dll>"
-    "$<$<CONFIG:RelWithDebInfo>:${CMAKE_BINARY_DIR}/RelWithDebInfo/mimalloc.dll>"
-    "$<$<CONFIG:MinSizeRel>:${CMAKE_BINARY_DIR}/MinSizeRel/mimalloc.dll>"
-    DESTINATION .
-)
-install(FILES 
-    "$<$<CONFIG:Debug>:${CMAKE_BINARY_DIR}/Debug/mimalloc-redirect.dll>"
-    "$<$<CONFIG:Release>:${CMAKE_BINARY_DIR}/Release/mimalloc-redirect.dll>"
-    "$<$<CONFIG:RelWithDebInfo>:${CMAKE_BINARY_DIR}/RelWithDebInfo/mimalloc-redirect.dll>"
-    "$<$<CONFIG:MinSizeRel>:${CMAKE_BINARY_DIR}/MinSizeRel/mimalloc-redirect.dll>"
-    DESTINATION .
-)
 install(TARGETS ${PROJECT_NAME} DESTINATION .)
 
 include(CPack)
