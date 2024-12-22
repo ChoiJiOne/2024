@@ -43,22 +43,25 @@ This project supports building without running Visual Studio. The build script s
 | RelWithDebInfo | Optimization is performed during the build process, and a debug information file (.pdb) is generated. |
 | MinSizeRel | Optimization is performed during the build process, with a focus on minimizing size, and no debug information file (.pdb) is generated. |
 
-Therefore, you can perform the build for each mode by executing the following batch script.
-- `Debug`
+To use the build script, execute the following command.
+
+```
+Build_<mode>.bat [option]
+```
+
+The mode (`<mode>`), as explained above, includes `Debug`, `MinSizeRel`, `RelWithDebInfo`, and `Release`. The option can be either `ON` or `OFF`, and it specifies whether administrator privileges are enabled.
+
+> The administrator privilege activation feature is disabled when using `GenerateProjectFiles.bat` or `HotReload.bat`.
+
+### Example
+- If you want to enable administrator privileges in `Debug` mode.
   ```
-  Build_Debug.bat
+  Build_Debug.bat ON
   ```
-- `Release`
+
+- If you want to disable administrator privileges in `RelWithDebInfo` mode.
   ```
-  Build_Release.bat
-  ```
-- `RelWithDebInfo`
-  ```
-  Build_RelWithDebInfo.bat
-  ```
-- `MinSizeRel`
-  ```
-  Build_MinSizeRel.bat
+  Build_RelWithDebInfo.bat OFF
   ```
 
 ## How to run game?
