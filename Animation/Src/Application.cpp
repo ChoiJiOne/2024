@@ -7,7 +7,7 @@
 Application::Application()
 {
 	CrashModule::Init();
-	PlatformModule::Init(PlatformModule::WindowConstructParams{ L"Animation3D", 100, 100, 1000, 800, false, false });
+	PlatformModule::Init(PlatformModule::WindowConstructParams{ L"Animation", 100, 100, 1000, 800, false, false });
 	RenderModule::Init(PlatformModule::GetWindowHandle());
 	GameModule::Init();
 
