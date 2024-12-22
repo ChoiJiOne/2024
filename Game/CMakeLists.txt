@@ -48,7 +48,7 @@ target_link_libraries(
     glm
     imgui
     jsoncpp
-    mimalloc
+    mimalloc-static
     miniaudio
     stb
 )

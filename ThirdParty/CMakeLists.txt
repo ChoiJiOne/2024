@@ -15,7 +15,7 @@ set_target_properties(
     glm
     imgui
     jsoncpp
-    mimalloc
+    mimalloc-static
     miniaudio
     stb
     PROPERTIES FOLDER "ThirdParty"
