@@ -13,8 +13,6 @@ set(PROJECT_NAME "Tetris")
 set(PROJECT_PATH ${CMAKE_CURRENT_SOURCE_DIR})
 set(PROJECT_INCLUDE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/Inc")
 set(PROJECT_SOURCE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/Src")
-set(SCRIPT_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../Script")
-set(SHADER_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../Shader")
 
 set(EXE_ICON_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../Resource/Installer/Icon.ico")
 configure_file(
@@ -22,30 +20,13 @@ configure_file(
     "${CMAKE_CURRENT_SOURCE_DIR}/Inc/Resource.rc"
 )
 
-include("${CMAKE_CURRENT_SOURCE_DIR}/../CMake/Config.cmake")
-configure_file("${CMAKE_CURRENT_SOURCE_DIR}/Inc/Config.h.in" "${CMAKE_CURRENT_SOURCE_DIR}/Inc/Config.h")
-
 file(GLOB_RECURSE PROJECT_INCLUDE_FILE "${PROJECT_INCLUDE_PATH}/**")
 file(GLOB_RECURSE PROJECT_SOURCE_FILE "${PROJECT_SOURCE_PATH}/**")
-file(GLOB_RECURSE SCRIPT_FILE "${SCRIPT_PATH}/**")
-file(GLOB_RECURSE SHADER_FILE "${SHADER_PATH}/**")
 
-add_executable(${PROJECT_NAME} WIN32 ${PROJECT_INCLUDE_FILE} ${PROJECT_SOURCE_FILE} ${SCRIPT_FILE} ${SHADER_FILE})
+add_executable(${PROJECT_NAME} WIN32 ${PROJECT_INCLUDE_FILE} ${PROJECT_SOURCE_FILE})
 
 target_include_directories(${PROJECT_NAME} PUBLIC ${PROJECT_INCLUDE_PATH})
-target_link_libraries(
-    ${PROJECT_NAME} 
-    Dbghelp.lib 
-    Pathcch.lib 
-    Shlwapi.lib 
-    glad
-    imgui
-    jsoncpp
-    miniaudio
-    SDL2
-    stb
-    mimalloc-static
-)
+target_link_libraries(${PROJECT_NAME} PUBLIC MiniGame)
 
 target_compile_definitions(
     ${PROJECT_NAME}
@@ -59,16 +40,5 @@ target_compile_definitions(
 set_property(TARGET ${PROJECT_NAME} PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
 set_property(TARGET ${PROJECT_NAME} PROPERTY VS_DEBUGGER_WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/../")
 
-set(VALIDATOR_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../Script/ShaderValidator.bat")
-foreach (SHADER_SOURCE_FILE IN LISTS SHADER_FILE)
-    add_custom_command(
-        TARGET ${PROJECT_NAME}
-        POST_BUILD
-        COMMAND ${VALIDATOR_PATH} ${SHADER_SOURCE_FILE}
-    )
-endforeach()
-
 source_group(TREE "${PROJECT_INCLUDE_PATH}" PREFIX "${PROJECT_NAME}/Inc" FILES ${PROJECT_INCLUDE_FILE})
 source_group(TREE "${PROJECT_SOURCE_PATH}" PREFIX "${PROJECT_NAME}/Src" FILES ${PROJECT_SOURCE_FILE})
-source_group(TREE "${SCRIPT_PATH}" PREFIX "Script" FILES ${SCRIPT_FILE})
-source_group(TREE "${SHADER_PATH}" PREFIX "Shader" FILES ${SHADER_FILE})
