@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 3.27)
 project(Runner)
 
 set(PROJECT_NAME "Runner")
+set(PROJECT_VERSION "Release-OpenGL")
 
 add_subdirectory(MiniGame)
 add_subdirectory(${PROJECT_NAME})
@@ -11,7 +12,7 @@ set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT $
 
 set(CPACK_GENERATOR "NSIS")
 set(CPACK_PACKAGE_NAME ${PROJECT_NAME})
-set(CPACK_PACKAGE_VERSION "0.0.0")
+set(CPACK_PACKAGE_VERSION ${PROJECT_VERSION})
 set(CPACK_PACKAGE_VENDOR "Github-ChoiJiOne")
 set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "https://github.com/ChoiJiOne/Runner")
 set(CPACK_PACKAGE_INSTALL_DIRECTORY ${PROJECT_NAME})
