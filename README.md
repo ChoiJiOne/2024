@@ -1,5 +1,5 @@
-# CoinDash2D
-- `CoinDash2D` is a project for developing a Coin dash 2D game based on my engine.
+# CoinDash
+- `CoinDash` is a project for developing a simple coin dash game based on my engine.
 
 ## Support Platform
 - Windows 10/11 Home/Pro
@@ -10,22 +10,13 @@
 - [CMake 3.27 or later](https://cmake.org/)
 - [Python 3.x](https://www.python.org/)
 - [NSIS](https://nsis.sourceforge.io/Download)
-- [MiniGame](https://github.com/ChoiJiOne/MiniGame)
 
 ## How to get repository clone?
 
 You can obtain a copy of the repository using the following command.
 
 ```
-git clone https://github.com/ChoiJiOne/CoinDash2D.git
-```
-
-## How to setup `MiniGame`
-
-You can initialize the game engine using the following command.
-
-```
-git submodule init
+git clone https://github.com/ChoiJiOne/CoinDash.git
 ```
 
 ## How to Generate Visual Studio Solution?
@@ -98,7 +89,9 @@ This project supports generating an exe file that allows the project to be insta
 ## License
 
 ```
-Copyright (c) 2024 Choi Ji One
+The MIT License (MIT)
+
+Copyright (c) 2024 Choi JiOne
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
