@@ -6,6 +6,7 @@
 #include "GL/RenderManager2D.h"
 
 /** 클래스 전방 선언입니다. */
+class GameManager;
 class UICamera;
 
 /** 게임 옵션을 설정하는 씬입니다. */
@@ -44,4 +45,7 @@ private:
 
 	/** 렌더링할 UI 엔티티입니다. */
 	std::list<IEntity2D*> renderUiEntities_;
+
+	/** 게임 매니저 포인터입니다. */
+	GameManager* gameManager_ = nullptr;
 };

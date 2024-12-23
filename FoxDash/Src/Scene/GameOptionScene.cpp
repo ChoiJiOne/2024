@@ -22,11 +22,15 @@ GameOptionScene::GameOptionScene()
 {
 	sceneManager_->Register("GameOptionScene", this);
 
+	gameManager_ = GameManager::GetPtr();
+
 	Initailize();
 }
 
 GameOptionScene::~GameOptionScene()
 {
+	gameManager_ = nullptr;
+
 	UnInitailize();
 }
 
