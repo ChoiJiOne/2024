@@ -8,6 +8,7 @@
 /** 클래스 전방 선언입니다. */
 class FadeEffector;
 class FrameBuffer;
+class GameManager;
 class PostProcessor;
 class ResultViewer;
 class UICamera;
@@ -66,4 +67,7 @@ private:
 
 	/** 플레이어가 획득한 코인을 표시하는 엔티티입니다. */
 	ResultViewer* getCoinResultViewer_ = nullptr;
+
+	/** 게임 매니저 포인터입니다. */
+	GameManager* gameManager_ = nullptr;
 };

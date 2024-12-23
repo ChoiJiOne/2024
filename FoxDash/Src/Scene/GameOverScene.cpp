@@ -22,11 +22,15 @@ GameOverScene::GameOverScene()
 {
 	sceneManager_->Register("GameOverScene", this);
 
+	gameManager_ = GameManager::GetPtr();
+
 	Initailize();
 }
 
 GameOverScene::~GameOverScene()
 {
+	gameManager_ = nullptr;
+
 	UnInitailize();
 }
 
