@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.27)
 project(Runner)
 
 set(PROJECT_NAME "Runner")
-set(PROJECT_VERSION "Release-OpenGL")
+set(PROJECT_VERSION "Release-MiniGame")
 
 add_subdirectory(MiniGame)
 add_subdirectory(${PROJECT_NAME})
