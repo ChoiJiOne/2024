@@ -1,5 +1,5 @@
-# Runner2D
-- `Runner2D` is a project for developing a Runner 2D game based on my engine.
+# Runner
+- `Runner` is a project for developing a simple runner game based on my engine.
 
 ## Support Platform
 - Windows 10/11 Home/Pro
@@ -10,22 +10,13 @@
 - [CMake 3.27 or later](https://cmake.org/)
 - [Python 3.x](https://www.python.org/)
 - [NSIS](https://nsis.sourceforge.io/Download)
-- [MiniGame](https://github.com/ChoiJiOne/MiniGame)
 
 ## How to get repository clone?
 
 You can obtain a copy of the repository using the following command.
 
 ```
-git clone https://github.com/ChoiJiOne/Runner2D.git
-```
-
-## How to setup `MiniGame`
-
-You can initialize the game engine using the following command.
-
-```
-git submodule init
+git clone https://github.com/ChoiJiOne/Runner.git
 ```
 
 ## How to Generate Visual Studio Solution?
@@ -98,7 +89,7 @@ This project supports generating an exe file that allows the project to be insta
 ## License
 
 ```
-Copyright (c) 2024 Choi Ji One
+Copyright (c) 2024 ChoiJiOne
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
