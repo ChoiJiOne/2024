@@ -2418,48 +2418,48 @@ void RenderManager2D::LoadShaders()
 	std::string fsSource;
 	std::string outErrMsg;
 
-	ASSERTION(ReadFile("Shader\\Geometry.vert", vsBuffer, outErrMsg), "%s", outErrMsg.c_str());
-	ASSERTION(ReadFile("Shader\\Geometry.frag", fsBuffer, outErrMsg), "%s", outErrMsg.c_str());
+	ASSERTION(ReadFile("MiniGame\\Shader\\Geometry.vert", vsBuffer, outErrMsg), "%s", outErrMsg.c_str());
+	ASSERTION(ReadFile("MiniGame\\Shader\\Geometry.frag", fsBuffer, outErrMsg), "%s", outErrMsg.c_str());
 
 	vsSource = std::string(vsBuffer.begin(), vsBuffer.end());
 	fsSource = std::string(fsBuffer.begin(), fsBuffer.end());
 	
 	shaders_.insert({ RenderCommand::EType::GEOMETRY, glManager_->Create<Shader>(vsSource, fsSource) });
 
-	ASSERTION(ReadFile("Shader\\Texture.vert", vsBuffer, outErrMsg), "%s", outErrMsg.c_str());
-	ASSERTION(ReadFile("Shader\\Texture.frag", fsBuffer, outErrMsg), "%s", outErrMsg.c_str());
+	ASSERTION(ReadFile("MiniGame\\Shader\\Texture.vert", vsBuffer, outErrMsg), "%s", outErrMsg.c_str());
+	ASSERTION(ReadFile("MiniGame\\Shader\\Texture.frag", fsBuffer, outErrMsg), "%s", outErrMsg.c_str());
 
 	vsSource = std::string(vsBuffer.begin(), vsBuffer.end());
 	fsSource = std::string(fsBuffer.begin(), fsBuffer.end());
 
 	shaders_.insert({ RenderCommand::EType::TEXTURE, glManager_->Create<Shader>(vsSource, fsSource) });
 
-	ASSERTION(ReadFile("Shader\\TextureEx.vert", vsBuffer, outErrMsg), "%s", outErrMsg.c_str());
-	ASSERTION(ReadFile("Shader\\TextureEx.frag", fsBuffer, outErrMsg), "%s", outErrMsg.c_str());
+	ASSERTION(ReadFile("MiniGame\\Shader\\TextureEx.vert", vsBuffer, outErrMsg), "%s", outErrMsg.c_str());
+	ASSERTION(ReadFile("MiniGame\\Shader\\TextureEx.frag", fsBuffer, outErrMsg), "%s", outErrMsg.c_str());
 
 	vsSource = std::string(vsBuffer.begin(), vsBuffer.end());
 	fsSource = std::string(fsBuffer.begin(), fsBuffer.end());
 
 	shaders_.insert({ RenderCommand::EType::TEXTURE_EX, glManager_->Create<Shader>(vsSource, fsSource) });
 
-	ASSERTION(ReadFile("Shader\\String.vert", vsBuffer, outErrMsg), "%s", outErrMsg.c_str());
-	ASSERTION(ReadFile("Shader\\String.frag", fsBuffer, outErrMsg), "%s", outErrMsg.c_str());
+	ASSERTION(ReadFile("MiniGame\\Shader\\String.vert", vsBuffer, outErrMsg), "%s", outErrMsg.c_str());
+	ASSERTION(ReadFile("MiniGame\\Shader\\String.frag", fsBuffer, outErrMsg), "%s", outErrMsg.c_str());
 
 	vsSource = std::string(vsBuffer.begin(), vsBuffer.end());
 	fsSource = std::string(fsBuffer.begin(), fsBuffer.end());
 
 	shaders_.insert({ RenderCommand::EType::STRING, glManager_->Create<Shader>(vsSource, fsSource) });
 
-	ASSERTION(ReadFile("Shader\\StringEx.vert", vsBuffer, outErrMsg), "%s", outErrMsg.c_str());
-	ASSERTION(ReadFile("Shader\\StringEx.frag", fsBuffer, outErrMsg), "%s", outErrMsg.c_str());
+	ASSERTION(ReadFile("MiniGame\\Shader\\StringEx.vert", vsBuffer, outErrMsg), "%s", outErrMsg.c_str());
+	ASSERTION(ReadFile("MiniGame\\Shader\\StringEx.frag", fsBuffer, outErrMsg), "%s", outErrMsg.c_str());
 
 	vsSource = std::string(vsBuffer.begin(), vsBuffer.end());
 	fsSource = std::string(fsBuffer.begin(), fsBuffer.end());
 
 	shaders_.insert({ RenderCommand::EType::STRING_EX, glManager_->Create<Shader>(vsSource, fsSource) });
 
-	ASSERTION(ReadFile("Shader\\PostProcessing.vert", vsBuffer, outErrMsg), "%s", outErrMsg.c_str());
-	ASSERTION(ReadFile("Shader\\PostProcessing.frag", fsBuffer, outErrMsg), "%s", outErrMsg.c_str());
+	ASSERTION(ReadFile("MiniGame\\Shader\\PostProcessing.vert", vsBuffer, outErrMsg), "%s", outErrMsg.c_str());
+	ASSERTION(ReadFile("MiniGame\\Shader\\PostProcessing.frag", fsBuffer, outErrMsg), "%s", outErrMsg.c_str());
 
 	vsSource = std::string(vsBuffer.begin(), vsBuffer.end());
 	fsSource = std::string(fsBuffer.begin(), fsBuffer.end());

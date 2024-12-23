@@ -1,6 +1,6 @@
 #pragma once
 
-#include "IEntity2D.h"
+#include "Entity/IEntity2D.h"
 
 /** 클래스 전방 선언. */
 class Player;

@@ -69,7 +69,7 @@ public:
 
 private:
 	/** IApp에서 게임 매니저의 내부에 접근할 수 있도록 설정. */
-	friend class IApp;
+	friend class GameApp;
 
 	/**
 	 * 게임 매니저의 기본 생성자와 빈 가상 소멸자입니다.

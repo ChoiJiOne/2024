@@ -4,7 +4,6 @@
 #include "Audio/AudioManager.h"
 #include "Crash/CrashManager.h"
 #include "Entity/EntityManager.h"
-#include "Game/GameManager.h"
 #include "GL/GLAssertion.h"
 #include "GL/GLManager.h"
 #include "GL/RenderManager2D.h"
@@ -22,7 +21,6 @@ IApp::IApp(uint32_t windowWidth, uint32_t windowHeight, const char* windowTitle,
 	audioManager_ = AudioManager::GetPtr();
 	crashManager_ = CrashManager::GetPtr();
 	entityManager_ = EntityManager::GetPtr();
-	gameManager_ = GameManager::GetPtr();
 	glManager_ = GLManager::GetPtr();
 	renderManager_ = RenderManager2D::GetPtr();
 	glfwManager_ = GLFWManager::GetPtr();
@@ -34,7 +32,6 @@ IApp::IApp(uint32_t windowWidth, uint32_t windowHeight, const char* windowTitle,
 	glManager_->Startup();
 	renderManager_->Startup();
 	audioManager_->Startup();
-	gameManager_->Startup();
 
 	/** 루프 종료 이벤트 설정. */
 	doneLoopEvent_ = [&]() { bIsDoneLoop_ = true; };
@@ -47,7 +44,6 @@ IApp::IApp(uint32_t windowWidth, uint32_t windowHeight, const char* windowTitle,
 IApp::~IApp()
 {
 	/** 매니저들의 초기화 해제. */
-	gameManager_->Shutdown();
 	sceneManager_->Shutdown();
 	entityManager_->Shutdown();
 	audioManager_->Shutdown();
@@ -61,7 +57,6 @@ IApp::~IApp()
 	glfwManager_ = nullptr;
 	renderManager_ = nullptr;
 	glManager_ = nullptr;
-	gameManager_ = nullptr;
 	entityManager_ = nullptr;
 	crashManager_ = nullptr;
 	audioManager_ = nullptr;

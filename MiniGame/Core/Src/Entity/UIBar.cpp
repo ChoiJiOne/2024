@@ -7,7 +7,6 @@
 
 #include "Entity/EntityManager.h"
 #include "Entity/UIBar.h"
-#include "Entity/Player.h"
 #include "GL/TTFont.h"
 #include "Utils/Assertion.h"
 #include "Utils/Utils.h"

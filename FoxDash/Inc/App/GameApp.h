@@ -3,7 +3,7 @@
 #include <array>
 #include <string>
 
-#include "IApp.h"
+#include "App/IApp.h"
 
 class FrameBuffer;
 class TextureAtlas2D;
@@ -39,4 +39,7 @@ private:
 
 	/** 게임 앱 내에서 사용하는 사운드 리소스 이름입니다. */
 	std::array<std::string, 7> soundNames_;
+
+	/** 게임 매니저 포인터입니다. */
+	class GameManager* gameManager_ = nullptr;
 };

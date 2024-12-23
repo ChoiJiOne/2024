@@ -3,6 +3,7 @@
 #include "Entity/EntityManager.h"
 #include "Entity/FadeEffector.h"
 #include "Entity/UICamera.h"
+#include "Game/GameManager.h"
 #include "GL/FrameBuffer.h"
 #include "GL/GLManager.h"
 #include "GL/TextureAtlas2D.h"
@@ -20,11 +21,17 @@
 GameApp::GameApp(uint32_t windowWidth, uint32_t windowHeight, const char* windowTitle, const char* windowIcon, bool bIsWindowCentered)
 	: IApp(windowWidth, windowHeight, windowTitle, windowIcon, bIsWindowCentered)
 {
+	gameManager_ = GameManager::GetPtr();
+	gameManager_->Startup();
+
 	LoadResource();
 }
 
 GameApp::~GameApp()
 {
+	gameManager_->Shutdown();
+	gameManager_ = nullptr;
+
 	UnloadResource();
 }
 

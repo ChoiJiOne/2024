@@ -1,0 +1,68 @@
+cmake_minimum_required(VERSION 3.27)
+
+project(MiniGame)
+
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
+
+add_subdirectory(ThirdParty)
+
+set(PROJECT_NAME "MiniGame")
+
+set(MINI_GAME_PATH ${CMAKE_CURRENT_SOURCE_DIR})
+set(MINI_GAME_CORE "${MINI_GAME_PATH}/Core")
+set(MINI_GAME_INCLUDE "${MINI_GAME_PATH}/Core/Inc")
+set(MINI_GAME_SOURCE "${MINI_GAME_PATH}/Core/Src")
+set(MINI_GAME_SCRIPT "${MINI_GAME_PATH}/Script")
+set(MINI_GAME_SHADER "${MINI_GAME_PATH}/Shader")
+
+file(GLOB_RECURSE MINI_GAME_CORE_FILE "${MINI_GAME_CORE}/**")
+file(GLOB_RECURSE MINI_GAME_SCRIPT_FILE "${MINI_GAME_SCRIPT}/**")
+file(GLOB_RECURSE MINI_GAME_SHADER_FILE "${MINI_GAME_SHADER}/**")
+
+add_library(${PROJECT_NAME} STATIC ${MINI_GAME_CORE_FILE} ${MINI_GAME_SCRIPT_FILE} ${MINI_GAME_SHADER_FILE})
+
+target_include_directories(${PROJECT_NAME} PUBLIC ${MINI_GAME_INCLUDE})
+target_link_libraries(
+    ${PROJECT_NAME} PUBLIC 
+    Dbghelp.lib 
+    Pathcch.lib 
+    Shlwapi.lib 
+    glad
+    glfw
+    glm
+    imgui
+    jsoncpp
+    mimalloc-static
+    miniaudio
+    stb
+)
+
+target_compile_definitions(
+    ${PROJECT_NAME}
+    PUBLIC
+    $<$<CONFIG:Debug>:DEBUG_MODE>
+    $<$<CONFIG:Release>:RELEASE_MODE>
+    $<$<CONFIG:RelWithDebInfo>:RELWITHDEBINFO_MODE>
+    $<$<CONFIG:MinSizeRel>:MINSIZEREL_MODE>
+)
+
+set_property(TARGET ${PROJECT_NAME} PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
+
+set(VALIDATOR_PATH "${MINI_GAME_PATH}/Script/ShaderValidator.bat")
+foreach (SHADER_SOURCE_FILE IN LISTS MINI_GAME_SHADER_FILE)
+    add_custom_command(
+        TARGET ${PROJECT_NAME}
+        POST_BUILD
+        COMMAND ${VALIDATOR_PATH} ${SHADER_SOURCE_FILE}
+    )
+endforeach()
+
+source_group(TREE "${MINI_GAME_CORE}" PREFIX "${PROJECT_NAME}/Core" FILES ${MINI_GAME_CORE_FILE})
+source_group(TREE "${MINI_GAME_SCRIPT}" PREFIX "${PROJECT_NAME}/Script" FILES ${MINI_GAME_SCRIPT_FILE})
+source_group(TREE "${MINI_GAME_SHADER}" PREFIX "${PROJECT_NAME}/Shader" FILES ${MINI_GAME_SHADER_FILE})

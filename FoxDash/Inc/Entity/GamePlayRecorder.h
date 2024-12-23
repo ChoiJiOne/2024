@@ -3,7 +3,7 @@
 #include <map>
 #include <string>
 
-#include "IEntity.h"
+#include "Entity/IEntity.h"
 
 /** 게임 플레이 기록을 저장하는 엔티티입니다. */
 class GamePlayRecorder : public IEntity
