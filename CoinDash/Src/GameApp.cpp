@@ -234,7 +234,7 @@ void GameApp::Run()
 
 void GameApp::LoadResource()
 {
-	std::string resourcePath = "CoinDash2D\\Res\\";
+	std::string resourcePath = "CoinDash\\Res\\";
 
 	Atlas2D* atlas = ResourceManager::Get().Create<Atlas2D>(resourcePath + "Atlas\\Atlas.png", resourcePath + "Atlas\\Atlas.json", Texture2D::Filter::NEAREST);
 	ResourceManager::Get().Register("Atlas", atlas);
