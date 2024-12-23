@@ -89,7 +89,9 @@ This project supports generating an exe file that allows the project to be insta
 ## License
 
 ```
-Copyright (c) 2024 ChoiJiOne
+The MIT License (MIT)
+
+Copyright (c) 2024 Choi JiOne
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
