@@ -12,7 +12,7 @@
 Title::Title()
 {
 	font_ = ResourceManager::Get().GetByName<TTFont>("Font72");
-	text_ = L"CoinDash2D";
+	text_ = L"CoinDash";
 	textColor_ = Vec4f(1.0f, 1.0f, 1.0f, 1.0f);
 	textShadowColor_ = Vec4f(0.5f, 0.5f, 0.5f, 0.5f);
 
