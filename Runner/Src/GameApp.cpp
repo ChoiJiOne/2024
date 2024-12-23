@@ -21,7 +21,7 @@
 #include "Spawner.h"
 #include "Title.h"
 
-GameApp::GameApp() : IApp("Runner2D", 100, 100, 800, 600, false, false)
+GameApp::GameApp() : IApp("Runner", 100, 100, 800, 600, false, false)
 {
 }
 
