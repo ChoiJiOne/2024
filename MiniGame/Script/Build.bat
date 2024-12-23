@@ -13,7 +13,7 @@ if %ERRORLEVEL% EQU 0 (
 )
 
 SET VISUAL_STUDIO="Visual Studio 17 2022"
-SET SOLUTION_PATH=%~dp0..\Solution
+SET SOLUTION_PATH=%~dp0..\..\Solution
 
 if not exist "%SOLUTION_PATH%" (
     mkdir "%SOLUTION_PATH%"

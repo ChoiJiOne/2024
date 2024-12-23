@@ -37,22 +37,14 @@ if "%RUN_OPTION%" == "on" (
 )
 ECHO Switch %RUN% run Visual Studio Solution...
 
-SET SOLUTION_PATH=%~dp0..\Solution
+SET SOLUTION_PATH=%~dp0..\..\Solution
 
 if not exist "%SOLUTION_PATH%" (
     mkdir "%SOLUTION_PATH%"
 )
 
-if not exist "%~dp0..\Cache" (
-    mkdir "%~dp0..\Cache"
-)
-
-if not exist "Game\\Inc" (
-    mkdir "Game\\Inc"
-)
-
-if not exist "Game\\Src" (
-    mkdir "Game\\Src"
+if not exist "%~dp0..\..\Cache" (
+    mkdir "%~dp0..\..\Cache"
 )
 
 SET CURRENT_PATH=%~dp0
