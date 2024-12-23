@@ -2,6 +2,6 @@
 
 SET PROJECT_NAME=FoxDash
 SET MODE=RelWithDebInfo
-SET SCRIPT=Script\\Run.bat
+SET SCRIPT=MiniGame\\Script\\Run.bat
 
 %SCRIPT% %PROJECT_NAME% %MODE%
