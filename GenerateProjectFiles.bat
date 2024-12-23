@@ -1,6 +1,6 @@
 @ECHO OFF
 
-SET PROJECT_NAME=Runner2D
+SET PROJECT_NAME=Runner
 SET SCRIPT_PATH=MiniGame\Script
 SET SCRIPT=%SCRIPT_PATH%\GenerateProjectFiles.bat
 
