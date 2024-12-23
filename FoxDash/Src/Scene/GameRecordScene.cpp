@@ -20,11 +20,15 @@ GameRecordScene::GameRecordScene()
 {
 	sceneManager_->Register("GameRecordScene", this);
 
+	gameManager_ = GameManager::GetPtr();
+
 	Initailize();
 }
 
 GameRecordScene::~GameRecordScene()
 {
+	gameManager_ = nullptr;
+
 	UnInitailize();
 }
 

@@ -6,6 +6,7 @@
 #include "GL/RenderManager2D.h"
 
 /** 클래스 전방 선언입니다. */
+class GameManager;
 class ResultViewer;
 class UICamera;
 
@@ -72,4 +73,7 @@ private:
 
 	/** 게임 플레이 기록을 표시할 시간입니다. */
 	float playRecordViewTime_ = 0.0f;
+
+	/** 게임 매니저 포인터입니다. */
+	GameManager* gameManager_ = nullptr;
 };
