@@ -233,7 +233,7 @@ void GameApp::Run()
 
 void GameApp::LoadResource()
 {
-	resourceRootPath_ = "Runner2D\\Res\\";
+	resourceRootPath_ = "Runner\\Res\\";
 	
 	Atlas2D* atlas = ResourceManager::Get().Create<Atlas2D>(resourceRootPath_ + "Atlas\\Atlas.png", resourceRootPath_ + "Atlas\\Atlas.json", Texture2D::Filter::NEAREST);
 	ResourceManager::Get().Register("Atlas", atlas);
