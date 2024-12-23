@@ -23,7 +23,6 @@ IGameScene::~IGameScene()
 	glfwManager_ = nullptr;
 	renderManager_ = nullptr;
 	glManager_ = nullptr;
-	gameManager_ = nullptr;
 	entityManager_ = nullptr;
 	crashManager_ = nullptr;
 	audioManager_ = nullptr;
