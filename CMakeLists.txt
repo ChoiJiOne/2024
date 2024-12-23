@@ -11,7 +11,7 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 
 set(PROJECT_NAME "Tetris")
-set(PROJECT_VERSION "Release-OpenGL")
+set(PROJECT_VERSION "Release-MiniGame")
 
 add_subdirectory(ThirdParty)
 add_subdirectory(${PROJECT_NAME})

@@ -1,6 +1,6 @@
 @ECHO OFF
-
 SET MODE=Debug
-SET SCRIPT=Script\BuildSolution.bat
+SET SCRIPT_PATH=MiniGame\Script
+SET SCRIPT=%SCRIPT_PATH%\BuildSolution.bat
 
 %SCRIPT% %MODE%

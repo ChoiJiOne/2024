@@ -1,6 +1,7 @@
 @ECHO OFF
 
 SET MODE=RelWithDebInfo
-SET SCRIPT=Script\Package.bat
+SET SCRIPT_PATH=MiniGame\Script
+SET SCRIPT=%SCRIPT_PATH%\Package.bat
 
 %SCRIPT% %MODE%
