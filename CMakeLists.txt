@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.27)
 project(FoxDash)
 
 set(PROJECT_NAME "FoxDash")
-set(PROJECT_VERSION "Release-OpenGL")
+set(PROJECT_VERSION "Release-MiniGame")
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -17,8 +17,8 @@ if (MSVC)
     add_compile_options("/wd4819")
 endif()
 
-add_subdirectory(ThirdParty)
-add_subdirectory(Game)
+add_subdirectory(MiniGame)
+add_subdirectory(${PROJECT_NAME})
 
 set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT ${PROJECT_NAME})
 
@@ -54,7 +54,7 @@ set(CPACK_NSIS_EXTRA_UNINSTALL_COMMANDS "
   RMDir '$SMPROGRAMS\\\\${PROJECT_NAME}'
 ")
 
-install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/Shader DESTINATION .)
+install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/MiniGame/Shader DESTINATION ./MiniGame)
 install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/Resource DESTINATION .)
 install(FILES 
     "$<$<CONFIG:Debug>:${CMAKE_BINARY_DIR}/Debug/glfw3.dll>"
