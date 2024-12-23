@@ -1,6 +1,6 @@
 @ECHO OFF
 
 SET MODE=Release
-SET SCRIPT=Script\\Package.bat
+SET SCRIPT=MiniGame\\Script\\Package.bat
 
 %SCRIPT% %MODE%
