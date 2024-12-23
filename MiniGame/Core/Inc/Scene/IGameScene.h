@@ -44,7 +44,6 @@ protected:
 	class AudioManager* audioManager_ = nullptr;
 	class CrashManager* crashManager_ = nullptr;
 	class EntityManager* entityManager_ = nullptr;
-	class GameManager* gameManager_ = nullptr;
 	class GLManager* glManager_ = nullptr;
 	class RenderManager2D* renderManager_ = nullptr;
 	class GLFWManager* glfwManager_ = nullptr;
