@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 3.27)
 
-project(Runner2D)
+project(Runner)
 
-set(PROJECT_NAME "Runner2D")
+set(PROJECT_NAME "Runner")
 
 add_subdirectory(MiniGame)
 add_subdirectory(${PROJECT_NAME})
@@ -13,7 +13,7 @@ set(CPACK_GENERATOR "NSIS")
 set(CPACK_PACKAGE_NAME ${PROJECT_NAME})
 set(CPACK_PACKAGE_VERSION "0.0.0")
 set(CPACK_PACKAGE_VENDOR "Github-ChoiJiOne")
-set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "https://github.com/ChoiJiOne/Runner2D")
+set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "https://github.com/ChoiJiOne/Runner")
 set(CPACK_PACKAGE_INSTALL_DIRECTORY ${PROJECT_NAME})
 set(CPACK_PACKAGE_EXECUTABLES ${PROJECT_NAME} ${PROJECT_NAME})
 set(CPACK_NSIS_MUI_ICON ${CMAKE_CURRENT_SOURCE_DIR}\\\\${PROJECT_NAME}\\\\Res\\\\Installer\\\\Icon.ico)
