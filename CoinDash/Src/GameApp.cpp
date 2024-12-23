@@ -22,7 +22,7 @@
 #include "PowerUpCoin.h"
 #include "Title.h"
 
-GameApp::GameApp() : IApp("CoinDash2D", 100, 100, 480, 720, false, false)
+GameApp::GameApp() : IApp("CoinDash", 100, 100, 480, 720, false, false)
 {
 }
 
