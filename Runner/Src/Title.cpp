@@ -11,7 +11,7 @@
 Title::Title()
 {
 	font_ = ResourceManager::Get().GetByName<TTFont>("Font128");
-	title_ = L"Runner2D";
+	title_ = L"Runner";
 
 	Vec2f size;
 	font_->MeasureText(title_, size.x, size.y);
