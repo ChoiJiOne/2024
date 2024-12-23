@@ -12,6 +12,7 @@ class Camera2D;
 class CoinCollector;
 class FadeEffector;
 class FrameBuffer;
+class GameManager;
 class GamePlayRecorder;
 class KeyEventTrigger;
 class Player;
@@ -127,6 +128,9 @@ private:
 
 	/** 게임 중지를 유발하는 윈도우 이벤트입니다. */
 	std::map<EWindowEvent, WindowEventID> windowPauseEvents_;
+
+	/** 게임 매니저 포인터입니다. */
+	GameManager* gameManager_ = nullptr;
 
 	/** 게임이 중지되었는지 확인합니다. */
 	bool bIsPause_ = false;

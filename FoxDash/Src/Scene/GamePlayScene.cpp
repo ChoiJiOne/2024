@@ -31,11 +31,15 @@ GamePlayScene::GamePlayScene()
 {
 	sceneManager_->Register("GamePlayScene", this);
 
+	gameManager_ = GameManager::GetPtr();
+
 	Initialize();
 }
 
 GamePlayScene::~GamePlayScene()
 {
+	gameManager_ = nullptr;
+
 	UnInitialize();
 }
 
