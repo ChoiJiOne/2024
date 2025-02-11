@@ -1,0 +1,331 @@
+{
+  "meta": {
+    "version": "0.6.7"
+  },
+  "savePath": "D:\\Work\\FoxDash\\FoxDash_Develop\\Resource",
+  "images": [
+    {
+      "name": "Background.png",
+      "path": "D:/Work/FoxDash/FoxDash_Develop/Resource/Original/Background.png",
+      "folder": ""
+    },
+    {
+      "name": "Chest_1.png",
+      "path": "D:/Work/FoxDash/FoxDash_Develop/Resource/Original/Chest_1.png",
+      "folder": ""
+    },
+    {
+      "name": "Chest_2.png",
+      "path": "D:/Work/FoxDash/FoxDash_Develop/Resource/Original/Chest_2.png",
+      "folder": ""
+    },
+    {
+      "name": "Chest_3.png",
+      "path": "D:/Work/FoxDash/FoxDash_Develop/Resource/Original/Chest_3.png",
+      "folder": ""
+    },
+    {
+      "name": "Chest_4.png",
+      "path": "D:/Work/FoxDash/FoxDash_Develop/Resource/Original/Chest_4.png",
+      "folder": ""
+    },
+    {
+      "name": "Chest_5.png",
+      "path": "D:/Work/FoxDash/FoxDash_Develop/Resource/Original/Chest_5.png",
+      "folder": ""
+    },
+    {
+      "name": "Chest_6.png",
+      "path": "D:/Work/FoxDash/FoxDash_Develop/Resource/Original/Chest_6.png",
+      "folder": ""
+    },
+    {
+      "name": "Chest_7.png",
+      "path": "D:/Work/FoxDash/FoxDash_Develop/Resource/Original/Chest_7.png",
+      "folder": ""
+    },
+    {
+      "name": "Coin_1.png",
+      "path": "D:/Work/FoxDash/FoxDash_Develop/Resource/Original/Coin_1.png",
+      "folder": ""
+    },
+    {
+      "name": "Coin_2.png",
+      "path": "D:/Work/FoxDash/FoxDash_Develop/Resource/Original/Coin_2.png",
+      "folder": ""
+    },
+    {
+      "name": "Coin_3.png",
+      "path": "D:/Work/FoxDash/FoxDash_Develop/Resource/Original/Coin_3.png",
+      "folder": ""
+    },
+    {
+      "name": "Coin_4.png",
+      "path": "D:/Work/FoxDash/FoxDash_Develop/Resource/Original/Coin_4.png",
+      "folder": ""
+    },
+    {
+      "name": "Coin_5.png",
+      "path": "D:/Work/FoxDash/FoxDash_Develop/Resource/Original/Coin_5.png",
+      "folder": ""
+    },
+    {
+      "name": "Fireball_1.png",
+      "path": "D:/Work/FoxDash/FoxDash_Develop/Resource/Original/Fireball_1.png",
+      "folder": ""
+    },
+    {
+      "name": "Fireball_2.png",
+      "path": "D:/Work/FoxDash/FoxDash_Develop/Resource/Original/Fireball_2.png",
+      "folder": ""
+    },
+    {
+      "name": "Fireball_3.png",
+      "path": "D:/Work/FoxDash/FoxDash_Develop/Resource/Original/Fireball_3.png",
+      "folder": ""
+    },
+    {
+      "name": "Fireball_4.png",
+      "path": "D:/Work/FoxDash/FoxDash_Develop/Resource/Original/Fireball_4.png",
+      "folder": ""
+    },
+    {
+      "name": "Fireball_5.png",
+      "path": "D:/Work/FoxDash/FoxDash_Develop/Resource/Original/Fireball_5.png",
+      "folder": ""
+    },
+    {
+      "name": "Fireball_Hit_1.png",
+      "path": "D:/Work/FoxDash/FoxDash_Develop/Resource/Original/Fireball_Hit_1.png",
+      "folder": ""
+    },
+    {
+      "name": "Fireball_Hit_2.png",
+      "path": "D:/Work/FoxDash/FoxDash_Develop/Resource/Original/Fireball_Hit_2.png",
+      "folder": ""
+    },
+    {
+      "name": "Fireball_Hit_3.png",
+      "path": "D:/Work/FoxDash/FoxDash_Develop/Resource/Original/Fireball_Hit_3.png",
+      "folder": ""
+    },
+    {
+      "name": "Fireball_Hit_4.png",
+      "path": "D:/Work/FoxDash/FoxDash_Develop/Resource/Original/Fireball_Hit_4.png",
+      "folder": ""
+    },
+    {
+      "name": "Fireball_Hit_5.png",
+      "path": "D:/Work/FoxDash/FoxDash_Develop/Resource/Original/Fireball_Hit_5.png",
+      "folder": ""
+    },
+    {
+      "name": "Fireball_Hit_6.png",
+      "path": "D:/Work/FoxDash/FoxDash_Develop/Resource/Original/Fireball_Hit_6.png",
+      "folder": ""
+    },
+    {
+      "name": "Floor_1.png",
+      "path": "D:/Work/FoxDash/FoxDash_Develop/Resource/Original/Floor_1.png",
+      "folder": ""
+    },
+    {
+      "name": "Floor_2.png",
+      "path": "D:/Work/FoxDash/FoxDash_Develop/Resource/Original/Floor_2.png",
+      "folder": ""
+    },
+    {
+      "name": "Foxy_Hurt_1.png",
+      "path": "D:/Work/FoxDash/FoxDash_Develop/Resource/Original/Foxy_Hurt_1.png",
+      "folder": ""
+    },
+    {
+      "name": "Foxy_Hurt_2.png",
+      "path": "D:/Work/FoxDash/FoxDash_Develop/Resource/Original/Foxy_Hurt_2.png",
+      "folder": ""
+    },
+    {
+      "name": "Foxy_Idle_1.png",
+      "path": "D:/Work/FoxDash/FoxDash_Develop/Resource/Original/Foxy_Idle_1.png",
+      "folder": ""
+    },
+    {
+      "name": "Foxy_Idle_2.png",
+      "path": "D:/Work/FoxDash/FoxDash_Develop/Resource/Original/Foxy_Idle_2.png",
+      "folder": ""
+    },
+    {
+      "name": "Foxy_Idle_3.png",
+      "path": "D:/Work/FoxDash/FoxDash_Develop/Resource/Original/Foxy_Idle_3.png",
+      "folder": ""
+    },
+    {
+      "name": "Foxy_Idle_4.png",
+      "path": "D:/Work/FoxDash/FoxDash_Develop/Resource/Original/Foxy_Idle_4.png",
+      "folder": ""
+    },
+    {
+      "name": "Foxy_Run_1.png",
+      "path": "D:/Work/FoxDash/FoxDash_Develop/Resource/Original/Foxy_Run_1.png",
+      "folder": ""
+    },
+    {
+      "name": "Foxy_Run_2.png",
+      "path": "D:/Work/FoxDash/FoxDash_Develop/Resource/Original/Foxy_Run_2.png",
+      "folder": ""
+    },
+    {
+      "name": "Foxy_Run_3.png",
+      "path": "D:/Work/FoxDash/FoxDash_Develop/Resource/Original/Foxy_Run_3.png",
+      "folder": ""
+    },
+    {
+      "name": "Foxy_Run_4.png",
+      "path": "D:/Work/FoxDash/FoxDash_Develop/Resource/Original/Foxy_Run_4.png",
+      "folder": ""
+    },
+    {
+      "name": "Foxy_Run_5.png",
+      "path": "D:/Work/FoxDash/FoxDash_Develop/Resource/Original/Foxy_Run_5.png",
+      "folder": ""
+    },
+    {
+      "name": "Foxy_Run_6.png",
+      "path": "D:/Work/FoxDash/FoxDash_Develop/Resource/Original/Foxy_Run_6.png",
+      "folder": ""
+    },
+    {
+      "name": "GameOver.png",
+      "path": "D:/Work/FoxDash/FoxDash_Develop/Resource/Original/GameOver.png",
+      "folder": ""
+    },
+    {
+      "name": "Grass_1.png",
+      "path": "D:/Work/FoxDash/FoxDash_Develop/Resource/Original/Grass_1.png",
+      "folder": ""
+    },
+    {
+      "name": "Grass_2.png",
+      "path": "D:/Work/FoxDash/FoxDash_Develop/Resource/Original/Grass_2.png",
+      "folder": ""
+    },
+    {
+      "name": "KeyArrowDown_0.png",
+      "path": "D:/Work/FoxDash/FoxDash_Develop/Resource/Original/KeyArrowDown_0.png",
+      "folder": ""
+    },
+    {
+      "name": "KeyArrowDown_1.png",
+      "path": "D:/Work/FoxDash/FoxDash_Develop/Resource/Original/KeyArrowDown_1.png",
+      "folder": ""
+    },
+    {
+      "name": "KeyArrowLeft_0.png",
+      "path": "D:/Work/FoxDash/FoxDash_Develop/Resource/Original/KeyArrowLeft_0.png",
+      "folder": ""
+    },
+    {
+      "name": "KeyArrowLeft_1.png",
+      "path": "D:/Work/FoxDash/FoxDash_Develop/Resource/Original/KeyArrowLeft_1.png",
+      "folder": ""
+    },
+    {
+      "name": "KeyArrowRight_0.png",
+      "path": "D:/Work/FoxDash/FoxDash_Develop/Resource/Original/KeyArrowRight_0.png",
+      "folder": ""
+    },
+    {
+      "name": "KeyArrowRight_1.png",
+      "path": "D:/Work/FoxDash/FoxDash_Develop/Resource/Original/KeyArrowRight_1.png",
+      "folder": ""
+    },
+    {
+      "name": "KeyArrowUp_0.png",
+      "path": "D:/Work/FoxDash/FoxDash_Develop/Resource/Original/KeyArrowUp_0.png",
+      "folder": ""
+    },
+    {
+      "name": "KeyArrowUp_1.png",
+      "path": "D:/Work/FoxDash/FoxDash_Develop/Resource/Original/KeyArrowUp_1.png",
+      "folder": ""
+    },
+    {
+      "name": "MiniMap.png",
+      "path": "D:/Work/FoxDash/FoxDash_Develop/Resource/Original/MiniMap.png",
+      "folder": ""
+    },
+    {
+      "name": "Mushroom_1.png",
+      "path": "D:/Work/FoxDash/FoxDash_Develop/Resource/Original/Mushroom_1.png",
+      "folder": ""
+    },
+    {
+      "name": "Mushroom_2.png",
+      "path": "D:/Work/FoxDash/FoxDash_Develop/Resource/Original/Mushroom_2.png",
+      "folder": ""
+    },
+    {
+      "name": "Option.png",
+      "path": "D:/Work/FoxDash/FoxDash_Develop/Resource/Original/Option.png",
+      "folder": ""
+    },
+    {
+      "name": "PotionRed.png",
+      "path": "D:/Work/FoxDash/FoxDash_Develop/Resource/Original/PotionRed.png",
+      "folder": ""
+    },
+    {
+      "name": "PotionsBlue.png",
+      "path": "D:/Work/FoxDash/FoxDash_Develop/Resource/Original/PotionsBlue.png",
+      "folder": ""
+    },
+    {
+      "name": "Record.png",
+      "path": "D:/Work/FoxDash/FoxDash_Develop/Resource/Original/Record.png",
+      "folder": ""
+    },
+    {
+      "name": "Skill_Dash.png",
+      "path": "D:/Work/FoxDash/FoxDash_Develop/Resource/Original/Skill_Dash.png",
+      "folder": ""
+    },
+    {
+      "name": "Skill_Invincibility.png",
+      "path": "D:/Work/FoxDash/FoxDash_Develop/Resource/Original/Skill_Invincibility.png",
+      "folder": ""
+    },
+    {
+      "name": "Title.png",
+      "path": "D:/Work/FoxDash/FoxDash_Develop/Resource/Original/Title.png",
+      "folder": ""
+    }
+  ],
+  "folders": [],
+  "packOptions": {
+    "textureName": "TextureAtlas",
+    "textureFormat": "png",
+    "removeFileExtension": true,
+    "prependFolderName": true,
+    "base64Export": false,
+    "tinify": false,
+    "tinifyKey": "",
+    "scale": 1,
+    "filter": "none",
+    "exporter": "JSON (hash)",
+    "fileName": "pack-result",
+    "savePath": "D:\\Work\\FoxDash\\FoxDash_Develop\\Resource",
+    "width": 512,
+    "height": 512,
+    "fixedSize": true,
+    "powerOfTwo": false,
+    "padding": 4,
+    "extrude": 0,
+    "allowRotation": false,
+    "allowTrim": false,
+    "trimMode": "trim",
+    "alphaThreshold": "0",
+    "detectIdentical": true,
+    "packer": "MaxRectsPacker",
+    "packerMethod": "Smart"
+  }
+}

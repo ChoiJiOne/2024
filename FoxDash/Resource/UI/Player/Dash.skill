@@ -1,0 +1,23 @@
+{
+    "TextureAtlas": "TextureAtlas",
+    "SkillIconName": "Skill_Dash",
+    "Icon": {
+        "x": -25.0,
+        "y": -220.0,
+        "w": 48.0,
+        "h": 48.0
+    },
+    "SkillCoolTime": 0.3,
+    "SkillCoolTimeColor": {
+        "r": 0.1,
+        "g": 0.1,
+        "b": 0.1,
+        "a": 0.7
+    },
+    "RemainTimeTextColor": {
+        "r": 1.0,
+        "g": 1.0,
+        "b": 1.0,
+        "a": 1.0
+    }
+}

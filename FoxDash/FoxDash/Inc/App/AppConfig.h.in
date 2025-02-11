@@ -1,0 +1,7 @@
+#pragma once
+
+#define WINDOW_WIDTH @WINDOW_WIDTH@
+#define WINDOW_HEIGHT @WINDOW_HEIGHT@
+#define WINDOW_TITLE "@WINDOW_TITLE@"
+#define WINDOW_ICON_PATH "Resource\\Icon\\Icon.png"
+#define IS_WINDOW_CENTERED @IS_WINDOW_CENTERED@

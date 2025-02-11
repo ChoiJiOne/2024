@@ -1,0 +1,7 @@
+@ECHO OFF
+
+SET PROJECT_NAME=FoxDash
+SET MODE=Debug
+SET SCRIPT=MiniGame\\Script\\Run.bat
+
+%SCRIPT% %PROJECT_NAME% %MODE%

@@ -1,0 +1,98 @@
+{
+    "Playground.radius": {
+        "type": "float",
+        "value": 1500.0
+    },
+    "Coin.maxMoveTime": {
+        "type": "float",
+        "value": 2.0
+    },
+    "Coin.moveGainSpeed": {
+        "type": "float",
+        "value": 1500.0
+    },
+    "Fire.damage": {
+        "type": "float",
+        "value": 10.0
+    },
+    "Player.speed": {
+        "type": "float",
+        "value": 500.0
+    },
+    "Player.dashLength": {
+        "type": "float",
+        "value": 20.0
+    },
+    "Player.dashMpCost": {
+        "type": "float",
+        "value": 5.0
+    },
+    "Player.invincibilityMpCost": {
+        "type": "float",
+        "value": 20.0
+    },
+    "Player.maxLostHpEffectTime": {
+        "type": "float",
+        "value": 0.05
+    },
+    "Player.maxLostHpEffectCount": {
+        "type": "int",
+        "value": 5
+    },
+    "Potion.maxMoveTime": {
+        "type": "float",
+        "value": 2.0
+    },
+    "Potion.heal": {
+        "type": "float",
+        "value": 10.0
+    },
+    "RandomChest.maxWaitTime": {
+        "type": "float",
+        "value": 2.0
+    },
+    "RandomChest.minFireSpeed": {
+        "type": "float",
+        "value": 300.0
+    },
+    "RandomChest.maxFireSpeed": {
+        "type": "float",
+        "value": 500.0
+    },
+    "RandomChest.minFireLifeTime": {
+        "type": "float",
+        "value": 10.0
+    },
+    "RandomChest.maxFireLifeTime": {
+        "type": "float",
+        "value": 15.0
+    },
+    "Sound.Charge": {
+        "type": "float",
+        "value": 0.5
+    },
+    "Sound.Click": {
+        "type": "float",
+        "value": 0.5
+    },
+    "Sound.Coin": {
+        "type": "float",
+        "value": 0.5
+    },
+    "Sound.Dash": {
+        "type": "float",
+        "value": 0.5
+    },
+    "Sound.EndSound": {
+        "type": "float",
+        "value": 0.5
+    },
+    "Sound.Explosion": {
+        "type": "float",
+        "value": 0.5
+    },
+    "Sound.Theme": {
+        "type": "float",
+        "value": 0.5
+    }
+}

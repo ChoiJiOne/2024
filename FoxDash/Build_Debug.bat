@@ -1,0 +1,7 @@
+@ECHO OFF
+
+SET MODE=Debug
+SET SCRIPT=MiniGame\\Script\\Build.bat
+SET ADMIN_OPTION=%1
+
+%SCRIPT% %MODE% %ADMIN_OPTION%

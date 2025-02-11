@@ -1,0 +1,40 @@
+{
+    "Background": {
+        "x": 0.0,
+        "y": -80.0,
+        "w": 400.0,
+        "h": 25.0
+    },
+    "DisabledColor": {
+        "r": 0.0,
+        "g": 0.0,
+        "b": 0.0,
+        "a": 0.2
+    },
+    "EnabledColor": {
+        "r": 0.0,
+        "g": 0.0,
+        "b": 0.0,
+        "a": 0.5
+    },
+    "PressedColor": {
+        "r": 0.0,
+        "g": 0.0,
+        "b": 0.0,
+        "a": 0.7
+    },
+    "ReleasedColor": {
+        "r": 0.0,
+        "g": 0.0,
+        "b": 0.0,
+        "a": 0.5
+    },
+    "SliderColor": {
+        "r": 1.0,
+        "g": 1.0,
+        "b": 1.0,
+        "a": 1.0
+    },
+    "SliderScale": 0.05,
+    "SliderXScale": 0.5
+}
