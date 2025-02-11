@@ -1,0 +1,78 @@
+cmake_minimum_required(VERSION 3.27)
+
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+
+add_subdirectory(ThirdParty)
+
+set(PROJECT_NAME "GameMaker")
+
+set(GL_MAJOR 4)
+set(GL_MINOR 6)
+set(GL_RED_SIZE 8)
+set(GL_GREEN_SIZE 8)
+set(GL_BLUE_SIZE 8)
+set(GL_ALPHA_SIZE 8)
+set(GL_DEPTH_SIZE 24)
+set(GL_STENCIL_SIZE 8)
+set(GL_DOUBLE_BUFFER 1)
+set(GL_MULTISAMPLE_BUFFERS 1)
+set(GL_MULTISAMPLE_SAMPLES 16)
+set(DEPTH_MODE 1)
+set(ALPHA_MODE 1)
+set(POINT_SIZE_MODE 1)
+set(CULL_FACE_MODE 1)
+
+configure_file("${CMAKE_CURRENT_SOURCE_DIR}/Core/Src/Config.h.in" "${CMAKE_CURRENT_SOURCE_DIR}/Core/Src/Config.h")
+
+set(GAME_MAKER_PATH ${CMAKE_CURRENT_SOURCE_DIR})
+set(GAME_MAKER_CORE "${GAME_MAKER_PATH}/Core")
+set(GAME_MAKER_INCLUDE "${GAME_MAKER_PATH}/Core/Inc")
+set(GAME_MAKER_SOURCE "${GAME_MAKER_PATH}/Core/Src")
+set(GAME_MAKER_SCRIPT "${GAME_MAKER_PATH}/Script")
+set(GAME_MAKER_SHADER "${GAME_MAKER_PATH}/Shader")
+
+file(GLOB_RECURSE GAME_MAKER_CORE_FILE "${GAME_MAKER_CORE}/**")
+file(GLOB_RECURSE GAME_MAKER_SCRIPT_FILE "${GAME_MAKER_SCRIPT}/**")
+file(GLOB_RECURSE GAME_MAKER_SHADER_FILE "${GAME_MAKER_SHADER}/**")
+
+add_library(${PROJECT_NAME} STATIC ${GAME_MAKER_CORE_FILE} ${GAME_MAKER_SCRIPT_FILE} ${GAME_MAKER_SHADER_FILE})
+
+target_include_directories(${PROJECT_NAME} PUBLIC ${GAME_MAKER_INCLUDE})
+target_link_libraries(
+    ${PROJECT_NAME} 
+    Dbghelp.lib 
+    Pathcch.lib 
+    Shlwapi.lib 
+    glad
+    imgui
+    jsoncpp
+    miniaudio
+    SDL2
+    stb
+)
+
+target_compile_definitions(
+    ${PROJECT_NAME}
+    PUBLIC
+    $<$<CONFIG:Debug>:DEBUG_MODE>
+    $<$<CONFIG:Release>:RELEASE_MODE>
+    $<$<CONFIG:RelWithDebInfo>:RELWITHDEBINFO_MODE>
+    $<$<CONFIG:MinSizeRel>:MINSIZEREL_MODE>
+)
+
+set_property(TARGET ${PROJECT_NAME} PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
+
+set(VALIDATOR_PATH "${GAME_MAKER_PATH}/Script/ShaderValidator.bat")
+foreach (SHADER_SOURCE_FILE IN LISTS GAME_MAKER_SHADER_FILE)
+    add_custom_command(
+        TARGET ${PROJECT_NAME}
+        POST_BUILD
+        COMMAND ${VALIDATOR_PATH} ${SHADER_SOURCE_FILE}
+    )
+endforeach()
+
+source_group(TREE "${GAME_MAKER_CORE}" PREFIX "${PROJECT_NAME}/Core" FILES ${GAME_MAKER_CORE_FILE})
+source_group(TREE "${GAME_MAKER_SCRIPT}" PREFIX "${PROJECT_NAME}/Script" FILES ${GAME_MAKER_SCRIPT_FILE})
+source_group(TREE "${GAME_MAKER_SHADER}" PREFIX "${PROJECT_NAME}/Shader" FILES ${GAME_MAKER_SHADER_FILE})
