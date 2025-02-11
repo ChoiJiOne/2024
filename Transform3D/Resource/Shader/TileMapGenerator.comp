@@ -1,0 +1,28 @@
+#version 460 core
+
+layout(local_size_x = 32, local_size_y = 32, local_size_z = 1) in;
+
+layout(binding = 0, rgba32f) uniform image2D tileMap;
+
+uniform int tileSize; // 2^n
+uniform vec4 pattern0;
+uniform vec4 pattern1;
+
+void main()
+{
+    ivec2 texelCoords = ivec2(gl_GlobalInvocationID.xy);
+    ivec2 size = imageSize(tileMap);
+    vec2 uv = vec2(texelCoords) / vec2(size);
+    vec4 colorRGBA = vec4(0.0f);
+
+    if((texelCoords.x / tileSize + texelCoords.y / tileSize) % 2 == 0)
+    {
+        colorRGBA = pattern0;
+    }
+    else
+    {
+        colorRGBA = pattern1;
+    }
+
+    imageStore(tileMap, texelCoords, colorRGBA);
+}
